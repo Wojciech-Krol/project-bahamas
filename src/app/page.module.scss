@@ -162,6 +162,56 @@
   }
 }
 
+.classSkeleton {
+  border-radius: calc(var(--radius-md) + 2px);
+  overflow: hidden;
+  background: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-ambient);
+}
+
+.classSkeletonMedia {
+  height: 188px;
+  background: linear-gradient(110deg, #edf0f8 8%, #f7f9ff 18%, #edf0f8 33%);
+  background-size: 200% 100%;
+  animation: shimmer 1.1s linear infinite;
+}
+
+.classSkeletonBody {
+  padding: 1rem;
+}
+
+.classSkeletonLineSm,
+.classSkeletonLineMd,
+.classSkeletonLineXs {
+  border-radius: 999px;
+  background: linear-gradient(110deg, #edf0f8 8%, #f7f9ff 18%, #edf0f8 33%);
+  background-size: 200% 100%;
+  animation: shimmer 1.1s linear infinite;
+}
+
+.classSkeletonLineSm {
+  width: 34%;
+  height: 0.62rem;
+  margin-bottom: 0.65rem;
+}
+
+.classSkeletonLineMd {
+  width: 72%;
+  height: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.classSkeletonLineXs {
+  width: 44%;
+  height: 0.62rem;
+}
+
+@keyframes shimmer {
+  to {
+    background-position-x: -200%;
+  }
+}
+
 .viewAll {
   display: block;
   text-align: center;
@@ -182,6 +232,10 @@
   &:hover {
     background: var(--color-primary);
     color: white;
+  }
+
+  &:active {
+    transform: scale(0.98);
   }
 }
 

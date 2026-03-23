@@ -29,15 +29,44 @@ export function Map({
       <div
         style={{
           height,
-          background: "#f1f5f9",
-          borderRadius: "var(--radius)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#94a3b8",
+          borderRadius: "var(--radius-md)",
+          overflow: "hidden",
+          background:
+            "linear-gradient(110deg, #edf0f8 8%, #f7f9ff 18%, #edf0f8 33%)",
+          backgroundSize: "220% 100%",
+          animation: "mapShimmer 1.2s linear infinite",
+          position: "relative",
         }}
       >
-        Ładowanie mapy...
+        <div
+          style={{
+            position: "absolute",
+            left: 16,
+            top: 16,
+            width: 140,
+            height: 20,
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.75)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            right: 20,
+            bottom: 20,
+            width: 110,
+            height: 36,
+            borderRadius: 12,
+            background: "rgba(255,255,255,0.75)",
+          }}
+        />
+        <style jsx>{`
+          @keyframes mapShimmer {
+            to {
+              background-position-x: -220%;
+            }
+          }
+        `}</style>
       </div>
     );
   }
