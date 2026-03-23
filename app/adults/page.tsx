@@ -1,30 +1,26 @@
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
-import { AdultsHero } from "@/components/adults/adults-hero";
-import { AdultsCategories } from "@/components/adults/adults-categories";
-import { AdultsFeatured } from "@/components/adults/adults-featured";
-import { AdultsMembership } from "@/components/adults/adults-membership";
-import { AdultsTestimonials } from "@/components/adults/adults-testimonials";
-import { AdultsCTA } from "@/components/adults/adults-cta";
-
-export const metadata = {
-  title: "Adult Workshops | Hakuna - Refine Your Skills",
-  description: "Expert-led workshops for adults in The Bahamas. Yoga, culinary arts, photography, wellness, and more refined experiences.",
-};
+import { ClassCard } from "@/components/class-card";
+import { SegmentHero } from "@/components/segment-hero";
+import { SiteHeader } from "@/components/site-header";
+import { classes } from "@/lib/mock-data";
 
 export default function AdultsPage() {
+  const adultClasses = classes.filter((c) => c.audience === "adults");
   return (
-    <>
-      <Navigation variant="adults" />
-      <main className="bg-[var(--color-adults-bg)]">
-        <AdultsHero />
-        <AdultsCategories />
-        <AdultsFeatured />
-        <AdultsMembership />
-        <AdultsTestimonials />
-        <AdultsCTA />
-      </main>
-      <Footer variant="adults" />
-    </>
+    <main>
+      <SiteHeader active="adults" />
+      <SegmentHero
+        audience="adults"
+        title="Refined workshops for personal growth"
+        subtitle="Minimal, focused experiences for wellness, culinary mastery, and skill-building."
+      />
+      <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <h2 className="text-2xl font-bold text-slate-900">Featured Adult Workshops</h2>
+        <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {adultClasses.map((item) => (
+            <ClassCard key={item.id} item={item} />
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }

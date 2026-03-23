@@ -1,50 +1,26 @@
 {
-  "name": "project-bahamas",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "hakuna_tmp",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Wojciech-Krol/project-bahamas.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "bugs": {
-    "url": "https://github.com/Wojciech-Krol/project-bahamas/issues"
-  },
-  "homepage": "https://github.com/Wojciech-Krol/project-bahamas#readme",
   "dependencies": {
-    "@types/leaflet": "^1.9.21",
-    "@types/node": "^25.5.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
-    "framer-motion": "^12.38.0",
-    "leaflet": "^1.9.4",
-    "lucide-react": "^0.577.0",
-    "next": "^16.2.1",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-leaflet": "^5.0.0",
-    "sass": "^1.98.0",
-    "tailwind-merge": "^3.5.0",
-    "typescript": "^5.9.3"
+    "next": "16.2.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.2.2",
-    "eslint": "^9.39.4",
-    "eslint-config-next": "^16.2.1",
-    "postcss": "^8.5.8",
-    "tailwindcss": "^4.2.2"
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
