@@ -1,0 +1,85 @@
+@use "tailwindcss";
+
+:root {
+  --color-primary: #6366f1;
+  --color-primary-dark: #4f46e5;
+  --color-primary-light: #a5b4fc;
+
+  --color-kids: #f59e0b;
+  --color-kids-light: #fef3c7;
+  --color-kids-bg: #fffbeb;
+
+  --color-teens: #8b5cf6;
+  --color-teens-light: #ede9fe;
+  --color-teens-bg: #f5f3ff;
+
+  --color-adults: #0ea5e9;
+  --color-adults-light: #e0f2fe;
+  --color-adults-bg: #f0f9ff;
+
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+
+  --max-width: 1280px;
+  --nav-height: 72px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+// Age group theme classes
+.theme-kids {
+  --theme-color: var(--color-kids);
+  --theme-light: var(--color-kids-light);
+  --theme-bg: var(--color-kids-bg);
+}
+
+.theme-teens {
+  --theme-color: var(--color-teens);
+  --theme-light: var(--color-teens-light);
+  --theme-bg: var(--color-teens-bg);
+}
+
+.theme-adults {
+  --theme-color: var(--color-adults);
+  --theme-light: var(--color-adults-light);
+  --theme-bg: var(--color-adults-bg);
+}
