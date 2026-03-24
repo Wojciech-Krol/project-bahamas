@@ -1,7 +1,126 @@
 @import "tailwindcss";
 
 :root {
+  /* Hakuna Design System - Material Color Tokens */
+  --primary: #553ce2;
+  --primary-container: #6f59fc;
+  --on-primary: #ffffff;
+  --on-primary-container: #fffbff;
+  --primary-fixed: #e4dfff;
+  --primary-fixed-dim: #c7bfff;
+  --on-primary-fixed: #170065;
+  --on-primary-fixed-variant: #3f1bcd;
+  --inverse-primary: #c7bfff;
+
+  --secondary: #4d616c;
+  --secondary-container: #d0e6f3;
+  --on-secondary: #ffffff;
+  --on-secondary-container: #536772;
+  --secondary-fixed: #d0e6f3;
+  --secondary-fixed-dim: #b5cad6;
+  --on-secondary-fixed: #091e27;
+  --on-secondary-fixed-variant: #364954;
+
+  --tertiary: #ba002e;
+  --tertiary-container: #e31c40;
+  --on-tertiary: #ffffff;
+  --on-tertiary-container: #fffbff;
+  --tertiary-fixed: #ffdad9;
+  --tertiary-fixed-dim: #ffb3b3;
+  --on-tertiary-fixed: #40000a;
+  --on-tertiary-fixed-variant: #920022;
+
+  --surface: #f7f9ff;
+  --surface-dim: #d7dae1;
+  --surface-bright: #f7f9ff;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f1f4fb;
+  --surface-container: #ebeef5;
+  --surface-container-high: #e5e8ef;
+  --surface-container-highest: #dfe2e9;
+  --surface-tint: #583fe4;
+  --surface-variant: #dfe2e9;
+  --on-surface: #181c21;
+  --on-surface-variant: #474555;
+  --inverse-surface: #2d3136;
+  --inverse-on-surface: #eef1f8;
+
+  --background: #f7f9ff;
+  --on-background: #181c21;
+
+  --outline: #787587;
+  --outline-variant: #c8c4d8;
+
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+  --on-error: #ffffff;
+  --on-error-container: #93000a;
+
   --brand-purple: #725dff;
+  --font-headline: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+@theme {
+  --color-primary: #553ce2;
+  --color-primary-container: #6f59fc;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #fffbff;
+  --color-primary-fixed: #e4dfff;
+  --color-primary-fixed-dim: #c7bfff;
+  --color-on-primary-fixed: #170065;
+  --color-on-primary-fixed-variant: #3f1bcd;
+  --color-inverse-primary: #c7bfff;
+
+  --color-secondary: #4d616c;
+  --color-secondary-container: #d0e6f3;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #536772;
+  --color-secondary-fixed: #d0e6f3;
+  --color-secondary-fixed-dim: #b5cad6;
+  --color-on-secondary-fixed: #091e27;
+  --color-on-secondary-fixed-variant: #364954;
+
+  --color-tertiary: #ba002e;
+  --color-tertiary-container: #e31c40;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #fffbff;
+  --color-tertiary-fixed: #ffdad9;
+  --color-tertiary-fixed-dim: #ffb3b3;
+  --color-on-tertiary-fixed: #40000a;
+  --color-on-tertiary-fixed-variant: #920022;
+
+  --color-surface: #f7f9ff;
+  --color-surface-dim: #d7dae1;
+  --color-surface-bright: #f7f9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f1f4fb;
+  --color-surface-container: #ebeef5;
+  --color-surface-container-high: #e5e8ef;
+  --color-surface-container-highest: #dfe2e9;
+  --color-surface-tint: #583fe4;
+  --color-surface-variant: #dfe2e9;
+  --color-on-surface: #181c21;
+  --color-on-surface-variant: #474555;
+  --color-inverse-surface: #2d3136;
+  --color-inverse-on-surface: #eef1f8;
+
+  --color-background: #f7f9ff;
+  --color-on-background: #181c21;
+
+  --color-outline: #787587;
+  --color-outline-variant: #c8c4d8;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  --font-family-headline: 'Plus Jakarta Sans', sans-serif;
+  --font-family-body: 'Inter', sans-serif;
+  --font-family-sans: 'Inter', sans-serif;
+
+  --radius: 0.5rem;
 }
 
 * {
@@ -16,10 +135,12 @@ body {
 
 body {
   margin: 0;
-  color: #0f172a;
-  background: #fff9f2;
+  color: #181c21;
+  background: #f7f9ff;
+  font-family: var(--font-body);
 }
 
+.material-symbols-outlined,
 .material-symbols-rounded {
   font-variation-settings:
     "FILL" 0,
@@ -30,4 +151,21 @@ body {
 
 .playful-blob {
   border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+}
+
+.glass-effect {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(85, 60, 226, 0.4);
 }

@@ -3,9 +3,9 @@ export function SiteFooter() {
     <footer className="mt-20 bg-[#fff4e6] text-slate-700">
       <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-8 px-4 py-12 sm:px-6 md:flex md:items-start md:justify-between lg:px-8">
         <div className="col-span-2 md:col-span-1">
-          <h3 className="text-lg font-bold text-slate-900">Curated Prism</h3>
+          <h3 className="text-lg font-bold text-slate-900">Hakuna</h3>
           <p className="mt-2 max-w-xs text-xs text-slate-500">
-            The premium marketplace for discovering Bahamas classes across all ages.
+            The premium marketplace for discovering classes across all ages in The Bahamas.
           </p>
         </div>
         <div className="flex gap-10 sm:gap-12">
@@ -45,7 +45,7 @@ export function SiteFooter() {
       </div>
       <div className="mx-auto max-w-7xl border-t border-slate-200 px-4 py-6 text-center sm:px-6 lg:px-8">
         <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
-          © 2024 Curated Prism Marketplace. All rights reserved.
+          © {new Date().getFullYear()} Hakuna. All rights reserved.
         </p>
       </div>
     </footer>

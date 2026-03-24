@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bahamas Classes | Curated Prism</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#ffb3b3",
+              "secondary-fixed": "#d0e6f3",
+              "on-tertiary-container": "#fffbff",
+              "primary": "#553ce2",
+              "on-secondary-fixed-variant": "#364954",
+              "on-primary": "#ffffff",
+              "on-error": "#ffffff",
+              "on-background": "#181c21",
+              "surface-dim": "#d7dae1",
+              "on-tertiary-fixed": "#40000a",
+              "on-surface-variant": "#474555",
+              "secondary-container": "#d0e6f3",
+              "tertiary": "#ba002e",
+              "primary-fixed": "#e4dfff",
+              "surface": "#fff9f2",
+              "inverse-surface": "#2d3136",
+              "surface-container-low": "#fff4e6",
+              "inverse-on-surface": "#eef1f8",
+              "tertiary-fixed": "#ffdad9",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#b5cad6",
+              "surface-bright": "#fffdfa",
+              "on-error-container": "#93000a",
+              "on-primary-container": "#fffbff",
+              "on-tertiary-fixed-variant": "#920022",
+              "primary-fixed-dim": "#c7bfff",
+              "on-secondary-fixed": "#091e27",
+              "secondary": "#4d616c",
+              "surface-container-high": "#fcebd5",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#e31c40",
+              "on-secondary-container": "#536772",
+              "outline-variant": "#c8c4d8",
+              "inverse-primary": "#c7bfff",
+              "surface-container-highest": "#f9e1c4",
+              "surface-variant": "#f9e1c4",
+              "surface-container": "#fff1e0",
+              "on-secondary": "#ffffff",
+              "error": "#ba1a1a",
+              "background": "#fff9f2",
+              "on-primary-fixed-variant": "#3f1bcd",
+              "surface-tint": "#583fe4",
+              "primary-container": "#6f59fc",
+              "outline": "#787587",
+              "on-surface": "#181c21",
+              "error-container": "#ffdad6",
+              "on-primary-fixed": "#170065"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "3xl": "2rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-effect {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .playful-blob {
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl shadow-sm">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-slate-900">Curated Prism</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#725DFF] font-bold border-b-2 border-[#725DFF] pb-1 font-plus-jakarta text-sm tracking-tight" href="#">Explore</a>
+<a class="text-slate-600 hover:text-[#725DFF] transition-colors font-plus-jakarta text-sm font-medium tracking-tight" href="#">Kids</a>
+<a class="text-slate-600 hover:text-[#725DFF] transition-colors font-plus-jakarta text-sm font-medium tracking-tight" href="#">Teens</a>
+<a class="text-slate-600 hover:text-[#725DFF] transition-colors font-plus-jakarta text-sm font-medium tracking-tight" href="#">Adults</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-surface-container-low rounded-lg px-4 py-2">
+<span class="material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm font-medium w-32 lg:w-48 placeholder:text-outline" placeholder="Find a class..." type="text"/>
+</div>
+<button class="text-[#725DFF] font-bold text-sm px-4 py-2 hover:bg-slate-100/50 rounded-lg transition-all active:scale-95 duration-150">Sign In</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-bold text-sm hover:bg-primary-container transition-all active:scale-95 duration-150">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="relative px-6 py-16 md:py-32 overflow-hidden">
+<div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10">
+<div class="space-y-8">
+<div class="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+                        New Spring Workshops Open
+                    </div>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter text-on-background leading-tight">
+                        Unlock your family's <span class="text-primary relative inline-block">creativity.<span class="absolute bottom-0 left-0 w-full h-3 bg-yellow-200 -z-10 rounded-full"></span></span>
+</h1>
+<p class="text-on-surface-variant text-lg md:text-xl max-w-lg font-medium leading-relaxed">
+                        The ultimate destination for Bahamas Classes. From splashy swimming lessons to messy arts &amp; crafts, find the perfect workshop for every age.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<div class="flex-1 bg-surface-container-lowest rounded-2xl p-2 flex items-center shadow-xl shadow-primary/5 border-2 border-primary/10">
+<div class="flex items-center gap-3 px-4 flex-1">
+<span class="material-symbols-outlined text-primary">search</span>
+<input class="border-none focus:ring-0 text-sm font-semibold w-full bg-transparent" placeholder="What do you want to learn?" type="text"/>
+</div>
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold transition-all hover:scale-105 active:scale-95">
+                                Browse Classes
+                            </button>
+</div>
+</div>
+<div class="flex items-center gap-4 text-sm font-medium text-on-surface-variant">
+<div class="flex -space-x-3">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-green-100 flex items-center justify-center text-[10px] font-bold">MK</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-purple-100 flex items-center justify-center text-[10px] font-bold">SR</div>
+</div>
+<span>Join 500+ Bahamian families learning today</span>
+</div>
+</div>
+<div class="relative">
+<div class="relative playful-blob overflow-hidden aspect-square shadow-2xl rotate-3 border-[12px] border-white">
+<img alt="Kids painting during a workshop" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfR9W_V4SA6BaLYGRa1bYYbdM4gSAuBdKc93HeI8KZCbLNqW8N8nCyoTGTnxY9TQUbi36KakGD3DZtSGzIvncoKZXsQv0UkRr5g25cb6MjkouskYFg-2RnYpcN710gKV2YRg0MsazvJQosE46mnO-6CfkEbzkbLG-BuOujE2W8Fff63BEBOeDNUB72IEcfflGZMZmYdKTkt8wD58fxKCCiIlSdBQWf672WhVoYCjttFeKHLLYcek8UFbXC73GNSqMRTkxjajIBrbA"/>
+</div>
+<div class="absolute -bottom-8 -left-8 bg-surface-container-lowest p-6 rounded-3xl shadow-xl flex items-center gap-4 -rotate-3 border border-surface-container-high">
+<div class="bg-yellow-400 p-3 rounded-full text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">palette</span>
+</div>
+<div>
+<p class="font-black text-xl">Top Rated</p>
+<p class="text-xs text-outline font-bold uppercase tracking-widest">Arts &amp; Crafts</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative Elements -->
+<div class="absolute top-1/4 right-0 -z-10 w-96 h-96 bg-primary/10 blur-[100px] playful-blob"></div>
+<div class="absolute bottom-0 left-1/4 -z-10 w-64 h-64 bg-yellow-200/40 blur-[80px] playful-blob"></div>
+</section>
+<!-- Age-Based Entry Points -->
+<section class="px-6 py-20 bg-surface-container-low">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline text-3xl md:text-5xl font-extrabold tracking-tight">Classes for Every Stage</h2>
+<p class="text-on-surface-variant mt-4 font-medium text-lg">Fun, structured learning environments for all ages in Bahamas Classes</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Kids Card -->
+<div class="bg-surface-container-lowest p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all group border-t-8 border-yellow-400">
+<div class="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-8 rotate-3 group-hover:rotate-0 transition-transform">
+<span class="material-symbols-outlined text-yellow-600 text-3xl">child_care</span>
+</div>
+<h3 class="font-headline text-3xl font-bold mb-4">Kids</h3>
+<p class="text-on-surface-variant mb-8 font-medium">Safe, messy, and super-fun activities designed to spark curiosity in little minds.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-sm font-semibold"><span class="material-symbols-outlined text-yellow-500 text-lg">check_circle</span> Swimming Lessons</li>
+<li class="flex items-center gap-2 text-sm font-semibold"><span class="material-symbols-outlined text-yellow-500 text-lg">check_circle</span> Tiny Painters</li>
+<li class="flex items-center gap-2 text-sm font-semibold"><span class="material-symbols-outlined text-yellow-500 text-lg">check_circle</span> Movement &amp; Music</li>
+</ul>
+<button class="w-full py-4 rounded-xl bg-yellow-400 text-white font-black tracking-tight hover:bg-yellow-500 transition-colors shadow-lg shadow-yellow-200">EXPLORE KIDS</button>
+</div>
+<!-- Teens Card -->
+<div class="bg-surface-container-lowest p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all group border-t-8 border-primary">
+<div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 -rotate-3 group-hover:rotate-0 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">sports_basketball</span>
+</div>
+<h3 class="font-headline text-3xl font-black mb-4 italic tracking-tighter">TEENS</h3>
+<p class="text-on-surface-variant mb-8 font-medium">Dynamic, high-energy classes for the next generation of athletes and digital creators.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-sm font-semibold"><span class="material-symbols-outlined text-primary text-lg">bolt</span> Competitive Sports</li>
+<li class="flex items-center gap-2 text-sm font-semibold"><span class="material-symbols-outlined text-primary text-lg">bolt</span> Digital Illustration</li>
+<li class="flex items-center gap-2 text-sm font-semibold"><span class="material-symbols-outlined text-primary text-lg">bolt</span> Tech &amp; Coding</li>
+</ul>
+<button class="w-full py-4 rounded-xl bg-primary text-on-primary font-black tracking-tight hover:bg-primary-container transition-colors shadow-lg shadow-primary/20">JOIN THE VIBE</button>
+</div>
+<!-- Adults Card -->
+<div class="bg-surface-container-lowest p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all group border-t-8 border-blue-400">
+<div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 rotate-6 group-hover:rotate-0 transition-transform">
+<span class="material-symbols-outlined text-blue-600 text-3xl">handyman</span>
+</div>
+<h3 class="font-headline text-3xl font-bold mb-4 tracking-tight">ADULTS</h3>
+<p class="text-on-surface-variant mb-8 font-medium">Refined workshops for hands-on skills, creative mastery, and active lifestyles.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-sm font-semibold"><span class="material-symbols-outlined text-blue-500 text-lg">verified</span> Pottery &amp; Ceramics</li>
+<li class="flex items-center gap-2 text-sm font-semibold"><span class="material-symbols-outlined text-blue-500 text-lg">verified</span> Gourmet Cooking</li>
+<li class="flex items-center gap-2 text-sm font-semibold"><span class="material-symbols-outlined text-blue-500 text-lg">verified</span> Fitness Bootcamp</li>
+</ul>
+<button class="w-full py-4 rounded-xl bg-blue-500 text-white font-black tracking-tight hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200">VIEW WORKSHOPS</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Popular Categories -->
+<section class="px-6 py-20">
+<div class="max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline text-4xl font-extrabold tracking-tight text-slate-900">Popular Categories</h2>
+<p class="text-on-surface-variant mt-2 font-medium">Curated Prism's top-rated learning tracks</p>
+</div>
+<a class="text-primary font-bold flex items-center gap-2 group hover:underline" href="#">
+                        See All 
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="col-span-2 row-span-2 relative group overflow-hidden rounded-[2.5rem] aspect-square md:aspect-auto">
+<img alt="Swimming classes" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWfBoYqcDiC-KGE98LpsSxnMmavlNky2h6f3n5qV2FncXVxMCODDMzxuH5ExrmACJL1032oF7yj6mKrp9ZDAWiahQXDt0Oet6zUl52Kg8vCzVgKZJnWKyXF24NdV3u1qTGzmWWk5MrFVfPz277NlvR-M_RQhDpIvZM_PeSCzUaciw-Ve5HxWk26AuAMTJYn27sejsbDJa6UQQy_vf4fUcHitZicKzwrHewV6ybMCaT0-x6RSKwrlLFQxLgmgH9iYtAKr_4BfDp8aY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
+<h4 class="text-white font-headline text-3xl font-bold">Swimming &amp; Aquatics</h4>
+<p class="text-white/80 font-medium">45+ Classes available</p>
+</div>
+</div>
+<div class="relative group overflow-hidden rounded-[2rem] aspect-square">
+<img alt="Sports training" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUI4wUF-2NVUeIoc-zTJ1BwXoAvQWPjU7hvIhU0PTmZEGkzSdsaL7kC-2HRxq8fTt-1TdJiXPhvTIhHVMDlGqVdxeKZ0CvifyTEyIZpHaxcdD6Qx-OMg_0rLqWm-QCmjBzKxPwhytjHgsA6uVRgCbC_AYcRx1PALkAzFm-_ADpDFHIXuHXupozZq0pAYIOcczN5wgUROy-kg3kzFycL8VqHKUM1e1dCnTTbYJYAudM-Ntn_hNdQz9SySXT2aA4DfWkeCJRLhs6Dmo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-blue-600/80 via-transparent to-transparent flex flex-col justify-end p-6">
+<h4 class="text-white font-headline text-xl font-bold">Sports</h4>
+</div>
+</div>
+<div class="relative group overflow-hidden rounded-[2rem] aspect-square">
+<img alt="Pottery workshop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABy9vlsYImE_fn6C7UoMezaOhq83Ymif23-bEFc77ateQo24zKaY7ZMnTn9a8b2Km6WRL91n_52rgtmQXyrnvKTt0r62d7PYGtCakKkDMPEmVIEdQOr4_AmIgHkMW_cbGROBq47cRCZ9Ob8WPKVF0WHxc7MnkFRhni32gowTUJn3kc6k5_thm1iAQAouO8bPyNJnoSlMQ7Dpli0aYnYB2smq8eevI2AQ9YjoBh88u0EPpyGVGoDMluP_F6RmyCbq0UL23AUo_kU_s"/>
+<div class="absolute inset-0 bg-gradient-to-t from-orange-600/80 via-transparent to-transparent flex flex-col justify-end p-6">
+<h4 class="text-white font-headline text-xl font-bold">Workshops</h4>
+</div>
+</div>
+<div class="relative group overflow-hidden rounded-[2rem] aspect-square">
+<img alt="Coding class" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDE88gt_gfmcZX6Y0zlTP_nNR_o2cQsgOubCWytzbq5zrFg6xApi8nxGOm3uEb5rAXyTdAcaQ0TRL8KG8J0t4j0T0gHsnS5m04Fw-Cjjuh75_fu5cFGG1VN0REAuRGlxFLSCTlXZrzG3HyYY_2F5IQHajgox15oVqf9KmZ6A1C8LZER2vCdnh1f_ekNlXz5NGYdwgPJ6jptP-VBOccquud_EiGKFn6-etJ_YPMr_vzBPVOhjkJcSCFpCly4VejXiSMc_3ZC0nTaUOg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-purple-600/80 via-transparent to-transparent flex flex-col justify-end p-6">
+<h4 class="text-white font-headline text-xl font-bold">Tech</h4>
+</div>
+</div>
+<div class="relative group overflow-hidden rounded-[2rem] aspect-square">
+<img alt="Dance lessons" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWWHDgGey0MJhJ5Vnm1_Hzo-d_u9XvEW4TgyKNqOEYI61pcvM4cYF15ufKRMyXOnZ9aQ399c1u7dvgX5R23-Bh9q_xt4m6CiKoIvVfA8xexTkobbOLbkN1WzpTUCjig_ndzCRpfo03190iOp8zD3acjDJbMElc8CsF6Y3Mb-hWLVdk-81p12qbL-K6sNp_ZLln781-ENtSix9tuceh6ys-UWBdwWeaSTwimjjutbKTsl81vcAtiuffRxJBhaeLI_-ha6OxBQukCRw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-pink-600/80 via-transparent to-transparent flex flex-col justify-end p-6">
+<h4 class="text-white font-headline text-xl font-bold">Dance</h4>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Curated Classes -->
+<section class="px-6 py-20 bg-surface">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline text-4xl font-extrabold tracking-tight">Handpicked Experiences</h2>
+<p class="text-on-surface-variant mt-2 font-medium">Top-rated workshops in the Curated Prism collection</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Class Card 1 -->
+<div class="bg-surface-container-lowest rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all group border border-surface-container-high">
+<div class="relative h-64 overflow-hidden">
+<img alt="Pottery workshop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABy9vlsYImE_fn6C7UoMezaOhq83Ymif23-bEFc77ateQo24zKaY7ZMnTn9a8b2Km6WRL91n_52rgtmQXyrnvKTt0r62d7PYGtCakKkDMPEmVIEdQOr4_AmIgHkMW_cbGROBq47cRCZ9Ob8WPKVF0WHxc7MnkFRhni32gowTUJn3kc6k5_thm1iAQAouO8bPyNJnoSlMQ7Dpli0aYnYB2smq8eevI2AQ9YjoBh88u0EPpyGVGoDMluP_F6RmyCbq0UL23AUo_kU_s"/>
+<div class="absolute top-4 left-4 bg-white/90 glass-effect px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest text-primary">Adults</div>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline text-xl font-bold">Artisanal Pottery Workshop</h4>
+<span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-black">HOT</span>
+</div>
+<div class="flex items-center gap-4 text-sm text-on-surface-variant mb-6 font-medium">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span> 4.9 (128)</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 2h 30m</span>
+</div>
+<div class="flex items-center justify-between border-t border-surface-container-high pt-6">
+<div>
+<p class="text-xs text-outline font-bold uppercase tracking-widest">Pricing from</p>
+<p class="text-2xl font-black text-primary">$45</p>
+</div>
+<button class="bg-primary text-on-primary p-4 rounded-2xl hover:bg-primary-container transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Class Card 2 -->
+<div class="bg-surface-container-lowest rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all group border border-surface-container-high">
+<div class="relative h-64 overflow-hidden">
+<img alt="Soccer for kids" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWfBoYqcDiC-KGE98LpsSxnMmavlNky2h6f3n5qV2FncXVxMCODDMzxuH5ExrmACJL1032oF7yj6mKrp9ZDAWiahQXDt0Oet6zUl52Kg8vCzVgKZJnWKyXF24NdV3u1qTGzmWWk5MrFVfPz277NlvR-M_RQhDpIvZM_PeSCzUaciw-Ve5HxWk26AuAMTJYn27sejsbDJa6UQQy_vf4fUcHitZicKzwrHewV6ybMCaT0-x6RSKwrlLFQxLgmgH9iYtAKr_4BfDp8aY"/>
+<div class="absolute top-4 left-4 bg-yellow-400 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">Kids</div>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline text-xl font-bold">Junior Soccer League</h4>
+<span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-black">POPULAR</span>
+</div>
+<div class="flex items-center gap-4 text-sm text-on-surface-variant mb-6 font-medium">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span> 4.7 (84)</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 1h 00m</span>
+</div>
+<div class="flex items-center justify-between border-t border-surface-container-high pt-6">
+<div>
+<p class="text-xs text-outline font-bold uppercase tracking-widest">Pricing from</p>
+<p class="text-2xl font-black text-primary">$25</p>
+</div>
+<button class="bg-primary text-on-primary p-4 rounded-2xl hover:bg-primary-container transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Class Card 3 -->
+<div class="bg-surface-container-lowest rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all group border border-surface-container-high">
+<div class="relative h-64 overflow-hidden">
+<img alt="Teens coding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCst-VdvO0ohWS7HsepTANAOGFRAnPyaqQR1VR2MWJdM0YCxA2htdJ-sTxAObM0ioMaEqR_ylA-JiLHSmWazGuWSEfq6HN9w8IxR-Eux2ESZqud1fJFXnX-MAHQyu4SUxYjFehIMd5oXR6tMmK0XGk7dzR2hOXBgw7AC8OJAzdTFTMMUQmhZqqjN9ARj4Sok80b6Ycd6XwWoXtizlOBWtjq6xBOpx6LH4xhqo9C9BvmwsJVamyaxap3evdM1Jgp7mWnDhV3HVmUhPg"/>
+<div class="absolute top-4 left-4 bg-primary text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">Teens</div>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline text-xl font-bold uppercase tracking-tighter italic">Code Mastery Pro</h4>
+<span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-black">LIMITED</span>
+</div>
+<div class="flex items-center gap-4 text-sm text-on-surface-variant mb-6 font-medium">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span> 5.0 (52)</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 3h 00m</span>
+</div>
+<div class="flex items-center justify-between border-t border-surface-container-high pt-6">
+<div>
+<p class="text-xs text-outline font-bold uppercase tracking-widest">Pricing from</p>
+<p class="text-2xl font-black text-primary">$80</p>
+</div>
+<button class="bg-primary text-on-primary p-4 rounded-2xl hover:bg-primary-container transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How it Works -->
+<section class="px-6 py-20 bg-surface-container-low">
+<div class="max-w-7xl mx-auto">
+<div class="grid lg:grid-cols-2 gap-20 items-center">
+<div>
+<h2 class="font-headline text-4xl md:text-5xl font-black tracking-tight mb-8">Ready to learn? <br/><span class="text-primary italic">It's easy-peasy.</span></h2>
+<div class="space-y-12">
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-yellow-400 text-white rounded-2xl flex items-center justify-center font-black text-xl rotate-3">1</div>
+<div>
+<h4 class="font-headline text-xl font-bold mb-2">Pick Your Passion</h4>
+<p class="text-on-surface-variant font-medium">Filter by age or activity to find the perfect swimming class or art workshop in the Bahamas.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-blue-500 text-white rounded-2xl flex items-center justify-center font-black text-xl -rotate-3">2</div>
+<div>
+<h4 class="font-headline text-xl font-bold mb-2">Save Your Spot</h4>
+<p class="text-on-surface-variant font-medium">Quick and secure booking through Curated Prism. Instant confirmation for you or your family.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-primary text-on-primary rounded-2xl flex items-center justify-center font-black text-xl rotate-6">3</div>
+<div>
+<h4 class="font-headline text-xl font-bold mb-2">Dive In!</h4>
+<p class="text-on-surface-variant font-medium">Join the community, make new friends, and master awesome new skills in a fun environment.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-[40px] shadow-2xl relative border border-surface-container-high">
+<div class="aspect-video rounded-3xl overflow-hidden playful-blob border-4 border-white shadow-inner">
+<img alt="Happy students learning" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk_p-9BGAkcL8VyQylgIC7KECMYHj4ICFvce2GDsQ_5bMNsprsWWzW41A6o0GIKQvIANSkJl1Bz4y_vCzZ6-QkS0-l6CPRu52Uetkm_frxS5EoE9X2ex2oXIMr-yGyLf4nJztWyXvBYvCJTYyA-4TJnwTHVTauivv3pHIOJX4OJcY4NvPr8ciqzp3tLQpaX-MzVSZWUyn2lxU_b7mpf8_UH9266rgPy5THKBOOna9QjFZdgYnJlH3Egux5-1iVa_UBpLfyyj0YvkA"/>
+</div>
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-400 rounded-full flex items-center justify-center text-white text-center p-4 font-black text-sm rotate-12 shadow-lg">
+                            JOIN 5,000+ FAMILIES
+                        </div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 border-t-0 tonal-shift bg-surface-container-low mt-20">
+<div class="grid grid-cols-2 md:flex md:justify-between items-center px-8 py-12 max-w-7xl mx-auto">
+<div class="col-span-2 md:col-span-1 mb-8 md:mb-0">
+<div class="text-lg font-bold text-slate-900 mb-2">Curated Prism</div>
+<p class="font-inter text-xs font-normal text-slate-500 max-w-xs">The premium marketplace for discovering Bahamas Classes across all ages.</p>
+</div>
+<div class="flex flex-wrap gap-8 md:gap-12">
+<div class="flex flex-col gap-4">
+<a class="font-inter text-xs font-normal text-slate-500 hover:text-[#725DFF] transition-all duration-200" href="#">About Us</a>
+<a class="font-inter text-xs font-normal text-slate-500 hover:text-[#725DFF] transition-all duration-200" href="#">Safety</a>
+<a class="font-inter text-xs font-normal text-slate-500 hover:text-[#725DFF] transition-all duration-200" href="#">Partners</a>
+</div>
+<div class="flex flex-col gap-4">
+<a class="font-inter text-xs font-normal text-slate-500 hover:text-[#725DFF] transition-all duration-200" href="#">Help Center</a>
+<a class="font-inter text-xs font-normal text-slate-500 hover:text-[#725DFF] transition-all duration-200" href="#">Terms of Service</a>
+<a class="font-inter text-xs font-normal text-slate-500 hover:text-[#725DFF] transition-all duration-200" href="#">Privacy Policy</a>
+</div>
+</div>
+<div class="col-span-2 md:col-span-1 mt-8 md:mt-0 flex gap-4">
+<div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 hover:bg-[#725DFF] hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">public</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 hover:bg-[#725DFF] hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">camera_alt</span>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 py-6 border-t border-slate-200 text-center">
+<p class="font-inter text-[10px] uppercase tracking-widest text-slate-400">© 2024 Curated Prism Marketplace. All rights reserved.</p>
+</div>
+</footer>
+</body></html>

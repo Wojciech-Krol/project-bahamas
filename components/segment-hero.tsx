@@ -52,7 +52,7 @@ export function SegmentHero({
             className="h-[360px] w-full object-cover"
           />
           <div className="absolute bottom-4 left-4 rounded-xl bg-white/85 px-3 py-2 text-sm font-semibold text-slate-800">
-            Curated Prism standard
+            Hakuna standard
           </div>
         </div>
       </div>
