@@ -165,11 +165,13 @@ export default function UserDashboardPage() {
                   </button>
                 </div>
                 <div className="space-y-6">
-                  {[
-                    { day: "Today, Oct 14", active: true, items: [{ time: "14:00 - 15:30", title: "Piano Theory" }, { time: "17:00 - 18:00", title: "Spanish Conversation", dimmed: true }] },
-                    { day: "Wed, Oct 16", active: false, items: [{ time: "10:30 - 12:00", title: "React Architecture" }] },
-                    { day: "Sat, Oct 19", active: false, items: [{ time: "09:00 - 11:00", title: "Workshop: Portrait Photography", special: true }] },
-                  ].map(({ day, active, items }) => (
+                  {(
+                    [
+                      { day: "Today, Oct 14", active: true, items: [{ time: "14:00 - 15:30", title: "Piano Theory" }, { time: "17:00 - 18:00", title: "Spanish Conversation", dimmed: true }] },
+                      { day: "Wed, Oct 16", active: false, items: [{ time: "10:30 - 12:00", title: "React Architecture" }] },
+                      { day: "Sat, Oct 19", active: false, items: [{ time: "09:00 - 11:00", title: "Workshop: Portrait Photography", special: true }] },
+                    ] as Array<{ day: string; active: boolean; items: Array<{ time: string; title: string; dimmed?: boolean; special?: boolean }> }>
+                  ).map(({ day, active, items }) => (
                     <div key={day} className={`relative pl-6 border-l-2 ${active ? "border-[#553ce2]/20" : "border-slate-200"}`}>
                       <div className={`absolute -left-[5px] top-0 w-2 h-2 rounded-full ${active ? "bg-[#553ce2]" : "bg-slate-300"}`} />
                       <span className={`text-xs font-bold uppercase mb-2 block ${active ? "text-[#553ce2]" : "text-slate-500"}`}>{day}</span>
