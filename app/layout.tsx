@@ -53,6 +53,12 @@ export default function RootLayout({
       className={`${plusJakarta.variable} ${inter.variable}`}
     >
       <head>
+        {/* Material Symbols Outlined — used by all Stitch-generated screens */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        />
+        {/* Material Symbols Rounded — kept for any existing components */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"

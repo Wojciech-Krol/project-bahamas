@@ -12,7 +12,7 @@ export function SiteHeader({ active }: { active?: Audience | "home" }) {
     <header className="fixed top-0 z-50 w-full bg-[#fff9f2]/70 shadow-sm backdrop-blur-xl">
       <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="text-2xl font-bold tracking-tighter text-slate-900">
-          Curated Prism
+          Hakuna
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <Link className={navCls(active === "home")} href="/">
