@@ -1,5 +1,7 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { useState } from "react";
 /* ────────────────────────────────────────────
  * Data — all content extracted, no hardcoded
  * strings in JSX
@@ -54,8 +56,47 @@ const categories = [
  * ──────────────────────────────────────────── */
 
 export default function HomePage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <>
+      {/* ───── Mobile Nav Drawer ───── */}
+      <div 
+        className={`fixed inset-0 z-[60] flex transition-opacity duration-300 ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div 
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+        <div 
+          className={`absolute right-0 top-0 bottom-0 w-[80vw] max-w-sm bg-surface-container-high border-l border-white/10 p-6 flex flex-col gap-8 shadow-2xl transition-transform duration-300 ease-in-out ${
+            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex justify-between items-center">
+            <span className="text-xl font-black tracking-tighter text-primary-container" style={{ fontFamily: "var(--font-plus-jakarta)" }}>HAKUNA</span>
+            <button onClick={() => setIsMobileMenuOpen(false)} className="text-white hover:text-primary-container transition-colors p-2 -mr-2">
+              <span className="material-symbols-outlined text-3xl">close</span>
+            </button>
+          </div>
+          <div className="flex flex-col gap-6 text-lg font-bold">
+            <Link href="#" className="text-white hover:text-primary-container" onClick={() => setIsMobileMenuOpen(false)}>Biznes</Link>
+            <Link href="#" className="text-white hover:text-primary-container" onClick={() => setIsMobileMenuOpen(false)}>Odkrywaj</Link>
+            <Link href="#" className="text-white hover:text-primary-container" onClick={() => setIsMobileMenuOpen(false)}>Wydarzenia</Link>
+            <div className="h-px bg-white/10 w-full my-2" />
+            <button className="flex text-white hover:text-primary-container items-center gap-2">
+              <span className="material-symbols-outlined">language</span> PL/ENG
+            </button>
+            <Link href="#" className="text-white hover:text-primary-container" onClick={() => setIsMobileMenuOpen(false)}>Zaloguj się</Link>
+            <button className="mt-4 px-6 py-4 rounded-full font-black bg-primary-container text-on-primary-container glow-cyan hover:scale-[1.02] active:scale-95 transition-all text-center">
+              Utwórz konto
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* ───── TopNavBar ───── */}
       <header className="fixed left-0 right-0 z-50 top-0">
         <nav className="flex justify-between items-center bg-background border-b border-white/5 shadow-2xl shadow-primary-container/10 px-6 md:px-12 py-5">
@@ -86,10 +127,16 @@ export default function HomePage() {
               href="#"
               className="hidden md:block text-on-surface-variant hover:text-primary-container transition-colors duration-200"
             >
-              Zaloguj się
+              Zaloguj
             </Link>
-            <button className="px-6 py-2 rounded-full font-bold text-sm bg-primary-container text-on-primary-container hover:scale-[1.02] transition-all active:scale-95 duration-200 glow-cyan">
+            <button className="hidden sm:block px-6 py-2 rounded-full font-bold text-sm bg-primary-container text-on-primary-container hover:scale-[1.02] transition-all active:scale-95 duration-200 glow-cyan">
               Utwórz konto
+            </button>
+            <button 
+              className="md:hidden text-white hover:text-primary-container transition-colors p-2 -mr-2"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <span className="material-symbols-outlined text-3xl">menu</span>
             </button>
           </div>
         </nav>
@@ -105,21 +152,26 @@ export default function HomePage() {
 
           <div className="relative z-10 text-center max-w-5xl mx-auto w-full">
             <h1
-              className="font-extrabold text-5xl md:text-7xl lg:text-8xl tracking-tighter text-primary mb-12 text-glow-cyan leading-[1.05]"
+              className="font-extrabold text-4xl md:text-7xl lg:text-8xl tracking-tighter text-primary mb-10 md:mb-12 text-glow-cyan leading-[1.05]"
               style={{ fontFamily: "var(--font-plus-jakarta)" }}
             >
               Zacznij coś nowego dzisiaj.
             </h1>
 
             {/* ─── Search Bar ─── */}
-            <div className="bg-surface-container-high/80 backdrop-blur-2xl rounded-xl p-2 md:p-3 flex flex-col md:flex-row gap-2 shadow-2xl border border-white/5 max-w-4xl mx-auto">
+            <div className="bg-surface-container-high/80 backdrop-blur-2xl rounded-xl p-3 md:p-3 flex flex-col md:flex-row gap-3 md:gap-2 shadow-2xl border border-white/5 max-w-4xl mx-auto">
               <SearchField label="Czego szukasz?" placeholder="Np. Muay Thai, Gitara..." />
               <SearchField label="Twoja dzielnica" placeholder="Warszawa, Śródmieście" />
-              <SearchField label="Kiedy?" placeholder="Dziś" className="w-full md:w-32" />
-              <SearchField label="Twój wiek" placeholder="25+" className="w-full md:w-32" />
-              <button className="bg-primary-container text-on-primary-container hover:bg-primary-fixed-dim transition-all aspect-square md:aspect-auto md:px-8 flex items-center justify-center rounded-lg active:scale-95 glow-cyan group">
-                <span className="material-symbols-outlined font-black scale-125 group-hover:scale-150 transition-transform">
+              <div className="flex gap-2 w-full md:w-auto">
+                <SearchField label="Kiedy?" placeholder="Dziś" className="w-1/2 md:w-32" />
+                <SearchField label="Twój wiek" placeholder="25+" className="w-1/2 md:w-32" />
+              </div>
+              <button className="bg-primary-container text-on-primary-container hover:bg-primary-fixed-dim transition-all aspect-auto md:aspect-square py-4 md:py-0 w-full md:w-auto md:px-8 flex items-center justify-center rounded-lg active:scale-95 glow-cyan group mt-1 md:mt-0">
+                <span className="material-symbols-outlined font-black scale-125 group-hover:scale-150 transition-transform hidden md:block">
                   search
+                </span>
+                <span className="md:hidden font-black text-lg uppercase tracking-widest">
+                  Szukaj
                 </span>
               </button>
             </div>
@@ -138,16 +190,16 @@ export default function HomePage() {
             <p className="text-white/60 text-lg mb-8 max-w-xs">
               Zajęcia zaczynające się w ciągu najbliższych 2 godzin. Nie zwlekaj.
             </p>
-            <button className="w-full py-5 rounded-full bg-tertiary-container text-on-tertiary-container font-black text-lg uppercase tracking-widest hover:scale-[1.03] transition-all glow-lime">
-              Zarezerwuj w 30 sekund
+            <button className="w-full py-5 rounded-full bg-tertiary-container text-on-tertiary-container font-black text-base md:text-lg uppercase tracking-widest hover:scale-[1.03] transition-all glow-lime">
+              Zarezerwuj w 30 s
             </button>
           </div>
 
-          <div className="lg:col-span-8 flex flex-col gap-4">
+          <div className="lg:col-span-8 flex flex-nowrap md:flex-col overflow-x-auto snap-x snap-mandatory gap-4 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 scrollbar-hide">
             {nearbyClasses.map((cls) => (
               <div
                 key={cls.id}
-                className="bg-surface-container-low p-4 md:p-6 rounded-lg flex flex-col md:flex-row md:items-center justify-between group hover:bg-surface-container-high transition-all cursor-pointer gap-4"
+                className="bg-surface-container-low min-w-[85vw] md:min-w-0 snap-center p-5 md:p-6 rounded-xl flex flex-col md:flex-row md:items-center justify-between group hover:bg-surface-container-high transition-all cursor-pointer gap-5 shrink-0"
               >
                 <div className="flex items-center gap-4 md:gap-6">
                   <div
@@ -180,7 +232,7 @@ export default function HomePage() {
                       {cls.price}
                     </span>
                   </div>
-                  <button className="bg-white/5 hover:bg-white/10 px-6 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap">
+                  <button className="bg-white/5 hover:bg-white/10 px-6 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap w-full md:w-auto mt-2 md:mt-0">
                     Zapisz się
                   </button>
                 </div>
@@ -204,11 +256,11 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-6 md:gap-8">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 md:gap-8 pb-6 -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-8 scrollbar-hide">
               {categories.map((cat) => (
                 <div
                   key={cat.label}
-                  className="group flex flex-col items-center gap-3 md:gap-4 cursor-pointer"
+                  className="group flex flex-col items-center gap-3 md:gap-4 cursor-pointer min-w-[80px] md:min-w-0 snap-center shrink-0"
                 >
                   <div className="w-full aspect-square rounded-full bg-surface-container-high border-2 border-transparent group-hover:border-primary-container group-hover:scale-105 transition-all flex items-center justify-center shadow-lg relative overflow-hidden">
                     <div className="absolute inset-0 bg-primary-container/5 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -227,17 +279,17 @@ export default function HomePage() {
 
         {/* ───── Energy Banner CTA ───── */}
         <section className="py-20 bg-primary-container text-on-primary-container text-center overflow-hidden relative">
-          <div className="absolute -left-20 top-0 text-[10rem] font-black opacity-10 leading-none select-none italic uppercase" style={{ fontFamily: "var(--font-plus-jakarta)" }}>
+          <div className="absolute -left-20 top-0 text-[6rem] md:text-[10rem] font-black opacity-10 leading-none select-none italic uppercase" style={{ fontFamily: "var(--font-plus-jakarta)" }}>
             HAKUNA
           </div>
-          <div className="absolute -right-20 bottom-0 text-[10rem] font-black opacity-10 leading-none select-none italic uppercase" style={{ fontFamily: "var(--font-plus-jakarta)" }}>
+          <div className="absolute -right-20 bottom-0 text-[6rem] md:text-[10rem] font-black opacity-10 leading-none select-none italic uppercase" style={{ fontFamily: "var(--font-plus-jakarta)" }}>
             HAKUNA
           </div>
           <div className="relative z-10 px-6">
-            <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-none uppercase italic" style={{ fontFamily: "var(--font-plus-jakarta)" }}>
+            <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-8 leading-none uppercase italic" style={{ fontFamily: "var(--font-plus-jakarta)" }}>
               Nie czekaj na okazję.<br />Stwórz ją teraz.
             </h2>
-            <button className="bg-[#0a0514] text-white px-12 py-5 rounded-full text-xl font-black hover:scale-105 transition-transform shadow-2xl uppercase tracking-tighter hover:shadow-xl hover:shadow-[#0a0514]/50">
+            <button className="bg-[#0a0514] w-full md:w-auto text-white px-8 md:px-12 py-5 rounded-full text-lg md:text-xl font-black hover:scale-105 transition-transform shadow-2xl uppercase tracking-tighter hover:shadow-xl hover:shadow-[#0a0514]/50">
               ZAREZERWUJ JUŻ TERAZ
             </button>
           </div>
