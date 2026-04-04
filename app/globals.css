@@ -1,127 +1,84 @@
 @import "tailwindcss";
 
-:root {
-  /* Hakuna Design System - Material Color Tokens */
-  --primary: #553ce2;
-  --primary-container: #6f59fc;
-  --on-primary: #ffffff;
-  --on-primary-container: #fffbff;
-  --primary-fixed: #e4dfff;
-  --primary-fixed-dim: #c7bfff;
-  --on-primary-fixed: #170065;
-  --on-primary-fixed-variant: #3f1bcd;
-  --inverse-primary: #c7bfff;
-
-  --secondary: #4d616c;
-  --secondary-container: #d0e6f3;
-  --on-secondary: #ffffff;
-  --on-secondary-container: #536772;
-  --secondary-fixed: #d0e6f3;
-  --secondary-fixed-dim: #b5cad6;
-  --on-secondary-fixed: #091e27;
-  --on-secondary-fixed-variant: #364954;
-
-  --tertiary: #ba002e;
-  --tertiary-container: #e31c40;
-  --on-tertiary: #ffffff;
-  --on-tertiary-container: #fffbff;
-  --tertiary-fixed: #ffdad9;
-  --tertiary-fixed-dim: #ffb3b3;
-  --on-tertiary-fixed: #40000a;
-  --on-tertiary-fixed-variant: #920022;
-
-  --surface: #f7f9ff;
-  --surface-dim: #d7dae1;
-  --surface-bright: #f7f9ff;
-  --surface-container-lowest: #ffffff;
-  --surface-container-low: #f1f4fb;
-  --surface-container: #ebeef5;
-  --surface-container-high: #e5e8ef;
-  --surface-container-highest: #dfe2e9;
-  --surface-tint: #583fe4;
-  --surface-variant: #dfe2e9;
-  --on-surface: #181c21;
-  --on-surface-variant: #474555;
-  --inverse-surface: #2d3136;
-  --inverse-on-surface: #eef1f8;
-
-  --background: #f7f9ff;
-  --on-background: #181c21;
-
-  --outline: #787587;
-  --outline-variant: #c8c4d8;
-
-  --error: #ba1a1a;
-  --error-container: #ffdad6;
-  --on-error: #ffffff;
-  --on-error-container: #93000a;
-
-  --brand-purple: #725dff;
-  --font-headline: 'Plus Jakarta Sans', sans-serif;
-  --font-body: 'Inter', sans-serif;
-}
+/* ─── Hakuna "Electric Depths" Design System ─── */
 
 @theme {
-  --color-primary: #553ce2;
-  --color-primary-container: #6f59fc;
-  --color-on-primary: #ffffff;
-  --color-on-primary-container: #fffbff;
-  --color-primary-fixed: #e4dfff;
-  --color-primary-fixed-dim: #c7bfff;
-  --color-on-primary-fixed: #170065;
-  --color-on-primary-fixed-variant: #3f1bcd;
-  --color-inverse-primary: #c7bfff;
+  /* Primary */
+  --color-primary: #e1fdff;
+  --color-primary-container: #00f2ff;
+  --color-primary-fixed: #74f5ff;
+  --color-primary-fixed-dim: #00dbe7;
+  --color-on-primary: #00363a;
+  --color-on-primary-container: #006a71;
+  --color-on-primary-fixed: #002022;
+  --color-on-primary-fixed-variant: #004f54;
+  --color-inverse-primary: #00696f;
+  --color-surface-tint: #00dbe7;
 
-  --color-secondary: #4d616c;
-  --color-secondary-container: #d0e6f3;
-  --color-on-secondary: #ffffff;
-  --color-on-secondary-container: #536772;
-  --color-secondary-fixed: #d0e6f3;
-  --color-secondary-fixed-dim: #b5cad6;
-  --color-on-secondary-fixed: #091e27;
-  --color-on-secondary-fixed-variant: #364954;
+  /* Secondary (Magenta) */
+  --color-secondary: #fface8;
+  --color-secondary-container: #ff23e5;
+  --color-secondary-fixed: #ffd7f0;
+  --color-secondary-fixed-dim: #fface8;
+  --color-on-secondary: #5e0053;
+  --color-on-secondary-container: #520049;
+  --color-on-secondary-fixed: #3a0033;
+  --color-on-secondary-fixed-variant: #840076;
 
-  --color-tertiary: #ba002e;
-  --color-tertiary-container: #e31c40;
-  --color-on-tertiary: #ffffff;
-  --color-on-tertiary-container: #fffbff;
-  --color-tertiary-fixed: #ffdad9;
-  --color-tertiary-fixed-dim: #ffb3b3;
-  --color-on-tertiary-fixed: #40000a;
-  --color-on-tertiary-fixed-variant: #920022;
+  /* Tertiary (Lime) */
+  --color-tertiary: #efffbb;
+  --color-tertiary-container: #bdec00;
+  --color-tertiary-fixed: #c3f400;
+  --color-tertiary-fixed-dim: #abd600;
+  --color-on-tertiary: #283500;
+  --color-on-tertiary-container: #516800;
+  --color-on-tertiary-fixed: #161e00;
+  --color-on-tertiary-fixed-variant: #3c4d00;
 
-  --color-surface: #f7f9ff;
-  --color-surface-dim: #d7dae1;
-  --color-surface-bright: #f7f9ff;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f1f4fb;
-  --color-surface-container: #ebeef5;
-  --color-surface-container-high: #e5e8ef;
-  --color-surface-container-highest: #dfe2e9;
-  --color-surface-tint: #583fe4;
-  --color-surface-variant: #dfe2e9;
-  --color-on-surface: #181c21;
-  --color-on-surface-variant: #474555;
-  --color-inverse-surface: #2d3136;
-  --color-inverse-on-surface: #eef1f8;
+  /* Surfaces — Depth Stack */
+  --color-surface: #171021;
+  --color-surface-dim: #171021;
+  --color-surface-bright: #3d3648;
+  --color-surface-container-lowest: #110b1b;
+  --color-surface-container-low: #1f1929;
+  --color-surface-container: #231d2e;
+  --color-surface-container-high: #2e2738;
+  --color-surface-container-highest: #393244;
+  --color-surface-variant: #393244;
+  --color-surface-tint: #00dbe7;
 
-  --color-background: #f7f9ff;
-  --color-on-background: #181c21;
+  /* On-Surface / Text */
+  --color-on-surface: #eadef6;
+  --color-on-surface-variant: #b9cacb;
+  --color-on-background: #eadef6;
+  --color-inverse-surface: #eadef6;
+  --color-inverse-on-surface: #342d3f;
 
-  --color-outline: #787587;
-  --color-outline-variant: #c8c4d8;
+  /* Background */
+  --color-background: #171021;
 
-  --color-error: #ba1a1a;
-  --color-error-container: #ffdad6;
-  --color-on-error: #ffffff;
-  --color-on-error-container: #93000a;
+  /* Outline */
+  --color-outline: #849495;
+  --color-outline-variant: #3a494b;
 
+  /* Error */
+  --color-error: #ffb4ab;
+  --color-error-container: #93000a;
+  --color-on-error: #690005;
+  --color-on-error-container: #ffdad6;
+
+  /* Typography */
   --font-family-headline: 'Plus Jakarta Sans', sans-serif;
-  --font-family-body: 'Inter', sans-serif;
-  --font-family-sans: 'Inter', sans-serif;
+  --font-family-body: 'Inter', 'Plus Jakarta Sans', sans-serif;
+  --font-family-sans: 'Inter', 'Plus Jakarta Sans', sans-serif;
 
-  --radius: 0.5rem;
+  /* Shape */
+  --radius: 1rem;
+  --radius-lg: 2rem;
+  --radius-xl: 3rem;
 }
+
+/* ─── Base ─── */
 
 * {
   box-sizing: border-box;
@@ -135,10 +92,17 @@ body {
 
 body {
   margin: 0;
-  color: #181c21;
-  background: #f7f9ff;
-  font-family: var(--font-body);
+  color: var(--color-on-surface);
+  background: var(--color-background);
+  font-family: var(--font-family-body);
 }
+
+::selection {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+/* ─── Material Icons ─── */
 
 .material-symbols-outlined,
 .material-symbols-rounded {
@@ -149,23 +113,35 @@ body {
     "opsz" 24;
 }
 
-.playful-blob {
-  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+/* ─── Dark Mode Utilities ─── */
+
+.neon-grid {
+  background-size: 50px 50px;
+  background-image:
+    linear-gradient(to right, rgba(0, 242, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 242, 255, 0.04) 1px, transparent 1px);
 }
 
-.glass-effect {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+.glass-nav {
+  background: rgba(2, 6, 23, 0.80);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.glow-cyan {
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.25);
 }
 
-.text-glow {
-  text-shadow: 0 0 20px rgba(85, 60, 226, 0.4);
+.glow-lime {
+  box-shadow: 0 10px 40px rgba(189, 236, 0, 0.15);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 15px rgba(225, 253, 255, 0.2);
+}
+
+/* ─── Smooth Scrolling ─── */
+
+html {
+  scroll-behavior: smooth;
 }
