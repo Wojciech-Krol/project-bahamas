@@ -53,6 +53,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`scroll-smooth ${plusJakarta.variable} ${beVietnam.variable}`}
+      suppressHydrationWarning
     >
       <head>
         <link
@@ -60,7 +61,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         />
       </head>
-      <body className="font-body antialiased bg-surface text-on-surface">
+      <body className="font-body antialiased bg-surface text-on-surface" suppressHydrationWarning>
         {children}
       </body>
     </html>
