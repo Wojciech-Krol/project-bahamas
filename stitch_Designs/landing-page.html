@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HAKUNA | Start Something New Today</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-on-surface": "#f4f0e8",
+                      "secondary-fixed": "#ffdead",
+                      "inverse-surface": "#31312b",
+                      "tertiary-fixed": "#ffd9df",
+                      "surface-container": "#f1eee5",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#e6e2d9",
+                      "on-primary-fixed-variant": "#8f0041",
+                      "outline-variant": "#e0bec4",
+                      "primary-container": "#d6316d",
+                      "on-error-container": "#93000a",
+                      "background": "#fdf9f0",
+                      "primary-fixed": "#ffd9e0",
+                      "on-surface-variant": "#594045",
+                      "error-container": "#ffdad6",
+                      "error": "#ba1a1a",
+                      "surface-bright": "#fdf9f0",
+                      "surface": "#fdf9f0",
+                      "on-primary-fixed": "#3f0019",
+                      "tertiary-container": "#cf3c6c",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-low": "#f7f3ea",
+                      "on-secondary-fixed": "#281900",
+                      "secondary": "#7d570e",
+                      "on-tertiary-fixed": "#3f0018",
+                      "on-surface": "#1c1c17",
+                      "surface-container-highest": "#e6e2d9",
+                      "on-secondary-container": "#775308",
+                      "inverse-primary": "#ffb1c2",
+                      "secondary-fixed-dim": "#f0be6d",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#dddad1",
+                      "on-tertiary-fixed-variant": "#8f003f",
+                      "on-secondary-fixed-variant": "#604100",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#ffb1c2",
+                      "primary": "#b40f55",
+                      "on-tertiary-container": "#fffbff",
+                      "secondary-container": "#fdc977",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#ae2054",
+                      "primary-fixed-dim": "#ffb1c2",
+                      "surface-tint": "#b71357",
+                      "on-background": "#1c1c17",
+                      "outline": "#8c7075",
+                      "on-primary-container": "#fffbff",
+                      "surface-container-high": "#ece8df"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Plus Jakarta Sans"],
+                      "body": ["Be Vietnam Pro"],
+                      "label": ["Be Vietnam Pro"]
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .editorial-shadow {
+            box-shadow: 0px 20px 40px rgba(45, 10, 23, 0.06);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Premium Search Bar Styles */
+        .search-glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+        }
+        
+        .search-border {
+            position: relative;
+            background-clip: padding-box;
+            border: 1px solid transparent;
+        }
+        
+        .search-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, #E8407A 0%, #FAC775 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.4;
+            transition: opacity 0.5s ease;
+        }
+        
+        .search-container:hover .search-border::before {
+            opacity: 1;
+        }
+
+        .inner-glow {
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -1px 1px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed-dim selection:text-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl dark:bg-[#1c1c17]/80 shadow-[0px_20px_40px_rgba(45,10,23,0.06)]">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-12">
+<a class="text-2xl font-bold tracking-tighter text-[#b40f55] font-headline" href="#">HAKUNA</a>
+<div class="hidden md:flex gap-8">
+<a class="font-['Plus_Jakarta_Sans'] uppercase tracking-widest text-[0.75rem] font-semibold text-[#1c1c17] hover:text-[#b40f55] hover:-translate-y-0.5 transition-all duration-300" href="#">For venues</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="flex items-center gap-2 text-[0.75rem] font-semibold uppercase tracking-widest hover:text-[#b40f55] transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="language">language</span>
+<span>EN</span>
+</button>
+<div class="hidden md:flex items-center gap-4">
+<button class="font-['Plus_Jakarta_Sans'] uppercase tracking-widest text-[0.75rem] font-semibold text-[#1c1c17] hover:text-[#b40f55] transition-all">Log in</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-['Plus_Jakarta_Sans'] uppercase tracking-widest text-[0.75rem] font-bold hover:bg-tertiary scale-95 hover:scale-100 duration-200 transition-all">Create account</button>
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="relative px-6 py-20 md:py-32 overflow-hidden">
+<div class="max-w-7xl mx-auto text-center flex flex-col items-center">
+<h1 class="font-headline font-extrabold text-5xl md:text-[6rem] leading-[1.05] tracking-tight text-on-surface mb-12">
+                Start something <br/> <span class="text-primary italic">new</span> today.
+            </h1>
+<!-- Search Bar Pill -->
+<div class="search-container w-full max-w-5xl mb-12 group transition-all duration-500 ease-out hover:scale-[1.015]">
+<div class="search-glass search-border inner-glow rounded-full p-2.5 shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] group-hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] flex flex-col md:flex-row items-center gap-1 md:gap-0 transition-all duration-500" style="border: 2px solid #AD1F53;">
+<div class="flex-1 w-full flex items-center px-6 py-3 border-r border-on-surface/5 group/field">
+<span class="material-symbols-outlined text-primary/40 group-hover/field:text-primary transition-colors mr-4 text-[20px]" data-icon="search">search</span>
+<div class="text-left flex-1">
+<label class="block text-[0.6rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-0.5">Activities</label>
+<input class="bg-transparent border-none p-0 w-full focus:ring-0 placeholder:text-on-surface/30 text-[0.9rem] font-semibold text-on-surface" placeholder="Tennis, pottery, yoga..." type="text"/>
+</div>
+</div>
+<div class="flex-1 w-full flex items-center px-6 py-3 border-r border-on-surface/5 group/field">
+<span class="material-symbols-outlined text-primary/40 group-hover/field:text-primary transition-colors mr-4 text-[20px]" data-icon="near_me">near_me</span>
+<div class="text-left flex-1">
+<label class="block text-[0.6rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-0.5">Neighborhood</label>
+<input class="bg-transparent border-none p-0 w-full focus:ring-0 placeholder:text-on-surface/30 text-[0.9rem] font-semibold text-on-surface" placeholder="Mitte, Berlin" type="text"/>
+</div>
+</div>
+<div class="flex-1 w-full flex items-center px-6 py-3 border-r border-on-surface/5 group/field">
+<span class="material-symbols-outlined text-primary/40 group-hover/field:text-primary transition-colors mr-4 text-[20px]" data-icon="calendar_today">calendar_today</span>
+<div class="text-left flex-1">
+<label class="block text-[0.6rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-0.5">When</label>
+<input class="bg-transparent border-none p-0 w-full focus:ring-0 placeholder:text-on-surface/30 text-[0.9rem] font-semibold text-on-surface" placeholder="Today" type="text"/>
+</div>
+</div>
+<div class="flex-1 w-full flex items-center px-6 py-3 md:border-none group/field">
+<span class="material-symbols-outlined text-primary/40 group-hover/field:text-primary transition-colors mr-4 text-[20px]" data-icon="person">person</span>
+<div class="text-left flex-1">
+<label class="block text-[0.6rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-0.5">Age</label>
+<input class="bg-transparent border-none p-0 w-full focus:ring-0 placeholder:text-on-surface/30 text-[0.9rem] font-semibold text-on-surface" placeholder="Adult" type="text"/>
+</div>
+</div>
+<div class="p-1 pl-4">
+<button class="bg-primary text-on-primary w-14 h-14 rounded-full flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95">
+<span class="material-symbols-outlined text-[24px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<p class="text-on-surface/60 font-medium text-lg md:text-xl max-w-2xl">
+                Hundreds of activities starting near you in the next 2 hours.
+            </p>
+</div>
+<!-- Floating Decorative Elements -->
+<div class="absolute -top-20 -right-20 w-96 h-96 bg-secondary-fixed/30 rounded-full blur-[100px] -z-10"></div>
+<div class="absolute bottom-0 -left-20 w-80 h-80 bg-primary-fixed/20 rounded-full blur-[80px] -z-10"></div>
+</section>
+<!-- 'Closest to You' Section -->
+<section class="max-w-7xl mx-auto px-6 py-24">
+<div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-20 items-start">
+<!-- Left Column -->
+<div class="space-y-8 sticky top-32">
+<div class="space-y-4">
+<span class="inline-block bg-secondary-container px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest text-on-secondary-container">Starting Soon</span>
+<h2 class="text-5xl md:text-7xl font-headline font-bold leading-none tracking-tighter">Closest <br/>to You</h2>
+<p class="text-xl text-on-surface/60 max-w-md">Activities starting in the next 2 hours. Don't wait. The best things happen now.</p>
+</div>
+<button class="bg-primary text-on-primary px-10 py-5 rounded-xl font-headline font-extrabold uppercase tracking-[0.2em] text-sm hover:translate-y-[-4px] transition-all hover:shadow-2xl hover:bg-tertiary">
+                    BOOK IN 30 SECONDS
+                </button>
+<div class="pt-8 grid grid-cols-2 gap-8 border-t border-on-surface/5">
+<div>
+<div class="text-3xl font-bold text-primary">450+</div>
+<div class="text-[0.7rem] uppercase font-bold tracking-widest opacity-40">Local Hosts</div>
+</div>
+<div>
+<div class="text-3xl font-bold text-primary">12min</div>
+<div class="text-[0.7rem] uppercase font-bold tracking-widest opacity-40">Avg. Arrival</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Cards) -->
+<div class="flex flex-col gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] flex gap-6 items-center border border-[#FAEEDA] editorial-shadow hover:scale-[1.02] transition-transform duration-300">
+<div class="w-32 h-32 rounded-2xl overflow-hidden flex-shrink-0">
+<img alt="Yoga session" class="w-full h-full object-cover" data-alt="Close-up of a person doing a yoga pose in a bright, sun-drenched studio with minimalist wooden decor and soft warm light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlqXn4n09xN2f9DAElfX4x81ij126SXbfpWo_xwleYNJR_1Mx7BjMA4B-FuFUmveCxVwk6V5_FZSTpsn-yWBwpc0xhKNO_vZ86rLf4REABK42B_80W4eMf6UM-FgquPFZ7HpSP8Le1cz9gLLZSz05TMKE6evFUt-pEIf87vCsCK3TPfWYdpz4vWobsTcZ-1ibRgHNTQsRYdRXAmPCt-n9sFrXGGfZ3GzRK2vuH7JfZTuOGRrvOxdiL9_83-njE5S85PNrDkmv_BW_O"/>
+</div>
+<div class="flex-grow">
+<h3 class="text-2xl font-bold text-on-surface mb-1">Sunrise Vinyasa Flow</h3>
+<p class="text-primary font-semibold uppercase tracking-widest text-xs mb-3">Starts in 15 min</p>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-on-surface/40 text-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span>Prenzlauer Berg</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface/40 text-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="payments">payments</span>
+<span class="font-bold text-on-surface/80">€12.00</span>
+</div>
+</div>
+</div>
+<button class="mr-2 text-on-surface/20 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="arrow_forward_ios">arrow_forward_ios</span>
+</button>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] flex gap-6 items-center border border-[#FAEEDA] editorial-shadow hover:scale-[1.02] transition-transform duration-300 translate-x-4 lg:translate-x-8">
+<div class="w-32 h-32 rounded-2xl overflow-hidden flex-shrink-0">
+<img alt="Pottery workshop" class="w-full h-full object-cover" data-alt="Artisanal pottery studio with hands molding clay on a wheel, warm lighting, earthy textures, and soft focus background of finished ceramics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA_wFMjctlcwp-Pr0Qqxd9pmSGX4u9o9qb6l7WvTcCAUiPxdv9TcYveTEME1A9pymNOt44HkPuXlUDSKa7rrbRbtFn4AdhNYnqT8kvfkeYroUgwLx33sDPLTrsHolmK2Kl94Gij5ltB0dIVWzt9VTHbtpjeQpz58PbTRdsTRSPkGvuX6wwgdRugMWZJ3Ei52-fbUOsKLfxgHcgoPk96bhUwulzEitWBTbbEI-2kby28MID_insstTHfKZzZzWouZs0IDWv3jUoKR7V"/>
+</div>
+<div class="flex-grow">
+<h3 class="text-2xl font-bold text-on-surface mb-1">Intro to Wheel Throwing</h3>
+<p class="text-primary font-semibold uppercase tracking-widest text-xs mb-3">Starts in 42 min</p>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-on-surface/40 text-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span>Mitte District</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface/40 text-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="payments">payments</span>
+<span class="font-bold text-on-surface/80">€35.00</span>
+</div>
+</div>
+</div>
+<button class="mr-2 text-on-surface/20 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="arrow_forward_ios">arrow_forward_ios</span>
+</button>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] flex gap-6 items-center border border-[#FAEEDA] editorial-shadow hover:scale-[1.02] transition-transform duration-300 translate-x-2">
+<div class="w-32 h-32 rounded-2xl overflow-hidden flex-shrink-0">
+<img alt="Padel match" class="w-full h-full object-cover" data-alt="Modern outdoor padel court with blue flooring, captured at sunset with dramatic long shadows and vibrant golden sky." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5I5nT9bIUDrn_ubXjy1Pp-XX5_X_tFmAGq1K3c7XQm2-76HnGeLQrEhIQADtIHi9KmoxSRPBbCuovFFY5EKM5PXdDM9ZAO9elA8j2pgTVHSfZJbBl5oouZNhgryMPaKUOpV_nn_14-XY-9W5NJfjWkXXmUDiCJFfURcICDcxfJSWn69GuWJugYKhyvu_WJkNZEDf0kPjpJHShlsPT95MKxXYaIeCIEUkB-6BD26o4KNx5or1onED_0BuqYOD9YBGB7fH0jCA8yYWI"/>
+</div>
+<div class="flex-grow">
+<h3 class="text-2xl font-bold text-on-surface mb-1">Open Padel Session</h3>
+<p class="text-primary font-semibold uppercase tracking-widest text-xs mb-3">Starts in 1h 05 min</p>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-on-surface/40 text-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span>Friedrichshain</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface/40 text-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="payments">payments</span>
+<span class="font-bold text-on-surface/80">€8.00</span>
+</div>
+</div>
+</div>
+<button class="mr-2 text-on-surface/20 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="arrow_forward_ios">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Community Section -->
+<section class="bg-secondary-fixed/20 py-24 mt-20">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16">
+<h2 class="text-4xl md:text-6xl font-headline font-bold mb-6 tracking-tight">The Hakuna Way</h2>
+<p class="text-lg text-on-surface/70 max-w-2xl mx-auto">Discover the magic of spontaneous city life. No planning required, just pure discovery of your local neighborhood's hidden gems.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="relative group h-[450px] overflow-hidden rounded-[3rem]">
+<img alt="Friends gathering" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Group of diverse young friends laughing and sharing drinks at a rustic wooden table in an outdoor garden cafe during golden hour." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzfvOLNh5iMtRP73C0f8agdkHifQgMgfdL3BzKQyIjZcEqHJ5wlF-n6CE0b_uAucK-wu5ODI3QYAY1N3Vv88YmB2TNbdT65wwY7T-f2ZbeXCB9BvJaLIB3x-UE6XDex9R3RN9O7CnXmoTC0hqrI3cebXigL59rQy9sXUCmACGTCNKih-kOLgCC2N4ISUBSWrFhJBKC-ZChIDq7AIWk3iTm5jddi0Ilj16I2nCcZpBomozdkmF9eMoRKhVXH-YTCwbz2wLdkQZz8zGm"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1c1c17] via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-8 left-8 right-8 text-white">
+<p class="text-xs font-bold uppercase tracking-[0.3em] text-primary-fixed mb-2">Community</p>
+<h4 class="text-2xl font-bold">Meet Local Souls</h4>
+</div>
+</div>
+<div class="relative group h-[500px] -mt-8 overflow-hidden rounded-[3rem]">
+<img alt="Live music event" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Intimate acoustic concert in a small library setting with warm candle lighting and focused musicians, creating a cozy editorial atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfRlg8iaj2MNMoV7mamt5dzTNOnAPNFsYwoEEEkJVr-ZtRTwSGOIpu3p47QGo1G2BPn0uKEnx3uwU2HhlDSLypCRFa8sIwjS4yT2wEd4g0aMq1Q5xykV4aJmiazFcCsPGkznZJtakEBeHzaKg-XfZ3u38IzTfzMVZtgKAUDcQ2HnjWUQqY0nxY0vclGwFTk3qJ6yNDDgzJQsmfqI_T09XHz9Z3CT1GTx_4HllUdp0h0MjUN3nBUpCUar_z2h0ROBu3b6AFMyN-SFU8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1c1c17] via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-8 left-8 right-8 text-white">
+<p class="text-xs font-bold uppercase tracking-[0.3em] text-primary-fixed mb-2">Discovery</p>
+<h4 class="text-2xl font-bold">Uncover Secret Spots</h4>
+</div>
+</div>
+<div class="relative group h-[450px] overflow-hidden rounded-[3rem]">
+<img alt="Crafting session" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Group of people engaged in a creative watercolor painting class in a sunlit loft with green plants and artistic inspiration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd5zc-bopDGFw_qwLSQ-frCeESAtMcpoa6-rodGtZlcu-g--ln0xkQzKOnsSA7amnrEpICSVJiNxPzbxE6DqChHbSO4vc7Xtf_g3GpLGmnsN6MuZxHhAs8Z0uMS7uxW2_zEXbnyIlKyaNW0tcgTsDaXwAroMakXOJ0ZpLjtOxvZVIpO4sqQnLjNU-tiqVmjHzv_8b-hI6zLC-loWrb5k-7uSACRUlmElZVzbVWx_MhxC3Al9eYZJnEnOPtMoO4XoZNwjwaK77rEmXB"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1c1c17] via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-8 left-8 right-8 text-white">
+<p class="text-xs font-bold uppercase tracking-[0.3em] text-primary-fixed mb-2">Experience</p>
+<h4 class="text-2xl font-bold">Learn Something New</h4>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full rounded-t-[3rem] mt-20 bg-[#f7f3ea] dark:bg-[#1c1c17]">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 gap-8 max-w-7xl mx-auto">
+<div class="space-y-4 text-center md:text-left">
+<a class="text-xl font-bold text-[#1c1c17] dark:text-[#fdf9f0]" href="#">HAKUNA</a>
+<p class="font-['Be_Vietnam_Pro'] text-[0.875rem] leading-relaxed text-[#1c1c17]/60 dark:text-[#fdf9f0]/60">© 2024 HAKUNA. The Golden Curator.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-x-8 gap-y-4">
+<a class="font-['Be_Vietnam_Pro'] text-[0.875rem] leading-relaxed text-[#1c1c17]/60 dark:text-[#fdf9f0]/60 hover:text-[#b40f55] transition-colors" href="#">Privacy Policy</a>
+<a class="font-['Be_Vietnam_Pro'] text-[0.875rem] leading-relaxed text-[#1c1c17]/60 dark:text-[#fdf9f0]/60 hover:text-[#b40f55] transition-colors" href="#">Terms of Service</a>
+<a class="font-['Be_Vietnam_Pro'] text-[0.875rem] leading-relaxed text-[#1c1c17]/60 dark:text-[#fdf9f0]/60 hover:text-[#b40f55] transition-colors" href="#">Contact Us</a>
+<a class="font-['Be_Vietnam_Pro'] text-[0.875rem] leading-relaxed text-[#1c1c17]/60 dark:text-[#fdf9f0]/60 hover:text-[#b40f55] transition-colors" href="#">Instagram</a>
+<a class="font-['Be_Vietnam_Pro'] text-[0.875rem] leading-relaxed text-[#1c1c17]/60 dark:text-[#fdf9f0]/60 hover:text-[#b40f55] transition-colors" href="#">LinkedIn</a>
+</div>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-on-surface/5 flex items-center justify-center hover:bg-primary/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="share">share</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-on-surface/5 flex items-center justify-center hover:bg-primary/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="favorite">favorite</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
