@@ -1139,7 +1139,7 @@ export default function Home() {
 
       <main className="pt-20 md:pt-24">
         {/* ─── Hero Section ─── */}
-        <section className="relative px-4 md:px-6 py-10 md:py-32 overflow-hidden">
+        <section className="relative px-4 md:px-6 py-10 md:py-32">
           <div className="max-w-7xl mx-auto text-left md:text-center flex flex-col items-start md:items-center">
             <h1 className="font-headline font-extrabold text-[2.25rem] md:text-[6rem] leading-[1.1] md:leading-[1.05] tracking-tight text-on-surface mb-6 md:mb-12">
               Start something <br />
