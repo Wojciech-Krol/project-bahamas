@@ -692,8 +692,16 @@ function HeroSearchBar({
   onAgeUpdate: (key: keyof AgeCounts, delta: number) => void;
 }) {
   const [activeField, setActiveField] = useState<SearchField>(null);
+  const [lastActiveField, setLastActiveField] = useState<SearchField>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const isExpanded = activeField !== null;
+  const renderField = activeField || lastActiveField;
+
+  useEffect(() => {
+    if (activeField !== null) {
+      setLastActiveField(activeField);
+    }
+  }, [activeField]);
 
   const close = useCallback(() => setActiveField(null), []);
 
@@ -784,16 +792,20 @@ function HeroSearchBar({
             {/* Submit Button */}
             <div className="p-1 pl-4 shrink-0">
               <button
-                className={`bg-primary text-on-primary flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95 ${
-                  isExpanded ? "rounded-full px-6 h-14 gap-2" : "w-14 h-14 rounded-full"
+                className={`bg-primary text-on-primary flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95 h-14 rounded-full ${
+                  isExpanded ? "px-6" : "px-[16px]"
                 }`}
               >
-                <Icon name="search" className="text-[24px]" />
-                {isExpanded && (
+                <Icon name="search" className="text-[24px] shrink-0" />
+                <div
+                  className={`flex items-center overflow-hidden transition-all duration-300 ease-out ${
+                    isExpanded ? "max-w-[100px] opacity-100 ml-2" : "max-w-0 opacity-0 ml-0"
+                  }`}
+                >
                   <span className="font-headline font-bold text-sm uppercase tracking-wider">
                     Search
                   </span>
-                )}
+                </div>
               </button>
             </div>
           </div>
@@ -807,16 +819,16 @@ function HeroSearchBar({
               : "opacity-0 -translate-y-4 max-h-0 pointer-events-none"
           }`}
         >
-          {activeField === "activities" && (
+          {renderField === "activities" && (
             <ActivityPanel value={activities} onChange={onActivitiesChange} />
           )}
-          {activeField === "neighborhood" && (
+          {renderField === "neighborhood" && (
             <NeighborhoodPanel value={neighborhood} onChange={onNeighborhoodChange} />
           )}
-          {activeField === "when" && (
+          {renderField === "when" && (
             <WhenPanel value={when} onChange={onWhenChange} />
           )}
-          {activeField === "age" && (
+          {renderField === "age" && (
             <AgePanel counts={ageCounts} onUpdate={onAgeUpdate} />
           )}
         </div>
