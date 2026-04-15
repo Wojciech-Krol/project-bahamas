@@ -191,7 +191,6 @@
 .calendar-wrapper .rdp-selected .rdp-day_button {
   background-color: var(--color-primary) !important;
   color: var(--color-on-primary) !important;
-  box-shadow: 0 4px 12px rgba(180, 15, 85, 0.3);
 }
 
 .calendar-wrapper .rdp-today .rdp-day_button {

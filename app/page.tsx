@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback, Fragment } from "react";
-import { DayPicker } from "react-day-picker";
+import { DayPicker, DateRange } from "react-day-picker";
 import { format } from "date-fns";
 import "react-day-picker/style.css";
 
@@ -61,9 +61,24 @@ type AgeCounts = { kids: number; teens: number; adults: number };
 export function formatMultiSelectDisplay(value: string | undefined): string {
   if (!value) return "";
   const list = value.split(',').map(s => s.trim()).filter(Boolean);
-  if (list.length === 0) return "";
-  if (list.length <= 2) return list.join(", ");
-  return `${list[0]}, ${list[1]}, +${list.length - 2}`;
+  const len = list.length;
+  if (len === 0) return "";
+  
+  if (len === 1) {
+    return list[0].length > 20 ? list[0].slice(0, 20) + "..." : list[0];
+  }
+  
+  if (len === 2) {
+    const joined = list.join(", ");
+    if (joined.length <= 16) return joined;
+    let first = list[0];
+    if (first.length > 10) first = first.slice(0, 10) + "..";
+    return `${first}, +1`;
+  }
+  
+  let first = list[0];
+  if (first.length > 10) first = first.slice(0, 10) + "..";
+  return `${first}, +${len - 1}`;
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -172,50 +187,98 @@ function NeighborhoodPanel({ value, onChange }: { value: string; onChange: (v: s
 
 function WhenPanel({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const [showCalendar, setShowCalendar] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(undefined);
 
-  const handleDateSelect = (date: Date | undefined) => {
-    if (date) {
-      setSelectedDate(date);
-      onChange(format(date, "MMM d, yyyy"));
+  const handleRangeSelect = (
+    _range: DateRange | undefined,
+    selectedDay: Date
+  ) => {
+    // If we have a full range, 3rd click wipes it and starts fresh
+    if (selectedRange?.from && selectedRange?.to) {
+      const newRange = { from: selectedDay, to: undefined };
+      setSelectedRange(newRange);
+      onChange(format(selectedDay, "MMM d, yyyy"));
+      return;
     }
+
+    // If we only have 'from', this is the 2nd click to form the range
+    if (selectedRange?.from && !selectedRange?.to) {
+      // 1. If clicking the exact same day again, just treat it like the 1st click (no change basically)
+      if (selectedDay.getTime() === selectedRange.from.getTime()) {
+        setSelectedRange({ from: selectedDay, to: undefined });
+        onChange(format(selectedDay, "MMM d, yyyy"));
+        return;
+      }
+
+      // 2. If clicking an earlier date, restart the loop (treat like 1st click)
+      const isBefore = selectedDay < selectedRange.from;
+      if (isBefore) {
+        setSelectedRange({ from: selectedDay, to: undefined });
+        onChange(format(selectedDay, "MMM d, yyyy"));
+        return;
+      }
+
+      // 3. Otherwise, form the valid range
+      const finalRange = { from: selectedRange.from, to: selectedDay };
+      setSelectedRange(finalRange);
+
+      if (finalRange.from.getTime() === finalRange.to.getTime()) {
+        onChange(format(finalRange.from, "MMM d, yyyy"));
+      } else {
+        onChange(`${format(finalRange.from, "MMM d")} - ${format(finalRange.to, "MMM d")}`);
+      }
+      return;
+    }
+
+    // Otherwise, 1st click
+    setSelectedRange({ from: selectedDay, to: undefined });
+    onChange(format(selectedDay, "MMM d, yyyy"));
+  };
+
+  const rangeClassNames = {
+    root: "rdp-hakuna pb-4",
+    months: "flex flex-col md:flex-row gap-8 relative",
+    month_caption: "text-base font-bold text-on-surface mb-6 text-center",
+    weekday: "text-[0.65rem] font-bold uppercase tracking-wider text-on-surface/40 w-10 text-center pb-2",
+    nav: "absolute top-0 left-0 right-0 flex items-center justify-between pointer-events-none z-20",
+    button_previous: "w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-low text-on-surface/60 cursor-pointer pointer-events-auto",
+    button_next: "w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-low text-on-surface/60 cursor-pointer pointer-events-auto",
+  };
+
+  const rangeModifiersClasses = {
+    range_start: "relative z-10 !bg-primary !text-on-primary !rounded-full before:absolute before:inset-y-0 before:right-0 before:w-1/2 before:bg-primary/10 before:-z-10",
+    range_end: "relative z-10 !bg-primary !text-on-primary !rounded-full before:absolute before:inset-y-0 before:left-0 before:w-1/2 before:bg-primary/10 before:-z-10",
+    range_middle: "!bg-primary/10 !text-primary !rounded-none",
+    only_start: "relative z-10 !bg-primary !text-on-primary !rounded-full",
+    selected: "bg-transparent", // keep this minimal so we don't fight native/custom modifiers
+  };
+
+  const customModifiers = {
+    only_start: selectedRange?.from && !selectedRange?.to ? [selectedRange.from] : [],
   };
 
   if (showCalendar) {
     return (
       <div className="p-6">
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center justify-center mb-8 relative">
           <button
             onClick={() => setShowCalendar(false)}
-            className="flex items-center gap-1.5 text-sm font-semibold text-on-surface/60 hover:text-primary transition-colors cursor-pointer"
+            className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-low transition-colors"
           >
-            <Icon name="arrow_back" className="text-[18px]" />
-            Back
+            <Icon name="arrow_back" className="text-[20px] text-on-surface" />
           </button>
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface/40">
-            Pick a date
-          </p>
         </div>
-        <div className="flex justify-center calendar-wrapper">
+
+        <div className="flex justify-center calendar-wrapper relative px-8">
           <DayPicker
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleDateSelect}
+            mode="range"
+            selected={selectedRange}
+            onSelect={handleRangeSelect}
             numberOfMonths={2}
             disabled={{ before: new Date() }}
-            classNames={{
-              root: "rdp-hakuna",
-              months: "flex gap-8",
-              month_caption: "text-base font-bold text-on-surface mb-3 text-center",
-              weekday: "text-[0.65rem] font-bold uppercase tracking-wider text-on-surface/40 w-10 text-center",
-              day_button: "w-10 h-10 rounded-full text-sm font-medium text-on-surface hover:bg-primary-fixed/30 transition-colors flex items-center justify-center cursor-pointer",
-              selected: "!bg-primary !text-on-primary shadow-lg shadow-primary/20",
-              today: "font-bold ring-1 ring-primary/30 rounded-full",
-              disabled: "text-on-surface/20 hover:bg-transparent cursor-default",
-              nav: "flex items-center justify-between mb-2",
-              button_previous: "w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-low text-on-surface/60 cursor-pointer",
-              button_next: "w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-low text-on-surface/60 cursor-pointer",
-            }}
+            classNames={rangeClassNames}
+            modifiersClassNames={rangeModifiersClasses}
+            modifiers={customModifiers}
           />
         </div>
       </div>
@@ -572,7 +635,7 @@ function SearchSegment({
       type="button"
       data-field={field}
       onClick={onClick}
-      className={`flex-1 w-full flex items-center px-6 py-3 rounded-full transition-all duration-300 text-left cursor-pointer relative z-10 ${
+      className={`flex-1 w-full min-w-0 flex items-center px-6 py-3 rounded-full transition-all duration-300 text-left cursor-pointer relative z-10 ${
         isActive
           ? "bg-surface-container-lowest shadow-lg shadow-on-surface/[0.08]"
           : isExpanded
@@ -782,7 +845,7 @@ function CompactSearchBar({
 }) {
   return (
     <div
-      className={`hidden md:flex flex-1 max-w-2xl mx-12 transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] ${
+      className={`hidden md:flex flex-1 min-w-0 max-w-2xl mx-12 transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] ${
         visible
           ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
           : "opacity-0 -translate-y-3 scale-95 pointer-events-none"
@@ -791,7 +854,7 @@ function CompactSearchBar({
       <div className="w-full flex items-center bg-white/50 rounded-full py-1.5 px-2 border-2 border-[#E8407A] shadow-sm hover:shadow-md transition-all duration-300">
         <button
           onClick={() => onFieldClick("activities")}
-          className="flex-1 flex flex-col px-4 border-r border-on-surface/5 text-left hover:bg-surface-container/30 rounded-l-full py-1.5 transition-colors cursor-pointer"
+          className="flex-1 min-w-0 flex flex-col px-4 border-r border-on-surface/5 text-left hover:bg-surface-container/30 rounded-l-full py-1.5 transition-colors cursor-pointer"
         >
           <span className="text-[0.55rem] font-bold uppercase tracking-wider text-on-surface/40 leading-none mb-0.5">
             Looking for?
@@ -802,7 +865,7 @@ function CompactSearchBar({
         </button>
         <button
           onClick={() => onFieldClick("neighborhood")}
-          className="flex-1 flex flex-col px-4 border-r border-on-surface/5 text-left hover:bg-surface-container/30 py-1.5 transition-colors cursor-pointer"
+          className="flex-1 min-w-0 flex flex-col px-4 border-r border-on-surface/5 text-left hover:bg-surface-container/30 py-1.5 transition-colors cursor-pointer"
         >
           <span className="text-[0.55rem] font-bold uppercase tracking-wider text-on-surface/40 leading-none mb-0.5">
             Neighborhood
@@ -813,7 +876,7 @@ function CompactSearchBar({
         </button>
         <button
           onClick={() => onFieldClick("when")}
-          className="flex-1 flex flex-col px-4 border-r border-on-surface/5 text-left hover:bg-surface-container/30 py-1.5 transition-colors cursor-pointer"
+          className="flex-1 min-w-0 flex flex-col px-4 border-r border-on-surface/5 text-left hover:bg-surface-container/30 py-1.5 transition-colors cursor-pointer"
         >
           <span className="text-[0.55rem] font-bold uppercase tracking-wider text-on-surface/40 leading-none mb-0.5">
             When?
@@ -824,7 +887,7 @@ function CompactSearchBar({
         </button>
         <button
           onClick={() => onFieldClick("age")}
-          className="flex-1 flex flex-col px-4 text-left hover:bg-surface-container/30 rounded-r-full py-1.5 transition-colors cursor-pointer"
+          className="flex-1 min-w-0 flex flex-col px-4 text-left hover:bg-surface-container/30 rounded-r-full py-1.5 transition-colors cursor-pointer"
         >
           <span className="text-[0.55rem] font-bold uppercase tracking-wider text-on-surface/40 leading-none mb-0.5">
             Age
@@ -1134,8 +1197,8 @@ export default function Home() {
     <>
       {/* ─── TopNavBar ─── */}
       <nav className="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(45,10,23,0.06)] transition-all duration-300">
-        <div className="flex justify-between items-center px-4 md:px-8 py-3 md:py-4 max-w-7xl mx-auto">
-          <div className="flex items-center gap-12">
+        <div className="flex justify-center md:justify-between items-center px-4 md:px-8 py-3 md:py-4 max-w-7xl mx-auto relative">
+          <div className="flex items-center gap-12 shrink-0">
             <a href="#" className="text-2xl font-bold tracking-tighter text-primary font-headline">
               HAKUNA
             </a>
@@ -1155,7 +1218,7 @@ export default function Home() {
             ageLabel={ageLabel}
           />
 
-          <div className="flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-6 shrink-0">
             <button className="hidden md:flex items-center gap-2 text-[0.75rem] font-semibold uppercase tracking-widest hover:text-primary transition-colors">
               <Icon name="language" className="text-[18px]" />
               <span>EN</span>
@@ -1168,9 +1231,6 @@ export default function Home() {
                 Create account
               </button>
             </div>
-            <button className="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-primary-fixed/30 transition-colors">
-              <Icon name="tune" className="text-[22px] text-primary" />
-            </button>
           </div>
         </div>
       </nav>
@@ -1178,7 +1238,7 @@ export default function Home() {
       <main className="pt-20 md:pt-24">
         {/* ─── Hero Section ─── */}
         <section className="relative px-4 md:px-6 py-10 md:py-32">
-          <div className="max-w-7xl mx-auto text-left md:text-center flex flex-col items-start md:items-center">
+          <div className="max-w-7xl mx-auto text-center flex flex-col items-center">
             <h1 className="font-headline font-extrabold text-[2.25rem] md:text-[6rem] leading-[1.1] md:leading-[1.05] tracking-tight text-on-surface mb-6 md:mb-12">
               Start something <br />
               <span className="text-primary italic">new</span> today.
@@ -1202,14 +1262,16 @@ export default function Home() {
                 onAgeUpdate={handleAgeUpdate}
               />
 
-              <p className="text-on-surface/60 font-medium text-lg md:text-xl max-w-2xl">
+              <p className="text-on-surface/60 font-medium text-lg md:text-xl max-w-2xl mt-6">
                 Hundreds of activities starting near you in the next 2 hours.
               </p>
             </div>
           </div>
 
-          <div className="absolute -top-20 -right-20 w-96 h-96 bg-secondary-fixed/30 rounded-full blur-[100px] -z-10" />
-          <div className="absolute bottom-0 -left-20 w-80 h-80 bg-primary-fixed/20 rounded-full blur-[80px] -z-10" />
+          <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+            <div className="absolute -top-20 -right-20 w-96 h-96 bg-secondary-fixed/30 rounded-full blur-[100px]" />
+            <div className="absolute bottom-0 -left-20 w-80 h-80 bg-primary-fixed/20 rounded-full blur-[80px]" />
+          </div>
         </section>
 
         {/* ─── Closest to You Section ─── */}
