@@ -58,6 +58,14 @@ const AGE_GROUPS = [
 
 type AgeCounts = { kids: number; teens: number; adults: number };
 
+export function formatMultiSelectDisplay(value: string | undefined): string {
+  if (!value) return "";
+  const list = value.split(',').map(s => s.trim()).filter(Boolean);
+  if (list.length === 0) return "";
+  if (list.length <= 2) return list.join(", ");
+  return `${list[0]}, ${list[1]}, +${list.length - 2}`;
+}
+
 /* ════════════════════════════════════════════════════════════════════════════
    DROPDOWN PANELS
    ════════════════════════════════════════════════════════════════════════════ */
@@ -373,7 +381,7 @@ function MobileSearchOverlay({
   }, [isOpen, onClose]);
 
   const fields = [
-    { key: "activities" as SearchField, label: "Activities", value: activities, emptyText: "Add activities" },
+    { key: "activities" as SearchField, label: "Activities", value: formatMultiSelectDisplay(activities), emptyText: "Add activities" },
     { key: "neighborhood" as SearchField, label: "Neighborhood", value: neighborhood, emptyText: "Add location" },
     { key: "when" as SearchField, label: "When", value: when, emptyText: "Add dates" },
     { key: "age" as SearchField, label: "Who", value: ageLabel, emptyText: "Add guests" },
@@ -658,7 +666,7 @@ function HeroSearchBar({
     value: string;
     placeholder: string;
   }[] = [
-    { field: "activities", icon: "search", label: "Activities", value: activities, placeholder: "Tennis, pottery, yoga..." },
+    { field: "activities", icon: "search", label: "Activities", value: formatMultiSelectDisplay(activities), placeholder: "Tennis, pottery, yoga..." },
     { field: "neighborhood", icon: "near_me", label: "Neighborhood", value: neighborhood, placeholder: "Mitte, Berlin" },
     { field: "when", icon: "calendar_today", label: "When", value: when, placeholder: "Today" },
     { field: "age", icon: "person", label: "Age", value: ageLabel, placeholder: "Adult" },
@@ -789,7 +797,7 @@ function CompactSearchBar({
             Looking for?
           </span>
           <span className="text-[0.75rem] font-semibold text-on-surface truncate">
-            {activities || "Activities"}
+            {formatMultiSelectDisplay(activities) || "Activities"}
           </span>
         </button>
         <button
@@ -891,7 +899,7 @@ function NavExpandedSearch({
     value: string;
     placeholder: string;
   }[] = [
-    { field: "activities", icon: "search", label: "Activities", value: activities, placeholder: "Tennis, pottery, yoga..." },
+    { field: "activities", icon: "search", label: "Activities", value: formatMultiSelectDisplay(activities), placeholder: "Tennis, pottery, yoga..." },
     { field: "neighborhood", icon: "near_me", label: "Neighborhood", value: neighborhood, placeholder: "Mitte, Berlin" },
     { field: "when", icon: "calendar_today", label: "When", value: when, placeholder: "Today" },
     { field: "age", icon: "person", label: "Age", value: ageLabel, placeholder: "Adult" },
