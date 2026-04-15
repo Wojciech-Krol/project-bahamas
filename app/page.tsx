@@ -908,6 +908,7 @@ function CompactSearchBar({
    NAV EXPANDED SEARCH (full-screen overlay like Airbnb)
    ════════════════════════════════════════════════════════════════════════════ */
 function NavExpandedSearch({
+  isOpen,
   initialField,
   onClose,
   activities,
@@ -920,6 +921,7 @@ function NavExpandedSearch({
   onWhenChange,
   onAgeUpdate,
 }: {
+  isOpen: boolean;
   initialField: SearchField;
   onClose: () => void;
   activities: string;
@@ -934,6 +936,12 @@ function NavExpandedSearch({
 }) {
   const [activeField, setActiveField] = useState<SearchField>(initialField);
   const barRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setActiveField(initialField);
+    }
+  }, [isOpen, initialField]);
 
   // Close on Escape
   useEffect(() => {
@@ -969,17 +977,17 @@ function NavExpandedSearch({
   ];
 
   return (
-    <div className="fixed inset-0 z-[200]">
+    <div className={`fixed inset-0 z-[200] max-md:hidden transition-all duration-500 ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}>
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-on-surface/40 transition-opacity duration-300"
+        className={`absolute inset-0 bg-on-surface/40 transition-opacity duration-500 ease-[cubic-bezier(.4,0,.2,1)] ${isOpen ? "opacity-100" : "opacity-0"}`}
         onClick={onClose}
       />
 
       {/* Container pinned to top */}
       <div
         ref={barRef}
-        className="relative bg-[#fdf9f0] shadow-[0_10px_30px_rgba(0,0,0,0.12)] pt-20 pb-6 px-6"
+        className={`absolute top-0 left-0 right-0 bg-[#fdf9f0] shadow-[0_10px_30px_rgba(0,0,0,0.12)] pt-[88px] pb-6 px-6 transition-transform duration-500 ease-[cubic-bezier(.32,.72,0,1)] ${isOpen ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="max-w-5xl mx-auto relative">
           {/* Search bar */}
@@ -1410,21 +1418,20 @@ export default function Home() {
         </div>
       </footer>
       {/* ─── Nav Expanded Search Overlay ─── */}
-      {navExpandedField && (
-        <NavExpandedSearch
-          initialField={navExpandedField}
-          onClose={closeNavSearch}
-          activities={activities}
-          neighborhood={neighborhood}
-          when={when}
-          ageCounts={ageCounts}
-          ageLabel={ageLabel}
-          onActivitiesChange={setActivities}
-          onNeighborhoodChange={setNeighborhood}
-          onWhenChange={setWhen}
-          onAgeUpdate={handleAgeUpdate}
-        />
-      )}
+      <NavExpandedSearch
+        isOpen={!!navExpandedField}
+        initialField={navExpandedField || "activities"}
+        onClose={closeNavSearch}
+        activities={activities}
+        neighborhood={neighborhood}
+        when={when}
+        ageCounts={ageCounts}
+        ageLabel={ageLabel}
+        onActivitiesChange={setActivities}
+        onNeighborhoodChange={setNeighborhood}
+        onWhenChange={setWhen}
+        onAgeUpdate={handleAgeUpdate}
+      />
 
       {/* ─── Mobile Search Overlay ─── */}
       <MobileSearchOverlay
