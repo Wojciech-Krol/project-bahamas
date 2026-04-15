@@ -193,9 +193,22 @@
   color: var(--color-on-primary) !important;
 }
 
-.calendar-wrapper .rdp-today .rdp-day_button {
-  font-weight: 700;
-  box-shadow: inset 0 0 0 1.5px var(--color-primary);
+/* Force override of default libraries' today class */
+.calendar-wrapper .rdp-today .rdp-day_button,
+.calendar-wrapper .rdp-day_today .rdp-day_button,
+.calendar-wrapper .rdp-day_today,
+.calendar-wrapper .rdp-today {
+  font-weight: 500 !important;
+  color: var(--color-on-surface) !important;
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+.calendar-wrapper .rdp-selected.rdp-today .rdp-day_button,
+.calendar-wrapper .rdp-selected.rdp-day_today .rdp-day_button {
+  background-color: var(--color-primary) !important;
+  color: var(--color-on-primary) !important;
 }
 
 .calendar-wrapper .rdp-disabled .rdp-day_button {
