@@ -63,14 +63,38 @@ type AgeCounts = { kids: number; teens: number; adults: number };
    ════════════════════════════════════════════════════════════════════════════ */
 
 function ActivityPanel({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [search, setSearch] = useState("");
+  const selectedActivities = value.split(',').map(s => s.trim()).filter(Boolean);
+
+  const toggleActivity = (label: string) => {
+    if (selectedActivities.includes(label)) {
+      onChange(selectedActivities.filter(l => l !== label).join(', '));
+    } else {
+      onChange([...selectedActivities, label].join(', '));
+      setSearch("");
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && search.trim()) {
+      e.preventDefault();
+      const newLabel = search.trim();
+      if (!selectedActivities.includes(newLabel)) {
+        onChange([...selectedActivities, newLabel].join(', '));
+      }
+      setSearch("");
+    }
+  };
+
   return (
     <div className="p-6">
       <input
         autoFocus
         type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Search activities..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Search activities... (Press Enter to add)"
         className="w-full bg-surface-container-low rounded-2xl px-5 py-3.5 text-base font-semibold text-on-surface placeholder:text-on-surface/30 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all mb-5"
       />
       <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-3">
@@ -78,17 +102,24 @@ function ActivityPanel({ value, onChange }: { value: string; onChange: (v: strin
       </p>
       <div className="flex flex-wrap gap-2">
         {ACTIVITY_SUGGESTIONS.filter(
-          (a) => !value || a.label.toLowerCase().includes(value.toLowerCase())
-        ).map((a) => (
-          <button
-            key={a.label}
-            onClick={() => onChange(a.label)}
-            className="flex items-center gap-2 bg-surface-container-lowest border border-on-surface/[0.06] px-4 py-2.5 rounded-full text-sm font-semibold text-on-surface hover:bg-primary-fixed/40 hover:border-primary/20 active:scale-95 transition-all duration-200"
-          >
-            <span className="text-lg">{a.emoji}</span>
-            {a.label}
-          </button>
-        ))}
+          (a) => !search || a.label.toLowerCase().includes(search.toLowerCase())
+        ).map((a) => {
+          const isSelected = selectedActivities.includes(a.label);
+          return (
+            <button
+              key={a.label}
+              onClick={() => toggleActivity(a.label)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 border ${
+                isSelected
+                  ? "bg-primary text-on-primary border-primary shadow-[0_4px_12px_rgba(180,15,85,0.2)]"
+                  : "bg-surface-container-lowest border-on-surface/[0.06] text-on-surface hover:bg-primary-fixed/40 hover:border-primary/20 active:scale-95"
+              }`}
+            >
+              <span className="text-lg">{a.emoji}</span>
+              {a.label}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -647,12 +678,11 @@ function HeroSearchBar({
       <div ref={barRef} className="relative" style={{ zIndex: 30 }}>
         {/* Search Bar */}
         <div
-          className={`rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative ${
+          className={`rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative border-2 ${
             isExpanded
-              ? "bg-surface-container-high shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] scale-[1.02]"
-              : "bg-surface-container-lowest shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] hover:scale-[1.015]"
+              ? "bg-surface-container-high shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] scale-[1.02] border-transparent"
+              : "bg-surface-container-lowest shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] hover:scale-[1.015] border-[#AD1F53]"
           }`}
-          style={isExpanded ? {} : { border: "2px solid #AD1F53" }}
         >
           <div className="flex flex-col md:flex-row items-center gap-1 md:gap-0 p-2.5 transition-all duration-300 relative z-10">
             {fields.map((f, i) => (
