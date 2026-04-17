@@ -17,19 +17,29 @@ function Icon({ name, className = "" }: { name: string; className?: string }) {
    ════════════════════════════════════════════════════════════════════════════ */
 type SearchField = "activities" | "neighborhood" | "when" | "age" | null;
 
-const ACTIVITY_SUGGESTIONS = [
-  { emoji: "🧘", label: "Yoga" },
-  { emoji: "🎨", label: "Pottery" },
-  { emoji: "🎾", label: "Tennis" },
-  { emoji: "🏊", label: "Swimming" },
-  { emoji: "💃", label: "Dance" },
-  { emoji: "🎵", label: "Music" },
-  { emoji: "🧗", label: "Climbing" },
-  { emoji: "🥊", label: "Boxing" },
-  { emoji: "📸", label: "Photography" },
-  { emoji: "🍳", label: "Cooking" },
-  { emoji: "🎸", label: "Guitar" },
-  { emoji: "🏃", label: "Running" },
+const ACTIVITY_CATEGORIES = [
+  {
+    name: "Sports & Fitness",
+    items: [
+      { emoji: "🧘", label: "Yoga" },
+      { emoji: "🎾", label: "Tennis" },
+      { emoji: "🏊", label: "Swimming" },
+      { emoji: "🧗", label: "Climbing" },
+      { emoji: "🥊", label: "Boxing" },
+      { emoji: "🏃", label: "Running" },
+    ]
+  },
+  {
+    name: "Arts & Creative",
+    items: [
+      { emoji: "🎨", label: "Pottery" },
+      { emoji: "💃", label: "Dance" },
+      { emoji: "🎵", label: "Music" },
+      { emoji: "📸", label: "Photography" },
+      { emoji: "🍳", label: "Cooking" },
+      { emoji: "🎸", label: "Guitar" },
+    ]
+  }
 ];
 
 const NEIGHBORHOOD_SUGGESTIONS = [
@@ -86,7 +96,6 @@ export function formatMultiSelectDisplay(value: string | undefined): string {
    ════════════════════════════════════════════════════════════════════════════ */
 
 function ActivityPanel({ value, onChange }: { value: string; onChange: (v: string) => void }) {
-  const [search, setSearch] = useState("");
   const selectedActivities = value.split(',').map(s => s.trim()).filter(Boolean);
 
   const toggleActivity = (label: string) => {
@@ -94,55 +103,38 @@ function ActivityPanel({ value, onChange }: { value: string; onChange: (v: strin
       onChange(selectedActivities.filter(l => l !== label).join(', '));
     } else {
       onChange([...selectedActivities, label].join(', '));
-      setSearch("");
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && search.trim()) {
-      e.preventDefault();
-      const newLabel = search.trim();
-      if (!selectedActivities.includes(newLabel)) {
-        onChange([...selectedActivities, newLabel].join(', '));
-      }
-      setSearch("");
     }
   };
 
   return (
     <div className="p-6">
-      <input
-        autoFocus
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Search activities... (Press Enter to add)"
-        className="w-full bg-surface-container-low rounded-2xl px-5 py-3.5 text-base font-semibold text-on-surface placeholder:text-on-surface/30 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all mb-5"
-      />
-      <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-3">
-        Popular activities
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {ACTIVITY_SUGGESTIONS.filter(
-          (a) => !search || a.label.toLowerCase().includes(search.toLowerCase())
-        ).map((a) => {
-          const isSelected = selectedActivities.includes(a.label);
-          return (
-            <button
-              key={a.label}
-              onClick={() => toggleActivity(a.label)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 border ${
-                isSelected
-                  ? "bg-primary text-on-primary border-primary shadow-[0_4px_12px_rgba(180,15,85,0.2)]"
-                  : "bg-surface-container-lowest border-on-surface/[0.06] text-on-surface hover:bg-primary-fixed/40 hover:border-primary/20 active:scale-95"
-              }`}
-            >
-              <span className="text-lg">{a.emoji}</span>
-              {a.label}
-            </button>
-          );
-        })}
+      <div className="space-y-6">
+        {ACTIVITY_CATEGORIES.map((category) => (
+          <div key={category.name}>
+            <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-3">
+              {category.name}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {category.items.map((a) => {
+                const isSelected = selectedActivities.includes(a.label);
+                return (
+                  <button
+                    key={a.label}
+                    onClick={() => toggleActivity(a.label)}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 border ${
+                      isSelected
+                        ? "bg-primary text-on-primary border-primary shadow-[0_4px_12px_rgba(180,15,85,0.2)]"
+                        : "bg-surface-container-lowest border-on-surface/[0.06] text-on-surface hover:bg-primary-fixed/40 hover:border-primary/20 active:scale-95"
+                    }`}
+                  >
+                    <span className="text-lg">{a.emoji}</span>
+                    {a.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -444,7 +436,7 @@ function MobileSearchOverlay({
   }, [isOpen, onClose]);
 
   const fields = [
-    { key: "activities" as SearchField, label: "Activities", value: formatMultiSelectDisplay(activities), emptyText: "Add activities" },
+    { key: "activities" as SearchField, label: "Activities", value: formatMultiSelectDisplay(activities), emptyText: "Select activities" },
     { key: "neighborhood" as SearchField, label: "Neighborhood", value: neighborhood, emptyText: "Add location" },
     { key: "when" as SearchField, label: "When", value: when, emptyText: "Add dates" },
     { key: "age" as SearchField, label: "Who", value: ageLabel, emptyText: "Add guests" },
@@ -737,7 +729,7 @@ function HeroSearchBar({
     value: string;
     placeholder: string;
   }[] = [
-    { field: "activities", icon: "search", label: "Activities", value: formatMultiSelectDisplay(activities), placeholder: "Tennis, pottery, yoga..." },
+    { field: "activities", icon: "category", label: "Activities", value: formatMultiSelectDisplay(activities), placeholder: "Select activities..." },
     { field: "neighborhood", icon: "near_me", label: "Neighborhood", value: neighborhood, placeholder: "Mitte, Berlin" },
     { field: "when", icon: "calendar_today", label: "When", value: when, placeholder: "Today" },
     { field: "age", icon: "person", label: "Age", value: ageLabel, placeholder: "Adult" },
@@ -982,7 +974,7 @@ function NavExpandedSearch({
     value: string;
     placeholder: string;
   }[] = [
-    { field: "activities", icon: "search", label: "Activities", value: formatMultiSelectDisplay(activities), placeholder: "Tennis, pottery, yoga..." },
+    { field: "activities", icon: "category", label: "Activities", value: formatMultiSelectDisplay(activities), placeholder: "Select activities..." },
     { field: "neighborhood", icon: "near_me", label: "Neighborhood", value: neighborhood, placeholder: "Mitte, Berlin" },
     { field: "when", icon: "calendar_today", label: "When", value: when, placeholder: "Today" },
     { field: "age", icon: "person", label: "Age", value: ageLabel, placeholder: "Adult" },
