@@ -1,365 +1,27 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback, Fragment } from "react";
-import { DayPicker, DateRange } from "react-day-picker";
-import { format } from "date-fns";
-import "react-day-picker/style.css";
+import Link from "next/link";
+import SiteFooter from "./components/SiteFooter";
+import BetaSignup from "./components/BetaSignup";
+import ReviewsSection from "./components/ReviewsSection";
+import ClosestToYouCarousel from "./components/ClosestToYouCarousel";
+import { Icon } from "./components/Icon";
+import HeroSearchBar from "./components/search/HeroSearchBar";
+import SearchSegment from "./components/search/SearchSegment";
+import {
+  ActivityPanel,
+  NeighborhoodPanel,
+  WhenPanel,
+  AgePanel,
+} from "./components/search/panels";
+import {
+  formatMultiSelectDisplay,
+  type SearchField,
+  type AgeCounts,
+} from "./components/search/constants";
+import { CLOSEST_ACTIVITIES, REVIEWS } from "./lib/mockData";
 
-/* ─── Icon helper ─── */
-function Icon({ name, className = "" }: { name: string; className?: string }) {
-  return (
-    <span className={`material-symbols-outlined ${className}`}>{name}</span>
-  );
-}
-
-/* ════════════════════════════════════════════════════════════════════════════
-   SEARCH BAR TYPES & DATA
-   ════════════════════════════════════════════════════════════════════════════ */
-type SearchField = "activities" | "neighborhood" | "when" | "age" | null;
-
-const ACTIVITY_CATEGORIES = [
-  {
-    name: "Sports & Fitness",
-    items: [
-      { emoji: "🧘", label: "Yoga" },
-      { emoji: "🎾", label: "Tennis" },
-      { emoji: "🏊", label: "Swimming" },
-      { emoji: "🧗", label: "Climbing" },
-      { emoji: "🥊", label: "Boxing" },
-      { emoji: "🏃", label: "Running" },
-    ]
-  },
-  {
-    name: "Arts & Creative",
-    items: [
-      { emoji: "🎨", label: "Pottery" },
-      { emoji: "💃", label: "Dance" },
-      { emoji: "🎵", label: "Music" },
-      { emoji: "📸", label: "Photography" },
-      { emoji: "🍳", label: "Cooking" },
-      { emoji: "🎸", label: "Guitar" },
-    ]
-  }
-];
-
-const NEIGHBORHOOD_SUGGESTIONS = [
-  { name: "Mitte", sub: "Central Berlin", icon: "location_city" },
-  { name: "Prenzlauer Berg", sub: "Pankow District", icon: "park" },
-  { name: "Kreuzberg", sub: "Friedrichshain-Kreuzberg", icon: "local_cafe" },
-  { name: "Friedrichshain", sub: "East Berlin", icon: "music_note" },
-  { name: "Neukölln", sub: "South Berlin", icon: "diversity_3" },
-  { name: "Charlottenburg", sub: "West Berlin", icon: "castle" },
-];
-
-const WHEN_OPTIONS = [
-  { label: "Now", sub: "Next 30 min", icon: "bolt" },
-  { label: "Today", sub: "Until midnight", icon: "today" },
-  { label: "Tomorrow", sub: "All day", icon: "event" },
-  { label: "This week", sub: "Next 7 days", icon: "date_range" },
-  { label: "This weekend", sub: "Sat – Sun", icon: "weekend" },
-  { label: "Pick a date", sub: "Calendar", icon: "calendar_month" },
-];
-
-const AGE_GROUPS = [
-  { label: "Kids", sub: "Ages 3–8", key: "kids" as const },
-  { label: "Teens", sub: "Ages 9–17", key: "teens" as const },
-  { label: "Adults", sub: "Ages 18+", key: "adults" as const },
-];
-
-type AgeCounts = { kids: number; teens: number; adults: number };
-
-export function formatMultiSelectDisplay(value: string | undefined): string {
-  if (!value) return "";
-  const list = value.split(',').map(s => s.trim()).filter(Boolean);
-  const len = list.length;
-  if (len === 0) return "";
-  
-  if (len === 1) {
-    return list[0].length > 20 ? list[0].slice(0, 20) + "..." : list[0];
-  }
-  
-  if (len === 2) {
-    const joined = list.join(", ");
-    if (joined.length <= 16) return joined;
-    let first = list[0];
-    if (first.length > 10) first = first.slice(0, 10) + "..";
-    return `${first}, +1`;
-  }
-  
-  let first = list[0];
-  if (first.length > 10) first = first.slice(0, 10) + "..";
-  return `${first}, +${len - 1}`;
-}
-
-/* ════════════════════════════════════════════════════════════════════════════
-   DROPDOWN PANELS
-   ════════════════════════════════════════════════════════════════════════════ */
-
-function ActivityPanel({ value, onChange }: { value: string; onChange: (v: string) => void }) {
-  const selectedActivities = value.split(',').map(s => s.trim()).filter(Boolean);
-
-  const toggleActivity = (label: string) => {
-    if (selectedActivities.includes(label)) {
-      onChange(selectedActivities.filter(l => l !== label).join(', '));
-    } else {
-      onChange([...selectedActivities, label].join(', '));
-    }
-  };
-
-  return (
-    <div className="p-6">
-      <div className="space-y-6">
-        {ACTIVITY_CATEGORIES.map((category) => (
-          <div key={category.name}>
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-3">
-              {category.name}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {category.items.map((a) => {
-                const isSelected = selectedActivities.includes(a.label);
-                return (
-                  <button
-                    key={a.label}
-                    onClick={() => toggleActivity(a.label)}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 border ${
-                      isSelected
-                        ? "bg-primary text-on-primary border-primary shadow-[0_4px_12px_rgba(180,15,85,0.2)]"
-                        : "bg-surface-container-lowest border-on-surface/[0.06] text-on-surface hover:bg-primary-fixed/40 hover:border-primary/20 active:scale-95"
-                    }`}
-                  >
-                    <span className="text-lg">{a.emoji}</span>
-                    {a.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function NeighborhoodPanel({ value, onChange }: { value: string; onChange: (v: string) => void }) {
-  return (
-    <div className="p-6">
-      <input
-        autoFocus
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Search neighborhoods..."
-        className="w-full bg-surface-container-low rounded-2xl px-5 py-3.5 text-base font-semibold text-on-surface placeholder:text-on-surface/30 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all mb-5"
-      />
-      <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-3">
-        Popular neighborhoods
-      </p>
-      <div className="grid grid-cols-2 gap-2">
-        {NEIGHBORHOOD_SUGGESTIONS.filter(
-          (n) => !value || n.name.toLowerCase().includes(value.toLowerCase())
-        ).map((n) => (
-          <button
-            key={n.name}
-            onClick={() => onChange(n.name)}
-            className="flex items-center gap-3 p-3 rounded-2xl hover:bg-surface-container-low active:scale-[0.98] transition-all duration-200 text-left"
-          >
-            <div className="w-12 h-12 rounded-xl bg-primary-fixed/30 flex items-center justify-center shrink-0">
-              <Icon name={n.icon} className="text-[22px] text-primary" />
-            </div>
-            <div>
-              <div className="font-semibold text-sm text-on-surface">{n.name}</div>
-              <div className="text-xs text-on-surface/40">{n.sub}</div>
-            </div>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function WhenPanel({ value, onChange }: { value: string; onChange: (v: string) => void }) {
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(undefined);
-
-  const handleRangeSelect = (
-    _range: DateRange | undefined,
-    selectedDay: Date
-  ) => {
-    // If we have a full range, 3rd click wipes it and starts fresh
-    if (selectedRange?.from && selectedRange?.to) {
-      const newRange = { from: selectedDay, to: undefined };
-      setSelectedRange(newRange);
-      onChange(format(selectedDay, "MMM d, yyyy"));
-      return;
-    }
-
-    // If we only have 'from', this is the 2nd click to form the range
-    if (selectedRange?.from && !selectedRange?.to) {
-      // 1. If clicking the exact same day again, just treat it like the 1st click (no change basically)
-      if (selectedDay.getTime() === selectedRange.from.getTime()) {
-        setSelectedRange({ from: selectedDay, to: undefined });
-        onChange(format(selectedDay, "MMM d, yyyy"));
-        return;
-      }
-
-      // 2. If clicking an earlier date, restart the loop (treat like 1st click)
-      const isBefore = selectedDay < selectedRange.from;
-      if (isBefore) {
-        setSelectedRange({ from: selectedDay, to: undefined });
-        onChange(format(selectedDay, "MMM d, yyyy"));
-        return;
-      }
-
-      // 3. Otherwise, form the valid range
-      const finalRange = { from: selectedRange.from, to: selectedDay };
-      setSelectedRange(finalRange);
-
-      if (finalRange.from.getTime() === finalRange.to.getTime()) {
-        onChange(format(finalRange.from, "MMM d, yyyy"));
-      } else {
-        onChange(`${format(finalRange.from, "MMM d")} - ${format(finalRange.to, "MMM d")}`);
-      }
-      return;
-    }
-
-    // Otherwise, 1st click
-    setSelectedRange({ from: selectedDay, to: undefined });
-    onChange(format(selectedDay, "MMM d, yyyy"));
-  };
-
-  const rangeClassNames = {
-    root: "rdp-hakuna pb-4",
-    months: "flex flex-col md:flex-row gap-8 relative",
-    month_caption: "text-base font-bold text-on-surface mb-6 text-center",
-    weekday: "text-[0.65rem] font-bold uppercase tracking-wider text-on-surface/40 w-10 text-center pb-2",
-    nav: "absolute top-0 left-0 right-0 flex items-center justify-between pointer-events-none z-20",
-    button_previous: "w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-low text-on-surface/60 cursor-pointer pointer-events-auto",
-    button_next: "w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-low text-on-surface/60 cursor-pointer pointer-events-auto",
-  };
-
-  const rangeModifiersClasses = {
-    range_start: "relative z-10 !bg-primary !text-on-primary !rounded-full before:absolute before:inset-y-0 before:right-0 before:w-1/2 before:bg-primary/10 before:-z-10",
-    range_end: "relative z-10 !bg-primary !text-on-primary !rounded-full before:absolute before:inset-y-0 before:left-0 before:w-1/2 before:bg-primary/10 before:-z-10",
-    range_middle: "!bg-primary/10 !text-primary !rounded-none",
-    only_start: "relative z-10 !bg-primary !text-on-primary !rounded-full",
-    selected: "bg-transparent", // keep this minimal so we don't fight native/custom modifiers
-  };
-
-  const customModifiers = {
-    only_start: selectedRange?.from && !selectedRange?.to ? [selectedRange.from] : [],
-  };
-
-  if (showCalendar) {
-    return (
-      <div className="p-6">
-        <div className="flex items-center justify-center mb-8 relative">
-          <button
-            onClick={() => setShowCalendar(false)}
-            className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-low transition-colors"
-          >
-            <Icon name="arrow_back" className="text-[20px] text-on-surface" />
-          </button>
-        </div>
-
-        <div className="flex justify-center calendar-wrapper relative px-8">
-          <DayPicker
-            mode="range"
-            selected={selectedRange}
-            onSelect={handleRangeSelect}
-            numberOfMonths={2}
-            disabled={{ before: new Date() }}
-            classNames={rangeClassNames}
-            modifiersClassNames={rangeModifiersClasses}
-            modifiers={customModifiers}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="p-6">
-      <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-4">
-        When do you want to go?
-      </p>
-      <div className="grid grid-cols-3 gap-3">
-        {WHEN_OPTIONS.map((w) => (
-          <button
-            key={w.label}
-            onClick={() => {
-              if (w.label === "Pick a date") {
-                setShowCalendar(true);
-              } else {
-                onChange(w.label);
-              }
-            }}
-            className={`flex flex-col items-center gap-2 p-4 rounded-2xl transition-all duration-200 active:scale-95 cursor-pointer ${
-              value === w.label
-                ? "bg-primary text-on-primary shadow-lg shadow-primary/20"
-                : "bg-surface-container-lowest border border-on-surface/[0.06] hover:bg-primary-fixed/30 hover:border-primary/20 text-on-surface"
-            }`}
-          >
-            <Icon
-              name={w.icon}
-              className={`text-[24px] ${value === w.label ? "text-on-primary" : "text-primary"}`}
-            />
-            <span className="text-sm font-bold">{w.label}</span>
-            <span className={`text-[0.65rem] ${value === w.label ? "text-on-primary/70" : "text-on-surface/40"}`}>
-              {w.sub}
-            </span>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function AgePanel({
-  counts,
-  onUpdate,
-}: {
-  counts: AgeCounts;
-  onUpdate: (key: keyof AgeCounts, delta: number) => void;
-}) {
-  return (
-    <div className="p-6">
-      <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-4">
-        Who&apos;s joining?
-      </p>
-      <div className="space-y-1">
-        {AGE_GROUPS.map((g, i) => (
-          <div key={g.key}>
-            <div className="flex items-center justify-between py-4">
-              <div>
-                <div className="font-semibold text-on-surface">{g.label}</div>
-                <div className="text-sm text-on-surface/40">{g.sub}</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => onUpdate(g.key, -1)}
-                  disabled={counts[g.key] <= 0}
-                  className="w-9 h-9 rounded-full border border-on-surface/20 flex items-center justify-center text-on-surface/60 hover:border-on-surface/60 hover:text-on-surface disabled:opacity-20 disabled:cursor-not-allowed transition-all active:scale-90"
-                >
-                  <Icon name="remove" className="text-[18px]" />
-                </button>
-                <span className="w-6 text-center font-semibold text-on-surface tabular-nums">
-                  {counts[g.key]}
-                </span>
-                <button
-                  onClick={() => onUpdate(g.key, 1)}
-                  className="w-9 h-9 rounded-full border border-on-surface/20 flex items-center justify-center text-on-surface/60 hover:border-on-surface/60 hover:text-on-surface transition-all active:scale-90"
-                >
-                  <Icon name="add" className="text-[18px]" />
-                </button>
-              </div>
-            </div>
-            {i < AGE_GROUPS.length - 1 && <div className="h-px bg-on-surface/[0.06]" />}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 /* ════════════════════════════════════════════════════════════════════════════
    MOBILE SEARCH PILL — compact search bar visible on mobile
@@ -454,23 +116,20 @@ function MobileSearchOverlay({
 
   return (
     <div
-      className={`fixed inset-0 z-[300] md:hidden transition-all duration-500 ${
-        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-      }`}
+      className={`fixed inset-0 z-[300] md:hidden transition-all duration-500 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
     >
       {/* Backdrop */}
       <div
-        className={`absolute inset-0 bg-on-surface/30 transition-opacity duration-300 ${
-          isOpen ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute inset-0 bg-on-surface/30 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"
+          }`}
         onClick={onClose}
       />
 
       {/* Overlay Panel */}
       <div
-        className={`absolute inset-0 bg-surface flex flex-col transition-transform duration-500 ease-[cubic-bezier(.32,.72,0,1)] ${
-          isOpen ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={`absolute inset-0 bg-surface flex flex-col transition-transform duration-500 ease-[cubic-bezier(.32,.72,0,1)] ${isOpen ? "translate-y-0" : "translate-y-full"
+          }`}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-4 pb-3 shrink-0">
@@ -599,235 +258,6 @@ function MobileActivityListItem({
   );
 }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   SEARCH FIELD SEGMENT — shared between both bars
-   ════════════════════════════════════════════════════════════════════════════ */
-function SearchSegment({
-  field,
-  activeField,
-  isExpanded,
-  icon,
-  label,
-  displayValue,
-  placeholder,
-  onClick,
-}: {
-  field: SearchField;
-  activeField: SearchField;
-  isExpanded: boolean;
-  icon: string;
-  label: string;
-  displayValue: string;
-  placeholder: string;
-  onClick: () => void;
-}) {
-  const isActive = activeField === field;
-  return (
-    <button
-      type="button"
-      data-field={field}
-      onClick={onClick}
-      className={`flex-1 w-full min-w-0 flex items-center px-6 py-3 rounded-full transition-all duration-300 text-left cursor-pointer relative z-10 ${
-        isActive
-          ? "bg-surface-container-lowest shadow-lg shadow-on-surface/[0.08]"
-          : isExpanded
-          ? "hover:bg-surface-container/60"
-          : "hover:bg-surface-container/30"
-      }`}
-    >
-      <Icon
-        name={icon}
-        className={`mr-4 text-[20px] transition-colors ${
-          isActive ? "text-primary" : "text-primary/40"
-        }`}
-      />
-      <div className="flex-1 min-w-0">
-        <div className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-0.5">
-          {label}
-        </div>
-        <div
-          className={`text-[0.9rem] font-semibold truncate ${
-            displayValue ? "text-on-surface" : "text-on-surface/30"
-          }`}
-        >
-          {displayValue || placeholder}
-        </div>
-      </div>
-    </button>
-  );
-}
-
-/* ════════════════════════════════════════════════════════════════════════════
-   INTERACTIVE HERO SEARCH BAR
-   ════════════════════════════════════════════════════════════════════════════ */
-function HeroSearchBar({
-  containerRef,
-  activities,
-  neighborhood,
-  when,
-  ageCounts,
-  ageLabel,
-  onActivitiesChange,
-  onNeighborhoodChange,
-  onWhenChange,
-  onAgeUpdate,
-}: {
-  containerRef: React.RefObject<HTMLDivElement | null>;
-  activities: string;
-  neighborhood: string;
-  when: string;
-  ageCounts: AgeCounts;
-  ageLabel: string;
-  onActivitiesChange: (v: string) => void;
-  onNeighborhoodChange: (v: string) => void;
-  onWhenChange: (v: string) => void;
-  onAgeUpdate: (key: keyof AgeCounts, delta: number) => void;
-}) {
-  const [activeField, setActiveField] = useState<SearchField>(null);
-  const [lastActiveField, setLastActiveField] = useState<SearchField>(null);
-  const barRef = useRef<HTMLDivElement>(null);
-  const isExpanded = activeField !== null;
-  const renderField = activeField || lastActiveField;
-
-  useEffect(() => {
-    if (activeField !== null) {
-      setLastActiveField(activeField);
-    }
-  }, [activeField]);
-
-  const close = useCallback(() => setActiveField(null), []);
-
-  // Close on Escape
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [close]);
-
-  // Close on click outside
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (barRef.current && !barRef.current.contains(e.target as Node)) {
-        close();
-      }
-    };
-    if (isExpanded) {
-      document.addEventListener("mousedown", handler);
-    }
-    return () => document.removeEventListener("mousedown", handler);
-  }, [isExpanded, close]);
-
-  const toggle = (f: SearchField) =>
-    setActiveField((prev) => (prev === f ? null : f));
-
-  const fields: {
-    field: SearchField;
-    icon: string;
-    label: string;
-    value: string;
-    placeholder: string;
-  }[] = [
-    { field: "activities", icon: "category", label: "Activities", value: formatMultiSelectDisplay(activities), placeholder: "Select activities..." },
-    { field: "neighborhood", icon: "near_me", label: "Neighborhood", value: neighborhood, placeholder: "Mitte, Berlin" },
-    { field: "when", icon: "calendar_today", label: "When", value: when, placeholder: "Today" },
-    { field: "age", icon: "person", label: "Age", value: ageLabel, placeholder: "Adult" },
-  ];
-
-  return (
-    <div ref={containerRef} className="w-full max-w-5xl mb-12 relative z-30">
-      {/* Overlay */}
-      <div
-        className={`fixed inset-0 bg-on-surface/30 transition-opacity duration-300 ${
-          isExpanded ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-        style={{ zIndex: 25 }}
-        onClick={close}
-      />
-
-      <div ref={barRef} className="relative" style={{ zIndex: 30 }}>
-        {/* Search Bar */}
-        <div
-          className={`rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative border-2 ${
-            isExpanded
-              ? "bg-surface-container-high shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] scale-[1.02] border-transparent"
-              : "bg-surface-container-lowest shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] hover:scale-[1.015] border-[#AD1F53]"
-          }`}
-        >
-          <div className="flex flex-col md:flex-row items-center gap-1 md:gap-0 p-2.5 transition-all duration-300 relative z-10">
-            {fields.map((f, i) => (
-              <Fragment key={f.field}>
-                <SearchSegment
-                  field={f.field}
-                  activeField={activeField}
-                  isExpanded={isExpanded}
-                  icon={f.icon}
-                  label={f.label}
-                  displayValue={f.value}
-                  placeholder={f.placeholder}
-                  onClick={() => toggle(f.field)}
-                />
-                {/* Divider (hide between active neighbours) */}
-                {i < fields.length - 1 && (
-                  <div
-                    className={`hidden md:block w-px h-8 bg-on-surface/[0.08] transition-opacity shrink-0 ${
-                      activeField === fields[i].field || activeField === fields[i + 1].field
-                        ? "opacity-0"
-                        : ""
-                    }`}
-                  />
-                )}
-              </Fragment>
-            ))}
-
-            {/* Submit Button */}
-            <div className="p-1 pl-4 shrink-0">
-              <button
-                className={`bg-primary text-on-primary flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95 h-14 rounded-full ${
-                  isExpanded ? "px-6" : "px-[16px]"
-                }`}
-              >
-                <Icon name="search" className="text-[24px] shrink-0" />
-                <div
-                  className={`flex items-center overflow-hidden transition-all duration-300 ease-out ${
-                    isExpanded ? "max-w-[100px] opacity-100 ml-2" : "max-w-0 opacity-0 ml-0"
-                  }`}
-                >
-                  <span className="font-headline font-bold text-sm uppercase tracking-wider">
-                    Search
-                  </span>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Dropdown Panel */}
-        <div
-          className={`absolute left-0 right-0 mt-3 bg-surface-container-lowest rounded-[2rem] editorial-shadow overflow-hidden transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)] ${
-            isExpanded
-              ? "opacity-100 translate-y-0 max-h-[500px]"
-              : "opacity-0 -translate-y-4 max-h-0 pointer-events-none"
-          }`}
-        >
-          {renderField === "activities" && (
-            <ActivityPanel value={activities} onChange={onActivitiesChange} />
-          )}
-          {renderField === "neighborhood" && (
-            <NeighborhoodPanel value={neighborhood} onChange={onNeighborhoodChange} />
-          )}
-          {renderField === "when" && (
-            <WhenPanel value={when} onChange={onWhenChange} />
-          )}
-          {renderField === "age" && (
-            <AgePanel counts={ageCounts} onUpdate={onAgeUpdate} />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /* ════════════════════════════════════════════════════════════════════════════
    COMPACT SEARCH BAR (lives inside the navbar when scrolled)
@@ -849,11 +279,10 @@ function CompactSearchBar({
 }) {
   return (
     <div
-      className={`hidden md:flex flex-1 min-w-0 max-w-2xl mx-12 transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] ${
-        visible
+      className={`hidden md:flex flex-1 min-w-0 max-w-2xl mx-12 transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] ${visible
           ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
           : "opacity-0 -translate-y-3 scale-95 pointer-events-none"
-      }`}
+        }`}
     >
       <div className="w-full flex items-center bg-white/50 rounded-full py-1.5 px-2 border-2 border-[#E8407A] shadow-sm hover:shadow-md transition-all duration-300">
         <button
@@ -974,11 +403,11 @@ function NavExpandedSearch({
     value: string;
     placeholder: string;
   }[] = [
-    { field: "activities", icon: "category", label: "Activities", value: formatMultiSelectDisplay(activities), placeholder: "Select activities..." },
-    { field: "neighborhood", icon: "near_me", label: "Neighborhood", value: neighborhood, placeholder: "Mitte, Berlin" },
-    { field: "when", icon: "calendar_today", label: "When", value: when, placeholder: "Today" },
-    { field: "age", icon: "person", label: "Age", value: ageLabel, placeholder: "Adult" },
-  ];
+      { field: "activities", icon: "category", label: "Activities", value: formatMultiSelectDisplay(activities), placeholder: "Select activities..." },
+      { field: "neighborhood", icon: "near_me", label: "Neighborhood", value: neighborhood, placeholder: "Mitte, Berlin" },
+      { field: "when", icon: "calendar_today", label: "When", value: when, placeholder: "Today" },
+      { field: "age", icon: "person", label: "Age", value: ageLabel, placeholder: "Adult" },
+    ];
 
   return (
     <div className={`fixed inset-0 z-[200] max-md:hidden transition-all duration-500 ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}>
@@ -1011,11 +440,10 @@ function NavExpandedSearch({
                   />
                   {i < fields.length - 1 && (
                     <div
-                      className={`hidden md:block w-px h-8 bg-on-surface/[0.08] transition-opacity shrink-0 ${
-                        activeField === fields[i].field || activeField === fields[i + 1].field
+                      className={`hidden md:block w-px h-8 bg-on-surface/[0.08] transition-opacity shrink-0 ${activeField === fields[i].field || activeField === fields[i + 1].field
                           ? "opacity-0"
                           : ""
-                      }`}
+                        }`}
                     />
                   )}
                 </Fragment>
@@ -1037,11 +465,10 @@ function NavExpandedSearch({
 
           {/* Dropdown Panel */}
           <div
-            className={`mt-3 bg-surface-container-lowest rounded-[2rem] editorial-shadow transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)] ${
-              activeField
+            className={`mt-3 bg-surface-container-lowest rounded-[2rem] editorial-shadow transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)] ${activeField
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 -translate-y-4 max-h-0 pointer-events-none"
-            }`}
+              }`}
           >
             {activeField === "activities" && (
               <ActivityPanel value={activities} onChange={onActivitiesChange} />
@@ -1128,9 +555,8 @@ function CommunityCard({
 }) {
   return (
     <div
-      className={`relative group overflow-hidden rounded-[2rem] md:rounded-[3rem] ${
-        tall ? "h-[280px] md:h-[500px] md:-mt-8" : "h-[250px] md:h-[450px]"
-      }`}
+      className={`relative group overflow-hidden rounded-[2rem] md:rounded-[3rem] ${tall ? "h-[280px] md:h-[500px] md:-mt-8" : "h-[250px] md:h-[450px]"
+        }`}
     >
       <img
         alt={imageAlt}
@@ -1211,13 +637,16 @@ export default function Home() {
       <nav className="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(45,10,23,0.06)] transition-all duration-300">
         <div className="flex justify-center md:justify-between items-center px-4 md:px-8 py-3 md:py-4 max-w-7xl mx-auto relative">
           <div className="flex items-center gap-12 shrink-0">
-            <a href="#" className="text-2xl font-bold tracking-tighter text-primary font-headline">
+            <Link href="/" className="text-2xl font-bold tracking-tighter text-primary font-headline">
               HAKUNA
-            </a>
+            </Link>
             <div className="hidden md:flex gap-8">
-              <a href="#" className="font-headline uppercase tracking-widest text-[0.75rem] font-semibold text-on-surface hover:text-primary hover:-translate-y-0.5 transition-all duration-300">
-                For venues
-              </a>
+              <Link href="/search" className="font-headline uppercase tracking-widest text-[0.75rem] font-semibold text-on-surface hover:text-primary hover:-translate-y-0.5 transition-all duration-300">
+                Explore
+              </Link>
+              <Link href="/about" className="font-headline uppercase tracking-widest text-[0.75rem] font-semibold text-on-surface hover:text-primary hover:-translate-y-0.5 transition-all duration-300">
+                About
+              </Link>
             </div>
           </div>
 
@@ -1323,23 +752,23 @@ export default function Home() {
           </div>
 
           {/* ── Desktop Layout ── */}
-          <div className="hidden md:grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-20 items-start">
-            <div className="space-y-8 sticky top-32">
-              <div className="space-y-4">
-                <span className="inline-block bg-secondary-container px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest text-on-secondary-container">
-                  Starting Soon
-                </span>
+          <div className="hidden md:block">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 items-end mb-12">
+              <div className="space-y-6">
                 <h2 className="text-5xl md:text-7xl font-headline font-bold leading-none tracking-tighter">
                   Closest <br />to You
                 </h2>
                 <p className="text-xl text-on-surface/60 max-w-md">
                   Activities starting in the next 2 hours. Don&apos;t wait. The best things happen now.
                 </p>
+                <Link
+                  href="/search"
+                  className="inline-block bg-primary text-on-primary px-10 py-5 rounded-xl font-headline font-extrabold uppercase tracking-[0.2em] text-sm hover:translate-y-[-4px] transition-all hover:shadow-2xl hover:bg-tertiary"
+                >
+                  BOOK IN 30 SECONDS
+                </Link>
               </div>
-              <button className="bg-primary text-on-primary px-10 py-5 rounded-xl font-headline font-extrabold uppercase tracking-[0.2em] text-sm hover:translate-y-[-4px] transition-all hover:shadow-2xl hover:bg-tertiary">
-                BOOK IN 30 SECONDS
-              </button>
-              <div className="pt-8 grid grid-cols-2 gap-8 border-t border-on-surface/5">
+              <div className="grid grid-cols-2 gap-8 border-t border-on-surface/5 pt-8 lg:pt-0 lg:border-t-0 lg:border-l lg:border-on-surface/5 lg:pl-12">
                 <div>
                   <div className="text-3xl font-bold text-primary">450+</div>
                   <div className="text-[0.7rem] uppercase font-bold tracking-widest opacity-40">Local Hosts</div>
@@ -1350,35 +779,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-
-            <div className="flex flex-col gap-6">
-              <ActivityCard
-                title="Sunrise Vinyasa Flow"
-                time="Starts in 15 min"
-                location="Prenzlauer Berg"
-                price="€12.00"
-                imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuDlqXn4n09xN2f9DAElfX4x81ij126SXbfpWo_xwleYNJR_1Mx7BjMA4B-FuFUmveCxVwk6V5_FZSTpsn-yWBwpc0xhKNO_vZ86rLf4REABK42B_80W4eMf6UM-FgquPFZ7HpSP8Le1cz9gLLZSz05TMKE6evFUt-pEIf87vCsCK3TPfWYdpz4vWobsTcZ-1ibRgHNTQsRYdRXAmPCt-n9sFrXGGfZ3GzRK2vuH7JfZTuOGRrvOxdiL9_83-njE5S85PNrDkmv_BW_O"
-                imageAlt="Yoga session in a sun-drenched studio"
-              />
-              <ActivityCard
-                title="Intro to Wheel Throwing"
-                time="Starts in 42 min"
-                location="Mitte District"
-                price="€35.00"
-                imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuBA_wFMjctlcwp-Pr0Qqxd9pmSGX4u9o9qb6l7WvTcCAUiPxdv9TcYveTEME1A9pymNOt44HkPuXlUDSKa7rrbRbtFn4AdhNYnqT8kvfkeYroUgwLx33sDPLTrsHolmK2Kl94Gij5ltB0dIVWzt9VTHbtpjeQpz58PbTRdsTRSPkGvuX6wwgdRugMWZJ3Ei52-fbUOsKLfxgHcgoPk96bhUwulzEitWBTbbEI-2kby28MID_insstTHfKZzZzWouZs0IDWv3jUoKR7V"
-                imageAlt="Artisanal pottery studio workshop"
-                offsetClass="translate-x-4 lg:translate-x-8"
-              />
-              <ActivityCard
-                title="Open Padel Session"
-                time="Starts in 1h 05 min"
-                location="Friedrichshain"
-                price="€8.00"
-                imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuA5I5nT9bIUDrn_ubXjy1Pp-XX5_X_tFmAGq1K3c7XQm2-76HnGeLQrEhIQADtIHi9KmoxSRPBbCuovFFY5EKM5PXdDM9ZAO9elA8j2pgTVHSfZJbBl5oouZNhgryMPaKUOpV_nn_14-XY-9W5NJfjWkXXmUDiCJFfURcICDcxfJSWn69GuWJugYKhyvu_WJkNZEDf0kPjpJHShlsPT95MKxXYaIeCIEUkB-6BD26o4KNx5or1onED_0BuqYOD9YBGB7fH0jCA8yYWI"
-                imageAlt="Modern outdoor padel court at sunset"
-                offsetClass="translate-x-2"
-              />
-            </div>
+            <ClosestToYouCarousel activities={CLOSEST_ACTIVITIES} />
           </div>
         </section>
 
@@ -1398,29 +799,14 @@ export default function Home() {
             </div>
           </div>
         </section>
+        {/* ─── Reviews ─── */}
+        <ReviewsSection reviews={REVIEWS} />
+
+        {/* ─── Beta Test CTA ─── */}
+        <BetaSignup />
       </main>
 
-      {/* ─── Footer ─── */}
-      <footer className="w-full rounded-t-[2rem] md:rounded-t-[3rem] mt-10 md:mt-20 bg-surface-container-low">
-        <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-12 py-10 md:py-16 gap-8 max-w-7xl mx-auto">
-          <div className="space-y-4 text-center md:text-left">
-            <a href="#" className="text-xl font-bold text-on-surface">HAKUNA</a>
-            <p className="font-body text-sm leading-relaxed text-on-surface/60">© 2024 HAKUNA. The Golden Curator.</p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
-            {["Privacy Policy", "Terms of Service", "Contact Us", "Instagram", "LinkedIn"].map((link) => (
-              <a key={link} href="#" className="font-body text-sm leading-relaxed text-on-surface/60 hover:text-primary transition-colors">{link}</a>
-            ))}
-          </div>
-          <div className="flex gap-4">
-            {["share", "favorite"].map((icon) => (
-              <div key={icon} className="w-10 h-10 rounded-full bg-on-surface/5 flex items-center justify-center hover:bg-primary/10 transition-colors cursor-pointer">
-                <Icon name={icon} className="text-[20px]" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
       {/* ─── Nav Expanded Search Overlay ─── */}
       <NavExpandedSearch
         isOpen={!!navExpandedField}
