@@ -1,0 +1,208 @@
+"use client";
+
+import { useRef, useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import { Icon } from "./Icon";
+import type { Activity } from "../lib/mockData";
+
+export default function MobileActivityCarousel({
+  activities,
+  heading,
+  showHeader = true,
+  maxItems = 8,
+  className = "",
+  fillHeight = false,
+  detailed = false,
+}: {
+  activities: Activity[];
+  heading?: string;
+  showHeader?: boolean;
+  maxItems?: number;
+  className?: string;
+  fillHeight?: boolean;
+  detailed?: boolean;
+}) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const items = activities.slice(0, maxItems);
+
+  const update = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const center = el.scrollLeft + el.clientWidth / 2;
+    const cards = el.querySelectorAll<HTMLElement>("[data-card]");
+    let best = 0;
+    let bestDist = Infinity;
+    cards.forEach((c, i) => {
+      const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - center);
+      if (d < bestDist) {
+        bestDist = d;
+        best = i;
+      }
+    });
+    setActiveIdx(best);
+  }, []);
+
+  useEffect(() => {
+    update();
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      el.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [update]);
+
+  const cardSizeClass = fillHeight
+    ? "w-[85vw] max-w-[380px] h-full"
+    : "w-[85vw] max-w-[380px] h-[70vh] max-h-[620px] min-h-[520px]";
+  const rootSizeClass = fillHeight ? "h-full flex flex-col" : "";
+
+  return (
+    <div className={`relative ${rootSizeClass} ${className}`}>
+      {showHeader && (
+        <div className="flex items-center justify-between mb-3 px-1">
+          <h2 className="text-lg font-headline font-bold text-on-surface">
+            {heading ?? "Closest to You"}
+          </h2>
+          <Link
+            href="/search"
+            className="text-xs font-bold uppercase tracking-widest text-primary"
+          >
+            View all →
+          </Link>
+        </div>
+      )}
+
+      <div
+        ref={scrollerRef}
+        className={`flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-4 px-4 py-2 scroll-smooth ${fillHeight ? "flex-1 min-h-0" : ""
+          }`}
+      >
+        {items.map((a) => (
+          <Link
+            key={a.id}
+            href={`/activity/${a.id}`}
+            data-card
+            className={`snap-center shrink-0 ${cardSizeClass} rounded-[2rem] overflow-hidden relative editorial-shadow border border-on-surface/[0.05] bg-surface-container-lowest active:scale-[0.98] transition-transform`}
+          >
+            <div className="absolute inset-0">
+              <img
+                src={a.imageUrl}
+                alt={a.imageAlt}
+                className="w-full h-full object-cover"
+                draggable={false}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c17]/95 via-[#1c1c17]/40 to-transparent" />
+            </div>
+
+            {/* Top meta */}
+            <div className="absolute top-5 left-5 right-5 flex items-start justify-between gap-2">
+              <span className="inline-flex items-center gap-1.5 bg-primary text-on-primary px-3 py-1.5 rounded-full text-[0.65rem] font-bold uppercase tracking-widest shadow-[0_6px_18px_rgba(180,15,85,0.4)]">
+                <Icon name="bolt" className="text-[14px]" />
+                {a.time}
+              </span>
+              <div className="flex flex-col items-end gap-1.5">
+                {a.tag && (
+                  <span className="bg-white/95 text-on-surface px-3 py-1.5 rounded-full text-[0.6rem] font-bold uppercase tracking-widest">
+                    {a.tag}
+                  </span>
+                )}
+                {a.rating !== undefined && (
+                  <span className="inline-flex items-center gap-1 bg-black/40 backdrop-blur-sm text-white px-2.5 py-1 rounded-full text-[0.7rem] font-bold">
+                    <Icon name="star" className="text-[14px] text-secondary" />
+                    {a.rating.toFixed(1)}
+                    {a.reviewCount !== undefined && (
+                      <span className="text-white/60 font-medium">({a.reviewCount})</span>
+                    )}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Bottom content */}
+            <div className="absolute inset-x-0 bottom-0 p-6 text-white flex flex-col gap-3">
+              <div className="flex items-center gap-2 text-white/85 text-xs flex-wrap">
+                <Icon name="location_on" className="text-[16px]" />
+                <span className="font-semibold">{a.location}</span>
+                {a.duration && (
+                  <>
+                    <span className="opacity-50">·</span>
+                    <Icon name="schedule" className="text-[16px]" />
+                    <span className="font-semibold">{a.duration}</span>
+                  </>
+                )}
+                {a.level && (
+                  <>
+                    <span className="opacity-50">·</span>
+                    <Icon name="signal_cellular_alt" className="text-[16px]" />
+                    <span className="font-semibold">{a.level}</span>
+                  </>
+                )}
+              </div>
+
+              <h3 className="font-headline font-extrabold text-3xl leading-[1.1] tracking-tight">
+                {a.title}
+              </h3>
+
+              {a.description && (
+                <p className={`text-sm text-white/80 leading-relaxed ${detailed ? "line-clamp-4" : "line-clamp-3"}`}>
+                  {a.description}
+                </p>
+              )}
+
+              {detailed && (a.joined !== undefined || a.instructorName) && (
+                <div className="flex items-center gap-4 text-[0.7rem] font-bold uppercase tracking-widest text-white/70">
+                  {a.instructorName && (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Icon name="person" className="text-[14px]" />
+                      {a.instructorName}
+                    </span>
+                  )}
+                  {a.joined !== undefined && (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Icon name="group" className="text-[14px]" />
+                      {a.joined} joined
+                    </span>
+                  )}
+                </div>
+              )}
+
+              <div className="flex items-center gap-3 pt-3 mt-1 border-t border-white/15">
+                {a.schoolAvatar && (
+                  <img
+                    src={a.schoolAvatar}
+                    alt={a.schoolName ?? ""}
+                    className="w-10 h-10 rounded-full object-cover border-2 border-white/30"
+                  />
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="text-[0.65rem] font-bold uppercase tracking-widest text-white/60">
+                    At
+                  </div>
+                  <div className="font-bold text-sm truncate">
+                    {a.schoolName ?? a.instructorName ?? `+${a.joined ?? 0} joined`}
+                  </div>
+                </div>
+                <div className="bg-white text-primary px-4 py-2.5 rounded-full font-headline font-bold text-xs uppercase tracking-widest flex items-center gap-1.5 shadow-[0_6px_18px_rgba(0,0,0,0.25)]">
+                  {a.price}
+                  <Icon name="arrow_forward" className="text-[16px]" />
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Swipe hint (fades out after first scroll) */}
+      {activeIdx === 0 && (
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 text-on-surface rounded-full px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-widest flex items-center gap-1 shadow-[0_4px_12px_rgba(0,0,0,0.15)] pointer-events-none animate-pulse">
+          Swipe
+          <Icon name="arrow_forward" className="text-[14px]" />
+        </div>
+      )}
+    </div>
+  );
+}
