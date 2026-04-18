@@ -20,9 +20,9 @@ export default function ActivityPage({
   return (
     <>
       <SiteNavbar />
-      <main className="pt-20 md:pt-24">
+      <main className="pt-20 md:pt-24 pb-24 md:pb-0">
         {/* Hero */}
-        <section className="relative h-[60vh] md:h-[70vh] min-h-[500px] w-full overflow-hidden">
+        <section className="relative h-[55vh] md:h-[70vh] min-h-[360px] md:min-h-[500px] w-full overflow-hidden">
           <img
             src={a.heroImage}
             alt={a.title}
@@ -249,7 +249,23 @@ export default function ActivityPage({
           subtitle="Feedback from people who've already taken this session."
         />
       </main>
+
+      {/* Mobile sticky booking bar */}
+      <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-lg border-t border-on-surface/[0.06] px-4 py-3 flex items-center gap-3 shadow-[0_-8px_24px_rgba(45,10,23,0.08)]">
+        <div className="flex flex-col min-w-0">
+          <span className="font-headline font-extrabold text-lg text-on-surface leading-none">{a.price}</span>
+          <span className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface/50 mt-1">
+            {a.spotsLeft} spots left
+          </span>
+        </div>
+        <button className="ml-auto bg-primary text-on-primary px-6 py-3.5 rounded-full font-headline font-bold uppercase tracking-widest text-[0.75rem] shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95 transition-transform">
+          Book Now
+        </button>
+      </div>
+
       <SiteFooter />
+      {/* Spacer to keep sticky mobile bar from covering footer content */}
+      <div className="md:hidden h-20" aria-hidden />
     </>
   );
 }

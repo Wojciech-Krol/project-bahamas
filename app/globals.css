@@ -257,6 +257,17 @@
   }
 }
 
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* ─── Mobile Calendar: single month ─── */
 @media (max-width: 767px) {
   .calendar-wrapper .rdp-months {
