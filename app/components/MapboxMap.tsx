@@ -11,23 +11,11 @@ type MapPoint = Pick<Activity, "id" | "title" | "price"> & {
   icon?: string;
 };
 
-const FALLBACK_STYLE: mapboxgl.StyleSpecification = {
-  version: 8,
-  sources: {},
-  layers: [
-    {
-      id: "bg",
-      type: "background",
-      paint: { "background-color": "#ece8df" },
-    },
-  ],
-};
-
 export default function MapboxMap({
   points,
   center = [-0.1276, 51.5072],
   zoom = 11,
-  styleUrl = "/mapbox/hakuna-style.json",
+  styleUrl = process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL ?? "mapbox://styles/mapbox/light-v11",
 }: {
   points: MapPoint[];
   center?: [number, number];
@@ -38,7 +26,6 @@ export default function MapboxMap({
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<mapboxgl.Marker[]>([]);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [debug, setDebug] = useState<string>("init");
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -46,14 +33,9 @@ export default function MapboxMap({
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
     if (!token) {
       setErrorMsg("NEXT_PUBLIC_MAPBOX_TOKEN missing at runtime. Restart `next dev` after editing .env.local.");
-      setDebug("no-token");
       return;
     }
     mapboxgl.accessToken = token;
-    setDebug(`token ok (len ${token.length})`);
-
-    const rect = containerRef.current.getBoundingClientRect();
-    console.log("[MapboxMap] container size", rect.width, rect.height);
 
     let map: mapboxgl.Map;
     try {
@@ -66,32 +48,22 @@ export default function MapboxMap({
       });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      console.error("[MapboxMap] constructor threw", err);
       setErrorMsg(`Map init failed: ${message}`);
       return;
     }
 
     map.on("error", (e) => {
-      console.error("[MapboxMap] map error", e);
       const msg = e?.error?.message ?? "Unknown Mapbox error";
       setErrorMsg(msg);
     });
-    map.on("style.load", () => {
-      setDebug("style loaded");
-      map.resize();
-    });
-    map.on("load", () => {
-      setDebug("map loaded");
-      map.resize();
-    });
+    map.on("style.load", () => map.resize());
+    map.on("load", () => map.resize());
 
     map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "top-right");
     mapRef.current = map;
 
     const resizeObserver = new ResizeObserver(() => map.resize());
     resizeObserver.observe(containerRef.current);
-
-    // Mapbox sometimes needs a kick after layout settles
     const raf = requestAnimationFrame(() => map.resize());
 
     return () => {
@@ -132,15 +104,12 @@ export default function MapboxMap({
 
   return (
     <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden bg-surface-container-high">
-      <div ref={containerRef} className="absolute inset-0" />
+      <div ref={containerRef} className="absolute inset-0" style={{ width: "100%", height: "100%" }} />
       {errorMsg && (
         <div className="absolute top-3 left-3 right-3 bg-red-50 border border-red-300 text-red-900 editorial-shadow rounded-2xl px-4 py-2 text-xs font-semibold">
           Map: {errorMsg}
         </div>
       )}
-      <div className="absolute bottom-3 right-3 bg-black/60 text-white rounded-full px-3 py-1 text-[0.65rem] font-mono pointer-events-none">
-        {debug}
-      </div>
       <div className="absolute left-1/2 bottom-4 -translate-x-1/2 bg-surface-container-lowest editorial-shadow rounded-full px-4 py-2 flex items-center gap-2 pointer-events-none">
         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
         <span className="text-xs font-semibold text-on-surface">
