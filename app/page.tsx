@@ -304,41 +304,6 @@ function ActivityCard({
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
-   COMMUNITY CARD
-   ════════════════════════════════════════════════════════════════════════════ */
-function CommunityCard({
-  label,
-  title,
-  imageUrl,
-  imageAlt,
-  tall = false,
-}: {
-  label: string;
-  title: string;
-  imageUrl: string;
-  imageAlt: string;
-  tall?: boolean;
-}) {
-  return (
-    <div
-      className={`relative group overflow-hidden rounded-[2rem] md:rounded-[3rem] ${tall ? "h-[280px] md:h-[500px] md:-mt-8" : "h-[250px] md:h-[450px]"
-        }`}
-    >
-      <img
-        alt={imageAlt}
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        src={imageUrl}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c17] via-transparent to-transparent opacity-80" />
-      <div className="absolute bottom-8 left-8 right-8 text-white">
-        <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary-fixed mb-2">{label}</p>
-        <h4 className="text-2xl font-bold">{title}</h4>
-      </div>
-    </div>
-  );
-}
-
-/* ════════════════════════════════════════════════════════════════════════════
    MAIN PAGE
    ════════════════════════════════════════════════════════════════════════════ */
 export default function Home() {
@@ -564,22 +529,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ─── Community Section ─── */}
-        <section className="bg-secondary-fixed/20 py-12 md:py-24 mt-8 md:mt-20">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-headline font-bold mb-6 tracking-tight">The Hakuna Way</h2>
-              <p className="text-lg text-on-surface/70 max-w-2xl mx-auto">
-                Discover the magic of spontaneous city life. No planning required, just pure discovery of your local neighborhood&apos;s hidden gems.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <CommunityCard label="Community" title="Meet Local Souls" imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuDzfvOLNh5iMtRP73C0f8agdkHifQgMgfdL3BzKQyIjZcEqHJ5wlF-n6CE0b_uAucK-wu5ODI3QYAY1N3Vv88YmB2TNbdT65wwY7T-f2ZbeXCB9BvJaLIB3x-UE6XDex9R3RN9O7CnXmoTC0hqrI3cebXigL59rQy9sXUCmACGTCNKih-kOLgCC2N4ISUBSWrFhJBKC-ZChIDq7AIWk3iTm5jddi0Ilj16I2nCcZpBomozdkmF9eMoRKhVXH-YTCwbz2wLdkQZz8zGm" imageAlt="Group of diverse friends at an outdoor garden cafe" />
-              <CommunityCard label="Discovery" title="Uncover Secret Spots" imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuBfRlg8iaj2MNMoV7mamt5dzTNOnAPNFsYwoEEEkJVr-ZtRTwSGOIpu3p47QGo1G2BPn0uKEnx3uwU2HhlDSLypCRFa8sIwjS4yT2wEd4g0aMq1Q5xykV4aJmiazFcCsPGkznZJtakEBeHzaKg-XfZ3u38IzTfzMVZtgKAUDcQ2HnjWUQqY0nxY0vclGwFTk3qJ6yNDDgzJQsmfqI_T09XHz9Z3CT1GTx_4HllUdp0h0MjUN3nBUpCUar_z2h0ROBu3b6AFMyN-SFU8" imageAlt="Intimate acoustic concert in a small library" tall />
-              <CommunityCard label="Experience" title="Learn Something New" imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuDd5zc-bopDGFw_qwLSQ-frCeESAtMcpoa6-rodGtZlcu-g--ln0xkQzKOnsSA7amnrEpICSVJiNxPzbxE6DqChHbSO4vc7Xtf_g3GpLGmnsN6MuZxHhAs8Z0uMS7uxW2_zEXbnyIlKyaNW0tcgTsDaXwAroMakXOJ0ZpLjtOxvZVIpO4sqQnLjNU-tiqVmjHzv_8b-hI6zLC-loWrb5k-7uSACRUlmElZVzbVWx_MhxC3Al9eYZJnEnOPtMoO4XoZNwjwaK77rEmXB" imageAlt="Group engaged in a creative watercolor painting class" />
-            </div>
-          </div>
-        </section>
         {/* ─── Reviews ─── */}
         <ReviewsSection reviews={REVIEWS} />
 
