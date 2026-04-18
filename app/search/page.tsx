@@ -164,6 +164,7 @@ export default function SearchPage() {
                   showHeader={false}
                   maxItems={results.length}
                   fillHeight
+                  detailed
                   className="w-full"
                 />
               </div>

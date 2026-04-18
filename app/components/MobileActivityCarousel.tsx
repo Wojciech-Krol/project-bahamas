@@ -99,61 +99,86 @@ export default function MobileActivityCarousel({
             </div>
 
             {/* Top meta */}
-            <div className="absolute top-5 left-5 right-5 flex items-start justify-between gap-2">
-              <span className="inline-flex items-center gap-1.5 bg-primary text-on-primary px-3 py-1.5 rounded-full text-[0.65rem] font-bold uppercase tracking-widest shadow-[0_6px_18px_rgba(180,15,85,0.4)]">
-                <Icon name="bolt" className="text-[14px]" />
-                {a.time}
-              </span>
-              <div className="flex flex-col items-end gap-1.5">
-                {a.tag && (
-                  <span className="bg-white/95 text-on-surface px-3 py-1.5 rounded-full text-[0.6rem] font-bold uppercase tracking-widest">
-                    {a.tag}
-                  </span>
-                )}
-                {a.rating !== undefined && (
-                  <span className="inline-flex items-center gap-1 bg-black/40 backdrop-blur-sm text-white px-2.5 py-1 rounded-full text-[0.7rem] font-bold">
-                    <Icon name="star" className="text-[14px] text-secondary" />
-                    {a.rating.toFixed(1)}
-                    {a.reviewCount !== undefined && (
-                      <span className="text-white/60 font-medium">({a.reviewCount})</span>
-                    )}
-                  </span>
-                )}
+            <div className="absolute top-5 left-5 right-5 flex flex-col gap-3">
+              <div className="flex items-start justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 bg-primary text-on-primary px-3 py-1.5 rounded-full text-[0.65rem] font-bold uppercase tracking-widest shadow-[0_6px_18px_rgba(180,15,85,0.4)]">
+                  <Icon name="bolt" className="text-[14px]" />
+                  {a.time}
+                </span>
+                <div className="flex flex-col items-end gap-1.5">
+                  {a.rating !== undefined && (
+                    <span className="inline-flex items-center gap-1 bg-black/40 backdrop-blur-sm text-white px-2.5 py-1 rounded-full text-[0.7rem] font-bold">
+                      <Icon name="star" className="text-[14px] text-secondary" />
+                      {a.rating.toFixed(1)}
+                      {a.reviewCount !== undefined && (
+                        <span className="text-white/60 font-medium">({a.reviewCount})</span>
+                      )}
+                    </span>
+                  )}
+                  {a.tag && (
+                    <span className="bg-white/95 text-on-surface px-3 py-1.5 rounded-full text-[0.6rem] font-bold uppercase tracking-widest">
+                      {a.tag}
+                    </span>
+                  )}
+                </div>
               </div>
+
+              {!detailed && (
+                <div className="flex items-center gap-2 text-white text-xs flex-wrap drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]">
+                  <Icon name="location_on" className="text-[16px]" />
+                  <span className="font-semibold">{a.location}</span>
+                  {a.duration && (
+                    <>
+                      <span className="opacity-50">·</span>
+                      <Icon name="schedule" className="text-[16px]" />
+                      <span className="font-semibold">{a.duration}</span>
+                    </>
+                  )}
+                  {a.level && (
+                    <>
+                      <span className="opacity-50">·</span>
+                      <Icon name="signal_cellular_alt" className="text-[16px]" />
+                      <span className="font-semibold">{a.level}</span>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Bottom content */}
             <div className="absolute inset-x-0 bottom-0 p-6 text-white flex flex-col gap-3">
-              <div className="flex items-center gap-2 text-white/85 text-xs flex-wrap">
-                <Icon name="location_on" className="text-[16px]" />
-                <span className="font-semibold">{a.location}</span>
-                {a.duration && (
-                  <>
-                    <span className="opacity-50">·</span>
-                    <Icon name="schedule" className="text-[16px]" />
-                    <span className="font-semibold">{a.duration}</span>
-                  </>
-                )}
-                {a.level && (
-                  <>
-                    <span className="opacity-50">·</span>
-                    <Icon name="signal_cellular_alt" className="text-[16px]" />
-                    <span className="font-semibold">{a.level}</span>
-                  </>
-                )}
-              </div>
+              {detailed && (
+                <div className="flex items-center gap-2 text-white/85 text-xs flex-wrap">
+                  <Icon name="location_on" className="text-[16px]" />
+                  <span className="font-semibold">{a.location}</span>
+                  {a.duration && (
+                    <>
+                      <span className="opacity-50">·</span>
+                      <Icon name="schedule" className="text-[16px]" />
+                      <span className="font-semibold">{a.duration}</span>
+                    </>
+                  )}
+                  {a.level && (
+                    <>
+                      <span className="opacity-50">·</span>
+                      <Icon name="signal_cellular_alt" className="text-[16px]" />
+                      <span className="font-semibold">{a.level}</span>
+                    </>
+                  )}
+                </div>
+              )}
 
               <h3 className="font-headline font-extrabold text-3xl leading-[1.1] tracking-tight">
                 {a.title}
               </h3>
 
-              {a.description && (
-                <p className={`text-sm text-white/80 leading-relaxed ${detailed ? "line-clamp-4" : "line-clamp-3"}`}>
+              {!detailed && a.description && (
+                <p className="text-sm text-white/80 leading-relaxed line-clamp-3">
                   {a.description}
                 </p>
               )}
 
-              {detailed && (a.joined !== undefined || a.instructorName) && (
+              {!detailed && (a.joined !== undefined || a.instructorName) && (
                 <div className="flex items-center gap-4 text-[0.7rem] font-bold uppercase tracking-widest text-white/70">
                   {a.instructorName && (
                     <span className="inline-flex items-center gap-1.5">
@@ -186,9 +211,8 @@ export default function MobileActivityCarousel({
                     {a.schoolName ?? a.instructorName ?? `+${a.joined ?? 0} joined`}
                   </div>
                 </div>
-                <div className="bg-white text-primary px-4 py-2.5 rounded-full font-headline font-bold text-xs uppercase tracking-widest flex items-center gap-1.5 shadow-[0_6px_18px_rgba(0,0,0,0.25)]">
-                  {a.price}
-                  <Icon name="arrow_forward" className="text-[16px]" />
+                <div className="bg-white text-primary w-10 h-10 rounded-full flex items-center justify-center shadow-[0_6px_18px_rgba(0,0,0,0.25)] shrink-0">
+                  <Icon name="arrow_forward" className="text-[18px]" />
                 </div>
               </div>
             </div>
