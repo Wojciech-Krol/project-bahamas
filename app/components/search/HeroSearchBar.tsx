@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Icon } from "../Icon";
 import SearchSegment from "./SearchSegment";
 import { ActivityPanel, NeighborhoodPanel, WhenPanel, AgePanel } from "./panels";
@@ -9,6 +10,23 @@ import {
   type AgeCounts,
   type SearchField,
 } from "./constants";
+
+function useFormatActivities() {
+  const tLabel = useTranslations("Search.activityLabels");
+  return (csvKeys: string) =>
+    csvKeys
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((k) => {
+        try {
+          return tLabel(k);
+        } catch {
+          return k;
+        }
+      })
+      .join(", ");
+}
 
 export default function HeroSearchBar({
   containerRef,
@@ -35,6 +53,8 @@ export default function HeroSearchBar({
   onAgeUpdate: (key: keyof AgeCounts, delta: number) => void;
   className?: string;
 }) {
+  const t = useTranslations();
+  const formatActivities = useFormatActivities();
   const [activeField, setActiveField] = useState<SearchField>(null);
   const [lastActiveField, setLastActiveField] = useState<SearchField>(null);
   const barRef = useRef<HTMLDivElement>(null);
@@ -82,30 +102,30 @@ export default function HeroSearchBar({
     {
       field: "activities",
       icon: "search",
-      label: "Activities",
-      value: formatMultiSelectDisplay(activities),
-      placeholder: "Select activities...",
+      label: t("Search.field.activitiesLabel"),
+      value: formatMultiSelectDisplay(formatActivities(activities)),
+      placeholder: t("Search.field.activitiesPlaceholder"),
     },
     {
       field: "neighborhood",
       icon: "near_me",
-      label: "Neighborhood",
+      label: t("Search.field.neighborhoodLabel"),
       value: neighborhood,
-      placeholder: "Mitte, Berlin",
+      placeholder: t("Search.field.neighborhoodPlaceholder"),
     },
     {
       field: "when",
       icon: "calendar_today",
-      label: "When",
+      label: t("Search.field.whenLabel"),
       value: when,
-      placeholder: "Today",
+      placeholder: t("Search.field.whenPlaceholder"),
     },
     {
       field: "age",
       icon: "person",
-      label: "Age",
+      label: t("Search.field.ageLabel"),
       value: ageLabel,
-      placeholder: "Adult",
+      placeholder: t("Search.field.agePlaceholder"),
     },
   ];
 
@@ -170,7 +190,7 @@ export default function HeroSearchBar({
                   }`}
                 >
                   <span className="font-headline font-bold text-sm uppercase tracking-wider">
-                    Search
+                    {t("Common.search")}
                   </span>
                 </div>
               </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Icon } from "./Icon";
 
 type Props = {
@@ -11,11 +12,12 @@ type Props = {
 };
 
 export default function BetaSignup({
-  title = "Be among the first. Join the Hakuna beta.",
-  subtitle = "Early access, founder updates, and hand-picked activities in your city — straight to your inbox.",
-  ctaLabel = "Join Beta",
+  title,
+  subtitle,
+  ctaLabel,
   variant = "beta",
 }: Props) {
+  const t = useTranslations("Beta");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "success">("idle");
 
@@ -26,10 +28,16 @@ export default function BetaSignup({
     setEmail("");
   };
 
+  const resolvedTitle =
+    title ?? (variant === "business" ? t("businessTitle") : t("defaultTitle"));
+  const resolvedSubtitle =
+    subtitle ??
+    (variant === "business" ? t("businessSubtitle") : t("defaultSubtitle"));
+  const resolvedCta =
+    ctaLabel ?? (variant === "business" ? t("businessCta") : t("defaultCta"));
+
   return (
-    <section
-      className={`max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20`}
-    >
+    <section className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
       <div
         className={`rounded-[2rem] md:rounded-[3rem] px-6 md:px-16 py-12 md:py-20 text-center overflow-hidden relative ${
           variant === "business"
@@ -44,21 +52,21 @@ export default function BetaSignup({
               : "bg-white/20 text-on-primary"
           }`}
         >
-          {variant === "business" ? "For Venues" : "Beta Test"}
+          {variant === "business" ? t("businessBadge") : t("betaBadge")}
         </div>
         <h2
           className={`font-headline font-extrabold text-3xl md:text-5xl tracking-tight mb-4 ${
             variant === "business" ? "text-on-surface" : ""
           }`}
         >
-          {title}
+          {resolvedTitle}
         </h2>
         <p
           className={`max-w-2xl mx-auto text-base md:text-lg mb-8 ${
             variant === "business" ? "text-on-surface/70" : "text-on-primary/80"
           }`}
         >
-          {subtitle}
+          {resolvedSubtitle}
         </p>
         {status === "success" ? (
           <div
@@ -69,7 +77,7 @@ export default function BetaSignup({
             }`}
           >
             <Icon name="check_circle" className="text-[22px]" />
-            Thanks — check your inbox.
+            {t("success")}
           </div>
         ) : (
           <form
@@ -81,7 +89,7 @@ export default function BetaSignup({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@domain.com"
+              placeholder={t("emailPlaceholder")}
               className={`flex-1 px-5 py-4 rounded-2xl text-base font-medium focus:outline-none focus:ring-2 ${
                 variant === "business"
                   ? "bg-surface-container-lowest text-on-surface placeholder:text-on-surface/40 focus:ring-primary/30"
@@ -96,7 +104,7 @@ export default function BetaSignup({
                   : "bg-white text-primary hover:bg-on-surface hover:text-on-primary"
               }`}
             >
-              {ctaLabel}
+              {resolvedCta}
             </button>
           </form>
         )}

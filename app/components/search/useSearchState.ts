@@ -1,9 +1,11 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { AgeCounts } from "./constants";
 
 export function useSearchState() {
+  const t = useTranslations("Search.ageLabel");
   const [activities, setActivities] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
   const [when, setWhen] = useState("");
@@ -33,12 +35,10 @@ export function useSearchState() {
   const ageLabel = (() => {
     const parts: string[] = [];
     if (ageCounts.adults > 0)
-      parts.push(`${ageCounts.adults} Adult${ageCounts.adults > 1 ? "s" : ""}`);
-    if (ageCounts.teens > 0)
-      parts.push(`${ageCounts.teens} Teen${ageCounts.teens > 1 ? "s" : ""}`);
-    if (ageCounts.kids > 0)
-      parts.push(`${ageCounts.kids} Kid${ageCounts.kids > 1 ? "s" : ""}`);
-    return parts.join(", ") || "";
+      parts.push(t("adults", { count: ageCounts.adults }));
+    if (ageCounts.teens > 0) parts.push(t("teens", { count: ageCounts.teens }));
+    if (ageCounts.kids > 0) parts.push(t("kids", { count: ageCounts.kids }));
+    return parts.join(", ");
   })();
 
   return {

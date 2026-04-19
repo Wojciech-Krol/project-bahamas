@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback, useLayoutEffect } from "react";
+import { useTranslations } from "next-intl";
 import { Icon } from "./Icon";
 import ActivityRowCard from "./ActivityRowCard";
 import type { Activity } from "../lib/mockData";
@@ -10,6 +11,7 @@ export default function ClosestToYouCarousel({
 }: {
   activities: Activity[];
 }) {
+  const t = useTranslations("Common");
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
 
@@ -104,7 +106,7 @@ export default function ClosestToYouCarousel({
         <button
           type="button"
           onClick={() => scrollByDir(-1)}
-          aria-label="Previous"
+          aria-label={t("previous")}
           className="w-11 h-11 rounded-full bg-surface-container-lowest border border-on-surface/[0.06] flex items-center justify-center hover:bg-primary-fixed/40 hover:text-primary transition-all shadow-[0_6px_18px_rgba(45,10,23,0.08)]"
         >
           <Icon name="keyboard_arrow_up" className="text-[22px]" />
@@ -112,7 +114,7 @@ export default function ClosestToYouCarousel({
         <button
           type="button"
           onClick={() => scrollByDir(1)}
-          aria-label="Next"
+          aria-label={t("next")}
           className="w-11 h-11 rounded-full bg-surface-container-lowest border border-on-surface/[0.06] flex items-center justify-center hover:bg-primary-fixed/40 hover:text-primary transition-all shadow-[0_6px_18px_rgba(45,10,23,0.08)]"
         >
           <Icon name="keyboard_arrow_down" className="text-[22px]" />

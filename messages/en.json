@@ -1,0 +1,457 @@
+{
+  "Metadata": {
+    "title": "HAKUNA | Start something new — today",
+    "description": "Find and book the best activities near you. Yoga, sport, pottery, music — discover what's happening in your neighborhood in the next two hours.",
+    "ogTitle": "HAKUNA | Start something new — today",
+    "ogDescription": "Find and book the best activities near you.",
+    "keywords": "activities, classes, sports, yoga, pottery, workshops, dance, music, Hakuna, booking"
+  },
+  "Common": {
+    "book": "Book",
+    "bookNow": "Book now",
+    "search": "Search",
+    "viewAll": "View all",
+    "filters": "Filters",
+    "next": "Next",
+    "previous": "Back",
+    "clearAll": "Clear all",
+    "close": "Close",
+    "login": "Log in",
+    "signup": "Create account",
+    "apply": "Apply",
+    "joinedCount": "{count, plural, one {# person joined} other {# joined}}",
+    "spotsLeft": "{count, plural, one {Last spot left!} other {# spots left}}",
+    "reviewsCount": "{count, plural, one {# review} other {# reviews}}",
+    "language": "Language"
+  },
+  "Nav": {
+    "explore": "Explore",
+    "about": "About",
+    "toggleMenu": "Toggle menu"
+  },
+  "Home": {
+    "hero": {
+      "titleStart": "Start something",
+      "titleMiddle": "new",
+      "titleEnd": "today.",
+      "subtitle": "Hundreds of activities starting near you in the next two hours."
+    },
+    "closest": {
+      "badge": "Starting soon",
+      "headingStart": "Closest",
+      "headingEnd": "to You",
+      "body": "Activities starting in the next two hours. Don't wait — the best things happen now.",
+      "cta": "BOOK IN 30 SECONDS",
+      "statHostsValue": "450+",
+      "statHostsLabel": "Local hosts",
+      "statArrivalValue": "12 min",
+      "statArrivalLabel": "Avg. arrival",
+      "carouselHeading": "Closest to You"
+    }
+  },
+  "Search": {
+    "mobilePillPlaceholder": "What are you looking for today?",
+    "resultsNear": "{count, plural, one {# result near} other {# results near}} {city}",
+    "defaultCity": "Warsaw",
+    "viewSwipe": "Swipe",
+    "viewList": "List",
+    "viewMap": "Map",
+    "looking": "Looking for?",
+    "field": {
+      "activitiesLabel": "Activities",
+      "activitiesPlaceholder": "Select activities…",
+      "neighborhoodLabel": "Neighborhood",
+      "neighborhoodPlaceholder": "Mitte, Berlin",
+      "whenLabel": "When",
+      "whenPlaceholder": "Today",
+      "ageLabel": "Age",
+      "agePlaceholder": "Adult",
+      "activitiesEmpty": "Select activities",
+      "neighborhoodEmpty": "Add location",
+      "whenEmpty": "Add dates",
+      "ageEmpty": "Add guests",
+      "whoLabel": "Who"
+    },
+    "panels": {
+      "popularNeighborhoods": "Popular neighborhoods",
+      "searchNeighborhoods": "Search neighborhoods…",
+      "whenQuestion": "When do you want to go?",
+      "whoQuestion": "Who's joining?"
+    },
+    "categories": {
+      "sports": "Sports & fitness",
+      "arts": "Arts & creative"
+    },
+    "activityLabels": {
+      "yoga": "Yoga",
+      "tennis": "Tennis",
+      "swimming": "Swimming",
+      "climbing": "Climbing",
+      "boxing": "Boxing",
+      "running": "Running",
+      "pottery": "Pottery",
+      "dance": "Dance",
+      "music": "Music",
+      "photography": "Photography",
+      "cooking": "Cooking",
+      "guitar": "Guitar"
+    },
+    "whenOptions": {
+      "now": "Now",
+      "nowSub": "Next 30 min",
+      "today": "Today",
+      "todaySub": "Until midnight",
+      "tomorrow": "Tomorrow",
+      "tomorrowSub": "All day",
+      "thisWeek": "This week",
+      "thisWeekSub": "Next 7 days",
+      "thisWeekend": "This weekend",
+      "thisWeekendSub": "Sat – Sun",
+      "pickDate": "Pick a date",
+      "pickDateSub": "Calendar"
+    },
+    "ageGroups": {
+      "kids": "Kids",
+      "kidsSub": "Ages 3–8",
+      "teens": "Teens",
+      "teensSub": "Ages 9–17",
+      "adults": "Adults",
+      "adultsSub": "Ages 18+"
+    },
+    "ageLabel": {
+      "adults": "{count, plural, one {# adult} other {# adults}}",
+      "teens": "{count, plural, one {# teen} other {# teens}}",
+      "kids": "{count, plural, one {# kid} other {# kids}}"
+    },
+    "neighborhoods": {
+      "srodmiescie": { "name": "Mitte", "sub": "Central Berlin", "icon": "location_city" },
+      "mokotow": { "name": "Prenzlauer Berg", "sub": "Pankow District", "icon": "park" },
+      "praga": { "name": "Kreuzberg", "sub": "Friedrichshain-Kreuzberg", "icon": "local_cafe" },
+      "wola": { "name": "Friedrichshain", "sub": "East Berlin", "icon": "music_note" },
+      "saska": { "name": "Neukölln", "sub": "South Berlin", "icon": "diversity_3" },
+      "ursynow": { "name": "Charlottenburg", "sub": "West Berlin", "icon": "castle" }
+    }
+  },
+  "Card": {
+    "swipe": "Swipe",
+    "at": "At",
+    "featured": "FEATURED",
+    "popular": "POPULAR",
+    "live": "LIVE"
+  },
+  "Levels": {
+    "all": "All levels",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "mixed": "Mixed",
+    "allPaces": "All paces"
+  },
+  "Duration": {
+    "minutes": "{count} min",
+    "hours": "{count, plural, one {# hour} other {# hours}}",
+    "hoursAndHalf": "{count}.5 hours"
+  },
+  "Beta": {
+    "betaBadge": "Beta",
+    "businessBadge": "For venues",
+    "defaultTitle": "Be among the first. Join the Hakuna beta.",
+    "defaultSubtitle": "Early access, founder updates, and hand-picked activities in your city — straight to your inbox.",
+    "defaultCta": "Join beta",
+    "emailPlaceholder": "you@domain.com",
+    "success": "Thanks — check your inbox.",
+    "businessTitle": "Run a studio or venue? Let's talk.",
+    "businessSubtitle": "We're onboarding a small group of partner studios, instructors and workshops. No fees during the beta.",
+    "businessCta": "Apply"
+  },
+  "Reviews": {
+    "badge": "Reviews",
+    "title": "What the community says",
+    "subtitle": "Real people, real rituals. Hakuna is built on the stories of the curious."
+  },
+  "Footer": {
+    "tagline": "© 2026 HAKUNA. The golden curator for your city.",
+    "privacy": "Privacy policy",
+    "terms": "Terms of service",
+    "cookies": "Cookie policy",
+    "contact": "Contact us",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn"
+  },
+  "About": {
+    "badge": "Our vision",
+    "heroStart": "A city you",
+    "heroEmphasis": "actually",
+    "heroEnd": "live in.",
+    "heroBody": "Hakuna is a platform for people who'd rather discover than plan. We connect you with local studios, workshops and open sessions — the kind of tiny gatherings that make a neighborhood feel like home.",
+    "values": {
+      "spontaneity": {
+        "title": "Spontaneity first",
+        "text": "The best moments don't fit in a spreadsheet. We surface what's starting in the next two hours."
+      },
+      "local": {
+        "title": "Local by design",
+        "text": "Every host, studio and instructor on Hakuna is rooted in your city. No franchises, no fluff."
+      },
+      "curated": {
+        "title": "Curated, not catalogued",
+        "text": "We hand-pick experiences that feel alive — not just the ones with the biggest marketing budgets."
+      }
+    },
+    "timelineHeading": "The road so far",
+    "timeline": {
+      "y2023": {
+        "year": "2023",
+        "label": "The idea",
+        "text": "Hakuna starts as a weekend experiment: how do we help people say yes to their city?"
+      },
+      "y2024": {
+        "year": "2024",
+        "label": "First cities",
+        "text": "Private beta with 450+ local hosts across Warsaw, Berlin and London."
+      },
+      "y2026": {
+        "year": "2026",
+        "label": "Today",
+        "text": "Opening the doors to everyone — with a public beta and a fast-growing community."
+      }
+    }
+  },
+  "Legal": {
+    "label": "Legal",
+    "lastUpdated": "Last updated: {date}",
+    "privacy": {
+      "title": "Privacy Policy",
+      "updated": "April 18, 2026",
+      "intro": "This Privacy Policy describes how Hakuna collects, uses, and protects information about you when you use our platform. By using Hakuna, you agree to the practices described below.",
+      "sections": {
+        "collect": {
+          "heading": "Information we collect",
+          "body": [
+            "We collect the information you give us directly — when you create an account, book an activity, or contact us. That includes your name, email, and payment details.",
+            "We also automatically collect technical information such as device type, browser, IP address, and pages viewed, so we can keep the platform secure and improve performance."
+          ]
+        },
+        "use": {
+          "heading": "How we use your information",
+          "body": [
+            "We use what we collect to provide and improve the service, process bookings, send confirmations and the occasional product update, and detect fraud.",
+            "We don't sell your personal information. We share data with service providers only to the extent necessary to run the platform — for example, payment processors."
+          ]
+        },
+        "cookies": {
+          "heading": "Cookies and tracking",
+          "body": [
+            "Hakuna uses cookies and similar technologies to remember your preferences, keep you signed in, and understand how the platform is used. You can manage cookie preferences from your browser at any time."
+          ]
+        },
+        "retention": {
+          "heading": "Data retention",
+          "body": [
+            "We retain your personal information for as long as your account is active, or as needed to provide the service and comply with legal obligations. You can request deletion at any time by contacting us."
+          ]
+        },
+        "rights": {
+          "heading": "Your rights",
+          "body": [
+            "Depending on your location, you may have the right to access, correct, port, or delete your personal data. To use any of these rights, reach out via the contact channels on this site."
+          ]
+        },
+        "contact": {
+          "heading": "Contact us",
+          "body": [
+            "Questions about this Privacy Policy or how we handle your data? Email privacy@hakuna.example."
+          ]
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "updated": "April 18, 2026",
+      "intro": "These Terms of Service govern your access to and use of the Hakuna platform. By creating an account or booking an activity, you agree to them.",
+      "sections": {
+        "eligibility": {
+          "heading": "Eligibility",
+          "body": [
+            "You must be at least 18 years old to create a Hakuna account. If you book on behalf of a minor, you're responsible for meeting the venue's requirements."
+          ]
+        },
+        "bookings": {
+          "heading": "Bookings and payments",
+          "body": [
+            "When you book an activity, you enter into an agreement directly with the host or studio. Hakuna acts as a marketplace and processes payments on the host's behalf.",
+            "Fees are shown at checkout and include applicable taxes. Some activities require non-refundable deposits — this is clearly marked on the listing."
+          ]
+        },
+        "cancellation": {
+          "heading": "Cancellations",
+          "body": [
+            "Unless the listing says otherwise, you can cancel free of charge up to 48 hours before the activity. After that, refunds are at the host's discretion."
+          ]
+        },
+        "conduct": {
+          "heading": "User conduct",
+          "body": [
+            "You agree not to use Hakuna to harass other users, post misleading content, or try to bypass platform security. Accounts that break these rules may be suspended without notice."
+          ]
+        },
+        "liability": {
+          "heading": "Liability",
+          "body": [
+            "Hakuna is not liable for injuries, damages, or losses arising from your participation in an activity. Always follow the host and venue instructions, and consult a professional if you have medical concerns."
+          ]
+        },
+        "changes": {
+          "heading": "Changes to these terms",
+          "body": [
+            "We may update these Terms from time to time. Material changes are communicated via the platform or email at least 14 days before taking effect."
+          ]
+        }
+      }
+    },
+    "cookies": {
+      "title": "Cookie Policy",
+      "updated": "April 18, 2026",
+      "intro": "This Cookie Policy explains what cookies are, how Hakuna uses them, and how to manage your preferences.",
+      "sections": {
+        "what": {
+          "heading": "What are cookies?",
+          "body": [
+            "Cookies are small text files placed on your device when you visit a website. They help sites remember information about your visit, such as your preferred language and sign-in state."
+          ]
+        },
+        "types": {
+          "heading": "Types of cookies we use",
+          "body": [
+            "Essential cookies keep the platform running — for example, remembering your session between pages.",
+            "Performance cookies help us understand how the platform is used so we can improve it. These are anonymous and aggregated.",
+            "Preference cookies remember your settings (language, city, favorites) to personalize your experience."
+          ]
+        },
+        "third": {
+          "heading": "Third-party cookies",
+          "body": [
+            "Some features rely on trusted third parties such as payment processors and analytics providers. Those providers may set their own cookies under their own privacy policies."
+          ]
+        },
+        "managing": {
+          "heading": "Managing cookies",
+          "body": [
+            "Most browsers let you refuse or delete cookies from the settings menu. Blocking essential cookies may stop parts of the platform from working as expected."
+          ]
+        },
+        "contact": {
+          "heading": "Contact",
+          "body": [
+            "Questions about cookies? Email privacy@hakuna.example and we'll help."
+          ]
+        }
+      }
+    }
+  },
+  "Activity": {
+    "theExperience": "The experience",
+    "curriculumFocus": "Curriculum focus",
+    "targetAge": "Target age",
+    "intensity": "Intensity",
+    "durationLabel": "Duration",
+    "totalExperience": "Total experience",
+    "availableDates": "Available dates",
+    "spotsLeft": "{count, plural, one {Only 1 spot left!} other {Only # spots left!}}",
+    "spotsLeftShort": "{count, plural, one {1 spot left} other {# spots left}}",
+    "bookYourSpot": "Book your spot",
+    "freeCancel": "Free cancellation up to 48 hours before class.",
+    "joiningPulse": "Joining the session",
+    "alreadyBooked": "Already booked for this session",
+    "whatParticipantsSay": "What participants say",
+    "participantsSubtitle": "Feedback from people who've already taken this session.",
+    "sample": {
+      "title": "Urban Flow: The Elite Performance Workshop",
+      "tags": ["MASTERCLASS", "CONTEMPORARY DANCE"],
+      "description": "Push your boundaries in this high-intensity masterclass designed for performers who want to master the fusion of contemporary movement and urban precision. Led by internationally acclaimed choreographer Marcus Thorne, the session focuses on spatial awareness, explosive power, and emotional storytelling.",
+      "metaAge": "16+ (teens / adults)",
+      "metaIntensity": "Advanced / Elite",
+      "metaDuration": "180 minutes",
+      "location": "Studio 4, Downtown Arts District",
+      "dates": {
+        "d1": { "label": "OCT 24", "time": "6:00 PM" },
+        "d2": { "label": "OCT 26", "time": "10:00 AM" }
+      },
+      "curriculum": {
+        "c1": {
+          "title": "Kinetic foundation",
+          "description": "A deep dive into weight distribution and momentum control. Master the art of using gravity to power your transitions."
+        },
+        "c2": {
+          "title": "Urban textures",
+          "description": "The contrast between fluid contemporary lines and sharp, isolated urban movements."
+        },
+        "c3": {
+          "title": "Choreographic nuance",
+          "description": "The final phase focuses on the 'Urban Flow' routine. You'll learn to read complex rhythmic patterns through full-body expression."
+        }
+      },
+      "instructor": {
+        "role": "Lead instructor",
+        "name": "Marcus Thorne",
+        "bio": "Founder of the Kinetic Lab, Marcus has choreographed for world tours and international cinema. His philosophy centres on the bridge between technical excellence and raw human emotion.",
+        "cred1": "Best Choreographer 2023",
+        "cred2": "15+ years experience"
+      }
+    }
+  },
+  "School": {
+    "pulseBadge": "The pulse",
+    "aboutPrefix": "About",
+    "viewOnMap": "View on map",
+    "classesOfferedBadge": "Classes offered",
+    "currentSchedule": "Current schedule",
+    "viewFullSchedule": "View full schedule →",
+    "inTheStudio": "In the studio",
+    "whatStudentsSay": "What students say",
+    "statsLabels": {
+      "students": "Students",
+      "years": "Years",
+      "certification": "Certification"
+    },
+    "sample": {
+      "name": "Urban Rhythm Academy",
+      "tagline": "Where movement meets mastery.",
+      "location": "Downtown Arts District, Berlin",
+      "about": "Urban Rhythm Academy is a hub for dancers, performers and movement-lovers who want more than a class — they want a community. Our instructors are working professionals, our studios are built for serious training, and our philosophy is simple: movement should feel as good as it looks.",
+      "stat1Value": "500+",
+      "stat2Value": "10+",
+      "stat3Value": "Pulse Certified",
+      "classes": {
+        "sc1": { "title": "Contemporary Foundations", "time": "Mon & Wed 18:00", "location": "Studio 1", "tag": "All levels" },
+        "sc2": { "title": "Urban Flow Intermediate", "time": "Tue & Thu 19:30", "location": "Studio 3", "tag": "Intermediate" },
+        "sc3": { "title": "Kids Movement Lab", "time": "Sat 10:00", "location": "Studio 2", "tag": "Ages 7–12" },
+        "sc4": { "title": "Pro Performance Lab", "time": "Sun 14:00", "location": "Studio 4", "tag": "Advanced" }
+      }
+    }
+  },
+  "activities": {
+    "a1": { "title": "Sunrise Vinyasa Flow", "time": "Starts in 15 min", "location": "Prenzlauer Berg", "neighborhood": "Prenzlauer Berg", "description": "Wake the body up with a breath-led flow by the rooftop garden. All levels welcome — mats provided.", "instructor": "Elena Grace", "school": "Yoga Loft Berlin", "level": "All levels", "duration": "60 min" },
+    "a2": { "title": "Intro to Wheel Throwing", "time": "Starts in 42 min", "location": "Mitte District", "neighborhood": "Mitte", "description": "Shape your first bowl on a spinning wheel. Small group, hands-on guidance, clay and firing included.", "instructor": "Jonas Weber", "school": "Clay Studio Mitte", "level": "Beginner", "duration": "90 min" },
+    "a3": { "title": "Open Padel Session", "time": "Starts in 1h 05 min", "location": "Friedrichshain", "neighborhood": "Friedrichshain", "description": "Drop in on a friendly mixed-level padel session. Rackets available, beginners rotate every game.", "instructor": "Coach Marco", "school": "Padel Hub FHain", "level": "Mixed", "duration": "75 min" },
+    "a4": { "title": "Urban Run Club", "time": "Starts in 1h 30 min", "location": "Tiergarten", "neighborhood": "Tiergarten", "description": "Easy 5K loop through the park with pace groups and a coffee stop after. Bring water.", "instructor": "Run Crew Berlin", "school": "Run Crew Berlin", "level": "All paces", "duration": "45 min" },
+    "a5": { "title": "Urban Flow Masterclass", "time": "Starts in 2h", "location": "Downtown Arts District", "neighborhood": "Mitte", "description": "High-energy contemporary class blending hip-hop and flow. Mirrors, sprung floor, pro sound system.", "instructor": "Ava Morin", "school": "Urban Rhythm Academy", "level": "Intermediate", "duration": "2 hours", "tag": "POPULAR" },
+    "a6": { "title": "Advanced Clay Tennis", "time": "Tomorrow 09:00", "location": "Wimbledon, London", "neighborhood": "Wimbledon", "description": "Technique-focused match play on red clay. For intermediate/advanced players working on their slide.", "instructor": "David Hughes", "school": "Wimbledon Tennis Club", "level": "Advanced", "duration": "90 min", "tag": "POPULAR" },
+    "a7": { "title": "Bouldering Basics", "time": "Tonight 19:00", "location": "Kreuzberg", "neighborhood": "Kreuzberg", "description": "First time climbing? Learn to read routes, fall safe, and send your first V0s with a friendly coach.", "instructor": "Pia Ender", "school": "BoulderHaus Kreuzberg", "level": "Beginner", "duration": "90 min" },
+    "a8": { "title": "Sunset Boxing", "time": "Tonight 20:30", "location": "Neukölln", "neighborhood": "Neukölln", "description": "Shake off the day with pad rounds, footwork drills, and a full-body circuit. Gloves on site.", "instructor": "Kai Novak", "school": "Iron Gym Neukölln", "level": "All levels", "duration": "60 min" },
+    "a9": { "title": "Pasta From Scratch", "time": "Saturday 18:00", "location": "Charlottenburg", "neighborhood": "Charlottenburg", "description": "Roll fresh tagliatelle and ravioli, then sit down together over wine. Ingredients and apron included.", "instructor": "Chef Lucia", "school": "Cucina Lucia", "level": "Beginner", "duration": "2.5 hours" },
+    "a10": { "title": "Watercolor Basics", "time": "Sunday 11:00", "location": "Mitte", "neighborhood": "Mitte", "description": "Loose, expressive watercolor techniques for total beginners. Paper, brushes, and paints provided.", "instructor": "Noa Stein", "school": "Atelier Noa", "level": "Beginner", "duration": "2 hours" },
+    "s1": { "title": "Sunset Hatha Flow", "time": "Today 18:00", "location": "Shoreditch, London", "neighborhood": "Shoreditch", "description": "Slow, grounded Hatha sequence lit by golden-hour light. Perfect for unwinding and improving flexibility.", "instructor": "Priya Shah", "school": "East Light Yoga", "level": "All levels", "duration": "75 min", "tag": "FEATURED" },
+    "s2": { "title": "Advanced Clay Tennis", "time": "Tomorrow 09:00", "location": "Wimbledon, London", "neighborhood": "Wimbledon", "description": "Drill-heavy session on red clay focused on footwork, sliding, and match tactics. Bring two balls.", "instructor": "David Hughes", "school": "Wimbledon Tennis Club", "level": "Advanced", "duration": "90 min", "tag": "POPULAR" },
+    "s3": { "title": "Morning Lap Swim", "time": "Tomorrow 07:00", "location": "Hackney, London", "neighborhood": "Hackney", "description": "Structured lane-based swim with set intervals for all paces. Heated 25m pool, showers and towels included.", "instructor": "Coach Eli", "school": "Hackney Aquatics", "level": "Intermediate", "duration": "60 min" },
+    "s4": { "title": "Open Mic Guitar Night", "time": "Friday 20:00", "location": "Camden, London", "neighborhood": "Camden", "description": "Bring your guitar and a song or two. Warm crowd, pro PA, a full bar, and sign-ups on the door.", "instructor": "Host: Jesse Lane", "school": "Camden Chords", "level": "All levels", "duration": "3 hours", "tag": "LIVE" }
+  },
+  "reviews": {
+    "r1": { "name": "Anna Kowalska", "text": "Hakuna changed my weekends. I found a local pottery workshop 200 metres from my flat — one I had no idea about. Booking took 20 seconds.", "activity": "Intro to Wheel Throwing" },
+    "r2": { "name": "Marek Nowak", "text": "Spontaneous padel matches in the neighbourhood were a game-changer. On Hakuna it's all live — I see what's starting in an hour and I just go.", "activity": "Open Padel Session" },
+    "r3": { "name": "Sophia Lindqvist", "text": "Love how curated the experiences feel. Every instructor I've booked has been top-tier. The app finally respects my time.", "activity": "Urban Flow Masterclass" },
+    "r4": { "name": "Daniel Osei", "text": "The 'Closest to You' feature is pure magic — I booked a sunrise run with strangers that became my Tuesday ritual.", "activity": "Urban Run Club" },
+    "r5": { "name": "Léa Moreau", "text": "Clean design, honest pricing, real communities. The city feels a little more alive.", "activity": "Sunrise Vinyasa Flow" },
+    "r6": { "name": "Tomáš Dvořák", "text": "Great for travelling. I dropped into a boxing class in Berlin the same night I landed.", "activity": "Sunset Boxing" }
+  }
+}

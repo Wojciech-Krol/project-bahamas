@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "../../src/i18n/navigation";
 import { Icon } from "./Icon";
 import type { Activity } from "../lib/mockData";
 

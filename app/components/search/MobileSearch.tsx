@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Icon } from "../Icon";
 import { ActivityPanel, NeighborhoodPanel, WhenPanel, AgePanel } from "./panels";
 import {
@@ -9,7 +10,25 @@ import {
   type AgeCounts,
 } from "./constants";
 
+function useFormatActivities() {
+  const tLabel = useTranslations("Search.activityLabels");
+  return (csvKeys: string) =>
+    csvKeys
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((k) => {
+        try {
+          return tLabel(k);
+        } catch {
+          return k;
+        }
+      })
+      .join(", ");
+}
+
 export function MobileSearchPill({ onClick }: { onClick: () => void }) {
+  const t = useTranslations("Search");
   return (
     <button
       onClick={onClick}
@@ -17,7 +36,7 @@ export function MobileSearchPill({ onClick }: { onClick: () => void }) {
     >
       <Icon name="search" className="text-[20px] text-on-surface/60" />
       <span className="text-[0.9rem] font-semibold text-on-surface/40 flex-1 text-left">
-        What are you looking for?
+        {t("mobilePillPlaceholder")}
       </span>
     </button>
   );
@@ -50,6 +69,8 @@ export function MobileSearchOverlay({
   onAgeUpdate: (key: keyof AgeCounts, delta: number) => void;
   onClearAll: () => void;
 }) {
+  const t = useTranslations();
+  const formatActivities = useFormatActivities();
   const [expandedField, setExpandedField] = useState<SearchField>("activities");
 
   useEffect(() => {
@@ -77,10 +98,30 @@ export function MobileSearchOverlay({
   }, [isOpen, onClose]);
 
   const fields = [
-    { key: "activities" as SearchField, label: "Activities", value: formatMultiSelectDisplay(activities), emptyText: "Select activities" },
-    { key: "neighborhood" as SearchField, label: "Neighborhood", value: neighborhood, emptyText: "Add location" },
-    { key: "when" as SearchField, label: "When", value: when, emptyText: "Add dates" },
-    { key: "age" as SearchField, label: "Who", value: ageLabel, emptyText: "Add guests" },
+    {
+      key: "activities" as SearchField,
+      label: t("Search.field.activitiesLabel"),
+      value: formatMultiSelectDisplay(formatActivities(activities)),
+      emptyText: t("Search.field.activitiesEmpty"),
+    },
+    {
+      key: "neighborhood" as SearchField,
+      label: t("Search.field.neighborhoodLabel"),
+      value: neighborhood,
+      emptyText: t("Search.field.neighborhoodEmpty"),
+    },
+    {
+      key: "when" as SearchField,
+      label: t("Search.field.whenLabel"),
+      value: when,
+      emptyText: t("Search.field.whenEmpty"),
+    },
+    {
+      key: "age" as SearchField,
+      label: t("Search.field.whoLabel"),
+      value: ageLabel,
+      emptyText: t("Search.field.ageEmpty"),
+    },
   ];
 
   const renderPanel = (field: SearchField) => {
@@ -119,6 +160,7 @@ export function MobileSearchOverlay({
           </span>
           <button
             onClick={onClose}
+            aria-label={t("Common.close")}
             className="w-8 h-8 rounded-full border border-on-surface/10 flex items-center justify-center hover:bg-surface-container-low transition-colors"
           >
             <Icon name="close" className="text-[18px] text-on-surface/70" />
@@ -170,14 +212,14 @@ export function MobileSearchOverlay({
             onClick={onClearAll}
             className="text-sm font-bold text-on-surface underline underline-offset-4 decoration-on-surface/30 hover:decoration-on-surface transition-colors"
           >
-            Clear all
+            {t("Common.clearAll")}
           </button>
           <button
             onClick={onClose}
             className="bg-primary text-on-primary px-7 py-3.5 rounded-full font-headline font-bold text-sm flex items-center gap-2 shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95 transition-all"
           >
             <Icon name="search" className="text-[18px]" />
-            Search
+            {t("Common.search")}
           </button>
         </div>
       </div>

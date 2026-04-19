@@ -1,15 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
-import SiteNavbar from "../components/SiteNavbar";
-import { Icon } from "../components/Icon";
-import PageSearchBar from "../components/search/PageSearchBar";
-import MapboxMap from "../components/MapboxMap";
-import MobileActivityCarousel from "../components/MobileActivityCarousel";
-import { SEARCH_RESULTS, type Activity } from "../lib/mockData";
+import { useTranslations } from "next-intl";
+import { Link } from "../../../src/i18n/navigation";
+import SiteNavbar from "../../components/SiteNavbar";
+import { Icon } from "../../components/Icon";
+import PageSearchBar from "../../components/search/PageSearchBar";
+import MapboxMap from "../../components/MapboxMap";
+import MobileActivityCarousel from "../../components/MobileActivityCarousel";
+import { useSearchResults } from "../../lib/i18nData";
+import type { Activity } from "../../lib/mockData";
 
 function CompactCard({ activity }: { activity: Activity }) {
+  const t = useTranslations();
   return (
     <Link
       href={`/activity/${activity.id}`}
@@ -28,7 +31,7 @@ function CompactCard({ activity }: { activity: Activity }) {
         )}
         <button
           type="button"
-          aria-label="Save"
+          aria-label={t("Common.book")}
           onClick={(e) => e.preventDefault()}
           className="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/90 flex items-center justify-center hover:bg-primary-fixed transition-colors"
         >
@@ -58,11 +61,11 @@ function CompactCard({ activity }: { activity: Activity }) {
               />
             )}
             <span className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface/55 truncate">
-              +{activity.joined ?? 0} joined
+              {t("Common.joinedCount", { count: activity.joined ?? 0 })}
             </span>
           </div>
           <span className="bg-primary-fixed text-primary px-3 py-1 rounded-full font-semibold text-xs">
-            Book
+            {t("Common.book")}
           </span>
         </div>
       </div>
@@ -70,25 +73,25 @@ function CompactCard({ activity }: { activity: Activity }) {
   );
 }
 
-// Spread mock results across London with deterministic offsets
-const LONDON_CENTER: [number, number] = [-0.1276, 51.5072];
+const WARSAW_CENTER: [number, number] = [21.0122, 52.2297];
 
 function activityIcon(title: string): string {
   const t = title.toLowerCase();
-  if (t.includes("tennis")) return "sports_tennis";
-  if (t.includes("yoga") || t.includes("hatha")) return "self_improvement";
-  if (t.includes("swim")) return "pool";
-  if (t.includes("guitar") || t.includes("music")) return "music_note";
-  if (t.includes("boxing")) return "sports_mma";
-  if (t.includes("run")) return "directions_run";
+  if (t.includes("tennis") || t.includes("tenis")) return "sports_tennis";
+  if (t.includes("yoga") || t.includes("hatha") || t.includes("joga")) return "self_improvement";
+  if (t.includes("swim") || t.includes("pływan")) return "pool";
+  if (t.includes("guitar") || t.includes("music") || t.includes("gitar") || t.includes("muzyk")) return "music_note";
+  if (t.includes("boxing") || t.includes("boks")) return "sports_mma";
+  if (t.includes("run") || t.includes("biega")) return "directions_run";
   return "location_on";
 }
 
 type MobileView = "swipe" | "list" | "map";
 
 export default function SearchPage() {
+  const t = useTranslations();
   const [view, setView] = useState<MobileView>("swipe");
-  const results = SEARCH_RESULTS;
+  const results = useSearchResults();
 
   const points = useMemo(
     () =>
@@ -99,13 +102,19 @@ export default function SearchPage() {
           id: r.id,
           title: r.title,
           price: r.price.split("/")[0],
-          lng: LONDON_CENTER[0] + Math.cos(angle) * radius,
-          lat: LONDON_CENTER[1] + Math.sin(angle) * radius * 0.6,
+          lng: WARSAW_CENTER[0] + Math.cos(angle) * radius,
+          lat: WARSAW_CENTER[1] + Math.sin(angle) * radius * 0.6,
           icon: activityIcon(r.title),
         };
       }),
     [results]
   );
+
+  const viewOptions: { v: MobileView; icon: string; label: string }[] = [
+    { v: "swipe", icon: "style", label: t("Search.viewSwipe") },
+    { v: "list", icon: "view_list", label: t("Search.viewList") },
+    { v: "map", icon: "map", label: t("Search.viewMap") },
+  ];
 
   return (
     <>
@@ -115,16 +124,9 @@ export default function SearchPage() {
           <PageSearchBar />
         </div>
 
-        {/* Mobile view toggle */}
         <div className="md:hidden max-w-7xl w-full mx-auto px-4 mb-2 shrink-0">
           <div className="flex bg-surface-container-low rounded-full p-1">
-            {(
-              [
-                { v: "swipe" as MobileView, icon: "style", label: "Swipe" },
-                { v: "list" as MobileView, icon: "view_list", label: "List" },
-                { v: "map" as MobileView, icon: "map", label: "Map" },
-              ]
-            ).map((opt) => (
+            {viewOptions.map((opt) => (
               <button
                 key={opt.v}
                 onClick={() => setView(opt.v)}
@@ -142,21 +144,22 @@ export default function SearchPage() {
         </div>
 
         <div className="flex-1 min-h-0 max-w-7xl w-full mx-auto px-4 md:px-6 pb-4 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_1.25fr] grid-rows-[minmax(0,1fr)] gap-4 md:gap-6">
-          {/* Results column — Swipe (mobile only) or List */}
           <section
             className={`${view === "list" || view === "swipe" ? "flex" : "hidden"} md:flex flex-col min-h-0 h-full`}
           >
             <div className="flex items-center justify-between mb-3 shrink-0">
               <h1 className="font-headline font-bold text-lg md:text-xl text-on-surface">
-                {results.length} results near London
+                {t("Search.resultsNear", {
+                  count: results.length,
+                  city: t("Search.defaultCity"),
+                })}
               </h1>
               <button className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-surface-container-lowest border border-on-surface/[0.06] hover:bg-primary-fixed/40 transition-colors active:scale-95">
                 <Icon name="tune" className="text-[16px] text-primary" />
-                <span className="font-semibold text-xs">Filters</span>
+                <span className="font-semibold text-xs">{t("Common.filters")}</span>
               </button>
             </div>
 
-            {/* Mobile swipe (hidden on desktop) */}
             {view === "swipe" && (
               <div className="md:hidden flex-1 min-h-0">
                 <MobileActivityCarousel
@@ -170,7 +173,6 @@ export default function SearchPage() {
               </div>
             )}
 
-            {/* List grid (always on desktop, shown on mobile when view=list) */}
             <div
               className={`flex-1 min-h-0 overflow-y-auto pr-1 no-scrollbar ${view === "swipe" ? "hidden md:block" : ""
                 }`}
@@ -183,11 +185,10 @@ export default function SearchPage() {
             </div>
           </section>
 
-          {/* Map column */}
           <section
             className={`${view === "map" ? "block" : "hidden"} md:block min-h-0 h-full`}
           >
-            <MapboxMap points={points} center={LONDON_CENTER} zoom={11.5} />
+            <MapboxMap points={points} center={WARSAW_CENTER} zoom={11.5} />
           </section>
         </div>
       </main>
