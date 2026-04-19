@@ -2,53 +2,88 @@ export type SearchField = "activities" | "neighborhood" | "when" | "age" | null;
 
 export type AgeCounts = { kids: number; teens: number; adults: number };
 
-export const ACTIVITY_CATEGORIES = [
+export type ActivityKey =
+  | "yoga"
+  | "tennis"
+  | "swimming"
+  | "climbing"
+  | "boxing"
+  | "running"
+  | "pottery"
+  | "dance"
+  | "music"
+  | "photography"
+  | "cooking"
+  | "guitar";
+
+export type CategoryKey = "sports" | "arts";
+
+export type NeighborhoodKey =
+  | "srodmiescie"
+  | "mokotow"
+  | "praga"
+  | "wola"
+  | "saska"
+  | "ursynow";
+
+export type WhenKey =
+  | "now"
+  | "today"
+  | "tomorrow"
+  | "thisWeek"
+  | "thisWeekend"
+  | "pickDate";
+
+export const ACTIVITY_CATEGORIES: {
+  key: CategoryKey;
+  items: { key: ActivityKey; emoji: string }[];
+}[] = [
   {
-    name: "Sports & Fitness",
+    key: "sports",
     items: [
-      { emoji: "🧘", label: "Yoga" },
-      { emoji: "🎾", label: "Tennis" },
-      { emoji: "🏊", label: "Swimming" },
-      { emoji: "🧗", label: "Climbing" },
-      { emoji: "🥊", label: "Boxing" },
-      { emoji: "🏃", label: "Running" },
+      { key: "yoga", emoji: "🧘" },
+      { key: "tennis", emoji: "🎾" },
+      { key: "swimming", emoji: "🏊" },
+      { key: "climbing", emoji: "🧗" },
+      { key: "boxing", emoji: "🥊" },
+      { key: "running", emoji: "🏃" },
     ],
   },
   {
-    name: "Arts & Creative",
+    key: "arts",
     items: [
-      { emoji: "🎨", label: "Pottery" },
-      { emoji: "💃", label: "Dance" },
-      { emoji: "🎵", label: "Music" },
-      { emoji: "📸", label: "Photography" },
-      { emoji: "🍳", label: "Cooking" },
-      { emoji: "🎸", label: "Guitar" },
+      { key: "pottery", emoji: "🎨" },
+      { key: "dance", emoji: "💃" },
+      { key: "music", emoji: "🎵" },
+      { key: "photography", emoji: "📸" },
+      { key: "cooking", emoji: "🍳" },
+      { key: "guitar", emoji: "🎸" },
     ],
   },
 ];
 
-export const NEIGHBORHOOD_SUGGESTIONS = [
-  { name: "Mitte", sub: "Central Berlin", icon: "location_city" },
-  { name: "Prenzlauer Berg", sub: "Pankow District", icon: "park" },
-  { name: "Kreuzberg", sub: "Friedrichshain-Kreuzberg", icon: "local_cafe" },
-  { name: "Friedrichshain", sub: "East Berlin", icon: "music_note" },
-  { name: "Neukölln", sub: "South Berlin", icon: "diversity_3" },
-  { name: "Charlottenburg", sub: "West Berlin", icon: "castle" },
+export const NEIGHBORHOOD_SUGGESTIONS: { key: NeighborhoodKey; icon: string }[] = [
+  { key: "srodmiescie", icon: "location_city" },
+  { key: "mokotow", icon: "park" },
+  { key: "praga", icon: "local_cafe" },
+  { key: "wola", icon: "music_note" },
+  { key: "saska", icon: "diversity_3" },
+  { key: "ursynow", icon: "castle" },
 ];
 
-export const WHEN_OPTIONS = [
-  { label: "Now", sub: "Next 30 min", icon: "bolt" },
-  { label: "Today", sub: "Until midnight", icon: "today" },
-  { label: "Tomorrow", sub: "All day", icon: "event" },
-  { label: "This week", sub: "Next 7 days", icon: "date_range" },
-  { label: "This weekend", sub: "Sat – Sun", icon: "weekend" },
-  { label: "Pick a date", sub: "Calendar", icon: "calendar_month" },
+export const WHEN_OPTIONS: { key: WhenKey; icon: string }[] = [
+  { key: "now", icon: "bolt" },
+  { key: "today", icon: "today" },
+  { key: "tomorrow", icon: "event" },
+  { key: "thisWeek", icon: "date_range" },
+  { key: "thisWeekend", icon: "weekend" },
+  { key: "pickDate", icon: "calendar_month" },
 ];
 
-export const AGE_GROUPS = [
-  { label: "Kids", sub: "Ages 3–8", key: "kids" as const },
-  { label: "Teens", sub: "Ages 9–17", key: "teens" as const },
-  { label: "Adults", sub: "Ages 18+", key: "adults" as const },
+export const AGE_GROUPS: { key: keyof AgeCounts }[] = [
+  { key: "kids" },
+  { key: "teens" },
+  { key: "adults" },
 ];
 
 export function formatMultiSelectDisplay(value: string | undefined): string {

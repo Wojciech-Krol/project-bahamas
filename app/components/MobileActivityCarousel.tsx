@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "../../src/i18n/navigation";
 import { Icon } from "./Icon";
 import type { Activity } from "../lib/mockData";
 
@@ -22,6 +23,7 @@ export default function MobileActivityCarousel({
   fillHeight?: boolean;
   detailed?: boolean;
 }) {
+  const t = useTranslations();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const items = activities.slice(0, maxItems);
@@ -65,13 +67,13 @@ export default function MobileActivityCarousel({
       {showHeader && (
         <div className="flex items-center justify-between mb-3 px-1">
           <h2 className="text-lg font-headline font-bold text-on-surface">
-            {heading ?? "Closest to You"}
+            {heading ?? t("Home.closest.carouselHeading")}
           </h2>
           <Link
             href="/search"
             className="text-xs font-bold uppercase tracking-widest text-primary"
           >
-            View all →
+            {t("Common.viewAll")} →
           </Link>
         </div>
       )}
@@ -189,7 +191,7 @@ export default function MobileActivityCarousel({
                   {a.joined !== undefined && (
                     <span className="inline-flex items-center gap-1.5">
                       <Icon name="group" className="text-[14px]" />
-                      {a.joined} joined
+                      {t("Common.joinedCount", { count: a.joined })}
                     </span>
                   )}
                 </div>
@@ -205,10 +207,12 @@ export default function MobileActivityCarousel({
                 )}
                 <div className="flex-1 min-w-0">
                   <div className="text-[0.65rem] font-bold uppercase tracking-widest text-white/60">
-                    At
+                    {t("Card.at")}
                   </div>
                   <div className="font-bold text-sm truncate">
-                    {a.schoolName ?? a.instructorName ?? `+${a.joined ?? 0} joined`}
+                    {a.schoolName ??
+                      a.instructorName ??
+                      t("Common.joinedCount", { count: a.joined ?? 0 })}
                   </div>
                 </div>
                 <div className="bg-white text-primary w-10 h-10 rounded-full flex items-center justify-center shadow-[0_6px_18px_rgba(0,0,0,0.25)] shrink-0">
@@ -223,7 +227,7 @@ export default function MobileActivityCarousel({
       {/* Swipe hint (fades out after first scroll) */}
       {activeIdx === 0 && (
         <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 text-on-surface rounded-full px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-widest flex items-center gap-1 shadow-[0_4px_12px_rgba(0,0,0,0.15)] pointer-events-none animate-pulse">
-          Swipe
+          {t("Card.swipe")}
           <Icon name="arrow_forward" className="text-[14px]" />
         </div>
       )}

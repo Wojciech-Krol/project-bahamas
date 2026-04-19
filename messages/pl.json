@@ -1,0 +1,457 @@
+{
+  "Metadata": {
+    "title": "HAKUNA | Zacznij coś nowego — dziś",
+    "description": "Znajdź i zarezerwuj najlepsze zajęcia obok Ciebie. Joga, sport, ceramika, muzyka — odkryj to, co dzieje się w Twojej okolicy w najbliższe dwie godziny.",
+    "ogTitle": "HAKUNA | Zacznij coś nowego — dziś",
+    "ogDescription": "Znajdź i zarezerwuj najlepsze zajęcia obok Ciebie.",
+    "keywords": "zajęcia, warsztaty, joga, sport, taniec, ceramika, muzyka, Warszawa, Hakuna, rezerwacja"
+  },
+  "Common": {
+    "book": "Zarezerwuj",
+    "bookNow": "Rezerwuję",
+    "search": "Szukaj",
+    "viewAll": "Zobacz wszystko",
+    "filters": "Filtry",
+    "next": "Dalej",
+    "previous": "Wstecz",
+    "clearAll": "Wyczyść",
+    "close": "Zamknij",
+    "login": "Zaloguj się",
+    "signup": "Załóż konto",
+    "apply": "Wyślij zgłoszenie",
+    "joinedCount": "{count, plural, one {# osoba dołączyła} few {# osoby dołączyły} many {# osób dołączyło} other {# osoby dołączyło}}",
+    "spotsLeft": "{count, plural, one {Zostało ostatnie miejsce} few {Zostały jeszcze # miejsca} many {Zostało jeszcze # miejsc} other {Zostało jeszcze # miejsca}}",
+    "reviewsCount": "{count, plural, one {# opinia} few {# opinie} many {# opinii} other {# opinii}}",
+    "language": "Język"
+  },
+  "Nav": {
+    "explore": "Odkrywaj",
+    "about": "O nas",
+    "toggleMenu": "Otwórz menu"
+  },
+  "Home": {
+    "hero": {
+      "titleStart": "Zacznij coś",
+      "titleMiddle": "nowego",
+      "titleEnd": "już dziś.",
+      "subtitle": "Setki zajęć zaczynających się w Twojej okolicy w najbliższe dwie godziny."
+    },
+    "closest": {
+      "badge": "Zaczyna się wkrótce",
+      "headingStart": "Najbliżej",
+      "headingEnd": "Ciebie",
+      "body": "Zajęcia, które zaczną się w ciągu dwóch godzin. Nie czekaj. Najlepsze rzeczy dzieją się teraz.",
+      "cta": "REZERWUJESZ W 30 SEKUND",
+      "statHostsValue": "450+",
+      "statHostsLabel": "Lokalnych gospodarzy",
+      "statArrivalValue": "12 min",
+      "statArrivalLabel": "Śr. czas dojścia",
+      "carouselHeading": "Najbliżej Ciebie"
+    }
+  },
+  "Search": {
+    "mobilePillPlaceholder": "Czego dzisiaj szukasz?",
+    "resultsNear": "{count, plural, one {# wynik blisko} few {# wyniki blisko} many {# wyników blisko} other {# wyniku blisko}} {city}",
+    "defaultCity": "Warszawy",
+    "viewSwipe": "Karty",
+    "viewList": "Lista",
+    "viewMap": "Mapa",
+    "looking": "Szukasz?",
+    "field": {
+      "activitiesLabel": "Zajęcia",
+      "activitiesPlaceholder": "Wybierz zajęcia…",
+      "neighborhoodLabel": "Dzielnica",
+      "neighborhoodPlaceholder": "Śródmieście, Warszawa",
+      "whenLabel": "Kiedy",
+      "whenPlaceholder": "Dziś",
+      "ageLabel": "Wiek",
+      "agePlaceholder": "Dorośli",
+      "activitiesEmpty": "Wybierz zajęcia",
+      "neighborhoodEmpty": "Dodaj lokalizację",
+      "whenEmpty": "Dodaj datę",
+      "ageEmpty": "Dodaj gości",
+      "whoLabel": "Kto"
+    },
+    "panels": {
+      "popularNeighborhoods": "Popularne dzielnice",
+      "searchNeighborhoods": "Szukaj dzielnicy…",
+      "whenQuestion": "Kiedy chcesz pójść?",
+      "whoQuestion": "Kto idzie?"
+    },
+    "categories": {
+      "sports": "Sport i ruch",
+      "arts": "Sztuka i kreacja"
+    },
+    "activityLabels": {
+      "yoga": "Joga",
+      "tennis": "Tenis",
+      "swimming": "Pływanie",
+      "climbing": "Wspinaczka",
+      "boxing": "Boks",
+      "running": "Bieganie",
+      "pottery": "Ceramika",
+      "dance": "Taniec",
+      "music": "Muzyka",
+      "photography": "Fotografia",
+      "cooking": "Gotowanie",
+      "guitar": "Gitara"
+    },
+    "whenOptions": {
+      "now": "Teraz",
+      "nowSub": "Najbliższe 30 min",
+      "today": "Dziś",
+      "todaySub": "Do północy",
+      "tomorrow": "Jutro",
+      "tomorrowSub": "Cały dzień",
+      "thisWeek": "W tym tygodniu",
+      "thisWeekSub": "Najbliższe 7 dni",
+      "thisWeekend": "Weekend",
+      "thisWeekendSub": "Sob – Niedz",
+      "pickDate": "Wybierz datę",
+      "pickDateSub": "Kalendarz"
+    },
+    "ageGroups": {
+      "kids": "Dzieci",
+      "kidsSub": "3–8 lat",
+      "teens": "Młodzież",
+      "teensSub": "9–17 lat",
+      "adults": "Dorośli",
+      "adultsSub": "18+"
+    },
+    "ageLabel": {
+      "adults": "{count, plural, one {# dorosły} few {# dorosłych} many {# dorosłych} other {# dorosłych}}",
+      "teens": "{count, plural, one {# nastolatek} few {# nastolatków} many {# nastolatków} other {# nastolatków}}",
+      "kids": "{count, plural, one {# dziecko} few {# dzieci} many {# dzieci} other {# dzieci}}"
+    },
+    "neighborhoods": {
+      "srodmiescie": { "name": "Śródmieście", "sub": "Centrum Warszawy", "icon": "location_city" },
+      "mokotow": { "name": "Mokotów", "sub": "Południowa Warszawa", "icon": "park" },
+      "praga": { "name": "Praga-Północ", "sub": "Prawy brzeg Wisły", "icon": "local_cafe" },
+      "wola": { "name": "Wola", "sub": "Nowe centrum biznesowe", "icon": "music_note" },
+      "saska": { "name": "Saska Kępa", "sub": "Spokojny Praga-Południe", "icon": "diversity_3" },
+      "ursynow": { "name": "Ursynów", "sub": "Zielone osiedla południa", "icon": "castle" }
+    }
+  },
+  "Card": {
+    "swipe": "Przesuń",
+    "at": "W",
+    "featured": "POLECANE",
+    "popular": "POPULARNE",
+    "live": "NA ŻYWO"
+  },
+  "Levels": {
+    "all": "Wszystkie poziomy",
+    "beginner": "Początkujący",
+    "intermediate": "Średniozaawansowany",
+    "advanced": "Zaawansowany",
+    "mixed": "Mieszany",
+    "allPaces": "Każde tempo"
+  },
+  "Duration": {
+    "minutes": "{count} min",
+    "hours": "{count, plural, one {# godzina} few {# godziny} many {# godzin} other {# godziny}}",
+    "hoursAndHalf": "{count} h 30 min"
+  },
+  "Beta": {
+    "betaBadge": "Beta",
+    "businessBadge": "Dla obiektów",
+    "defaultTitle": "Bądź wśród pierwszych. Dołącz do bety Hakuna.",
+    "defaultSubtitle": "Wcześniejszy dostęp, wiadomości od founderów i starannie dobrane zajęcia w Twoim mieście — prosto na Twój e-mail.",
+    "defaultCta": "Dołącz do bety",
+    "emailPlaceholder": "ty@domena.pl",
+    "success": "Dzięki — sprawdź skrzynkę.",
+    "businessTitle": "Prowadzisz studio lub obiekt? Porozmawiajmy.",
+    "businessSubtitle": "Zapraszamy wąską grupę partnerskich studiów, instruktorów i warsztatów. W czasie bety — zero prowizji.",
+    "businessCta": "Zgłoś się"
+  },
+  "Reviews": {
+    "badge": "Opinie",
+    "title": "Co mówi społeczność",
+    "subtitle": "Prawdziwi ludzie, prawdziwe rytuały. Hakuna powstaje z historii ciekawych świata."
+  },
+  "Footer": {
+    "tagline": "© 2026 HAKUNA. Złoty przewodnik po Twoim mieście.",
+    "privacy": "Polityka prywatności",
+    "terms": "Regulamin",
+    "cookies": "Polityka cookies",
+    "contact": "Kontakt",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn"
+  },
+  "About": {
+    "badge": "Nasza wizja",
+    "heroStart": "Miasto, w którym",
+    "heroEmphasis": "naprawdę",
+    "heroEnd": "żyjesz.",
+    "heroBody": "Hakuna to miejsce dla ludzi, którzy wolą odkrywać niż planować. Łączymy Cię z lokalnymi studiami, warsztatami i otwartymi sesjami — z tymi małymi spotkaniami, dzięki którym dzielnica zaczyna czuć się jak dom.",
+    "values": {
+      "spontaneity": {
+        "title": "Spontaniczność na pierwszym miejscu",
+        "text": "Najlepsze chwile nie mieszczą się w kalendarzu. Pokazujemy to, co zaczyna się w ciągu najbliższych dwóch godzin."
+      },
+      "local": {
+        "title": "Lokalnie od początku",
+        "text": "Każdy gospodarz, studio i instruktor na Hakunie jest z Twojego miasta. Żadnych franczyz, żadnej ściemy."
+      },
+      "curated": {
+        "title": "Wyselekcjonowane, nie skatalogowane",
+        "text": "Wybieramy ręcznie doświadczenia, które naprawdę żyją — nie te z największymi budżetami marketingowymi."
+      }
+    },
+    "timelineHeading": "Nasza droga",
+    "timeline": {
+      "y2023": {
+        "year": "2023",
+        "label": "Pomysł",
+        "text": "Hakuna zaczyna się jako weekendowy eksperyment: jak pomóc ludziom mówić „tak” swojemu miastu?"
+      },
+      "y2024": {
+        "year": "2024",
+        "label": "Pierwsze miasta",
+        "text": "Zamknięta beta z 450+ lokalnymi gospodarzami w Warszawie, Berlinie i Londynie."
+      },
+      "y2026": {
+        "year": "2026",
+        "label": "Dziś",
+        "text": "Otwieramy się dla wszystkich — publiczna beta i rosnąca społeczność."
+      }
+    }
+  },
+  "Legal": {
+    "label": "Regulacje",
+    "lastUpdated": "Ostatnia aktualizacja: {date}",
+    "privacy": {
+      "title": "Polityka prywatności",
+      "updated": "18 kwietnia 2026",
+      "intro": "Ta Polityka prywatności opisuje, jak Hakuna zbiera, wykorzystuje i chroni informacje o Tobie, gdy korzystasz z naszej platformy. Korzystając z Hakuna, akceptujesz opisane poniżej praktyki.",
+      "sections": {
+        "collect": {
+          "heading": "Jakie dane zbieramy",
+          "body": [
+            "Zbieramy dane, które przekazujesz nam bezpośrednio — gdy zakładasz konto, rezerwujesz zajęcia lub kontaktujesz się z nami. Obejmuje to Twoje imię i nazwisko, adres e-mail oraz dane płatności.",
+            "Automatycznie zbieramy też informacje techniczne: typ urządzenia, przeglądarkę, adres IP i wyświetlane strony — po to, by utrzymać bezpieczeństwo platformy i ją rozwijać."
+          ]
+        },
+        "use": {
+          "heading": "Jak wykorzystujemy Twoje dane",
+          "body": [
+            "Wykorzystujemy dane, aby świadczyć i rozwijać nasze usługi, realizować rezerwacje, wysyłać Ci potwierdzenia oraz sporadyczne aktualizacje produktu, a także wykrywać i zapobiegać oszustwom.",
+            "Nie sprzedajemy Twoich danych osobowych. Udostępniamy je dostawcom usług wyłącznie w zakresie niezbędnym do działania platformy (np. operatorom płatności)."
+          ]
+        },
+        "cookies": {
+          "heading": "Cookies i śledzenie",
+          "body": [
+            "Hakuna używa plików cookies i podobnych technologii, aby zapamiętać Twoje preferencje, utrzymać sesję i rozumieć, jak używasz platformy. Preferencjami możesz zarządzać w swojej przeglądarce w dowolnym momencie."
+          ]
+        },
+        "retention": {
+          "heading": "Okres przechowywania",
+          "body": [
+            "Przechowujemy Twoje dane osobowe tak długo, jak aktywne jest konto lub jak wymagają tego obowiązki prawne i świadczenie usługi. W dowolnym momencie możesz poprosić o ich usunięcie, kontaktując się z nami."
+          ]
+        },
+        "rights": {
+          "heading": "Twoje prawa",
+          "body": [
+            "W zależności od Twojej lokalizacji możesz mieć prawo dostępu do danych, ich poprawiania, przeniesienia lub usunięcia. Aby skorzystać z tych praw, napisz do naszego zespołu przez kanały kontaktowe dostępne na stronie."
+          ]
+        },
+        "contact": {
+          "heading": "Kontakt",
+          "body": [
+            "Jeśli masz pytania dotyczące tej Polityki prywatności lub sposobu, w jaki przetwarzamy Twoje dane, napisz do nas na privacy@hakuna.example."
+          ]
+        }
+      }
+    },
+    "terms": {
+      "title": "Regulamin",
+      "updated": "18 kwietnia 2026",
+      "intro": "Ten Regulamin określa zasady dostępu i korzystania z platformy Hakuna. Zakładając konto lub rezerwując zajęcia, akceptujesz jego warunki.",
+      "sections": {
+        "eligibility": {
+          "heading": "Komu przysługuje konto",
+          "body": [
+            "Aby założyć konto w Hakunie, musisz mieć ukończone 18 lat. Jeżeli rezerwujesz w imieniu osoby niepełnoletniej, odpowiadasz za spełnienie wymagań danego obiektu."
+          ]
+        },
+        "bookings": {
+          "heading": "Rezerwacje i płatności",
+          "body": [
+            "Rezerwując zajęcia, zawierasz umowę bezpośrednio z gospodarzem lub studiem. Hakuna działa jako platforma pośrednicząca i obsługuje płatności w imieniu gospodarzy.",
+            "Opłaty są widoczne przy podsumowaniu zamówienia i obejmują należne podatki. Część zajęć wymaga bezzwrotnej zaliczki — jest to jasno oznaczone w ogłoszeniu."
+          ]
+        },
+        "cancellation": {
+          "heading": "Odstąpienie i anulowanie",
+          "body": [
+            "Jeśli w ogłoszeniu nie określono inaczej, możesz anulować rezerwację bez opłat do 48 godzin przed rozpoczęciem zajęć. Po tym czasie zwrot zależy od decyzji gospodarza."
+          ]
+        },
+        "conduct": {
+          "heading": "Zasady korzystania",
+          "body": [
+            "Nie możesz używać Hakuny do nękania innych użytkowników, publikowania treści wprowadzających w błąd ani omijania zabezpieczeń platformy. Konta łamiące te zasady mogą zostać zawieszone bez uprzedzenia."
+          ]
+        },
+        "liability": {
+          "heading": "Odpowiedzialność",
+          "body": [
+            "Hakuna nie odpowiada za urazy, szkody ani straty wynikające z udziału w zajęciach. Zawsze stosuj się do instrukcji gospodarza i obiektu — jeśli masz wątpliwości zdrowotne, skonsultuj się ze specjalistą."
+          ]
+        },
+        "changes": {
+          "heading": "Zmiany regulaminu",
+          "body": [
+            "Możemy aktualizować regulamin co jakiś czas. O istotnych zmianach poinformujemy Cię przez platformę lub e-mailem co najmniej 14 dni przed wejściem w życie."
+          ]
+        }
+      }
+    },
+    "cookies": {
+      "title": "Polityka cookies",
+      "updated": "18 kwietnia 2026",
+      "intro": "Ta Polityka cookies wyjaśnia, czym są pliki cookies, jak używa ich Hakuna i jak możesz zarządzać swoimi preferencjami.",
+      "sections": {
+        "what": {
+          "heading": "Czym są cookies?",
+          "body": [
+            "Cookies to małe pliki tekstowe umieszczane na Twoim urządzeniu podczas odwiedzin strony. Pomagają serwisom zapamiętać informacje o Twojej wizycie — np. preferowany język czy status zalogowania."
+          ]
+        },
+        "types": {
+          "heading": "Rodzaje cookies, których używamy",
+          "body": [
+            "Niezbędne — utrzymują działanie platformy, np. pamiętają Twoją sesję między stronami.",
+            "Wydajnościowe — pomagają zrozumieć, jak używana jest platforma, żebyśmy mogli ją ulepszać. Są anonimowe i zagregowane.",
+            "Preferencyjne — zapamiętują Twoje ustawienia (język, miasto, ulubione), żeby spersonalizować Twoje doświadczenie."
+          ]
+        },
+        "third": {
+          "heading": "Cookies firm trzecich",
+          "body": [
+            "Niektóre funkcje korzystają z zaufanych dostawców (np. operatorów płatności i analityki). Mogą oni ustawiać własne cookies, które podlegają ich politykom prywatności."
+          ]
+        },
+        "managing": {
+          "heading": "Zarządzanie cookies",
+          "body": [
+            "Większość przeglądarek pozwala odrzucić lub usunąć cookies z poziomu ustawień. Zablokowanie niezbędnych cookies może sprawić, że część platformy przestanie działać poprawnie."
+          ]
+        },
+        "contact": {
+          "heading": "Kontakt",
+          "body": [
+            "Pytania o cookies? Napisz na privacy@hakuna.example — chętnie pomożemy."
+          ]
+        }
+      }
+    }
+  },
+  "Activity": {
+    "theExperience": "Doświadczenie",
+    "curriculumFocus": "Co będziesz trenować",
+    "targetAge": "Dla kogo",
+    "intensity": "Intensywność",
+    "durationLabel": "Czas trwania",
+    "totalExperience": "Pełne doświadczenie",
+    "availableDates": "Dostępne terminy",
+    "spotsLeft": "{count, plural, one {Zostało ostatnie miejsce!} few {Zostały jeszcze # miejsca} many {Zostało jeszcze # miejsc} other {Zostało jeszcze # miejsca}}",
+    "spotsLeftShort": "{count, plural, one {zostało 1 miejsce} few {zostały # miejsca} many {zostało # miejsc} other {zostało # miejsca}}",
+    "bookYourSpot": "Zarezerwuj miejsce",
+    "freeCancel": "Bezpłatna anulacja do 48 godzin przed zajęciami.",
+    "joiningPulse": "Idą z Tobą",
+    "alreadyBooked": "Już zarezerwowali",
+    "whatParticipantsSay": "Co mówią uczestnicy",
+    "participantsSubtitle": "Opinie od osób, które były już na tej sesji.",
+    "sample": {
+      "title": "Urban Flow: Warsztat dla performerów",
+      "tags": ["MASTERCLASS", "TANIEC WSPÓŁCZESNY"],
+      "description": "Wejdź na wyższy poziom podczas intensywnej masterclass dla performerów, którzy chcą połączyć taniec współczesny z miejską precyzją. Prowadzi międzynarodowo ceniony choreograf Marcus Thorne — sesja skupia się na świadomości przestrzennej, eksplozywnej sile i emocjonalnej narracji ciała.",
+      "metaAge": "16+ (młodzież / dorośli)",
+      "metaIntensity": "Zaawansowany / Elita",
+      "metaDuration": "180 minut",
+      "location": "Studio 4, Dzielnica Artystyczna",
+      "dates": {
+        "d1": { "label": "24 paź", "time": "18:00" },
+        "d2": { "label": "26 paź", "time": "10:00" }
+      },
+      "curriculum": {
+        "c1": {
+          "title": "Fundament kinetyczny",
+          "description": "Głębokie zrozumienie ciężaru i momentu. Uczysz się wykorzystywać grawitację jako paliwo przejść."
+        },
+        "c2": {
+          "title": "Miejskie tekstury",
+          "description": "Zderzenie płynnych linii tańca współczesnego z ostrym, izolowanym ruchem miasta."
+        },
+        "c3": {
+          "title": "Choreografia i niuans",
+          "description": "Ostatni etap to praca nad układem „Urban Flow”. Uczysz się czytać złożone rytmy i tłumaczyć je na ekspresję całego ciała."
+        }
+      },
+      "instructor": {
+        "role": "Główny prowadzący",
+        "name": "Marcus Thorne",
+        "bio": "Założyciel Kinetic Lab. Marcus choreografował trasy koncertowe i produkcje filmowe na całym świecie. Jego filozofia opiera się na pomoście między techniczną precyzją a surową, ludzką emocją.",
+        "cred1": "Choreograf Roku 2023",
+        "cred2": "15+ lat doświadczenia"
+      }
+    }
+  },
+  "School": {
+    "pulseBadge": "Puls studia",
+    "aboutPrefix": "O",
+    "viewOnMap": "Zobacz na mapie",
+    "classesOfferedBadge": "W ofercie",
+    "currentSchedule": "Aktualny grafik",
+    "viewFullSchedule": "Zobacz cały grafik →",
+    "inTheStudio": "W studiu",
+    "whatStudentsSay": "Co mówią kursanci",
+    "statsLabels": {
+      "students": "Kursanci",
+      "years": "Lat na rynku",
+      "certification": "Certyfikat"
+    },
+    "sample": {
+      "name": "Urban Rhythm Academy",
+      "tagline": "Tam, gdzie ruch spotyka się z mistrzostwem.",
+      "location": "Dzielnica Artystyczna, Warszawa",
+      "about": "Urban Rhythm Academy to miejsce dla tancerzy, performerów i miłośników ruchu, którzy szukają czegoś więcej niż zajęcia — szukają społeczności. Nasi instruktorzy są czynnymi zawodowcami, studia zbudowane z myślą o poważnym treningu, a filozofia prosta: ruch ma wyglądać tak dobrze, jak się czuje.",
+      "stat1Value": "500+",
+      "stat2Value": "10+",
+      "stat3Value": "Pulse Certified",
+      "classes": {
+        "sc1": { "title": "Fundamenty tańca współczesnego", "time": "Pon i Śr 18:00", "location": "Studio 1", "tag": "Każdy poziom" },
+        "sc2": { "title": "Urban Flow — średni poziom", "time": "Wt i Czw 19:30", "location": "Studio 3", "tag": "Średniozaawansowany" },
+        "sc3": { "title": "Kids Movement Lab", "time": "Sob 10:00", "location": "Studio 2", "tag": "7–12 lat" },
+        "sc4": { "title": "Pro Performance Lab", "time": "Niedz 14:00", "location": "Studio 4", "tag": "Zaawansowany" }
+      }
+    }
+  },
+  "activities": {
+    "a1": { "title": "Poranna Vinyasa", "time": "Start za 15 min", "location": "Mokotów", "neighborhood": "Mokotów", "description": "Obudź ciało oddechową sekwencją przy ogrodzie na dachu. Wszystkie poziomy mile widziane — maty na miejscu.", "instructor": "Elena Grace", "school": "Yoga Loft Warszawa", "level": "Wszystkie poziomy", "duration": "60 min" },
+    "a2": { "title": "Koło garncarskie — wprowadzenie", "time": "Start za 42 min", "location": "Śródmieście", "neighborhood": "Śródmieście", "description": "Uformuj swoją pierwszą miskę na obracającym się kole. Mała grupa, praca na rękach, glina i wypał w cenie.", "instructor": "Jonas Weber", "school": "Clay Studio Śródmieście", "level": "Początkujący", "duration": "90 min" },
+    "a3": { "title": "Otwarty padel", "time": "Start za 1h 05 min", "location": "Praga-Północ", "neighborhood": "Praga-Północ", "description": "Wskocz na luźną sesję padla dla mieszanych poziomów. Rakiety na miejscu, początkujący rotują co gemy.", "instructor": "Trener Marco", "school": "Padel Hub Praga", "level": "Mieszany", "duration": "75 min" },
+    "a4": { "title": "Run Club Warszawa", "time": "Start za 1h 30 min", "location": "Park Łazienkowski", "neighborhood": "Śródmieście", "description": "Lekkie 5 km pętlą przez park z grupami tempa i kawą po treningu. Zabierz bidon.", "instructor": "Run Crew Warszawa", "school": "Run Crew Warszawa", "level": "Każde tempo", "duration": "45 min" },
+    "a5": { "title": "Urban Flow — masterclass", "time": "Start za 2h", "location": "Dzielnica Artystyczna", "neighborhood": "Śródmieście", "description": "Intensywne zajęcia tańca współczesnego z mocnym akcentem hip-hopowym. Lustra, sprung floor, studyjne nagłośnienie.", "instructor": "Ava Morin", "school": "Urban Rhythm Academy", "level": "Średniozaawansowany", "duration": "2 godziny", "tag": "POPULARNE" },
+    "a6": { "title": "Tenis ziemny — zaawansowany", "time": "Jutro 09:00", "location": "Mokotów Tennis Club", "neighborhood": "Mokotów", "description": "Gra meczowa nastawiona na technikę. Dla średnio i zaawansowanych, którzy chcą popracować nad ślizgiem.", "instructor": "David Hughes", "school": "Mokotów Tennis Club", "level": "Zaawansowany", "duration": "90 min", "tag": "POPULARNE" },
+    "a7": { "title": "Bouldering — podstawy", "time": "Dziś 19:00", "location": "Wola", "neighborhood": "Wola", "description": "Pierwszy raz na ściance? Nauczysz się czytać drogę, bezpiecznie spadać i zrobić swoje pierwsze V0.", "instructor": "Pia Ender", "school": "BoulderHaus Wola", "level": "Początkujący", "duration": "90 min" },
+    "a8": { "title": "Sunset Boxing", "time": "Dziś 20:30", "location": "Praga-Południe", "neighborhood": "Praga-Południe", "description": "Zrzuć ciężar dnia rundami na tarczach, pracą nóg i obwodem całego ciała. Rękawice na miejscu.", "instructor": "Kai Novak", "school": "Iron Gym Praga", "level": "Wszystkie poziomy", "duration": "60 min" },
+    "a9": { "title": "Świeży makaron od zera", "time": "Sobota 18:00", "location": "Saska Kępa", "neighborhood": "Saska Kępa", "description": "Rozwałkuj własne tagliatelle i ravioli, a potem usiądźcie razem przy kieliszku wina. Składniki i fartuch w cenie.", "instructor": "Chef Lucia", "school": "Cucina Lucia", "level": "Początkujący", "duration": "2,5 godziny" },
+    "a10": { "title": "Akwarela dla zaczynających", "time": "Niedziela 11:00", "location": "Śródmieście", "neighborhood": "Śródmieście", "description": "Luźne, ekspresyjne techniki akwareli dla kompletnie początkujących. Papier, pędzle i farby na miejscu.", "instructor": "Noa Stein", "school": "Atelier Noa", "level": "Początkujący", "duration": "2 godziny" },
+    "s1": { "title": "Sunset Hatha Flow", "time": "Dziś 18:00", "location": "Żoliborz, Warszawa", "neighborhood": "Żoliborz", "description": "Powolna, ugruntowana sekwencja hatha w złotym świetle. Idealna, żeby odpuścić i popracować nad elastycznością.", "instructor": "Priya Shah", "school": "East Light Yoga", "level": "Wszystkie poziomy", "duration": "75 min", "tag": "POLECANE" },
+    "s2": { "title": "Tenis na mączce — zaawansowany", "time": "Jutro 09:00", "location": "Mokotów Tennis Club", "neighborhood": "Mokotów", "description": "Sesja nastawiona na drille: praca nóg, ślizg i taktyka meczowa. Weź dwie piłki.", "instructor": "David Hughes", "school": "Mokotów Tennis Club", "level": "Zaawansowany", "duration": "90 min", "tag": "POPULARNE" },
+    "s3": { "title": "Poranne pływanie na torach", "time": "Jutro 07:00", "location": "Ursynów Aquatics", "neighborhood": "Ursynów", "description": "Treningowe pływanie ze stałymi interwałami dla każdego tempa. Podgrzewany basen 25 m, ręczniki i prysznice w cenie.", "instructor": "Trener Eli", "school": "Ursynów Aquatics", "level": "Średniozaawansowany", "duration": "60 min" },
+    "s4": { "title": "Wieczór Open Mic — gitara", "time": "Piątek 20:00", "location": "Praga-Północ", "neighborhood": "Praga-Północ", "description": "Weź gitarę i jedną-dwie piosenki. Ciepła publika, pro nagłośnienie, pełny bar i zapisy przy wejściu.", "instructor": "Prowadzący: Jesse Lane", "school": "Praga Chords", "level": "Wszystkie poziomy", "duration": "3 godziny", "tag": "NA ŻYWO" }
+  },
+  "reviews": {
+    "r1": { "name": "Anna Kowalska", "text": "Hakuna zmieniła moje weekendy. Znalazłam lokalny warsztat ceramiki 200 metrów od domu — o którym nie miałam pojęcia. Rezerwacja zajęła 20 sekund.", "activity": "Koło garncarskie — wprowadzenie" },
+    "r2": { "name": "Marek Nowak", "text": "Spontaniczne mecze padla w dzielnicy to był game-changer. Na Hakunie wszystko dzieje się live — widzę, co zaczyna się za godzinę, i po prostu idę.", "activity": "Otwarty padel" },
+    "r3": { "name": "Sophia Lindqvist", "text": "Uwielbiam, jak wyselekcjonowane są te zajęcia. Każdy instruktor, którego rezerwowałam, był w najwyższej formie. Aplikacja w końcu szanuje mój czas.", "activity": "Urban Flow — masterclass" },
+    "r4": { "name": "Daniel Osei", "text": "Funkcja „Najbliżej Ciebie” to czysta magia — zarezerwowałem poranny bieg z nieznajomymi, który stał się moim wtorkowym rytuałem.", "activity": "Run Club Warszawa" },
+    "r5": { "name": "Léa Moreau", "text": "Czysty design, uczciwe ceny, prawdziwe społeczności. Miasto wydaje się trochę bardziej żywe.", "activity": "Poranna Vinyasa" },
+    "r6": { "name": "Tomáš Dvořák", "text": "Świetnie działa w podróży. Wylądowałem w Warszawie i tego samego wieczoru byłem na boksie.", "activity": "Sunset Boxing" }
+  }
+}

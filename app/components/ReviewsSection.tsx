@@ -1,9 +1,10 @@
+import { useTranslations } from "next-intl";
 import { Icon } from "./Icon";
 import type { Review } from "../lib/mockData";
 
 function Stars({ rating }: { rating: number }) {
   return (
-    <div className="flex gap-0.5 text-secondary" aria-label={`${rating} out of 5`}>
+    <div className="flex gap-0.5 text-secondary" aria-label={`${rating}/5`}>
       {Array.from({ length: 5 }).map((_, i) => (
         <Icon
           key={i}
@@ -17,25 +18,28 @@ function Stars({ rating }: { rating: number }) {
 
 export default function ReviewsSection({
   reviews,
-  title = "What the community says",
-  subtitle = "Real people, real rituals. Hakuna is built on the stories of the curious.",
+  title,
+  subtitle,
 }: {
   reviews: Review[];
   title?: string;
   subtitle?: string;
 }) {
+  const t = useTranslations("Reviews");
+  const resolvedTitle = title ?? t("title");
+  const resolvedSubtitle = subtitle ?? t("subtitle");
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-24">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14">
         <div>
           <span className="inline-block bg-primary-fixed/60 px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-4">
-            Reviews
+            {t("badge")}
           </span>
           <h2 className="font-headline font-bold text-4xl md:text-6xl leading-none tracking-tight text-on-surface">
-            {title}
+            {resolvedTitle}
           </h2>
         </div>
-        <p className="text-on-surface/60 text-lg max-w-md">{subtitle}</p>
+        <p className="text-on-surface/60 text-lg max-w-md">{resolvedSubtitle}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
