@@ -14,6 +14,7 @@ export default function ClosestToYouCarousel({
   const t = useTranslations("Common");
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   const items = activities.slice(0, 10);
   const baseLen = items.length;
@@ -26,6 +27,45 @@ export default function ClosestToYouCarousel({
     if (cards.length < baseLen * 2) return 0;
     return cards[baseLen].offsetTop - cards[0].offsetTop;
   }, [baseLen]);
+
+  const dragRef = useRef({
+    active: false,
+    pointerId: -1,
+    startY: 0,
+    lastY: 0,
+    lastT: 0,
+    velocity: 0,
+    startScrollTop: 0,
+    moved: false,
+  });
+  const momentumRef = useRef<number | null>(null);
+
+  const cancelMomentum = useCallback(() => {
+    if (momentumRef.current != null) {
+      cancelAnimationFrame(momentumRef.current);
+      momentumRef.current = null;
+    }
+  }, []);
+
+  const snapToNearest = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const cards = el.querySelectorAll<HTMLElement>("[data-card]");
+    if (!cards.length) return;
+    const containerCenter = el.scrollTop + el.clientHeight / 2;
+    let bestIdx = 0;
+    let bestDist = Infinity;
+    cards.forEach((c, i) => {
+      const d = Math.abs(c.offsetTop + c.offsetHeight / 2 - containerCenter);
+      if (d < bestDist) {
+        bestDist = d;
+        bestIdx = i;
+      }
+    });
+    const target = cards[bestIdx];
+    const top = target.offsetTop - (el.clientHeight - target.offsetHeight) / 2;
+    el.scrollTo({ top, behavior: "smooth" });
+  }, []);
 
   const update = useCallback(() => {
     const el = scrollerRef.current;
@@ -50,8 +90,10 @@ export default function ClosestToYouCarousel({
     if (!copyH) return;
     if (bestIdx < baseLen * 0.5) {
       el.scrollTop += copyH;
+      if (dragRef.current.active) dragRef.current.startScrollTop += copyH;
     } else if (bestIdx >= baseLen * 2.5) {
       el.scrollTop -= copyH;
+      if (dragRef.current.active) dragRef.current.startScrollTop -= copyH;
     }
   }, [baseLen, getCopyHeight]);
 
@@ -78,9 +120,109 @@ export default function ClosestToYouCarousel({
     };
   }, [update]);
 
+  useEffect(() => cancelMomentum, [cancelMomentum]);
+
+  const startMomentum = useCallback(
+    (initialV: number) => {
+      const el = scrollerRef.current;
+      if (!el) return;
+      if (Math.abs(initialV) < 0.04) {
+        snapToNearest();
+        return;
+      }
+      let v = initialV;
+      let last = performance.now();
+      const step = (now: number) => {
+        const curr = scrollerRef.current;
+        if (!curr) return;
+        const dt = now - last;
+        last = now;
+        curr.scrollTop += v * dt;
+        v *= Math.pow(0.94, dt / 16.67);
+        if (Math.abs(v) < 0.02) {
+          momentumRef.current = null;
+          snapToNearest();
+          return;
+        }
+        momentumRef.current = requestAnimationFrame(step);
+      };
+      momentumRef.current = requestAnimationFrame(step);
+    },
+    [snapToNearest],
+  );
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (e.pointerType !== "mouse") return;
+    const el = scrollerRef.current;
+    if (!el) return;
+    cancelMomentum();
+    try {
+      el.setPointerCapture(e.pointerId);
+    } catch {}
+    dragRef.current = {
+      active: true,
+      pointerId: e.pointerId,
+      startY: e.clientY,
+      lastY: e.clientY,
+      lastT: performance.now(),
+      velocity: 0,
+      startScrollTop: el.scrollTop,
+      moved: false,
+    };
+    setIsDragging(true);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = dragRef.current;
+    if (!d.active || e.pointerId !== d.pointerId) return;
+    const el = scrollerRef.current;
+    if (!el) return;
+    const delta = d.startY - e.clientY;
+    if (Math.abs(delta) > 4) d.moved = true;
+    el.scrollTop = d.startScrollTop + delta;
+
+    const now = performance.now();
+    const dt = now - d.lastT;
+    if (dt > 0) {
+      const instV = (d.lastY - e.clientY) / dt;
+      d.velocity = d.velocity * 0.7 + instV * 0.3;
+    }
+    d.lastY = e.clientY;
+    d.lastT = now;
+  };
+
+  const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = dragRef.current;
+    if (!d.active || e.pointerId !== d.pointerId) return;
+    d.active = false;
+    setIsDragging(false);
+    const el = scrollerRef.current;
+    if (!el) return;
+    try {
+      el.releasePointerCapture(d.pointerId);
+    } catch {}
+    if (d.moved) {
+      startMomentum(d.velocity);
+    }
+  };
+
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (dragRef.current.moved) {
+      e.preventDefault();
+      e.stopPropagation();
+      dragRef.current.moved = false;
+    }
+  };
+
+  const onWheel = () => {
+    cancelMomentum();
+  };
+
   const scrollByDir = (dir: 1 | -1) => {
     const el = scrollerRef.current;
     if (!el) return;
+    cancelMomentum();
     const cards = el.querySelectorAll<HTMLElement>("[data-card]");
     if (!cards.length) return;
     const containerCenter = el.scrollTop + el.clientHeight / 2;
@@ -127,7 +269,15 @@ export default function ClosestToYouCarousel({
 
       <div
         ref={scrollerRef}
-        className="flex flex-col gap-5 overflow-y-auto overflow-x-hidden no-scrollbar snap-y snap-proximity h-[520px] pl-6 pr-20 pt-[180px] pb-[180px]"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onClickCapture={onClickCapture}
+        onWheel={onWheel}
+        className={`flex flex-col gap-5 overflow-y-auto overflow-x-hidden no-scrollbar h-[520px] pl-6 pr-20 pt-[180px] pb-[180px] touch-pan-y select-none ${
+          isDragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
       >
         {rendered.map((a, i) => {
           const isActive = i % baseLen === activeIdx;
@@ -135,10 +285,11 @@ export default function ClosestToYouCarousel({
             <div
               key={`${a.id}-${i}`}
               data-card
-              className={`snap-center shrink-0 transition-all duration-500 ease-[cubic-bezier(.32,.72,0,1)] will-change-transform ${isActive
+              className={`shrink-0 transition-all duration-500 ease-[cubic-bezier(.32,.72,0,1)] will-change-transform ${
+                isActive
                   ? "translate-x-6 md:translate-x-10 scale-[1.02] opacity-100"
                   : "translate-x-0 scale-[0.96] opacity-60"
-                }`}
+              }`}
             >
               <ActivityRowCard activity={a} />
             </div>
