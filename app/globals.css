@@ -66,6 +66,9 @@
   --radius-DEFAULT: 1rem;
   --radius-lg: 2rem;
   --radius-xl: 3rem;
+
+  /* ─── Site container (Airbnb-style wide) ─── */
+  --container-site: 1760px;
 }
 
 /* ─── Material Symbols ─── */

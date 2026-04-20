@@ -29,7 +29,7 @@ export default function ReviewsSection({
   const resolvedTitle = title ?? t("title");
   const resolvedSubtitle = subtitle ?? t("subtitle");
   return (
-    <section className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-24">
+    <section className="max-w-site mx-auto px-4 md:px-6 py-12 md:py-24">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14">
         <div>
           <span className="inline-block bg-primary-fixed/60 px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-4">

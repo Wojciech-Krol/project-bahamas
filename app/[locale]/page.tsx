@@ -343,7 +343,7 @@ export default function Home() {
   return (
     <>
       <nav className="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(45,10,23,0.06)] transition-all duration-300">
-        <div className="flex justify-between items-center px-4 md:px-8 py-3 md:py-4 max-w-7xl mx-auto relative">
+        <div className="flex justify-between items-center px-4 md:px-8 py-3 md:py-4 max-w-site mx-auto relative">
           <div className="flex items-center gap-12 shrink-0">
             <Link href="/" className="text-2xl font-bold tracking-tighter text-primary font-headline">
               HAKUNA
@@ -422,7 +422,7 @@ export default function Home() {
 
       <main className="pt-20 md:pt-24">
         <section className="relative px-4 md:px-6 py-10 md:py-32">
-          <div className="max-w-7xl mx-auto text-center flex flex-col items-center">
+          <div className="max-w-site mx-auto text-center flex flex-col items-center">
             <h1 className="font-headline font-extrabold text-[2.25rem] md:text-[6rem] leading-[1.1] md:leading-[1.05] tracking-tight text-on-surface mb-6 md:mb-12">
               {t("Home.hero.titleStart")} <br />
               <span className="text-primary italic">{t("Home.hero.titleMiddle")}</span>{" "}
@@ -459,7 +459,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-24">
+        <section className="max-w-site mx-auto px-4 md:px-6 py-8 md:py-24">
           <div className="md:hidden">
             <MobileActivityCarousel activities={closestActivities} />
           </div>

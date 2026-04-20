@@ -16,7 +16,7 @@ export default function SiteFooter() {
 
   return (
     <footer className="w-full rounded-t-[2rem] md:rounded-t-[3rem] mt-10 md:mt-20 bg-surface-container-low">
-      <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-12 py-10 md:py-16 gap-8 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-12 py-10 md:py-16 gap-8 max-w-site mx-auto">
         <div className="space-y-4 text-center md:text-left">
           <Link href="/" className="text-xl font-bold text-on-surface">
             HAKUNA

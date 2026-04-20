@@ -14,6 +14,7 @@ export default function MobileActivityCarousel({
   className = "",
   fillHeight = false,
   detailed = false,
+  fullWidth = false,
 }: {
   activities: Activity[];
   heading?: string;
@@ -22,6 +23,7 @@ export default function MobileActivityCarousel({
   className?: string;
   fillHeight?: boolean;
   detailed?: boolean;
+  fullWidth?: boolean;
 }) {
   const t = useTranslations();
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -57,7 +59,9 @@ export default function MobileActivityCarousel({
     };
   }, [update]);
 
-  const cardSizeClass = fillHeight
+  const cardSizeClass = fullWidth
+    ? "w-full max-w-none h-full"
+    : fillHeight
     ? "w-[85vw] max-w-[380px] h-full"
     : "w-[85vw] max-w-[380px] h-[70vh] max-h-[620px] min-h-[520px]";
   const rootSizeClass = fillHeight ? "h-full flex flex-col" : "";
@@ -80,8 +84,9 @@ export default function MobileActivityCarousel({
 
       <div
         ref={scrollerRef}
-        className={`flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-4 px-4 py-2 scroll-smooth ${fillHeight ? "flex-1 min-h-0" : ""
-          }`}
+        className={`flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth ${
+          fullWidth ? "gap-0 w-full" : "gap-4 -mx-4 px-4 py-2"
+        } ${fillHeight ? "flex-1 min-h-0" : ""}`}
       >
         {items.map((a) => (
           <Link
