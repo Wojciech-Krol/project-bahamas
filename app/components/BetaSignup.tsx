@@ -37,7 +37,7 @@ export default function BetaSignup({
     ctaLabel ?? (variant === "business" ? t("businessCta") : t("defaultCta"));
 
   return (
-    <section className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
+    <section className="max-w-site mx-auto px-4 md:px-6 py-12 md:py-20">
       <div
         className={`rounded-[2rem] md:rounded-[3rem] px-6 md:px-16 py-12 md:py-20 text-center overflow-hidden relative ${
           variant === "business"

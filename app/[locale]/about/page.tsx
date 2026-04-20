@@ -35,7 +35,7 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <section className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
+        <section className="max-w-site mx-auto px-4 md:px-6 py-12 md:py-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
             {VALUE_KEYS.map((v) => (
               <div

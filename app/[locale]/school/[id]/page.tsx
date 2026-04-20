@@ -67,7 +67,7 @@ export default function SchoolPage({
         <section className="relative h-[55vh] md:h-[60vh] min-h-[420px] w-full overflow-hidden">
           <img src={s.heroImage} alt={name} className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 max-w-7xl mx-auto px-4 md:px-6 pb-10 md:pb-14 text-white">
+          <div className="absolute inset-x-0 bottom-0 max-w-site mx-auto px-4 md:px-6 pb-10 md:pb-14 text-white">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary text-on-primary flex items-center justify-center font-headline font-extrabold text-2xl md:text-3xl">
                 {name.charAt(0)}
@@ -90,7 +90,7 @@ export default function SchoolPage({
           </div>
         </section>
 
-        <section className="max-w-7xl mx-auto px-4 md:px-6 -mt-10 md:-mt-16 relative z-10">
+        <section className="max-w-site mx-auto px-4 md:px-6 -mt-10 md:-mt-16 relative z-10">
           <div className="bg-surface-container-lowest rounded-[2rem] editorial-shadow p-6 md:p-8 grid grid-cols-3 gap-4 md:gap-6">
             {STAT_KEYS.map((stat) => (
               <div key={stat.label} className="text-center">
@@ -105,7 +105,7 @@ export default function SchoolPage({
           </div>
         </section>
 
-        <section className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-8 md:gap-12 items-start">
+        <section className="max-w-site mx-auto px-4 md:px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-8 md:gap-12 items-start">
           <div>
             <span className="inline-block bg-primary-fixed/60 px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-4">
               {t("pulseBadge")}
@@ -128,7 +128,7 @@ export default function SchoolPage({
           </div>
         </section>
 
-        <section className="max-w-7xl mx-auto px-4 md:px-6 pb-12 md:pb-20">
+        <section className="max-w-site mx-auto px-4 md:px-6 pb-12 md:pb-20">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
             <div>
               <span className="inline-block bg-secondary-container px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest text-on-secondary-container mb-3">
@@ -149,7 +149,7 @@ export default function SchoolPage({
           </div>
         </section>
 
-        <section className="max-w-7xl mx-auto px-4 md:px-6 pb-12 md:pb-20">
+        <section className="max-w-site mx-auto px-4 md:px-6 pb-12 md:pb-20">
           <h2 className="font-headline font-bold text-3xl md:text-5xl tracking-tight mb-8">
             {t("inTheStudio")}
           </h2>
