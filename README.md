@@ -1,17 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project.
+
+## Dependencies to install
+
+This project uses `npm` (it includes a `package-lock.json`), so install everything with:
+
+```bash
+npm install
+```
+
+That command installs all required packages from `package.json`, including:
+
+- Runtime dependencies: `next`, `react`, `react-dom`, `next-intl`, `mapbox-gl`, `date-fns`, `react-day-picker`
+- Dev dependencies: `typescript`, `eslint`, `eslint-config-next`, `tailwindcss`, `@tailwindcss/postcss`, `@types/node`, `@types/react`, `@types/react-dom`, `@types/mapbox-gl`
 
 ## Getting Started
 
-First, run the development server:
+After installing dependencies, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
