@@ -3,7 +3,8 @@
     "allow": [
       "Bash(node *)",
       "Bash(git -C \"C:/Users/wojte/bahamy/project-bahamas\" status --short)",
-      "Bash(git -C \"C:/Users/wojte/bahamy/project-bahamas\" diff --stat)"
+      "Bash(git -C \"C:/Users/wojte/bahamy/project-bahamas\" diff --stat)",
+      "Bash(npx tsc *)"
     ]
   }
 }

@@ -5,7 +5,9 @@ import { Icon } from "./Icon";
 export default function SiteFooter() {
   const t = useTranslations("Footer");
 
+  const tBlog = useTranslations("blog");
   const links: { href: string; label: string; external?: boolean }[] = [
+    { href: "/blog", label: tBlog("title") },
     { href: "/privacy", label: t("privacy") },
     { href: "/terms", label: t("terms") },
     { href: "/cookies", label: t("cookies") },

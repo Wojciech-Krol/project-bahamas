@@ -4,7 +4,16 @@
     "description": "Znajdź i zarezerwuj najlepsze zajęcia obok Ciebie. Joga, sport, ceramika, muzyka — odkryj to, co dzieje się w Twojej okolicy w najbliższe dwie godziny.",
     "ogTitle": "HAKUNA | Zacznij coś nowego — dziś",
     "ogDescription": "Znajdź i zarezerwuj najlepsze zajęcia obok Ciebie.",
-    "keywords": "zajęcia, warsztaty, joga, sport, taniec, ceramika, muzyka, Warszawa, Hakuna, rezerwacja"
+    "keywords": "zajęcia, warsztaty, joga, sport, taniec, ceramika, muzyka, Warszawa, Hakuna, rezerwacja",
+    "blog": {
+      "title": "Dziennik Hakuny | Historie, przewodniki i miejskie podpowiedzi",
+      "description": "Cotygodniowe teksty o życiu w mieście, dobrostanie i tym, jak powiedzieć „tak” swojej okolicy. Ręcznie pisane przewodniki społeczności Hakuna.",
+      "ogTitle": "Dziennik Hakuny",
+      "ogDescription": "Historie, przewodniki i miejskie podpowiedzi od społeczności Hakuny."
+    },
+    "blogArticle": {
+      "titleSuffix": "| Dziennik Hakuny"
+    }
   },
   "Common": {
     "book": "Zarezerwuj",
@@ -453,5 +462,227 @@
     "r4": { "name": "Daniel Osei", "text": "Funkcja „Najbliżej Ciebie” to czysta magia — zarezerwowałem poranny bieg z nieznajomymi, który stał się moim wtorkowym rytuałem.", "activity": "Run Club Warszawa" },
     "r5": { "name": "Léa Moreau", "text": "Czysty design, uczciwe ceny, prawdziwe społeczności. Miasto wydaje się trochę bardziej żywe.", "activity": "Poranna Vinyasa" },
     "r6": { "name": "Tomáš Dvořák", "text": "Świetnie działa w podróży. Wylądowałem w Warszawie i tego samego wieczoru byłem na boksie.", "activity": "Sunset Boxing" }
+  },
+  "blog": {
+    "title": "Dziennik Hakuny",
+    "subtitle": "Historie, przewodniki i miejskie podpowiedzi od ludzi, przez których Twoje weekendy mają sens.",
+    "backToBlog": "Wróć do Dziennika",
+    "publishedOn": "Opublikowano {date}",
+    "readMore": "Przeczytaj",
+    "featuredBadge": "Wyróżnione",
+    "byAuthor": "Autor: {name}",
+    "categoryLabels": {
+      "city": "Przewodniki miejskie",
+      "wellness": "Dobrostan",
+      "kids": "Rodzina",
+      "sport": "Sport",
+      "culture": "Kultura"
+    },
+    "articles": {
+      "best-dance-schools-warsaw": {
+        "title": "Najlepsze szkoły tańca w Warszawie — ranking 2026",
+        "subtitle": "Pięć studiów, do których naprawdę warto się zapisać — od bachaty po taniec współczesny.",
+        "excerpt": "Sprawdziliśmy dziesiątki szkół tańca w Warszawie. Oto pięć, w których dobrze czują się zarówno początkujący, jak i zaawansowani.",
+        "coverAlt": "Para tańcząca w studiu tańca",
+        "heroAlt": "Zajęcia tańca w studiu o zmierzchu",
+        "body": [
+          { "type": "paragraph", "text": "Dobra szkoła tańca to nie najdroższa podłoga ani najgłośniejszy Instagram. To grafik, który pasuje do twojego tygodnia, instruktor, który pamięta, jak miałeś na imię, i sala pełna ludzi na twoim poziomie." },
+          { "type": "paragraph", "text": "Zebraliśmy pięć studiów w Warszawie, które konsekwentnie dostają najwyższe oceny od uczniów Hakuny — w różnych stylach, różnych dzielnicach i różnych budżetach." },
+          { "type": "heading", "level": 2, "text": "Ranking szkół tańca" },
+          {
+            "type": "ranking",
+            "items": [
+              {
+                "rank": 1,
+                "name": "Studio Rytm — Śródmieście",
+                "image": "https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1200&h=900&fit=crop",
+                "imageAlt": "Sala taneczna z lustrami i drewnianą podłogą",
+                "rating": 4.9,
+                "priceLabel": "80–120 zł / zajęcia",
+                "locationLabel": "Śródmieście, 3 min od metra",
+                "tags": ["Bachata", "Salsa", "Kizomba"],
+                "summary": "Flagowe studio latino w centrum — grafiki do 22:00, grupy od zera do zaawansowanych, co miesiąc otwarte praktyki, na które może wpaść każdy uczeń.",
+                "pros": [
+                  "Najwięcej poziomów w jednej szkole w mieście",
+                  "Instruktorzy uczą w parach — łatwiej złapać prowadzenie",
+                  "Karnety ważne 60 dni zamiast standardowych 30"
+                ],
+                "cons": [
+                  "W weekendy sale bywają zatłoczone",
+                  "Brak parkingu przy budynku"
+                ],
+                "url": "#",
+                "ctaLabel": "Zobacz grafik"
+              },
+              {
+                "rank": 2,
+                "name": "Kolektyw Współczesny — Praga",
+                "image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&h=900&fit=crop",
+                "imageAlt": "Tancerka współczesna w ruchu",
+                "rating": 4.8,
+                "priceLabel": "90 zł / zajęcia",
+                "locationLabel": "Praga-Północ",
+                "tags": ["Współczesny", "Contact", "Improwizacja"],
+                "summary": "Postindustrialna sala w starej drukarni, mała społeczność i podejście bardziej artystyczne niż fitnessowe. Zajęcia prowadzone przez tancerzy z Teatru Wielkiego.",
+                "pros": [
+                  "Świetne dla osób wracających po przerwie",
+                  "Regularne warsztaty weekendowe z gośćmi z zagranicy"
+                ],
+                "cons": [
+                  "Mało godzin porannych",
+                  "Tylko zajęcia grupowe — brak indywidualnych"
+                ],
+                "url": "#",
+                "ctaLabel": "Zobacz grafik"
+              },
+              {
+                "rank": 3,
+                "name": "Hip-Hop Lab — Wola",
+                "image": "https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?w=1200&h=900&fit=crop",
+                "imageAlt": "Grupa hip-hopowa na zajęciach",
+                "rating": 4.7,
+                "priceLabel": "Od 70 zł / zajęcia",
+                "locationLabel": "Wola, przy Rondzie Daszyńskiego",
+                "tags": ["Hip-hop", "Dancehall", "Heels"],
+                "summary": "Duży ośrodek z najlepszą energią w mieście. Cotygodniowe open classy, battle’e raz w miesiącu i szkolenia dla nauczycieli — miejsce dla ludzi, którzy chcą tańczyć dużo.",
+                "pros": [
+                  "Najbardziej przystępne ceny wśród dużych studiów",
+                  "Świetna scena dla początkujących dzieciaków i nastolatków"
+                ],
+                "cons": [
+                  "Zajęcia bywają bardzo liczne (25+ osób)"
+                ],
+                "url": "#",
+                "ctaLabel": "Zobacz grafik"
+              },
+              {
+                "rank": 4,
+                "name": "Ballet Room — Mokotów",
+                "image": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1200&h=900&fit=crop",
+                "imageAlt": "Baletnica przy drążku",
+                "rating": 4.7,
+                "priceLabel": "110 zł / zajęcia",
+                "locationLabel": "Stary Mokotów",
+                "tags": ["Balet", "Jazz", "Barre"],
+                "summary": "Klasyczne studio w kamienicy — mała sala, duża dyscyplina, instruktorki z wykształceniem konserwatoryjnym. Dobre dla dorosłych wracających do baletu.",
+                "pros": [
+                  "Grupy maks. 10 osób",
+                  "Bardzo techniczna, precyzyjna praca nad sylwetką"
+                ],
+                "cons": [
+                  "Styl i atmosfera raczej dla cierpliwych",
+                  "Wyższa cena za pojedyncze wejście"
+                ],
+                "url": "#",
+                "ctaLabel": "Zobacz grafik"
+              },
+              {
+                "rank": 5,
+                "name": "Swing Warsaw — Żoliborz",
+                "image": "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&h=900&fit=crop",
+                "imageAlt": "Para tańcząca swing na parkiecie",
+                "rating": 4.6,
+                "priceLabel": "75 zł / zajęcia",
+                "locationLabel": "Żoliborz",
+                "tags": ["Lindy Hop", "Blues", "Balboa"],
+                "summary": "Najstarsza scena swingowa w mieście. Kursy w semestrach, cotygodniowe potańcówki w piątek — najłatwiejsza droga, żeby wejść do całkiem hermetycznej, ale ciepłej społeczności.",
+                "pros": [
+                  "Cena w karnecie obejmuje piątkowe potańcówki",
+                  "Bardzo przyjazne dla singli — stała rotacja partnerów"
+                ],
+                "cons": [
+                  "Nabór głównie dwa razy w roku",
+                  "Niewiele klas dla zaawansowanych"
+                ],
+                "url": "#",
+                "ctaLabel": "Zobacz grafik"
+              }
+            ]
+          },
+          { "type": "heading", "level": 2, "text": "Jak wybrać szkołę dla siebie" },
+          { "type": "paragraph", "text": "Zacznij od stylu, do którego wracasz na YouTube. Potem odfiltruj szkoły po dzielnicy i wejściu — 15 minut dojazdu to różnica między nawykiem a „a może w przyszłym tygodniu”. Na koniec umów się na jedną pojedynczą lekcję, zanim kupisz karnet." },
+          { "type": "quote", "text": "Najlepsza szkoła tańca to ta, do której wychodzisz we wtorek, kiedy pada.", "cite": "Kasia, instruktorka bachaty" }
+        ]
+      },
+      "warsaw-weekend-guide": {
+        "title": "Idealny warszawski weekend, minuta po minucie",
+        "subtitle": "Od śniadania na Powiślu po basowe wieczory na Pradze — jak mieszkańcy naprawdę spędzają soboty.",
+        "excerpt": "Chodliwy, 48-godzinny plan na Warszawę: piekarnie, parki i małe studia, dla których warto przejść na drugi brzeg.",
+        "coverAlt": "Dachy Warszawy w złotej godzinie",
+        "heroAlt": "Panorama Warszawy o zachodzie słońca",
+        "body": [
+          { "type": "paragraph", "text": "Warszawa nie rozdaje się na mapie. Najlepsze części weekendu to drobne decyzje — piekarnia zamiast sieciówki, joga w plenerze zamiast kolejki do muzeum, spacer wzdłuż Wisły zamiast taksówki na drugi brzeg." },
+          { "type": "heading", "level": 2, "text": "Sobota rano: wolny start na Powiślu" },
+          { "type": "paragraph", "text": "Zacznij od piekarni na Browarnej, weź cynamonową bułkę i flat white, a potem zejdź na bulwary. Około 10:00 chodnik jest pełen biegaczy, deskorolkarzy i tu i ówdzie grupy rozwijającej maty do jogi o wschodzie słońca." },
+          { "type": "image", "src": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&h=1000&fit=crop", "alt": "Bulwary nad Wisłą w słoneczny poranek", "caption": "Bulwary wiślane to w ciepły weekend salon miasta." },
+          { "type": "heading", "level": 2, "text": "Po południu: na drugi brzeg" },
+          { "type": "paragraph", "text": "Przejdź Świętokrzyskim na Pragę. Dzielnica jest głośna, zielona i niedokończona — właśnie dlatego wciąż otwierają się tu najciekawsze pracownie, warsztaty i sklepy z płytami." },
+          { "type": "quote", "text": "Praga to jedyna część Warszawy, która nadal zaskakuje mnie w każdy weekend.", "cite": "Ola, prowadząca run club" },
+          { "type": "heading", "level": 2, "text": "Niedziela: jedne zajęcia, jeden długi obiad" },
+          { "type": "paragraph", "text": "Zarezerwuj jedną rzecz w Hakunie — ceramikę, mecz padla, poranne pływanie — i zostaw resztę dnia otwartą. Sekret dobrej niedzieli to nie robić za dużo." }
+        ]
+      },
+      "morning-yoga-habits": {
+        "title": "Jak pięć minut porannej jogi zmienia cały tydzień",
+        "subtitle": "Nie potrzebujesz 90-minutowego flow. Potrzebujesz rytuału, którego naprawdę się trzymasz.",
+        "excerpt": "Malutka poranna praktyka — trzy pozycje, pięć minut, bez maty — wygrywa z idealnymi zajęciami, które odpuszczasz we wtorek.",
+        "coverAlt": "Praktyka jogi o wschodzie słońca",
+        "heroAlt": "Poranna joga na drewnianej podłodze",
+        "body": [
+          { "type": "paragraph", "text": "Idealne zajęcia nie liczą się, jeśli są w kalendarzu, a nie w ciele. Praktyka, która zmienia tydzień, jest na tyle mała, że zadzieje się we wtorek, kiedy jesteś zmęczona." },
+          { "type": "heading", "level": 2, "text": "Zasada pięciu minut" },
+          { "type": "paragraph", "text": "Trzy pozycje. Po pięć oddechów. Tyle. Kot–krowa, żeby obudzić kręgosłup, niski wypad, żeby otworzyć biodra, i skręt w siadzie przed kawą. Kończysz, zanim zagotuje się czajnik." },
+          { "type": "quote", "text": "Nie dorastamy do poziomu swoich celów. Spadamy do poziomu swoich nawyków.", "cite": "James Clear" },
+          { "type": "heading", "level": 2, "text": "Kiedy dorzucić pełne zajęcia" },
+          { "type": "paragraph", "text": "Gdy wersja pięciominutowa wytrzyma dwa pełne tygodnie, zapisz się na jedne zajęcia w studio w tygodniu. Rytuał niesie przez dni, w które nie chce ci się iść — a tych, szczerze mówiąc, jest większość." },
+          { "type": "image", "src": "https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=1600&h=1000&fit=crop", "alt": "Zwinięte maty do jogi w nasłonecznionym studio", "caption": "Studia obok Ciebie w Hakunie — wybierz jedno i zapisz się na sobotni poranek." }
+        ]
+      },
+      "family-friendly-weekends": {
+        "title": "Rodzinne weekendy, które nie kosztują majątku",
+        "subtitle": "Sześć pomysłów o małym wysiłku i dużej radości — dla rodziców, którzy też chcą mieć weekend.",
+        "excerpt": "Nie potrzebujesz parku rozrywki. Potrzebujesz krótkiej listy bliskich rzeczy, z których robi się sobota — i planu B na deszcz.",
+        "coverAlt": "Rodzina na warsztacie plenerowym",
+        "heroAlt": "Rodzice i dzieci bawiący się w parku",
+        "body": [
+          { "type": "paragraph", "text": "Dobry rodzinny weekend rządzi się tą samą zasadą, co każdy inny: mniej ambicji, więcej bliskości. 15-minutowy spacer to niższy próg niż 45 minut samochodem — i odbędzie się dwa razy częściej." },
+          { "type": "heading", "level": 2, "text": "Jedna rezerwacja, jeden plan B" },
+          { "type": "paragraph", "text": "Zarezerwuj jedną rzecz z wyprzedzeniem — ceramikę rodzic-dziecko, boulderingową sesję dla juniorów, sobotni basen — i miej w zanadrzu jeden plan na deszcz. Cała reszta rodzi się w biegu." },
+          { "type": "image", "src": "https://images.unsplash.com/photo-1471421298428-1d74d5ec55d5?w=1600&h=1000&fit=crop", "alt": "Dzieci malujące na weekendowym warsztacie", "caption": "Zajęcia w rękach zawsze wygrywają z zajęciami w ekranie." },
+          { "type": "heading", "level": 2, "text": "Trzymajcie tę samą sobotę" },
+          { "type": "paragraph", "text": "Dzieci kochają powtarzalność bardziej niż różnorodność. „Sobotni rytuał” — ten sam park, ta sama kawiarnia, te same zajęcia — jest tańszy, spokojniejszy i niepostrzeżenie staje się ulubioną częścią tygodnia." }
+        ]
+      },
+      "why-run-clubs-work": {
+        "title": "Dlaczego run cluby działają (i jak znaleźć ten, który pasuje)",
+        "subtitle": "Nauka jest jednoznaczna, atmosfera niepoważna. Krótki przewodnik po twoim pierwszym biegu z grupą.",
+        "excerpt": "Bieganie solo to nawyk. Bieganie w grupie to życie towarzyskie. Oto, jak znaleźć klub w twoim tempie — i w twoje wtorkowe wieczory.",
+        "coverAlt": "Grupa biegowa w parku",
+        "heroAlt": "Grupa biegnąca przez miejski park o świcie",
+        "body": [
+          { "type": "paragraph", "text": "Run club to trzy rzeczy naraz: cotygodniowy trening, niewymagająca paczka znajomych i powód, żeby wyjść z domu, kiedy naprawdę nie chcesz. Zero złotych za całkiem niezły pakiet." },
+          { "type": "heading", "level": 2, "text": "Wybieraj tempem, nie bliskością" },
+          { "type": "paragraph", "text": "Klub pięć minut stąd w nie twoim tempie jest gorszy niż klub 20 minut stąd w twoim. Pytaj o najwolniejszą grupę, a nie o najszybszą — dobre kluby zaczynają się od tempa dla początkujących." },
+          { "type": "quote", "text": "Nikt nie zaczął biegać, żeby się ścigać. Zaczęliśmy, żeby rozmawiać.", "cite": "Założyciel warszawskiej ekipy biegowej" },
+          { "type": "heading", "level": 2, "text": "Daj sobie trzy razy" },
+          { "type": "paragraph", "text": "Pierwszy bieg to randka w ciemno. Drugi to druga opinia. Trzeci — wtedy wiesz. Daj każdemu nowemu klubowi trzy wtorki, zanim podejmiesz decyzję." }
+        ]
+      },
+      "pottery-beginners-guide": {
+        "title": "Pierwsze zajęcia z ceramiki: czego się spodziewać",
+        "subtitle": "Narzędzia, bałagan i dlaczego twoja pierwsza miska będzie idealnie niedoskonała.",
+        "excerpt": "Dwie godziny, glina za paznokciami i lekko krzywa miska, którą zatrzymasz na zawsze. Oto, co naprawdę dzieje się na zajęciach dla początkujących.",
+        "coverAlt": "Dłonie formujące glinę na kole garncarskim",
+        "heroAlt": "Koło garncarskie ze świeżą gliną",
+        "body": [
+          { "type": "paragraph", "text": "Nikt na pierwszych zajęciach z ceramiki nie robi ładnej miski. O to właśnie chodzi. Nie jesteś tam dla obiektu — jesteś tam dla dwóch godzin, w których jedynym zadaniem są twoje ręce, kręcące się koło i mokra glina." },
+          { "type": "heading", "level": 2, "text": "Co zabrać" },
+          { "type": "paragraph", "text": "Nic. W pracowni są fartuchy, glina, narzędzia i woda. Włóż coś, czego nie żal pobrudzić, zepnij włosy i zdejmij pierścionki, zanim usiądziesz." },
+          { "type": "image", "src": "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=1600&h=1000&fit=crop", "alt": "Gotowe prace ceramiczne schnące na półce", "caption": "Twoja pierwsza praca trafia na półkę do suszenia — odbierzesz ją tydzień później." },
+          { "type": "heading", "level": 2, "text": "Ciche piętro" },
+          { "type": "paragraph", "text": "Większość osób po zajęciach mówi to samo: przez dwie godziny nie myśleli ani o telefonie, ani o pracy, ani o tygodniu. I dla tego naprawdę się zapisują." }
+        ]
+      }
+    }
   }
 }

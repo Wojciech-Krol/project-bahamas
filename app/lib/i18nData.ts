@@ -1,6 +1,6 @@
 "use client";
 
-import { useMessages } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 import {
   ACTIVITIES_DATA,
   CLOSEST_IDS,
@@ -10,6 +10,8 @@ import {
   type Activity,
   type Review,
 } from "./mockData";
+import type { SearchParams } from "./searchQuery";
+import type { ActivityKey } from "../components/search/constants";
 
 type ActivityCopy = {
   title?: string;
@@ -67,6 +69,52 @@ export function useClosestActivities(): Activity[] {
 
 export function useSearchResults(): Activity[] {
   return useActivitiesByIds(SEARCH_RESULT_IDS);
+}
+
+function matchesActivityKeys(
+  activity: Activity,
+  keys: string[],
+  tLabel: (k: ActivityKey) => string
+): boolean {
+  if (keys.length === 0) return true;
+  const haystack = `${activity.title} ${activity.description ?? ""}`.toLowerCase();
+  return keys.some((k) => {
+    let label: string;
+    try {
+      label = tLabel(k as ActivityKey);
+    } catch {
+      label = k;
+    }
+    return haystack.includes(label.toLowerCase()) || haystack.includes(k.toLowerCase());
+  });
+}
+
+function matchesNeighborhood(activity: Activity, query: string): boolean {
+  if (!query) return true;
+  const q = query.toLowerCase();
+  return (
+    activity.neighborhood.toLowerCase().includes(q) ||
+    activity.location.toLowerCase().includes(q)
+  );
+}
+
+export function useFilteredActivities(filters: SearchParams): Activity[] {
+  const allIds = Array.from(
+    new Set([...CLOSEST_IDS, ...SEARCH_RESULT_IDS, ...Object.keys(ACTIVITIES_DATA)])
+  );
+  const all = useActivitiesByIds(allIds);
+  const tLabel = useTranslations("Search.activityLabels");
+
+  const activityKeys = filters.activities
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  return all.filter(
+    (a) =>
+      matchesActivityKeys(a, activityKeys, (k) => tLabel(k)) &&
+      matchesNeighborhood(a, filters.neighborhood)
+  );
 }
 
 export function useReviews(ids: string[] = REVIEW_IDS): Review[] {

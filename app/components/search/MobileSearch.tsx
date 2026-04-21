@@ -55,6 +55,7 @@ export function MobileSearchOverlay({
   onWhenChange,
   onAgeUpdate,
   onClearAll,
+  onSubmit,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -68,6 +69,7 @@ export function MobileSearchOverlay({
   onWhenChange: (v: string) => void;
   onAgeUpdate: (key: keyof AgeCounts, delta: number) => void;
   onClearAll: () => void;
+  onSubmit?: () => void;
 }) {
   const t = useTranslations();
   const formatActivities = useFormatActivities();
@@ -215,7 +217,10 @@ export function MobileSearchOverlay({
             {t("Common.clearAll")}
           </button>
           <button
-            onClick={onClose}
+            onClick={() => {
+              onSubmit?.();
+              onClose();
+            }}
             className="bg-primary text-on-primary px-7 py-3.5 rounded-full font-headline font-bold text-sm flex items-center gap-2 shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95 transition-all"
           >
             <Icon name="search" className="text-[18px]" />

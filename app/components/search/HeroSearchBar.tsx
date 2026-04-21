@@ -39,6 +39,7 @@ export default function HeroSearchBar({
   onNeighborhoodChange,
   onWhenChange,
   onAgeUpdate,
+  onSubmit,
   className = "w-full max-w-5xl mb-12",
 }: {
   containerRef?: React.RefObject<HTMLDivElement | null>;
@@ -51,6 +52,7 @@ export default function HeroSearchBar({
   onNeighborhoodChange: (v: string) => void;
   onWhenChange: (v: string) => void;
   onAgeUpdate: (key: keyof AgeCounts, delta: number) => void;
+  onSubmit?: () => void;
   className?: string;
 }) {
   const t = useTranslations();
@@ -177,6 +179,8 @@ export default function HeroSearchBar({
 
             <div className="p-1 pl-4 shrink-0">
               <button
+                type="button"
+                onClick={onSubmit}
                 className={`bg-primary text-on-primary flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95 h-14 rounded-full ${
                   isExpanded ? "px-6" : "px-[16px]"
                 }`}
