@@ -3,17 +3,16 @@
 import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { AgeCounts } from "./constants";
+import type { SearchParams } from "../../lib/searchQuery";
 
-export function useSearchState() {
+export function useSearchState(initial?: Partial<SearchParams>) {
   const t = useTranslations("Search.ageLabel");
-  const [activities, setActivities] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [when, setWhen] = useState("");
-  const [ageCounts, setAgeCounts] = useState<AgeCounts>({
-    kids: 0,
-    teens: 0,
-    adults: 1,
-  });
+  const [activities, setActivities] = useState(initial?.activities ?? "");
+  const [neighborhood, setNeighborhood] = useState(initial?.neighborhood ?? "");
+  const [when, setWhen] = useState(initial?.when ?? "");
+  const [ageCounts, setAgeCounts] = useState<AgeCounts>(
+    initial?.ageCounts ?? { kids: 0, teens: 0, adults: 1 }
+  );
 
   const handleAgeUpdate = useCallback(
     (key: keyof AgeCounts, delta: number) => {
@@ -41,12 +40,15 @@ export function useSearchState() {
     return parts.join(", ");
   })();
 
+  const params: SearchParams = { activities, neighborhood, when, ageCounts };
+
   return {
     activities,
     neighborhood,
     when,
     ageCounts,
     ageLabel,
+    params,
     setActivities,
     setNeighborhood,
     setWhen,

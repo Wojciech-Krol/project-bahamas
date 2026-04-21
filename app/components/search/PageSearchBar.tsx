@@ -1,26 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "../../../src/i18n/navigation";
 import HeroSearchBar from "./HeroSearchBar";
 import { MobileSearchPill, MobileSearchOverlay } from "./MobileSearch";
 import { useSearchState } from "./useSearchState";
+import { buildSearchQuery, parseSearchQuery } from "../../lib/searchQuery";
 
 export default function PageSearchBar({
   className = "w-full",
 }: {
   className?: string;
 }) {
-  const s = useSearchState();
+  const urlParams = useSearchParams();
+  const router = useRouter();
+  const initial = useMemo(
+    () => parseSearchQuery(urlParams ?? new URLSearchParams()),
+    [urlParams]
+  );
+  const s = useSearchState(initial);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const submit = useCallback(() => {
+    const qs = buildSearchQuery(s.params);
+    router.push(`/search${qs ? `?${qs}` : ""}`);
+  }, [s.params, router]);
 
   return (
     <>
-      {/* Mobile pill */}
       <div className="md:hidden">
         <MobileSearchPill onClick={() => setMobileOpen(true)} />
       </div>
 
-      {/* Desktop full bar */}
       <div className="hidden md:block">
         <HeroSearchBar
           className={className}
@@ -33,6 +45,7 @@ export default function PageSearchBar({
           onNeighborhoodChange={s.setNeighborhood}
           onWhenChange={s.setWhen}
           onAgeUpdate={s.handleAgeUpdate}
+          onSubmit={submit}
         />
       </div>
 
@@ -49,6 +62,7 @@ export default function PageSearchBar({
         onWhenChange={s.setWhen}
         onAgeUpdate={s.handleAgeUpdate}
         onClearAll={s.clearAll}
+        onSubmit={submit}
       />
     </>
   );

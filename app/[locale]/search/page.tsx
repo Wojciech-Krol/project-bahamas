@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState, useRef } from "react";
+import { useCallback, useMemo, useState, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { Link, useRouter } from "../../../src/i18n/navigation";
 import SiteNavbar from "../../components/SiteNavbar";
 import { Icon } from "../../components/Icon";
@@ -10,7 +11,8 @@ import { MobileSearchOverlay } from "../../components/search/MobileSearch";
 import { useSearchState } from "../../components/search/useSearchState";
 import MapboxMap from "../../components/MapboxMap";
 import MobileActivityCarousel from "../../components/MobileActivityCarousel";
-import { useSearchResults } from "../../lib/i18nData";
+import { useFilteredActivities } from "../../lib/i18nData";
+import { buildSearchQuery, parseSearchQuery } from "../../lib/searchQuery";
 import type { Activity } from "../../lib/mockData";
 
 function CompactCard({ activity }: { activity: Activity }) {
@@ -188,9 +190,21 @@ function MobileBottomSheet({
 
 export default function SearchPage() {
   const t = useTranslations();
-  const results = useSearchResults();
-  const s = useSearchState();
+  const router = useRouter();
+  const urlParams = useSearchParams();
+  const initial = useMemo(
+    () => parseSearchQuery(urlParams ?? new URLSearchParams()),
+    [urlParams]
+  );
+  const results = useFilteredActivities(initial);
+  const s = useSearchState(initial);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  const submit = useCallback(() => {
+    const qs = buildSearchQuery(s.params);
+    router.push(`/search${qs ? `?${qs}` : ""}`);
+    setSearchOpen(false);
+  }, [s.params, router]);
 
   const points = useMemo(
     () =>
@@ -230,6 +244,7 @@ export default function SearchPage() {
         onWhenChange={s.setWhen}
         onAgeUpdate={s.handleAgeUpdate}
         onClearAll={s.clearAll}
+        onSubmit={submit}
       />
 
       <div className="md:hidden fixed inset-x-0 bottom-0 top-[76px] z-10">

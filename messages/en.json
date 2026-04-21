@@ -4,7 +4,16 @@
     "description": "Find and book the best activities near you. Yoga, sport, pottery, music — discover what's happening in your neighborhood in the next two hours.",
     "ogTitle": "HAKUNA | Start something new — today",
     "ogDescription": "Find and book the best activities near you.",
-    "keywords": "activities, classes, sports, yoga, pottery, workshops, dance, music, Hakuna, booking"
+    "keywords": "activities, classes, sports, yoga, pottery, workshops, dance, music, Hakuna, booking",
+    "blog": {
+      "title": "The Hakuna Journal | Stories, guides & city picks",
+      "description": "Weekly reads on local life, wellness, and how to say yes to your city. Hand-written guides from the Hakuna community.",
+      "ogTitle": "The Hakuna Journal",
+      "ogDescription": "Stories, guides & city picks from the Hakuna community."
+    },
+    "blogArticle": {
+      "titleSuffix": "| Hakuna Journal"
+    }
   },
   "Common": {
     "book": "Book",
@@ -453,5 +462,227 @@
     "r4": { "name": "Daniel Osei", "text": "The 'Closest to You' feature is pure magic — I booked a sunrise run with strangers that became my Tuesday ritual.", "activity": "Urban Run Club" },
     "r5": { "name": "Léa Moreau", "text": "Clean design, honest pricing, real communities. The city feels a little more alive.", "activity": "Sunrise Vinyasa Flow" },
     "r6": { "name": "Tomáš Dvořák", "text": "Great for travelling. I dropped into a boxing class in Berlin the same night I landed.", "activity": "Sunset Boxing" }
+  },
+  "blog": {
+    "title": "The Hakuna Journal",
+    "subtitle": "Stories, guides and city picks from the people who make your weekends worth showing up for.",
+    "backToBlog": "Back to the Journal",
+    "publishedOn": "Published {date}",
+    "readMore": "Read the story",
+    "featuredBadge": "Featured",
+    "byAuthor": "By {name}",
+    "categoryLabels": {
+      "city": "City guides",
+      "wellness": "Wellness",
+      "kids": "Family",
+      "sport": "Sport",
+      "culture": "Culture"
+    },
+    "articles": {
+      "best-dance-schools-warsaw": {
+        "title": "The best dance schools in Warsaw — 2026 ranking",
+        "subtitle": "Five studios actually worth signing up for — from bachata to contemporary.",
+        "excerpt": "We checked dozens of Warsaw dance schools. Here are the five that beginners and advanced dancers both rate consistently.",
+        "coverAlt": "Couple dancing in a studio",
+        "heroAlt": "Dance class in a studio at dusk",
+        "body": [
+          { "type": "paragraph", "text": "A good dance school isn't the most expensive floor or the loudest Instagram. It's a schedule that fits your week, a teacher who remembers your name, and a room full of people at your level." },
+          { "type": "paragraph", "text": "We pulled the five Warsaw studios that consistently get the highest ratings from Hakuna students — across styles, neighborhoods, and budgets." },
+          { "type": "heading", "level": 2, "text": "The ranking" },
+          {
+            "type": "ranking",
+            "items": [
+              {
+                "rank": 1,
+                "name": "Studio Rytm — Śródmieście",
+                "image": "https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1200&h=900&fit=crop",
+                "imageAlt": "Dance studio with mirrors and wooden floor",
+                "rating": 4.9,
+                "priceLabel": "80–120 zł / class",
+                "locationLabel": "Śródmieście, 3 min from metro",
+                "tags": ["Bachata", "Salsa", "Kizomba"],
+                "summary": "The flagship latin studio downtown — classes running until 22:00, groups from zero to advanced, and monthly open practicas anyone can drop into.",
+                "pros": [
+                  "More levels under one roof than anywhere else in the city",
+                  "Teachers lead in pairs — easier to pick up lead/follow",
+                  "Passes valid for 60 days instead of the usual 30"
+                ],
+                "cons": [
+                  "Rooms get crowded on weekends",
+                  "No parking near the building"
+                ],
+                "url": "#",
+                "ctaLabel": "See schedule"
+              },
+              {
+                "rank": 2,
+                "name": "Kolektyw Współczesny — Praga",
+                "image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&h=900&fit=crop",
+                "imageAlt": "Contemporary dancer mid-movement",
+                "rating": 4.8,
+                "priceLabel": "90 zł / class",
+                "locationLabel": "Praga-Północ",
+                "tags": ["Contemporary", "Contact", "Improvisation"],
+                "summary": "A post-industrial room in a former print shop, a small crew, and a vibe that's more art studio than fitness class. Taught by dancers from Teatr Wielki.",
+                "pros": [
+                  "Great for people coming back after a break",
+                  "Regular weekend workshops with visiting guests"
+                ],
+                "cons": [
+                  "Few morning slots",
+                  "Group classes only — no private sessions"
+                ],
+                "url": "#",
+                "ctaLabel": "See schedule"
+              },
+              {
+                "rank": 3,
+                "name": "Hip-Hop Lab — Wola",
+                "image": "https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?w=1200&h=900&fit=crop",
+                "imageAlt": "Hip-hop group in class",
+                "rating": 4.7,
+                "priceLabel": "From 70 zł / class",
+                "locationLabel": "Wola, by Rondo Daszyńskiego",
+                "tags": ["Hip-hop", "Dancehall", "Heels"],
+                "summary": "A big space with the best energy in town. Weekly open classes, monthly battles, and a teacher pipeline — a home for people who want to dance a lot.",
+                "pros": [
+                  "Best price of any large studio in the city",
+                  "Strong beginner scene for kids and teens"
+                ],
+                "cons": [
+                  "Classes can get very large (25+ people)"
+                ],
+                "url": "#",
+                "ctaLabel": "See schedule"
+              },
+              {
+                "rank": 4,
+                "name": "Ballet Room — Mokotów",
+                "image": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1200&h=900&fit=crop",
+                "imageAlt": "Ballerina at the barre",
+                "rating": 4.7,
+                "priceLabel": "110 zł / class",
+                "locationLabel": "Stary Mokotów",
+                "tags": ["Ballet", "Jazz", "Barre"],
+                "summary": "A classic studio tucked inside a tenement — small room, big discipline, conservatory-trained teachers. Good for adults returning to ballet.",
+                "pros": [
+                  "Groups capped at 10 people",
+                  "Very technical, careful work on posture"
+                ],
+                "cons": [
+                  "Style and vibe reward patience",
+                  "Higher drop-in price"
+                ],
+                "url": "#",
+                "ctaLabel": "See schedule"
+              },
+              {
+                "rank": 5,
+                "name": "Swing Warsaw — Żoliborz",
+                "image": "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&h=900&fit=crop",
+                "imageAlt": "Couple dancing swing on a wooden floor",
+                "rating": 4.6,
+                "priceLabel": "75 zł / class",
+                "locationLabel": "Żoliborz",
+                "tags": ["Lindy Hop", "Blues", "Balboa"],
+                "summary": "The oldest swing scene in the city. Semester-based courses and weekly Friday socials — the easiest way into a tight but warm community.",
+                "pros": [
+                  "Pass includes Friday socials",
+                  "Very single-friendly — constant partner rotation"
+                ],
+                "cons": [
+                  "Intakes mostly twice a year",
+                  "Few advanced-only classes"
+                ],
+                "url": "#",
+                "ctaLabel": "See schedule"
+              }
+            ]
+          },
+          { "type": "heading", "level": 2, "text": "How to pick one for yourself" },
+          { "type": "paragraph", "text": "Start with the style you keep going back to on YouTube. Then filter by neighborhood and door-to-door time — 15 minutes of commute is the difference between habit and maybe next week. Finally, book a single drop-in before you commit to a pass." },
+          { "type": "quote", "text": "The best dance school is the one you actually leave home for on a rainy Tuesday.", "cite": "Kasia, bachata teacher" }
+        ]
+      },
+      "warsaw-weekend-guide": {
+        "title": "A perfect Warsaw weekend, minute by minute",
+        "subtitle": "From Powiśle breakfasts to Praga basslines — how locals actually spend their Saturdays.",
+        "excerpt": "A living, walkable 48-hour itinerary through Warsaw: the bakeries, the parks, and the tiny studios worth crossing the river for.",
+        "coverAlt": "Warsaw rooftops at golden hour",
+        "heroAlt": "Warsaw skyline at sunset",
+        "body": [
+          { "type": "paragraph", "text": "Warsaw doesn't hand itself over on a map. The best parts of the weekend are the small choices — the bakery over the chain café, the outdoor yoga class over another museum queue, the walk along the river instead of the taxi across it." },
+          { "type": "heading", "level": 2, "text": "Saturday morning: slow start in Powiśle" },
+          { "type": "paragraph", "text": "Start at a bakery on Browarna, grab a cinnamon bun and a flat white, and wander down to the riverbank. By 10:00 the pavement is full of runners, skateboarders and the occasional sunrise yoga group rolling up their mats." },
+          { "type": "image", "src": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&h=1000&fit=crop", "alt": "Vistula riverbank on a sunny morning", "caption": "The Vistula boulevards are the city's living room on a warm weekend." },
+          { "type": "heading", "level": 2, "text": "Afternoon: cross the river" },
+          { "type": "paragraph", "text": "Walk the Świętokrzyski bridge into Praga. The neighborhood is loud, green and unfinished — which is exactly why the best new studios, workshops and record stores keep opening here." },
+          { "type": "quote", "text": "Praga is the only part of Warsaw that still surprises me every weekend.", "cite": "Ola, run club leader" },
+          { "type": "heading", "level": 2, "text": "Sunday: one class, one long lunch" },
+          { "type": "paragraph", "text": "Book one thing on Hakuna — a pottery session, a paddle match, a sunrise swim — then leave the rest of the day open. Sunday's secret is not doing too much." }
+        ]
+      },
+      "morning-yoga-habits": {
+        "title": "How five minutes of morning yoga changes your week",
+        "subtitle": "You don't need a 90-minute flow. You need a ritual you'll actually keep.",
+        "excerpt": "A tiny morning practice — three poses, five minutes, no mat required — beats the perfect class you skip every Tuesday.",
+        "coverAlt": "Yoga practice at sunrise",
+        "heroAlt": "Sunrise yoga on a wooden floor",
+        "body": [
+          { "type": "paragraph", "text": "The perfect class doesn't count if it's on your calendar and not in your body. The practice that changes your week is the one small enough to happen on a Tuesday when you're tired." },
+          { "type": "heading", "level": 2, "text": "The five-minute rule" },
+          { "type": "paragraph", "text": "Three poses. Five breaths each. That's it. Cat-cow to wake the spine, a low lunge to open the hips, and a seated twist before coffee. You're done before the kettle boils." },
+          { "type": "quote", "text": "You don't rise to the level of your goals. You fall to the level of your habits.", "cite": "James Clear" },
+          { "type": "heading", "level": 2, "text": "When to add the full class" },
+          { "type": "paragraph", "text": "Once the five-minute version has held for two full weeks, book a studio class once a week. The ritual carries you through the days you don't feel like going — which, let's be honest, is most of them." },
+          { "type": "image", "src": "https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=1600&h=1000&fit=crop", "alt": "Yoga mats rolled up in a sunlit studio", "caption": "Studios near you on Hakuna — pick one and book for Saturday morning." }
+        ]
+      },
+      "family-friendly-weekends": {
+        "title": "Family-friendly weekends that don't cost a fortune",
+        "subtitle": "Six low-effort, high-joy ideas for parents who want a real weekend too.",
+        "excerpt": "You don't need a theme park. You need a short list of nearby things you can turn into a Saturday — and a backup for when it rains.",
+        "coverAlt": "Family at an outdoor workshop",
+        "heroAlt": "Parents and kids playing in a park",
+        "body": [
+          { "type": "paragraph", "text": "The trick to a good family weekend is the same as any weekend: less ambition, more proximity. A 15-minute walk is a lower bar than a 45-minute drive, and you'll do the walk twice as often." },
+          { "type": "heading", "level": 2, "text": "One booking, one backup" },
+          { "type": "paragraph", "text": "Book one thing ahead — a parent-and-kid pottery class, a junior bouldering session, a Saturday swim — and hold one backup in your back pocket for rain. Everything else, improvise." },
+          { "type": "image", "src": "https://images.unsplash.com/photo-1471421298428-1d74d5ec55d5?w=1600&h=1000&fit=crop", "alt": "Kids painting at a weekend workshop", "caption": "Hands-on classes beat screen-based ones every time." },
+          { "type": "heading", "level": 2, "text": "Keep the same Saturday" },
+          { "type": "paragraph", "text": "Kids love repetition more than variety. A \"Saturday routine\" — same park, same café, same class — is cheaper, calmer and quietly becomes the part of the week everyone looks forward to." }
+        ]
+      },
+      "why-run-clubs-work": {
+        "title": "Why run clubs work (and how to find one that fits)",
+        "subtitle": "The science is clear and the vibes are unserious. A short field guide to joining your first group run.",
+        "excerpt": "Solo runs are a habit. Group runs are a social life. Here's how to find a club that matches your pace — and your Tuesday evenings.",
+        "coverAlt": "Running group in a park",
+        "heroAlt": "Group run through a city park at dawn",
+        "body": [
+          { "type": "paragraph", "text": "A run club is three things at once: a weekly workout, a low-pressure friend group, and a reason to leave the apartment when you really don't want to. That's a good deal for zero cost." },
+          { "type": "heading", "level": 2, "text": "Pick by pace, not by proximity" },
+          { "type": "paragraph", "text": "A club five minutes away at the wrong pace is worse than one 20 minutes away at yours. Ask about the slowest group, not the fastest — good clubs lead with their beginner pace." },
+          { "type": "quote", "text": "Nobody got into running to race. We got into running to talk.", "cite": "Founder of a Warsaw run crew" },
+          { "type": "heading", "level": 2, "text": "Show up three times" },
+          { "type": "paragraph", "text": "The first run is a blind date. The second is a second opinion. The third is when you know. Give every new club three Tuesdays before you decide." }
+        ]
+      },
+      "pottery-beginners-guide": {
+        "title": "Your first pottery class: what to expect",
+        "subtitle": "The tools, the mess, and why your first bowl will be perfectly imperfect.",
+        "excerpt": "Two hours, clay under your nails, and a slightly wonky bowl you'll keep forever. Here's what actually happens in a beginner pottery class.",
+        "coverAlt": "Hands shaping clay on a potter's wheel",
+        "heroAlt": "Potter's wheel with fresh clay",
+        "body": [
+          { "type": "paragraph", "text": "Nobody walks into their first pottery class and makes a nice bowl. That's the point. You're not there for the object — you're there for two hours where the only task is your hands, a spinning wheel, and the wet clay in front of you." },
+          { "type": "heading", "level": 2, "text": "What to bring" },
+          { "type": "paragraph", "text": "Nothing. The studio has aprons, clay, tools and water. Wear something you don't mind getting dirty, tie your hair back, and take your rings off before you sit down." },
+          { "type": "image", "src": "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=1600&h=1000&fit=crop", "alt": "Finished pottery pieces drying on a shelf", "caption": "Your first piece goes on the shelf to dry — you'll pick it up a week later." },
+          { "type": "heading", "level": 2, "text": "The quiet part" },
+          { "type": "paragraph", "text": "Most people leave pottery class saying the same thing: they didn't think about their phone, their job or their week for the whole two hours. That's the real reason to book it." }
+        ]
+      }
+    }
   }
 }

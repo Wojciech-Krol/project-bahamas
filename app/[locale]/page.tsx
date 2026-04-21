@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState, useCallback, Fragment } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "../../src/i18n/navigation";
+import { Link, useRouter } from "../../src/i18n/navigation";
+import { buildSearchQuery } from "../lib/searchQuery";
 import SiteFooter from "../components/SiteFooter";
+import SiteNavbar from "../components/SiteNavbar";
 import BetaSignup from "../components/BetaSignup";
 import ReviewsSection from "../components/ReviewsSection";
 import ClosestToYouCarousel from "../components/ClosestToYouCarousel";
 import MobileActivityCarousel from "../components/MobileActivityCarousel";
-import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Icon } from "../components/Icon";
 import HeroSearchBar from "../components/search/HeroSearchBar";
 import SearchSegment from "../components/search/SearchSegment";
@@ -46,6 +47,7 @@ function useFormatActivities() {
 function CompactSearchBar({
   visible,
   onFieldClick,
+  onSubmit,
   activities,
   neighborhood,
   when,
@@ -53,6 +55,7 @@ function CompactSearchBar({
 }: {
   visible: boolean;
   onFieldClick: (field: SearchField) => void;
+  onSubmit: () => void;
   activities: string;
   neighborhood: string;
   when: string;
@@ -113,9 +116,14 @@ function CompactSearchBar({
             {ageLabel || t("Search.field.agePlaceholder")}
           </span>
         </button>
-        <div className="bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center shrink-0 ml-1">
+        <button
+          type="button"
+          onClick={onSubmit}
+          aria-label={t("Common.search")}
+          className="bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center shrink-0 ml-1 hover:scale-105 active:scale-95 transition-transform"
+        >
           <Icon name="search" className="text-[16px]" />
-        </div>
+        </button>
       </div>
     </div>
   );
@@ -134,6 +142,7 @@ function NavExpandedSearch({
   onNeighborhoodChange,
   onWhenChange,
   onAgeUpdate,
+  onSubmit,
 }: {
   isOpen: boolean;
   initialField: SearchField;
@@ -147,6 +156,7 @@ function NavExpandedSearch({
   onNeighborhoodChange: (v: string) => void;
   onWhenChange: (v: string) => void;
   onAgeUpdate: (key: keyof AgeCounts, delta: number) => void;
+  onSubmit: () => void;
 }) {
   const t = useTranslations();
   const formatActivities = useFormatActivities();
@@ -250,7 +260,11 @@ function NavExpandedSearch({
                 </Fragment>
               ))}
               <div className="p-1 pl-4 shrink-0">
-                <button className="bg-primary text-on-primary flex items-center justify-center rounded-full px-6 h-14 gap-2 hover:scale-105 transition-all duration-300 shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95">
+                <button
+                  type="button"
+                  onClick={onSubmit}
+                  className="bg-primary text-on-primary flex items-center justify-center rounded-full px-6 h-14 gap-2 hover:scale-105 transition-all duration-300 shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95"
+                >
                   <Icon name="search" className="text-[24px]" />
                   <span className="font-headline font-bold text-sm uppercase tracking-wider">
                     {t("Common.search")}
@@ -287,6 +301,7 @@ function NavExpandedSearch({
 export default function Home() {
   const t = useTranslations();
   const tAge = useTranslations("Search.ageLabel");
+  const router = useRouter();
   const closestActivities = useClosestActivities();
   const reviews = useReviews();
   const heroSearchRef = useRef<HTMLDivElement>(null);
@@ -298,7 +313,6 @@ export default function Home() {
   const [ageCounts, setAgeCounts] = useState<AgeCounts>({ kids: 0, teens: 0, adults: 1 });
   const [navExpandedField, setNavExpandedField] = useState<SearchField>(null);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavFieldClick = useCallback((field: SearchField) => {
     setNavExpandedField(field);
@@ -322,6 +336,13 @@ export default function Home() {
     setAgeCounts({ kids: 0, teens: 0, adults: 1 });
   }, []);
 
+  const submitSearch = useCallback(() => {
+    const qs = buildSearchQuery({ activities, neighborhood, when, ageCounts });
+    router.push(`/search${qs ? `?${qs}` : ""}`);
+    setNavExpandedField(null);
+    setMobileSearchOpen(false);
+  }, [activities, neighborhood, when, ageCounts, router]);
+
   const ageLabel = (() => {
     const parts: string[] = [];
     if (ageCounts.adults > 0) parts.push(tAge("adults", { count: ageCounts.adults }));
@@ -342,83 +363,17 @@ export default function Home() {
 
   return (
     <>
-      <nav className="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(45,10,23,0.06)] transition-all duration-300">
-        <div className="flex justify-between items-center px-4 md:px-8 py-3 md:py-4 max-w-site mx-auto relative">
-          <div className="flex items-center gap-12 shrink-0">
-            <Link href="/" className="text-2xl font-bold tracking-tighter text-primary font-headline">
-              HAKUNA
-            </Link>
-            <div className="hidden md:flex gap-8">
-              <Link href="/search" className="font-headline uppercase tracking-widest text-[0.75rem] font-semibold text-on-surface hover:text-primary hover:-translate-y-0.5 transition-all duration-300">
-                {t("Nav.explore")}
-              </Link>
-              <Link href="/about" className="font-headline uppercase tracking-widest text-[0.75rem] font-semibold text-on-surface hover:text-primary hover:-translate-y-0.5 transition-all duration-300">
-                {t("Nav.about")}
-              </Link>
-            </div>
-          </div>
-
-          <CompactSearchBar
-            visible={showCompactSearch}
-            onFieldClick={handleNavFieldClick}
-            activities={activities}
-            neighborhood={neighborhood}
-            when={when}
-            ageLabel={ageLabel}
-          />
-
-          <div className="hidden md:flex items-center gap-6 shrink-0">
-            <LanguageSwitcher />
-            <div className="hidden md:flex items-center gap-4">
-              <button className="font-headline uppercase tracking-widest text-[0.75rem] font-semibold text-on-surface hover:text-primary transition-all">
-                {t("Common.login")}
-              </button>
-              <button className="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-headline uppercase tracking-widest text-[0.75rem] font-bold hover:bg-tertiary scale-95 hover:scale-100 duration-200 transition-all">
-                {t("Common.signup")}
-              </button>
-            </div>
-          </div>
-
-          <button
-            className="md:hidden w-10 h-10 rounded-full bg-on-surface/5 flex items-center justify-center active:scale-95 transition-transform"
-            onClick={() => setMobileMenuOpen((v) => !v)}
-            aria-label={t("Nav.toggleMenu")}
-          >
-            <Icon name={mobileMenuOpen ? "close" : "menu"} className="text-[22px]" />
-          </button>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-on-surface/5 bg-[#fdf9f0]/95 backdrop-blur-xl">
-            <div className="flex flex-col px-4 py-4 gap-1">
-              <Link
-                href="/search"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-3 rounded-xl font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:bg-primary-fixed/30 hover:text-primary transition-all"
-              >
-                {t("Nav.explore")}
-              </Link>
-              <Link
-                href="/about"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-3 rounded-xl font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:bg-primary-fixed/30 hover:text-primary transition-all"
-              >
-                {t("Nav.about")}
-              </Link>
-              <div className="px-3 py-2">
-                <LanguageSwitcher />
-              </div>
-              <div className="h-px bg-on-surface/5 my-2" />
-              <button className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface">
-                {t("Common.login")}
-              </button>
-              <button className="mt-1 bg-primary text-on-primary px-4 py-3 rounded-xl font-headline uppercase tracking-widest text-[0.8rem] font-bold">
-                {t("Common.signup")}
-              </button>
-            </div>
-          </div>
-        )}
-      </nav>
+      <SiteNavbar>
+        <CompactSearchBar
+          visible={showCompactSearch}
+          onFieldClick={handleNavFieldClick}
+          onSubmit={submitSearch}
+          activities={activities}
+          neighborhood={neighborhood}
+          when={when}
+          ageLabel={ageLabel}
+        />
+      </SiteNavbar>
 
       <main className="pt-20 md:pt-24">
         <section className="relative px-4 md:px-6 py-10 md:py-32">
@@ -445,6 +400,7 @@ export default function Home() {
                 onNeighborhoodChange={setNeighborhood}
                 onWhenChange={setWhen}
                 onAgeUpdate={handleAgeUpdate}
+                onSubmit={submitSearch}
               />
 
               <p className="text-on-surface/60 font-medium text-lg md:text-xl max-w-2xl mt-6">
@@ -528,6 +484,7 @@ export default function Home() {
         onNeighborhoodChange={setNeighborhood}
         onWhenChange={setWhen}
         onAgeUpdate={handleAgeUpdate}
+        onSubmit={submitSearch}
       />
 
       <MobileSearchOverlay
@@ -543,6 +500,7 @@ export default function Home() {
         onWhenChange={setWhen}
         onAgeUpdate={handleAgeUpdate}
         onClearAll={handleClearAll}
+        onSubmit={submitSearch}
       />
     </>
   );
