@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "../../src/i18n/navigation";
 import { Icon } from "./Icon";
+import BrandLogo from "./BrandLogo";
 
 export default function SiteFooter() {
   const t = useTranslations("Footer");
@@ -21,9 +21,8 @@ export default function SiteFooter() {
     <footer className="w-full rounded-t-[2rem] md:rounded-t-[3rem] mt-10 md:mt-20 bg-surface-container-low">
       <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-12 py-10 md:py-16 gap-8 max-w-site mx-auto">
         <div className="space-y-4 text-center md:text-left">
-          <Link href="/" className="flex items-center gap-2 text-xl font-bold text-on-surface">
-            <Image src="/logo.svg" alt="Hakuna Logo" width={32} height={32} className="w-8 h-8" />
-            hakuna
+          <Link href="/">
+            <BrandLogo size={32} />
           </Link>
           <p className="font-body text-sm leading-relaxed text-on-surface/60">
             {t("tagline")}
