@@ -65,7 +65,7 @@ function CompactSearchBar({
   const formatActivities = useFormatActivities();
   return (
     <div
-      className={`hidden md:flex flex-1 min-w-0 max-w-2xl mx-12 transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] ${visible
+      className={`hidden md:flex absolute left-1/2 -translate-x-1/2 w-full max-w-[calc(100vw-360px)] lg:max-w-[700px] transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] ${visible
           ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
           : "opacity-0 -translate-y-3 scale-95 pointer-events-none"
         }`}
@@ -375,7 +375,7 @@ export default function Home() {
         />
       </SiteNavbar>
 
-      <main className="pt-20 md:pt-24">
+      <main className="pt-16 md:pt-[72px]">
         <section className="relative px-4 md:px-6 py-10 md:py-32">
           <div className="max-w-site mx-auto text-center flex flex-col items-center">
             <h1 className="font-headline font-extrabold text-[2.25rem] md:text-[6rem] leading-[1.1] md:leading-[1.05] tracking-tight text-on-surface mb-6 md:mb-12">
