@@ -266,7 +266,7 @@ function SearchPageContent() {
         />
       </MobileBottomSheet>
 
-      <main className="hidden md:flex pt-20 h-screen flex-col overflow-hidden">
+      <main className="hidden md:flex pt-16 md:pt-[72px] h-screen flex-col overflow-hidden">
         <div className="max-w-site w-full mx-auto px-4 md:px-6 py-3 shrink-0">
           <PageSearchBar />
         </div>
