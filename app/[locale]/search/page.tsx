@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState, useRef } from "react";
+import { useCallback, useMemo, useState, useRef, Suspense } from "react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { Link, useRouter } from "../../../src/i18n/navigation";
@@ -188,7 +188,7 @@ function MobileBottomSheet({
   );
 }
 
-export default function SearchPage() {
+function SearchPageContent() {
   const t = useTranslations();
   const router = useRouter();
   const urlParams = useSearchParams();
@@ -303,5 +303,13 @@ export default function SearchPage() {
         </div>
       </main>
     </>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="h-screen w-screen flex items-center justify-center">Loading...</div>}>
+      <SearchPageContent />
+    </Suspense>
   );
 }
