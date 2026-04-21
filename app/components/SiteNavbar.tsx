@@ -2,10 +2,10 @@
 
 import { useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { Link } from "../../src/i18n/navigation";
 import { Icon } from "./Icon";
 import LanguageSwitcher from "./LanguageSwitcher";
+import BrandLogo from "./BrandLogo";
 
 export default function SiteNavbar({ children }: { children?: ReactNode }) {
   const t = useTranslations();
@@ -15,12 +15,8 @@ export default function SiteNavbar({ children }: { children?: ReactNode }) {
     <nav className="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(45,10,23,0.06)] transition-all duration-300">
       <div className="flex justify-between items-center px-4 md:px-8 h-16 md:h-[72px] max-w-site mx-auto relative">
         <div className="flex items-center gap-12 shrink-0">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-2xl font-bold tracking-tighter text-primary font-headline"
-          >
-            <Image src="/logo.svg" alt="Hakuna Logo" width={40} height={40} className="w-10 h-10" />
-            hakuna
+          <Link href="/">
+            <BrandLogo size={40} />
           </Link>
         </div>
 
