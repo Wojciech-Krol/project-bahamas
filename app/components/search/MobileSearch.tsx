@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Icon } from "../Icon";
 import { ActivityPanel, NeighborhoodPanel, WhenPanel, AgePanel } from "./panels";
@@ -157,8 +158,9 @@ export function MobileSearchOverlay({
           }`}
       >
         <div className="flex items-center justify-between px-5 pt-4 pb-3 shrink-0">
-          <span className="text-xl font-bold tracking-tighter text-primary font-headline">
-            HAKUNA
+          <span className="flex items-center gap-2 text-xl font-bold tracking-tighter text-primary font-headline">
+            <Image src="/logo.svg" alt="Hakuna Logo" width={32} height={32} className="w-8 h-8" />
+            hakuna
           </span>
           <button
             onClick={onClose}
