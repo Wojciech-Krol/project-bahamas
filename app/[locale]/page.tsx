@@ -65,12 +65,12 @@ function CompactSearchBar({
   const formatActivities = useFormatActivities();
   return (
     <div
-      className={`hidden md:flex absolute left-1/2 -translate-x-1/2 w-full max-w-[calc(100vw-360px)] lg:max-w-[700px] transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] ${visible
+      className={`hidden md:flex flex-1 min-w-0 justify-center mx-4 lg:mx-8 transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] ${visible
           ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
           : "opacity-0 -translate-y-3 scale-95 pointer-events-none"
         }`}
     >
-      <div className="w-full flex items-center bg-white/50 rounded-full py-1.5 px-2 border-2 border-[#E8407A] shadow-sm hover:shadow-md transition-all duration-300">
+      <div className="w-full max-w-[700px] flex items-center bg-white/50 rounded-full py-1.5 px-2 border-2 border-[#E8407A] shadow-sm hover:shadow-md transition-all duration-300">
         <button
           onClick={() => onFieldClick("activities")}
           className="flex-1 min-w-0 flex flex-col px-4 border-r border-on-surface/5 text-left hover:bg-surface-container/30 rounded-l-full py-1.5 transition-colors cursor-pointer"
