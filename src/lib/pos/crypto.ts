@@ -89,6 +89,23 @@ export function encryptConfig(plain: Record<string, unknown>): Buffer {
 }
 
 /**
+ * Encode a Buffer as the PostgREST-accepted bytea literal `\x{hex}`.
+ *
+ * Why this exists: the Supabase JS client serialises every insert/upsert
+ * value via `JSON.stringify`. A raw `Buffer` becomes
+ * `{"type":"Buffer","data":[…]}` in the request body — Postgres rejects
+ * that as a bytea value (or, worse, on some configs stores the JSON
+ * literal as text). Encoding to the `\x` hex form on the way out is the
+ * only shape PostgREST reliably round-trips.
+ *
+ * `decryptConfig` already handles `\x…` strings on the read side, so this
+ * complements that without changing the on-disk shape.
+ */
+export function encryptedConfigToPostgres(buf: Buffer): string {
+  return "\\x" + buf.toString("hex");
+}
+
+/**
  * Reverse of `encryptConfig`. Accepts anything that Supabase hands back for
  * a bytea column (Buffer, Uint8Array, or the `\x…` hex string when the JS
  * client is configured in `bytea_output=hex` mode).

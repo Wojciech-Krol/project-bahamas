@@ -27,4 +27,19 @@ describe("pos crypto", () => {
     enc[enc.length - 1] ^= 0x01;
     expect(() => decryptConfig(enc)).toThrow();
   });
+
+  it("encryptedConfigToPostgres yields PostgREST-friendly hex literal", async () => {
+    const { encryptConfig, decryptConfig, encryptedConfigToPostgres } =
+      await import("@/src/lib/pos/crypto");
+    const original = { token: "abc123", venue: "studio-x" };
+    const enc = encryptConfig(original);
+    const wire = encryptedConfigToPostgres(enc);
+    // Shape: \x followed by lowercase hex, length = 2 * byte length.
+    expect(wire.startsWith("\\x")).toBe(true);
+    expect(wire.slice(2)).toMatch(/^[0-9a-f]+$/);
+    expect(wire.length).toBe(2 + enc.byteLength * 2);
+    // The decryptConfig string path already accepts the same shape — round
+    // trip through the wire format proves end-to-end compatibility.
+    expect(decryptConfig(wire)).toEqual(original);
+  });
 });
