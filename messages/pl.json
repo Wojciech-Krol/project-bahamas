@@ -39,6 +39,38 @@
     "toggleMenu": "Otwórz menu",
     "logout": "Wyloguj się"
   },
+  "Admin": {
+    "page": {
+      "title": "Zgłoszenia partnerów",
+      "subtitle": "Rozpatrz nowe zgłoszenia od miejsc, które chcą dołączyć do Hakuny.",
+      "empty": "Brak oczekujących zgłoszeń."
+    },
+    "nav": {
+      "brandTag": "Admin",
+      "partners": "Partnerzy",
+      "logout": "Wyloguj się"
+    },
+    "columns": {
+      "name": "Nazwa",
+      "email": "Email kontaktowy",
+      "city": "Miasto",
+      "applied": "Zgłoszono",
+      "actions": "Akcje"
+    },
+    "actions": {
+      "approve": "Zaakceptuj",
+      "reject": "Odrzuć"
+    },
+    "reject": {
+      "reasonLabel": "Powód (opcjonalnie)",
+      "reasonPlaceholder": "Krótka notatka, którą otrzyma zgłaszający.",
+      "confirm": "Wyślij odrzucenie"
+    },
+    "errors": {
+      "alreadyDecided": "To zgłoszenie zostało już rozpatrzone.",
+      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+    }
+  },
   "Auth": {
     "divider": "lub",
     "field": {
@@ -1022,6 +1054,55 @@
         { "id": "act-lowbook", "icon": "trending_down","tone": "primary",   "titleKey": "lowBookingsTitle",  "subKey": "lowBookingsSub",   "classTitle": "Pro Performance Lab", "booked": 4, "capacity": 16, "day": "niedzielę" },
         { "id": "act-payout",  "icon": "receipt_long", "tone": "muted",     "titleKey": "payoutTitle",       "subKey": "payoutSub",        "amount": "1 840 €", "day": "poniedziałek" }
       ]
+    }
+  },
+  "PartnerApply": {
+    "meta": {
+      "title": "Zostań partnerem Hakuny",
+      "description": "Zgłoś swoje studio, szkołę lub klub i dołącz do marketplace aktywności w Polsce."
+    },
+    "badge": "Dla partnerów",
+    "title": "Zostań partnerem Hakuny",
+    "subtitle": "Wypełnij krótki formularz — sprawdzimy zgłoszenie i odezwiemy się w ciągu 3 dni roboczych.",
+    "replacementNote": "Ten formularz zastępuje dotychczasowe zapisy „Dodaj swoje zajęcia”.",
+    "field": {
+      "name": {
+        "label": "Nazwa studia / szkoły",
+        "placeholder": "np. Studio Joga Praga"
+      },
+      "contactEmail": {
+        "label": "Email kontaktowy",
+        "placeholder": "ty@twoje-studio.pl"
+      },
+      "city": {
+        "label": "Miasto",
+        "placeholder": "Warszawa"
+      },
+      "website": {
+        "label": "Strona www (opcjonalnie)",
+        "placeholder": "twoje-studio.pl"
+      },
+      "expected": {
+        "label": "Przewidywana liczba rezerwacji miesięcznie (opcjonalnie)",
+        "placeholder": "Wybierz zakres…",
+        "options": {
+          "lt50": "Mniej niż 50",
+          "50to200": "50–200",
+          "200to500": "200–500",
+          "gte500": "Ponad 500"
+        }
+      }
+    },
+    "submit": "Wyślij zgłoszenie",
+    "error": {
+      "invalidInput": "Sprawdź to pole.",
+      "rateLimited": "Za dużo prób. Spróbuj ponownie za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
+      "botCheck": "Nie udało się potwierdzić, że nie jesteś botem. Odśwież stronę i spróbuj ponownie.",
+      "server": "Coś poszło nie tak po naszej stronie. Spróbuj ponownie za chwilę."
+    },
+    "success": {
+      "heading": "Mamy Twoje zgłoszenie",
+      "body": "Wysłaliśmy potwierdzenie na podany adres email. Odezwiemy się w ciągu 3 dni roboczych."
     }
   }
 }

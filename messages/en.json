@@ -39,6 +39,38 @@
     "toggleMenu": "Toggle menu",
     "logout": "Log out"
   },
+  "Admin": {
+    "page": {
+      "title": "Partner applications",
+      "subtitle": "Review new applications from venues that want to join Hakuna.",
+      "empty": "No pending applications."
+    },
+    "nav": {
+      "brandTag": "Admin",
+      "partners": "Partners",
+      "logout": "Log out"
+    },
+    "columns": {
+      "name": "Name",
+      "email": "Contact email",
+      "city": "City",
+      "applied": "Applied",
+      "actions": "Actions"
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject"
+    },
+    "reject": {
+      "reasonLabel": "Reason (optional)",
+      "reasonPlaceholder": "A short note the applicant will see.",
+      "confirm": "Send rejection"
+    },
+    "errors": {
+      "alreadyDecided": "This application has already been decided.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
   "Auth": {
     "divider": "or",
     "field": {
@@ -1022,6 +1054,55 @@
         { "id": "act-lowbook", "icon": "trending_down","tone": "primary",   "titleKey": "lowBookingsTitle",  "subKey": "lowBookingsSub",   "classTitle": "Pro Performance Lab", "booked": 4, "capacity": 16, "day": "Sunday" },
         { "id": "act-payout",  "icon": "receipt_long", "tone": "muted",     "titleKey": "payoutTitle",       "subKey": "payoutSub",        "amount": "€1,840", "day": "Monday" }
       ]
+    }
+  },
+  "PartnerApply": {
+    "meta": {
+      "title": "Become a Hakuna partner",
+      "description": "Apply to list your studio, school, or club on Hakuna's activity marketplace in Poland."
+    },
+    "badge": "For partners",
+    "title": "Become a Hakuna partner",
+    "subtitle": "Fill in this short form — we'll review your application and get back to you within 3 business days.",
+    "replacementNote": "This replaces the old 'Host an activity' signup form.",
+    "field": {
+      "name": {
+        "label": "Studio / school name",
+        "placeholder": "e.g. Praga Yoga Studio"
+      },
+      "contactEmail": {
+        "label": "Contact email",
+        "placeholder": "you@your-studio.com"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "Warsaw"
+      },
+      "website": {
+        "label": "Website (optional)",
+        "placeholder": "your-studio.com"
+      },
+      "expected": {
+        "label": "Expected monthly bookings (optional)",
+        "placeholder": "Pick a range…",
+        "options": {
+          "lt50": "Less than 50",
+          "50to200": "50–200",
+          "200to500": "200–500",
+          "gte500": "More than 500"
+        }
+      }
+    },
+    "submit": "Send application",
+    "error": {
+      "invalidInput": "Please check this field.",
+      "rateLimited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+      "botCheck": "We couldn't confirm you're not a bot. Refresh the page and try again.",
+      "server": "Something went wrong on our side. Please try again in a moment."
+    },
+    "success": {
+      "heading": "We've got your application",
+      "body": "A confirmation has been sent to the email you provided. We'll be in touch within 3 business days."
     }
   }
 }
