@@ -1,3 +1,5 @@
+// TODO-OPERATOR: sign DPA with Stripe before production (commit by launch — see LAUNCH_CHECKLIST.md).
+
 /**
  * Stripe SDK singleton — SERVER-ONLY.
  *

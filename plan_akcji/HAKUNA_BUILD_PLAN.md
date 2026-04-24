@@ -1087,3 +1087,85 @@ sub-task. Keep them short — one line per meaningful step._
 - 2026-04-24 — Build green. Tests 12/12. Phase 4 Done criteria
   reachable once operator seeds some confirmed bookings + view
   events through a seeded Supabase.
+- 2026-04-24 — Phase 6 on branch `wojtek/logo-navbar`. Sentry wired:
+  `sentry.{client,server,edge}.config.ts` + `instrumentation.ts` at
+  repo root; no-op when DSN unset so local dev is silent. `next.config.ts`
+  now exports a CSP + HSTS (prod-only) + Referrer-Policy +
+  X-Content-Type-Options + X-Frame-Options + Permissions-Policy header
+  set on `/:path*`. `withSentryConfig` wraps `withNextIntl` only when
+  `SENTRY_AUTH_TOKEN` is set, so local `next build` keeps working
+  without a Sentry org. `app/api/debug-sentry/route.ts` throws on GET;
+  open in dev, Bearer-like header-guarded via `x-debug-sentry:
+  <CRON_SECRET>` in prod (returns 404 to probers that miss the header).
+- 2026-04-24 — `src/env.ts` extended: `NEXT_PUBLIC_SENTRY_DSN`,
+  `SENTRY_DSN`, `SENTRY_AUTH_TOKEN` all `.optional()`.
+- 2026-04-24 — Cookie consent: `app/components/CookieConsent.tsx`
+  (client banner, 3 buttons + customize panel) rendered from
+  `app/[locale]/layout.tsx`. `src/lib/consent.ts` with server-side
+  `readConsent()`/`hasAnalyticsConsent()` reading from `next/headers`
+  + client-side `readClientConsent()`. Cookie is first-party
+  `hakuna_consent`, 6-month Max-Age, three allowed values:
+  `"all"` | `"essential"` | `'{"analytics":bool}'`. `useTrackView`
+  now short-circuits when consent not granted. `Consent.*` i18n
+  namespace added to both locales.
+- 2026-04-24 — GDPR export/delete. Migration `0005_account_deletion.sql`:
+  `profiles.deletion_requested_at` column, new `account_deletion_queue`
+  table (user_id PK, requested_at, hard_delete_at = requested_at + 30d,
+  processed_at), partial index on unprocessed rows, RLS SELECT own-or-
+  admin (writes exclusively via service role). `/account` page:
+  server component redirecting unauthenticated users to /login;
+  `AccountForms.tsx` client component with two forms — export form
+  POSTs directly to `/api/account/export` (Route Handler, not a
+  Server Action, because we need to return a `Response` with
+  `Content-Disposition: attachment`); deletion form calls Server
+  Action `requestAccountDeletion` that stamps the profile + upserts
+  the queue row. Pending state shows readable hard_delete date.
+- 2026-04-24 — `/api/cron/process-account-deletions` (Bearer
+  CRON_SECRET): strips `bookings.user_id` (preserve rows for VAT),
+  deletes reviews, anonymizes profile columns, rewrites email to
+  `deleted-{uuid}@deleted.hakuna` then `admin.auth.admin.deleteUser`,
+  stamps `processed_at` for audit. `Account.*` i18n both locales.
+- 2026-04-24 — `/api/health`: returns `{ ok, checks: { db, stripe,
+  resend, version } }`. DB check is `select id from profiles limit 1`
+  through admin client; Stripe check is `balance.retrieve()`; Resend
+  is env-presence only (no public ping). 503 when DB down or any
+  dependency `"down"`; `"not_configured"` doesn't fail for Stripe/
+  Resend (preview deploys legitimately lack them).
+- 2026-04-24 — Playwright scaffold: `playwright.config.ts` points at
+  `tests/e2e/`, webServer boots `npm run dev -- --port 3333`, base
+  URL `http://localhost:3333`. `tests/e2e/smoke.spec.ts` asserts
+  `[data-testid="site-navbar"]` on `/pl` (testid added to
+  `SiteNavbar.tsx` nav root). `partner-apply.spec.ts` + two
+  `booking-cancel.spec.ts` placeholders marked `.skip()` with
+  documented env they need. `package.json` scripts
+  `test:e2e` + `test:e2e:install`. `vitest.config.ts` excludes
+  `tests/e2e/**` so `npm test` doesn't pick them up.
+- 2026-04-24 — DPA TODO-OPERATOR comments at the top of
+  `src/lib/db/server.ts`, `src/lib/email/resend.ts`,
+  `src/lib/payments/stripe.ts`, `src/lib/ratelimit.ts`.
+- 2026-04-24 — `LAUNCH_CHECKLIST.md` at repo root — DNS+email,
+  Stripe, Supabase, Turnstile, Upstash, Sentry, first live booking,
+  DPAs, legal, CI. Concrete actions only.
+- 2026-04-24 — DEFERRED within Phase 6:
+  (a) k6 load script — deferred until staging has representative
+  data volume + test-mode Stripe keys wired; running k6 against an
+  empty DB tells us nothing about real-world bottlenecks. Plan owner
+  captures in LAUNCH_CHECKLIST before flip.
+  (b) Lighthouse budget script — deferred: Phase 6's scope is the
+  hardening wiring, not the perf work itself. A CI Lighthouse step
+  is best added once the site has stable public URLs (`/search`,
+  `/activity/[id]` served from DB data, not mocks); running it today
+  on mock-content pages would set misleading baselines.
+- 2026-04-24 — Phase 6 Done criteria: (satisfied)
+  - `/api/debug-sentry` throws on GET (Sentry wiring verified once
+    operator sets DSN + token).
+  - CSP applied to every route; no console violations observed on
+    `/pl`, `/pl/search`, `/pl/activity/*` in local smoke.
+  - `/api/health` returns JSON with DB + Stripe + Resend checks
+    (200/503).
+  - Playwright config + smoke test green by default; Phase 2/3
+    tests skipped with documented env.
+  (needs operator)
+  - Sentry DSN + AUTH_TOKEN provisioning.
+  - Playwright CI gate wiring in GitHub Actions.
+  - DPAs actually signed (comments now flag the vendors).

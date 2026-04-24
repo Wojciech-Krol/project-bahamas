@@ -1,4 +1,5 @@
 // TODO-OPERATOR: configure SPF/DKIM/DMARC on the sending domain before going to production.
+// TODO-OPERATOR: sign DPA with Resend before production (commit by launch — see LAUNCH_CHECKLIST.md).
 
 import { Resend } from "resend";
 import type { ReactElement } from "react";

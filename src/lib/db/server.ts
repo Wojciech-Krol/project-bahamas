@@ -1,3 +1,5 @@
+// TODO-OPERATOR: sign DPA with Supabase before production (commit by launch — see LAUNCH_CHECKLIST.md).
+
 /**
  * Supabase server client.
  *

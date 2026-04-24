@@ -1255,5 +1255,38 @@
       "heading": "Mamy Twoje zgłoszenie",
       "body": "Wysłaliśmy potwierdzenie na podany adres email. Odezwiemy się w ciągu 3 dni roboczych."
     }
+  },
+  "Consent": {
+    "title": "Używamy plików cookie",
+    "description": "Używamy cookies, żeby Hakuna działała, analizowała ruch i lepiej Ci służyła. Sam decydujesz, na co się zgadzasz.",
+    "learnMore": "Dowiedz się więcej",
+    "accept": "Akceptuję wszystkie",
+    "reject": "Tylko niezbędne",
+    "customize": "Dostosuj",
+    "save": "Zapisz wybór",
+    "essential": {
+      "title": "Niezbędne",
+      "description": "Potrzebne do działania serwisu — logowanie, koszyk, zabezpieczenia. Nie można ich wyłączyć."
+    },
+    "analytics": {
+      "title": "Analityka",
+      "description": "Anonimowe statystyki odwiedzin stron z zajęciami. Pomagają nam ulepszać Hakunę."
+    }
+  },
+  "Account": {
+    "title": "Twoje konto",
+    "subtitle": "Zarządzaj swoimi danymi w Hakunie.",
+    "export": {
+      "heading": "Pobierz swoje dane",
+      "description": "Wygeneruj plik JSON ze wszystkimi danymi, które mamy na Twój temat — profilem, rezerwacjami i opiniami.",
+      "button": "Pobierz dane (.json)"
+    },
+    "delete": {
+      "heading": "Usuń konto",
+      "description": "Zgłoś chęć usunięcia konta. W ciągu 30 dni Twoje dane osobowe zostaną zanonimizowane, a konto usunięte. Rezerwacje zachowujemy dla celów księgowych.",
+      "button": "Zgłoś usunięcie konta",
+      "confirm": "Czy na pewno chcesz usunąć konto?",
+      "pending": "Zgłoszono usunięcie — dane zostaną usunięte {date}."
+    }
   }
 }

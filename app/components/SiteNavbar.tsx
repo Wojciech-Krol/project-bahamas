@@ -12,7 +12,10 @@ export default function SiteNavbar({ children }: { children?: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(45,10,23,0.06)] transition-all duration-300">
+    <nav
+      data-testid="site-navbar"
+      className="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(45,10,23,0.06)] transition-all duration-300"
+    >
       <div className="flex justify-between items-center px-4 md:px-8 h-16 md:h-[72px] max-w-site mx-auto relative">
         <div className="flex items-center gap-12 shrink-0">
           <Link href="/">
