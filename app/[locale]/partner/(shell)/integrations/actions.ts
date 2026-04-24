@@ -7,7 +7,11 @@ import { z } from "zod";
 import { createAdminClient } from "@/src/lib/db/admin";
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
 import { env } from "@/src/env";
-import { encryptConfig, isPosCryptoConfigured } from "@/src/lib/pos/crypto";
+import {
+  encryptConfig,
+  encryptedConfigToPostgres,
+  isPosCryptoConfigured,
+} from "@/src/lib/pos/crypto";
 import { extractActivityNames, parseCsv } from "@/src/lib/pos/adapters/csv";
 
 /**
@@ -236,6 +240,10 @@ export async function confirmActivityMap(
   };
 
   const encrypted = encryptConfig(configBlob);
+  // Bytea columns must be sent to PostgREST as `\x{hex}` — sending a raw
+  // Buffer would JSON-serialise to `{type:"Buffer",data:[…]}` and the
+  // upsert would either fail or silently corrupt the column.
+  const encryptedForPostgres = encryptedConfigToPostgres(encrypted);
 
   const admin = createAdminClient();
   // Upsert on (partner_id, provider). We intentionally reset consecutive
@@ -247,7 +255,7 @@ export async function confirmActivityMap(
       {
         partner_id: partnerId,
         provider: "csv",
-        config_encrypted: encrypted,
+        config_encrypted: encryptedForPostgres,
         status: "active",
         last_error: null,
         consecutive_failures: 0,
