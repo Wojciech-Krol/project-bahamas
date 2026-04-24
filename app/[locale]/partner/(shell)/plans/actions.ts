@@ -145,36 +145,52 @@ export async function startSubscriptionCheckout(
   const successUrl = `${origin}/${locale}/partner/plans?subscribed=1`;
   const cancelUrl = `${origin}/${locale}/partner/plans?cancelled=1`;
 
-  const stripe = getStripe();
-  const session = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    line_items: [
-      {
-        price: tier.stripePriceId,
-        quantity: 1,
+  // Bail out cleanly if Stripe isn't configured. getStripe() throws when
+  // STRIPE_SECRET_KEY is missing; without the catch the user got a 500
+  // from a pre-launch deploy where the operator hadn't wired Stripe yet.
+  let stripe;
+  try {
+    stripe = getStripe();
+  } catch {
+    redirect(`/${locale}/partner/plans?error=stripe_not_configured`);
+  }
+
+  let checkoutUrl: string | null = null;
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      line_items: [
+        {
+          price: tier.stripePriceId,
+          quantity: 1,
+        },
+      ],
+      customer_email: partner.contact_email,
+      subscription_data: {
+        metadata: {
+          partner_id: partner.id,
+          tier_key: tier.key,
+        },
       },
-    ],
-    customer_email: partner.contact_email,
-    subscription_data: {
+      // Duplicate the metadata on the Checkout Session too — makes
+      // debugging easier when inspecting events in the Stripe dashboard.
       metadata: {
         partner_id: partner.id,
         tier_key: tier.key,
       },
-    },
-    // Duplicate the metadata on the Checkout Session too — makes
-    // debugging easier when inspecting events in the Stripe dashboard.
-    metadata: {
-      partner_id: partner.id,
-      tier_key: tier.key,
-    },
-    success_url: successUrl,
-    cancel_url: cancelUrl,
-    locale: locale === "en" ? "en" : "pl",
-  });
-
-  if (!session.url) {
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      locale: locale === "en" ? "en" : "pl",
+    });
+    checkoutUrl = session.url;
+  } catch (err) {
+    console.error("[plans:checkout] stripe checkout failed", err);
     redirect(`/${locale}/partner/plans?error=checkout_failed`);
   }
 
-  redirect(session.url);
+  if (!checkoutUrl) {
+    redirect(`/${locale}/partner/plans?error=checkout_failed`);
+  }
+
+  redirect(checkoutUrl);
 }
