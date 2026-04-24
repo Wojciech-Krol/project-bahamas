@@ -109,12 +109,17 @@ export default function ClosestToYouCarousel({
   }, [baseLen]);
 
   useEffect(() => {
-    update();
     const el = scrollerRef.current;
     if (!el) return;
+    // Defer the initial measurement so setState happens outside the
+    // effect body — the rule flags synchronous setState in effects.
+    // requestAnimationFrame also gives the layout effect's scrollTop
+    // assignment a chance to settle before we read positions.
+    const raf = requestAnimationFrame(update);
     el.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     return () => {
+      cancelAnimationFrame(raf);
       el.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
