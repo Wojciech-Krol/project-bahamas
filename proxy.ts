@@ -45,7 +45,15 @@ export default async function proxy(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
+          // Per Supabase SSR docs: write rotated cookies to BOTH the
+          // request and the response. The response copy is what reaches
+          // the browser; the request copy is what any later read in this
+          // same request lifecycle (e.g. a Server Component fetched after
+          // proxy refreshes the JWT) would see. Skipping the request side
+          // means an in-flight request can render with a stale JWT even
+          // after we just refreshed it.
           for (const { name, value, options } of cookiesToSet) {
+            request.cookies.set(name, value);
             response.cookies.set(name, value, options);
           }
         },

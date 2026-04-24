@@ -103,3 +103,60 @@ if (!parsed.success) {
 
 export const env = parsed.data;
 export type Env = typeof env;
+
+// ---------------------------------------------------------------------------
+// Production preflight warnings
+//
+// Several config values are .optional() so the marketing site keeps building
+// without them, but their absence in production silently breaks core flows
+// (sitemap canonicals, Stripe Checkout success/cancel URLs, Resend sender
+// reputation, etc.). Emit a single startup warn so an operator notices in
+// `vercel logs` even if every page still renders.
+//
+// Limited to NODE_ENV === 'production' and isServer to avoid noise during
+// dev / test / build-time validation passes.
+// ---------------------------------------------------------------------------
+
+if (isServer && process.env.NODE_ENV === "production") {
+  // Read directly from process.env: the inferred type of `env` on the server
+  // narrows to the client schema (server-only keys exist at runtime but
+  // aren't in the type), and we don't want a half-cast just for this check.
+  const required: Array<{ key: string; reason: string }> = [
+    {
+      key: "NEXT_PUBLIC_SITE_URL",
+      reason:
+        "sitemap canonicals + Stripe success/cancel URLs fall back to a placeholder host",
+    },
+    {
+      key: "NEXT_PUBLIC_SUPABASE_URL",
+      reason: "DB queries, auth, and storage are unavailable",
+    },
+    {
+      key: "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      reason: "DB queries, auth, and storage are unavailable",
+    },
+    {
+      key: "STRIPE_SECRET_KEY",
+      reason: "no booking can charge",
+    },
+    {
+      key: "STRIPE_WEBHOOK_SECRET",
+      reason: "Stripe webhooks are rejected with 503",
+    },
+    {
+      key: "RESEND_API_KEY",
+      reason: "all transactional emails silently no-op",
+    },
+    {
+      key: "CRON_SECRET",
+      reason: "Vercel cron jobs are rejected with 503",
+    },
+  ];
+  const missing = required.filter((item) => !process.env[item.key]);
+  if (missing.length > 0) {
+    console.warn(
+      "[env] PRODUCTION DEPLOY MISSING REQUIRED VARS — site will degrade:\n" +
+        missing.map((m) => `  - ${m.key}: ${m.reason}`).join("\n"),
+    );
+  }
+}
