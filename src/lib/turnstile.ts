@@ -44,12 +44,38 @@ let noopWarned = false;
  *                  this is allowed to be `""`.
  * @param clientIp  Optional client IP; forwarded as `remoteip` to help
  *                  Cloudflare's risk scoring.
+ *
+ * Pre-config behaviour:
+ *   * In dev / test / preview deploys the verifier is a no-op and accepts
+ *     every token, including `""`. The matching client widget renders
+ *     nothing in this case so the user never sees a broken captcha.
+ *   * In production the verifier FAILS CLOSED — `verifyTurnstile` returns
+ *     `success: false` so the apply form rejects the submission. This
+ *     keeps a missing key from silently leaving the form unprotected on
+ *     the live site. Set `TURNSTILE_DEV_BYPASS=1` to opt into the no-op
+ *     fallback in production (e.g. for staging environments without a
+ *     dedicated Cloudflare site key).
  */
 export async function verifyTurnstile(
   token: string,
   clientIp?: string,
 ): Promise<TurnstileVerifyResult> {
   if (!serverEnv.TURNSTILE_SECRET_KEY) {
+    const isProd = process.env.NODE_ENV === "production";
+    const devBypass = process.env.TURNSTILE_DEV_BYPASS === "1";
+    if (isProd && !devBypass) {
+      if (!noopWarned) {
+        noopWarned = true;
+        console.error(
+          "[turnstile] TURNSTILE_SECRET_KEY missing in production — " +
+            "rejecting submission. Set the secret or TURNSTILE_DEV_BYPASS=1.",
+        );
+      }
+      return {
+        success: false,
+        errorCodes: ["server-not-configured"],
+      };
+    }
     if (!noopWarned) {
       noopWarned = true;
       console.warn(
