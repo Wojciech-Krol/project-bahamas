@@ -42,7 +42,13 @@ type ActivityRow = {
     | null;
 };
 
-/** Columns + joined venue fields pulled for every activity composition. */
+/** Columns + joined venue fields pulled for every activity composition.
+ *
+ * `venues!inner` is critical: without it, neighborhood / city filters via
+ * `.ilike("venues.city", ...)` would only NULL out the embedded venue when
+ * the predicate failed instead of dropping the parent activity row. The
+ * inner join semantics make the filter behave as you'd intuitively expect.
+ */
 const ACTIVITY_SELECT = `
   id,
   title_i18n,
@@ -55,7 +61,7 @@ const ACTIVITY_SELECT = `
   age_group,
   hero_image,
   created_at,
-  venue:venues (
+  venue:venues!inner (
     id,
     name,
     address,
