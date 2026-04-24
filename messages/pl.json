@@ -761,10 +761,32 @@
       "insights": "Statystyki",
       "venue": "Profil obiektu",
       "payouts": "Wypłaty",
+      "payments": "Płatności",
       "settings": "Ustawienia",
       "backToSite": "← Powrót do Hakuny",
       "toggleMenu": "Przełącz menu",
       "logout": "Wyloguj"
+    },
+    "stripe": {
+      "title": "Płatności",
+      "subtitle": "Połącz konto Stripe, aby przyjmować rezerwacje i otrzymywać wypłaty.",
+      "status": {
+        "none": "Brak połączenia",
+        "incomplete": "Konfiguracja w toku",
+        "connected": "Połączone"
+      },
+      "cta": {
+        "connect": "Połącz Stripe",
+        "resume": "Dokończ konfigurację",
+        "refresh": "Odśwież status"
+      },
+      "placeholder": {
+        "stripeMissing": "Stripe nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o ustawienie `STRIPE_SECRET_KEY`.",
+        "supabaseMissing": "Supabase nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o skonfigurowanie bazy danych."
+      },
+      "sidebar": {
+        "payments": "Płatności"
+      }
     },
     "venueSwitcher": {
       "label": "Obiekt"
