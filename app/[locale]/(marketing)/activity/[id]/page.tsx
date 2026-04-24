@@ -6,6 +6,7 @@ import SiteNavbar from "@/app/components/SiteNavbar";
 import SiteFooter from "@/app/components/SiteFooter";
 import ReviewsSection from "@/app/components/ReviewsSection";
 import { Icon } from "@/app/components/Icon";
+import TrackActivityView from "@/app/components/analytics/TrackActivityView";
 import { ACTIVITY_DETAIL_BASE } from "@/app/lib/mockData";
 import { useReviews } from "@/app/lib/i18nData";
 
@@ -14,7 +15,7 @@ export default function ActivityPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  use(params);
+  const { id } = use(params);
   const t = useTranslations("Activity");
   const tCommon = useTranslations("Common");
   const tSample = useTranslations("Activity.sample");
@@ -31,6 +32,7 @@ export default function ActivityPage({
 
   return (
     <>
+      <TrackActivityView activityId={id} />
       <SiteNavbar />
       <main className="pt-20 md:pt-24 pb-24 md:pb-0">
         <section className="relative h-[55vh] md:h-[70vh] min-h-[360px] md:min-h-[500px] w-full overflow-hidden">

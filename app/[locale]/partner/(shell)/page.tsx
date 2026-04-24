@@ -1,231 +1,177 @@
-"use client";
+/**
+ * Partner dashboard overview — Phase 4.
+ *
+ * Server Component. When Supabase env is absent (pre-launch / fresh
+ * clone) renders the original mock design so designers and PMs can
+ * keep browsing. When Supabase is configured, resolves the current
+ * user's partner_id and pulls the three analytics views into the
+ * real revenue / trend / top-activities / heatmap sections.
+ *
+ * RLS handles tenant scoping — the request-scoped Supabase client
+ * authenticates as the signed-in partner member, so the daily-
+ * revenue / activity-conversion / session-occupancy views naturally
+ * filter down to their partner's rows. Every query is wrapped so a
+ * single failed read collapses to an empty aggregate instead of
+ * crashing the whole page.
+ */
 
-import { useTranslations } from "next-intl";
-import { Link } from "../../../../src/i18n/navigation";
-import { Icon } from "../../../components/Icon";
-import MetricCard from "../../../components/partner/MetricCard";
-import ScheduleRow from "../../../components/partner/ScheduleRow";
-import ActionQueueItem from "../../../components/partner/ActionQueueItem";
+import { getTranslations } from "next-intl/server";
+
+import { env } from "@/src/env";
 import {
-  OVERVIEW_METRICS,
-  SPARKLINE_PATHS,
-} from "../../../lib/partnerMockData";
+  getPartnerAnalytics,
+  getPartnerIdForCurrentUser,
+} from "@/src/lib/db/queries/analytics";
+import { pick } from "@/src/lib/db/queries/_i18n";
+import { createClient } from "@/src/lib/db/server";
+import type { Locale } from "@/src/lib/db/types";
 
-type ScheduleEntry = {
+import BookingsTrendChart from "@/app/components/partner/analytics/BookingsTrendChart";
+import OccupancyHeatmap from "@/app/components/partner/analytics/OccupancyHeatmap";
+import RevenueCards from "@/app/components/partner/analytics/RevenueCards";
+import TopActivitiesList from "@/app/components/partner/analytics/TopActivitiesList";
+
+import OverviewMock from "./OverviewMock";
+
+function formatPln(cents: number, locale: string): string {
+  const pln = cents / 100;
+  try {
+    return new Intl.NumberFormat(locale === "pl" ? "pl-PL" : "en-GB", {
+      style: "currency",
+      currency: "PLN",
+      maximumFractionDigits: 0,
+    }).format(pln);
+  } catch {
+    return `${pln.toFixed(0)} PLN`;
+  }
+}
+
+type ActivityTitleRow = {
   id: string;
-  time: string;
-  duration: number;
-  classKey: string;
-  instructor: string;
-  room: string;
-  booked: number;
-  capacity: number;
-  waitlist?: number;
-  accent: "primary" | "secondary";
+  title_i18n: Record<string, string | null | undefined> | null;
 };
 
-function Sparkline({ fill, line }: { fill: string; line: string }) {
-  return (
-    <svg viewBox="0 0 120 32" className="w-full h-8">
-      <path
-        d={fill}
-        stroke="none"
-        className="fill-primary-fixed"
-        style={{ opacity: 0.5 }}
-      />
-      <path d={line} fill="none" strokeWidth={2} className="stroke-primary" />
-    </svg>
-  );
-}
+export default async function PartnerOverviewPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
 
-function FillBar({ pct }: { pct: number }) {
-  return (
-    <div className="w-full h-2 bg-surface-container-high rounded-full overflow-hidden flex">
-      <div className="bg-primary h-full" style={{ width: `${pct}%` }} />
-    </div>
-  );
-}
+  // Pre-launch / no Supabase → keep the mock UI. The (shell) layout
+  // already short-circuits auth checks on this same env condition.
+  if (!env.NEXT_PUBLIC_SUPABASE_URL || !env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return <OverviewMock />;
+  }
 
-function StarRow() {
+  const partnerId = await getPartnerIdForCurrentUser();
+  // If the user has no partner membership (admin-only, pending, etc),
+  // fall back to the mock UI rather than blanking the screen. Auth
+  // already gated the route, so we're not leaking here.
+  if (!partnerId) {
+    return <OverviewMock />;
+  }
+
+  const analytics = await getPartnerAnalytics(partnerId);
+  const t = await getTranslations({ locale, namespace: "Partner.analytics" });
+
+  // Resolve activity titles for the top-5 list. Best-effort — if the
+  // query fails we render activity ids, which is ugly but functional.
+  let activityTitles = new Map<string, string>();
+  if (analytics.topActivities.length > 0) {
+    try {
+      const supabase = await createClient();
+      const { data } = await supabase
+        .from("activities")
+        .select("id, title_i18n")
+        .in(
+          "id",
+          analytics.topActivities.map((r) => r.activityId),
+        );
+      if (data) {
+        activityTitles = new Map(
+          (data as ActivityTitleRow[]).map((row) => [
+            row.id,
+            pick(row.title_i18n, locale as Locale) ?? row.id,
+          ]),
+        );
+      }
+    } catch {
+      // ignore — titles fall through to activity ids below.
+    }
+  }
+
+  const maxGross = Math.max(
+    1,
+    ...analytics.topActivities.map((r) => r.grossCents),
+  );
+
+  const topRows = analytics.topActivities.map((r) => ({
+    activityId: r.activityId,
+    title: activityTitles.get(r.activityId) ?? r.activityId,
+    amount: formatPln(r.grossCents, locale),
+    bookings: r.bookingCount,
+    shareOfMax: r.grossCents / maxGross,
+  }));
+
+  const weekdayLabels = t.raw("weekdays") as string[];
+
   return (
-    <div className="flex gap-0.5 text-secondary-fixed-dim">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <span
-          key={i}
-          className="material-symbols-outlined text-[16px]"
-          style={{ fontVariationSettings: "'FILL' 1" }}
-        >
-          star
+    <div className="p-8 space-y-8">
+      <div>
+        <span className="inline-block bg-primary-fixed/60 px-3 py-1 rounded-full text-[0.6rem] font-bold uppercase tracking-widest text-primary mb-3">
+          {t("eyebrow")}
         </span>
-      ))}
-    </div>
-  );
-}
-
-export default function PartnerOverviewPage() {
-  const t = useTranslations("Partner");
-  const tOv = useTranslations("Partner.overview");
-  const tMetric = useTranslations("Partner.overview.metrics");
-  const tMock = useTranslations("Partner.mock");
-  const tSchedMock = useTranslations("Partner.mock");
-  const tClass = useTranslations("Partner.mock.classes");
-  const tInst = useTranslations("Partner.mock.instructors");
-  const tActions = useTranslations("Partner.overview.actions");
-
-  const schedule = tSchedMock.raw("schedule") as ScheduleEntry[];
-  const weekday = tMock("dateBadge.weekday");
-  const dateLabel = tMock("dateBadge.date");
-  const userFirst = tMock("user.firstName");
-
-  const reviewsCount = 2;
-  const classesToday = schedule.length;
-
-  return (
-    <div className="p-8">
-      <div className="flex items-start justify-between gap-6 mb-8 flex-wrap">
-        <div>
-          <span className="inline-block bg-primary-fixed/60 px-3 py-1 rounded-full text-[0.6rem] font-bold uppercase tracking-widest text-primary mb-3">
-            {tOv("dateBadge", { weekday, date: dateLabel })}
-          </span>
-          <h1 className="font-headline font-extrabold text-4xl md:text-5xl tracking-tight leading-[1.05]">
-            {tOv("greetingStart")}{" "}
-            <span className="italic text-primary">{userFirst}</span>
-            {tOv("greetingEnd")}
-          </h1>
-          <p className="text-on-surface/60 mt-2">
-            {tOv("subtitle", { classes: classesToday, reviews: reviewsCount })}
-          </p>
-        </div>
-        <Link
-          href="/partner/classes"
-          className="bg-primary text-on-primary px-6 py-3 rounded-2xl font-headline uppercase tracking-widest text-[0.7rem] font-bold hover:bg-tertiary transition-colors flex items-center gap-2 shrink-0"
-        >
-          <Icon name="add" className="text-[18px]" />
-          {t("common.newClass")}
-        </Link>
+        <h1 className="font-headline font-extrabold text-4xl md:text-5xl tracking-tight leading-[1.05]">
+          {t("heading")}
+        </h1>
+        <p className="text-on-surface/60 mt-2">{t("subtitle")}</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <MetricCard
-          eyebrow={tMetric("bookings")}
-          icon="confirmation_number"
-          value={OVERVIEW_METRICS.bookings.value}
-          delta={{ text: OVERVIEW_METRICS.bookings.delta, positive: true }}
-        >
-          <Sparkline {...SPARKLINE_PATHS.bookings} />
-        </MetricCard>
-        <MetricCard
-          eyebrow={tMetric("revenue")}
-          icon="payments"
-          iconTone="secondary"
-          value={OVERVIEW_METRICS.revenue.value}
-          delta={{ text: OVERVIEW_METRICS.revenue.delta, positive: true }}
-        >
-          <Sparkline {...SPARKLINE_PATHS.revenue} />
-        </MetricCard>
-        <MetricCard
-          eyebrow={tMetric("fillRate")}
-          icon="groups"
-          value={OVERVIEW_METRICS.fillRate.value}
-          delta={{ text: tMetric("ofCapacity"), muted: true }}
-        >
-          <FillBar pct={OVERVIEW_METRICS.fillRate.percent} />
-        </MetricCard>
-        <MetricCard
-          eyebrow={tMetric("rating")}
-          icon="star"
-          iconTone="secondary"
-          value={OVERVIEW_METRICS.rating.value}
-          delta={{
-            text: tMetric("reviewsCount", { count: OVERVIEW_METRICS.rating.count }),
-            muted: true,
-          }}
-        >
-          <StarRow />
-        </MetricCard>
+      <RevenueCards
+        title={t("revenue.title")}
+        netLabel={t("revenue.netLabel")}
+        thirtyDay={{
+          label: t("revenue.last30d"),
+          value: formatPln(analytics.revenue.last30dCents, locale),
+          net: formatPln(analytics.revenue.net30dCents, locale),
+        }}
+        ninetyDay={{
+          label: t("revenue.last90d"),
+          value: formatPln(analytics.revenue.last90dCents, locale),
+          net: formatPln(analytics.revenue.net90dCents, locale),
+        }}
+        ytd={{
+          label: t("revenue.ytd"),
+          value: formatPln(analytics.revenue.ytdCents, locale),
+          net: formatPln(analytics.revenue.netYtdCents, locale),
+        }}
+      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-6">
+        <BookingsTrendChart
+          title={t("trend.title")}
+          subtitle={t("trend.subtitle")}
+          emptyLabel={t("trend.empty")}
+          tooltipLabel={t("trend.tooltipLabel")}
+          data={analytics.trend}
+        />
+        <TopActivitiesList
+          title={t("top.title")}
+          subtitle={t("top.subtitle")}
+          emptyLabel={t("top.empty")}
+          bookingsLabel={t("top.bookingsLabel")}
+          rows={topRows}
+        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6">
-        <div className="bg-surface-container-lowest rounded-2xl border border-[#FAEEDA] editorial-shadow overflow-hidden">
-          <div className="p-6 pb-4 flex items-center justify-between">
-            <div>
-              <span className="text-[0.6rem] font-bold uppercase tracking-widest text-primary">
-                {tOv("schedule.eyebrow")}
-              </span>
-              <h3 className="font-headline font-bold text-2xl tracking-tight">
-                {tOv("schedule.heading")}
-              </h3>
-            </div>
-            <button
-              type="button"
-              className="text-[0.7rem] font-bold uppercase tracking-widest text-primary hover:underline"
-            >
-              {t("common.viewWeek")}
-            </button>
-          </div>
-          <div className="px-6 pb-6 space-y-3">
-            {schedule.map((s) => (
-              <ScheduleRow
-                key={s.id}
-                time={s.time}
-                durationMinutes={s.duration}
-                title={tClass(`${s.classKey}.title`)}
-                instructor={tInst(`${s.instructor}.name`)}
-                room={s.room}
-                booked={s.booked}
-                capacity={s.capacity}
-                waitlist={s.waitlist}
-                accent={s.accent}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-surface-container-lowest rounded-2xl border border-[#FAEEDA] editorial-shadow overflow-hidden">
-          <div className="p-6 pb-4">
-            <span className="text-[0.6rem] font-bold uppercase tracking-widest text-primary">
-              {tOv("actions.eyebrow")}
-            </span>
-            <h3 className="font-headline font-bold text-2xl tracking-tight">
-              {tOv("actions.heading")}
-            </h3>
-          </div>
-          <div className="px-6 pb-6 space-y-3">
-            <ActionQueueItem
-              icon="reviews"
-              tone="primary"
-              title={tActions("reviewsReply", { count: 2 })}
-              sub={tActions("reviewsOldest", { age: "2 days ago" })}
-            />
-            <ActionQueueItem
-              icon="event_busy"
-              tone="secondary"
-              title={tActions("noInstructorTitle", { day: "Sat", time: "10:00" })}
-              sub={tActions("noInstructorSub", {
-                classTitle: tClass("kidsLab.title"),
-              })}
-            />
-            <ActionQueueItem
-              icon="trending_down"
-              tone="primary"
-              title={tActions("lowBookingsTitle", {
-                classTitle: tClass("proLab.title"),
-              })}
-              sub={tActions("lowBookingsSub", {
-                booked: 4,
-                capacity: 16,
-                day: "Sunday",
-              })}
-            />
-            <ActionQueueItem
-              icon="receipt_long"
-              tone="muted"
-              title={tActions("payoutTitle", { amount: "€1,840", day: "Monday" })}
-              sub={tActions("payoutSub")}
-            />
-          </div>
-        </div>
-      </div>
+      <OccupancyHeatmap
+        title={t("heatmap.title")}
+        subtitle={t("heatmap.subtitle")}
+        emptyLabel={t("heatmap.empty")}
+        weekdayLabels={weekdayLabels}
+        cells={analytics.heatmap}
+      />
     </div>
   );
 }
