@@ -930,6 +930,36 @@
         "payoutSub": "Zobacz szczegóły"
       }
     },
+    "analytics": {
+      "eyebrow": "Podsumowanie",
+      "heading": "Twoje studio w pigułce",
+      "subtitle": "Przychód, rezerwacje i zapełnienie we wszystkich zajęciach.",
+      "weekdays": ["Nd", "Pn", "Wt", "Śr", "Cz", "Pt", "Sb"],
+      "revenue": {
+        "title": "Przychód",
+        "netLabel": "Twój udział",
+        "last30d": "Ostatnie 30 dni",
+        "last90d": "Ostatnie 90 dni",
+        "ytd": "Od początku roku"
+      },
+      "trend": {
+        "title": "Trend rezerwacji",
+        "subtitle": "Ostatnie 30 dni",
+        "empty": "Brak rezerwacji w ostatnich 30 dniach.",
+        "tooltipLabel": "rezerwacji"
+      },
+      "top": {
+        "title": "Najpopularniejsze zajęcia",
+        "subtitle": "Według przychodu",
+        "empty": "Brak potwierdzonych rezerwacji — wypromuj zajęcia, aby zdobyć pierwszą.",
+        "bookingsLabel": "rezerwacji"
+      },
+      "heatmap": {
+        "title": "Mapa zapełnienia",
+        "subtitle": "Dzień × godzina · ostatnie 60 dni",
+        "empty": "Za mało sesji w ostatnich 60 dniach, by narysować mapę."
+      }
+    },
     "classes": {
       "countBadge": "{live} aktywnych · {drafts} szkiców",
       "title": "Twoje",

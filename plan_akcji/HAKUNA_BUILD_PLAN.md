@@ -982,3 +982,61 @@ sub-task. Keep them short — one line per meaningful step._
   UI shape unchanged (Activity[]).
 - 2026-04-24 — Build green (67 routes incl. `/[locale]/partner/plans`,
   `/[locale]/partner/promote`). Tests 12/12.
+- 2026-04-24 — Phase 4 on branch `wojtek/logo-navbar` (current).
+  Migration `0003_analytics.sql`: `view_events` table (service-role
+  insert only, partner-member select via activities→venues join, admin
+  select), index on `(activity_id, created_at desc)`, three sql views:
+  `partner_daily_revenue` (per partner × utc day, confirmed bookings,
+  gross/commission/net_partner split), `activity_conversion` (views +
+  confirmed bookings + safe-divide `conversion_rate numeric(5,4)`),
+  `session_occupancy` (spots_taken/capacity, skips capacity=0).
+  `grant select … to authenticated` on all three views; rls on
+  underlying tables governs visibility.
+- 2026-04-24 — `src/lib/analytics/tracking.ts`:
+  `ensureAnonymousId()` + `ANON_COOKIE_NAME` ('hakuna_anon_id'),
+  first-party cookie, Max-Age 2y, SameSite=Lax, Path=/. uuid stored
+  as-is (not hashed — reasoning: single-party data, small keyspace,
+  server never exposes these values off the `view_events` table, and
+  hashing an already-opaque client-generated uuid adds no privacy).
+  React hook at `app/components/analytics/useTrackView.ts` +
+  `TrackActivityView.tsx` wrapper (UUID regex guard so mock ids
+  short-circuit, `sendBeacon` with fetch fallback + keepalive).
+- 2026-04-24 — `app/api/events/view/route.ts`: POST with zod body
+  schema, dedicated 120/min/anonymous_id Upstash limiter
+  (`createRateLimiter('view-events', …)`), admin-client insert, 204
+  on success, 400 on bad body, 429 with Retry-After, 503 when
+  Supabase env missing. Logs only structural error facts — no
+  anonymous_id or referrer value ever touches console.
+- 2026-04-24 — Wired `<TrackActivityView>` into
+  `app/[locale]/(marketing)/activity/[id]/page.tsx` (client
+  component already; grabbed `id` from `use(params)`). Venue-level
+  tracking deferred — spec only asked for activity tracking.
+- 2026-04-24 — Partner overview rewrite:
+  `app/[locale]/partner/(shell)/page.tsx` is now a Server Component
+  that delegates to `OverviewMock.tsx` (the original client mock UI,
+  extracted verbatim) when Supabase env is absent, otherwise resolves
+  partner_id via `partner_members` + calls `getPartnerAnalytics()`
+  from new `src/lib/db/queries/analytics.ts`. Aggregates: 30d/90d/YTD
+  revenue (in-memory sum over `partner_daily_revenue` rows), 30-day
+  bookings trend (contiguous day fill), top-5 activities by gross
+  (ranked via `activity_conversion` then gross summed from bookings
+  with inner-joined sessions — PostgREST can't `.in()` on a nested
+  column, so we fetch partner-scoped confirmed bookings and filter
+  in JS), 7×24 occupancy heatmap over 60 days (UTC, averaged per
+  bucket; empty buckets rendered as near-transparent cells so
+  zero-session slots are visually distinct from 0% occupancy).
+- 2026-04-24 — `app/components/partner/analytics/{RevenueCards,
+  BookingsTrendChart,TopActivitiesList,OccupancyHeatmap}.tsx` —
+  all `"use client"`. recharts only in BookingsTrendChart
+  (AreaChart + ResponsiveContainer, single brand pink with a soft
+  gradient fill). Heatmap is pure CSS grid, no recharts. SSR gotcha:
+  ResponsiveContainer measures the DOM on mount, so the parent
+  renders an empty-state text placeholder when the series is empty
+  rather than handing recharts a zero-height container.
+- 2026-04-24 — i18n: added `Partner.analytics.*` to both
+  `messages/en.json` and `messages/pl.json` (eyebrow/heading/
+  subtitle, weekdays array, revenue labels, trend/top/heatmap
+  titles + empty states).
+- 2026-04-24 — Build green. Tests 12/12. Phase 4 Done criteria
+  reachable once operator seeds some confirmed bookings + view
+  events through a seeded Supabase.
