@@ -44,12 +44,18 @@ export default function SiteNavbar({ children }: { children?: ReactNode }) {
               <LanguageSwitcher />
             </div>
             <div className="md:hidden h-px bg-on-surface/5 my-2" />
-            <button className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors">
+            <Link
+              href="/login"
+              className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors"
+            >
               {t("Common.login")}
-            </button>
-            <button className="mt-1 bg-primary text-on-primary px-4 py-3 rounded-xl font-headline uppercase tracking-widest text-[0.8rem] font-bold hover:bg-tertiary transition-colors">
+            </Link>
+            <Link
+              href="/signup"
+              className="mt-1 inline-block text-center bg-primary text-on-primary px-4 py-3 rounded-xl font-headline uppercase tracking-widest text-[0.8rem] font-bold hover:bg-tertiary transition-colors"
+            >
               {t("Common.signup")}
-            </button>
+            </Link>
           </div>
         </div>
       )}
