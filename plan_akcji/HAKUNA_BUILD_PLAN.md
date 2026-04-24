@@ -860,3 +860,42 @@ sub-task. Keep them short — one line per meaningful step._
   `activities.*` / `reviews.*` from message bags. Reason: without a live
   seeded DB, that swap would blank the marketing site. Will complete when
   operator seeds Supabase.
+- 2026-04-24 — Phase 2 on branch `phase/2-partner-dashboard`. Installed
+  `@upstash/redis`, `@upstash/ratelimit`, `react-turnstile`, `resend`,
+  `react-email`, `@react-email/components`. Extended `src/env.ts` with
+  RESEND_API_KEY, RESEND_FROM_EMAIL, ADMIN_NOTIFICATION_EMAIL,
+  UPSTASH_REDIS_{REST_URL,REST_TOKEN}, TURNSTILE_SECRET_KEY,
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY (all `.optional()`, degrades gracefully).
+- 2026-04-24 — Email infra: `src/lib/email/resend.ts` (singleton + stub
+  fallback + TODO-OPERATOR SPF/DKIM/DMARC note), React Email templates
+  `PartnerApplicationReceived`, `PartnerApproved`, `PartnerRejected`,
+  `AdminNewApplication` with PL/EN copy and brand tokens.
+- 2026-04-24 — Bot + rate limit: `src/lib/ratelimit.ts`
+  (`partnerApplyRateLimiter` 5/hour/IP, no-op without Upstash),
+  `src/lib/turnstile.ts` (siteverify + no-op without secret),
+  `app/components/TurnstileWidget.tsx` (hidden / passthrough when site
+  key absent).
+- 2026-04-24 — `/partners/apply`: server page + client form + Server
+  Action with Zod, rate limit, Turnstile, slug with collision suffix,
+  admin-client insert, dual email send (applicant + admin). Added
+  `PartnerApply.*` i18n namespace in both locales. Added to sitemap.
+- 2026-04-24 — `/admin`: guarded `app/[locale]/(dashboard)/` layout
+  (`notFound()` if not admin), pending-partners list page with
+  `approvePartner` / `rejectPartner` Server Actions. Approve path tries
+  to find existing auth user by email and wire `partner_members` row;
+  otherwise generates a magic link and includes it in the approval
+  email. Admin email uses service-role for status flip.
+- 2026-04-24 — Added auth guard to existing
+  `app/[locale]/partner/(shell)/layout.tsx`: no-op when Supabase not
+  configured (so the mock dashboard stays explorable pre-launch), full
+  gate when configured — signed-in + `partner_members` or `admin` role.
+- 2026-04-24 — Build green (62/62 routes including `/partners/apply`,
+  `/admin`). Phase 2 Done criteria reachable once operator provisions
+  Supabase + Resend + (optional) Upstash + Turnstile.
+- 2026-04-24 — DEFERRED within Phase 2: (a) full venue / activity /
+  schedule CRUD pages under `app/[locale]/(dashboard)/partner/*` — the
+  plan's rebuild. Current mock `app/[locale]/partner/(shell)/*` stays as
+  design reference; CRUD rewrite is pointless without a live DB to
+  persist against. (b) SiteNavbar "Dashboard" link for authenticated
+  partners/admins — needs a server wrapper refactor; reserved for a
+  follow-up commit.
