@@ -1,19 +1,19 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useMemo, useState, useRef, Suspense } from "react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { Link, useRouter } from "../../../src/i18n/navigation";
-import SiteNavbar from "../../components/SiteNavbar";
-import { Icon } from "../../components/Icon";
-import PageSearchBar from "../../components/search/PageSearchBar";
-import { MobileSearchOverlay } from "../../components/search/MobileSearch";
-import { useSearchState } from "../../components/search/useSearchState";
-import MapboxMap from "../../components/MapboxMap";
-import MobileActivityCarousel from "../../components/MobileActivityCarousel";
-import { useFilteredActivities } from "../../lib/i18nData";
-import { buildSearchQuery, parseSearchQuery } from "../../lib/searchQuery";
-import type { Activity } from "../../lib/mockData";
+import { Link, useRouter } from "@/src/i18n/navigation";
+import SiteNavbar from "@/app/components/SiteNavbar";
+import { Icon } from "@/app/components/Icon";
+import PageSearchBar from "@/app/components/search/PageSearchBar";
+import { MobileSearchOverlay } from "@/app/components/search/MobileSearch";
+import { useSearchState } from "@/app/components/search/useSearchState";
+import MapboxMap from "@/app/components/MapboxMap";
+import MobileActivityCarousel from "@/app/components/MobileActivityCarousel";
+import { useFilteredActivities } from "@/app/lib/i18nData";
+import { buildSearchQuery, parseSearchQuery } from "@/app/lib/searchQuery";
+import type { Activity } from "@/app/lib/mockData";
 
 function CompactCard({ activity }: { activity: Activity }) {
   const t = useTranslations();
@@ -83,7 +83,7 @@ function activityIcon(title: string): string {
   const t = title.toLowerCase();
   if (t.includes("tennis") || t.includes("tenis")) return "sports_tennis";
   if (t.includes("yoga") || t.includes("hatha") || t.includes("joga")) return "self_improvement";
-  if (t.includes("swim") || t.includes("pływan")) return "pool";
+  if (t.includes("swim") || t.includes("pÅ‚ywan")) return "pool";
   if (t.includes("guitar") || t.includes("music") || t.includes("gitar") || t.includes("muzyk")) return "music_note";
   if (t.includes("boxing") || t.includes("boks")) return "sports_mma";
   if (t.includes("run") || t.includes("biega")) return "directions_run";

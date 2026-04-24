@@ -1,8 +1,8 @@
-import { useTranslations } from "next-intl";
-import SiteNavbar from "../../components/SiteNavbar";
-import SiteFooter from "../../components/SiteFooter";
-import BetaSignup from "../../components/BetaSignup";
-import { Icon } from "../../components/Icon";
+﻿import { useTranslations } from "next-intl";
+import SiteNavbar from "@/app/components/SiteNavbar";
+import SiteFooter from "@/app/components/SiteFooter";
+import BetaSignup from "@/app/components/BetaSignup";
+import { Icon } from "@/app/components/Icon";
 
 const VALUE_KEYS = [
   { key: "spontaneity", icon: "bolt" },

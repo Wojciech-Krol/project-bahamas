@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "../../../../src/i18n/navigation";
-import { routing } from "../../../../src/i18n/routing";
-import SiteNavbar from "../../../components/SiteNavbar";
-import SiteFooter from "../../../components/SiteFooter";
-import { Icon } from "../../../components/Icon";
-import ArticleBody from "../../../components/blog/ArticleBody";
-import ArticleCard from "../../../components/blog/ArticleCard";
-import ArticleMeta from "../../../components/blog/ArticleMeta";
-import CategoryPill from "../../../components/blog/CategoryPill";
-import { getAllArticles, getAllSlugs, getArticle } from "../../../lib/blogContent";
+import { Link } from "@/src/i18n/navigation";
+import { routing } from "@/src/i18n/routing";
+import SiteNavbar from "@/app/components/SiteNavbar";
+import SiteFooter from "@/app/components/SiteFooter";
+import { Icon } from "@/app/components/Icon";
+import ArticleBody from "@/app/components/blog/ArticleBody";
+import ArticleCard from "@/app/components/blog/ArticleCard";
+import ArticleMeta from "@/app/components/blog/ArticleMeta";
+import CategoryPill from "@/app/components/blog/CategoryPill";
+import { getAllArticles, getAllSlugs, getArticle } from "@/app/lib/blogContent";
 
 type PageProps = { params: Promise<{ locale: string; slug: string }> };
 
