@@ -93,37 +93,45 @@ export async function POST(request: NextRequest) {
     return new NextResponse("admin not configured", { status: 503 });
   }
 
-  // Idempotency gate. Insert webhook_events with ignore-on-conflict; then
-  // re-read to check if the row already has processed_at set — if so the
-  // previous delivery already committed this event, skip.
-  const { error: insertErr } = await admin
+  // Idempotency: claim-or-skip via the unique (provider, external_id)
+  // index. Try to INSERT and capture the row id; only the thread that
+  // actually inserts gets a row back. Concurrent deliveries hit the
+  // unique-violation branch and bail out as "already in flight" — they
+  // never run the handler in parallel with the owning thread.
+  //
+  // The previous "insert-then-read processed_at" pattern was racy:
+  // both threads could read processed_at = null between the time the
+  // owning thread committed the insert and the time it stamped
+  // processed_at, and both would proceed.
+  const { data: claim, error: insertErr } = await admin
     .from("webhook_events")
     .insert({
       provider: "stripe",
       external_id: event.id,
       payload: event as unknown as Record<string, unknown>,
-    });
-
-  // Conflict (already seen) is fine — supabase returns a 23505-ish error
-  // code string. We ignore *all* insert errors here and instead authoritate
-  // the dedup decision from the `processed_at` read below.
-  if (insertErr) {
-    const code = (insertErr as { code?: string }).code;
-    if (code !== "23505") {
-      console.error("[stripe-webhook] webhook_events insert failed", insertErr);
-      // Non-conflict errors: tell Stripe to retry.
-      return new NextResponse("db error", { status: 500 });
-    }
-  }
-
-  const { data: existing } = await admin
-    .from("webhook_events")
-    .select("processed_at")
-    .eq("provider", "stripe")
-    .eq("external_id", event.id)
+    })
+    .select("id, processed_at")
     .maybeSingle();
 
-  if (existing?.processed_at) {
+  if (insertErr) {
+    const code = (insertErr as { code?: string }).code;
+    if (code === "23505") {
+      // Duplicate — another delivery is processing or already processed
+      // this event. Tell Stripe everything is fine; let the owning
+      // thread (or the previous successful run) own the side effects.
+      return new NextResponse("ok", { status: 200 });
+    }
+    console.error("[stripe-webhook] webhook_events insert failed", insertErr);
+    return new NextResponse("db error", { status: 500 });
+  }
+  if (!claim) {
+    // No row returned but no error either — treat as "already claimed by
+    // someone else" rather than risk double-processing.
+    return new NextResponse("ok", { status: 200 });
+  }
+  // If processed_at is somehow already set on a freshly-inserted row
+  // (impossible under normal flow, but defence-in-depth), bail out.
+  if (claim.processed_at) {
     return new NextResponse("ok", { status: 200 });
   }
 
