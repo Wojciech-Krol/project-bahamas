@@ -24,6 +24,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { env } from "@/src/env";
 import { createAdminClient } from "@/src/lib/db/admin";
+import { verifyBearer } from "@/src/lib/auth/bearer";
 
 type ServerEnv = typeof env & { CRON_SECRET?: string };
 
@@ -42,8 +43,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse("cron not configured", { status: 503 });
   }
 
-  const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${serverEnv.CRON_SECRET}`) {
+  if (!verifyBearer(request.headers.get("authorization"), serverEnv.CRON_SECRET)) {
     return new NextResponse("unauthorized", { status: 401 });
   }
 

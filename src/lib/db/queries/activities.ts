@@ -280,6 +280,12 @@ async function queryWithFilters(
     .eq("is_published", true);
 
   if (filters.activities && filters.activities.length > 0) {
+    // Guard the empty-array case explicitly: `.in('col', [])` returns no
+    // rows under PostgREST instead of being a no-op, so callers passing
+    // `activities: []` (a perfectly valid "no category filter" payload)
+    // would silently get an empty result set. We've checked length > 0
+    // above so this branch is correct, but the guard is documented in
+    // case the predicate is ever lifted.
     query = query.in("category", filters.activities);
   }
 

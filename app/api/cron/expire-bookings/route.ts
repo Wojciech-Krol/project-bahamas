@@ -16,6 +16,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { env } from "@/src/env";
 import { createAdminClient } from "@/src/lib/db/admin";
+import { verifyBearer } from "@/src/lib/auth/bearer";
 
 type ServerEnv = typeof env & { CRON_SECRET?: string };
 
@@ -32,9 +33,8 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const authHeader = request.headers.get("authorization");
-  const expected = `Bearer ${serverEnv.CRON_SECRET}`;
-  if (authHeader !== expected) {
+  // Constant-time compare to defeat timing oracles on the shared secret.
+  if (!verifyBearer(request.headers.get("authorization"), serverEnv.CRON_SECRET)) {
     return new NextResponse("unauthorized", { status: 401 });
   }
 

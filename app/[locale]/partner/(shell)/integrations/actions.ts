@@ -81,6 +81,11 @@ export type UploadCsvResult =
 
 const CSV_REQUIRED_HEADERS = ["activity_name", "starts_at", "ends_at", "capacity"] as const;
 const STORAGE_BUCKET = "pos-uploads";
+/** 5 MB. A real partner schedule export almost never exceeds this; anything
+ *  larger is far more likely to be a DoS attempt than legitimate data.
+ *  Counted as raw bytes so the limit is enforceable before we read the file
+ *  into memory. */
+const CSV_MAX_BYTES = 5 * 1024 * 1024;
 
 async function readFile(formData: FormData): Promise<File | null> {
   const raw = formData.get("file");
@@ -101,12 +106,25 @@ export async function uploadCsv(
   const file = await readFile(formData);
   if (!file) return { ok: false, error: "no-file" };
 
+  // Cap size BEFORE reading into memory — a 100 MB upload would otherwise
+  // get fully buffered just to be rejected. file.size is the metadata
+  // length the browser/runtime reports; treat as untrusted but useful.
+  if (file.size > CSV_MAX_BYTES) {
+    return { ok: false, error: "too-large" };
+  }
+
   const isCsvMime = file.type === "text/csv" || file.type === "application/vnd.ms-excel";
   const isCsvExt = /\.csv$/i.test(file.name);
   if (!isCsvMime && !isCsvExt) return { ok: false, error: "not-csv" };
 
   const buf = Buffer.from(await file.arrayBuffer());
   if (buf.byteLength === 0) return { ok: false, error: "empty" };
+  // Belt-and-braces: enforce again on the actual bytes after read in case
+  // file.size lied (some runtimes don't populate it accurately for
+  // multipart uploads).
+  if (buf.byteLength > CSV_MAX_BYTES) {
+    return { ok: false, error: "too-large" };
+  }
 
   // Header / row sniff BEFORE upload — if the file is malformed we don't
   // want to overwrite the existing latest.csv.
