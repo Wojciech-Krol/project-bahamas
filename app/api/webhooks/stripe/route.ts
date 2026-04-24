@@ -39,6 +39,7 @@ import { findTierByPriceId } from "@/src/lib/payments/subscriptionTiers";
 
 type ServerEnv = typeof env & {
   STRIPE_WEBHOOK_SECRET?: string;
+  STRIPE_CONNECT_WEBHOOK_SECRET?: string;
 };
 
 // Force Node runtime — Stripe's signature verification uses Node crypto.
@@ -73,15 +74,36 @@ export async function POST(request: NextRequest) {
     return new NextResponse("stripe not configured", { status: 503 });
   }
 
-  let event: Stripe.Event;
-  try {
-    event = stripe.webhooks.constructEvent(
-      rawBody,
-      signature,
-      serverEnv.STRIPE_WEBHOOK_SECRET,
+  // Stripe lets you register two distinct webhook endpoints with
+  // separate signing secrets:
+  //   * "Account" events (checkout, customer, payment_intent, …) → STRIPE_WEBHOOK_SECRET
+  //   * "Connected accounts" events (account.updated, balance.available, …)
+  //     → STRIPE_CONNECT_WEBHOOK_SECRET
+  // Operators commonly point both endpoints at /api/webhooks/stripe to
+  // keep one route. Try each secret; the first that verifies wins.
+  // Operators using a single endpoint can leave STRIPE_CONNECT_WEBHOOK_SECRET
+  // unset — the platform secret handles every event then.
+  const secrets = [
+    serverEnv.STRIPE_WEBHOOK_SECRET,
+    serverEnv.STRIPE_CONNECT_WEBHOOK_SECRET,
+  ].filter((s): s is string => Boolean(s));
+
+  let event: Stripe.Event | null = null;
+  let lastErr: unknown = null;
+  for (const secret of secrets) {
+    try {
+      event = stripe.webhooks.constructEvent(rawBody, signature, secret);
+      lastErr = null;
+      break;
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  if (!event) {
+    console.error(
+      "[stripe-webhook] signature verification failed against all configured secrets",
+      lastErr,
     );
-  } catch (err) {
-    console.error("[stripe-webhook] signature verification failed", err);
     return new NextResponse("bad signature", { status: 400 });
   }
 
