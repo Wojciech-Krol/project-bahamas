@@ -843,3 +843,20 @@ sub-task. Keep them short — one line per meaningful step._
   enable Google OAuth in the Supabase dashboard with the callback URL
   `<site>/api/auth/callback`, then verify signup end-to-end and the RLS
   anon SELECT checks at the bottom of `0001_initial.sql`.
+- 2026-04-24 — Phase 1b PARTIAL on branch `phase/1b-queries`. Wrote the
+  full DB query layer at `src/lib/db/queries/{activities,venues,reviews,
+  _i18n,index}.ts` plus contract types at `src/lib/db/types.ts`.
+  Functions: `getClosestActivities`, `getActivityById`, `getSearchResults`,
+  `getFilteredActivities`, `getVenueById`, `getReviews`. Each handles
+  "Supabase not configured" by returning `[]`/`null` with a `console.warn`
+  so the marketing site keeps rendering pre-seed.
+- 2026-04-24 — Wrote `supabase/seed/seed.ts` (idempotent, uses service
+  role). Upserts demo partner, venues for every `schoolId` in mock data,
+  all activities with locale JSONB pulled from `messages/{pl,en}.json`,
+  3 future sessions per activity, reviews with auto-created seed reviewer
+  auth users. Runnable via `npx tsx supabase/seed/seed.ts`. Added `tsx`
+  devDep.
+- 2026-04-24 — DELIBERATELY DEFERRED: page swap + removal of
+  `activities.*` / `reviews.*` from message bags. Reason: without a live
+  seeded DB, that swap would blank the marketing site. Will complete when
+  operator seeds Supabase.
