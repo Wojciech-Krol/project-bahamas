@@ -1,0 +1,483 @@
+/**
+ * Stripe webhook handler — Phase 3.2.
+ *
+ * Authoritative spec: `plan_akcji/HAKUNA_BUILD_PLAN.md` section
+ * "Webhook handler" and "Commission spec — single source of truth".
+ *
+ * Invariants:
+ *   - Signature verification is REQUIRED. No signature, no processing.
+ *   - Idempotency is enforced via `webhook_events(provider, external_id)`
+ *     unique constraint; replaying the same event never double-increments
+ *     `spots_taken` or fires duplicate emails.
+ *   - `spots_taken` is incremented atomically with a `lt` guard against
+ *     `capacity`. Zero rows affected means we hit an overbook race and
+ *     must refund immediately (`refund_application_fee: true`, per the
+ *     cancel flow's mandatory-flag note).
+ *   - Attribution (`customer_partner_attribution`) is upserted HERE, not
+ *     in createBooking — the plan calls it out explicitly because
+ *     attribution based on `pending` bookings would poison commission
+ *     calculations for subsequent abandoned-checkout users.
+ *   - Double-delivered `checkout.session.completed` events: Stripe may
+ *     redeliver on timeout. We handle this in two layers:
+ *       1. The webhook_events dedup (by event.id) catches exact replays.
+ *       2. If the same session_id arrives on a DIFFERENT event.id (e.g.
+ *          checkout.session.async_payment_succeeded following
+ *          checkout.session.completed), the `if booking.status ===
+ *          'confirmed'` early return keeps us from double-processing.
+ */
+
+import { NextResponse, type NextRequest } from "next/server";
+import type Stripe from "stripe";
+
+import { env } from "@/src/env";
+import { createAdminClient } from "@/src/lib/db/admin";
+import { getStripe } from "@/src/lib/payments/stripe";
+import { sendEmail } from "@/src/lib/email/resend";
+import { BookingConfirmation } from "@/src/lib/email/templates/BookingConfirmation";
+import { BookingCancelled } from "@/src/lib/email/templates/BookingCancelled";
+
+type ServerEnv = typeof env & {
+  STRIPE_WEBHOOK_SECRET?: string;
+};
+
+// Force Node runtime — Stripe's signature verification uses Node crypto.
+// Edge runtime would silently fail the HMAC check.
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+export async function POST(request: NextRequest) {
+  const serverEnv = env as ServerEnv;
+
+  if (!serverEnv.STRIPE_WEBHOOK_SECRET) {
+    // Clear 503 so ops dashboards can distinguish "misconfigured" from
+    // "Stripe sent us bad data".
+    return new NextResponse(
+      "stripe webhook not configured — set STRIPE_WEBHOOK_SECRET",
+      { status: 503 },
+    );
+  }
+
+  // MUST read the raw body BEFORE any JSON parsing — Stripe's HMAC is
+  // computed over the exact bytes Stripe sent, byte for byte.
+  const rawBody = await request.text();
+  const signature = request.headers.get("stripe-signature");
+  if (!signature) {
+    return new NextResponse("missing stripe-signature header", { status: 400 });
+  }
+
+  let stripe: Stripe;
+  try {
+    stripe = getStripe();
+  } catch {
+    return new NextResponse("stripe not configured", { status: 503 });
+  }
+
+  let event: Stripe.Event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      rawBody,
+      signature,
+      serverEnv.STRIPE_WEBHOOK_SECRET,
+    );
+  } catch (err) {
+    console.error("[stripe-webhook] signature verification failed", err);
+    return new NextResponse("bad signature", { status: 400 });
+  }
+
+  let admin;
+  try {
+    admin = createAdminClient();
+  } catch (err) {
+    console.error("[stripe-webhook] admin client not configured", err);
+    return new NextResponse("admin not configured", { status: 503 });
+  }
+
+  // Idempotency gate. Insert webhook_events with ignore-on-conflict; then
+  // re-read to check if the row already has processed_at set — if so the
+  // previous delivery already committed this event, skip.
+  const { error: insertErr } = await admin
+    .from("webhook_events")
+    .insert({
+      provider: "stripe",
+      external_id: event.id,
+      payload: event as unknown as Record<string, unknown>,
+    });
+
+  // Conflict (already seen) is fine — supabase returns a 23505-ish error
+  // code string. We ignore *all* insert errors here and instead authoritate
+  // the dedup decision from the `processed_at` read below.
+  if (insertErr) {
+    const code = (insertErr as { code?: string }).code;
+    if (code !== "23505") {
+      console.error("[stripe-webhook] webhook_events insert failed", insertErr);
+      // Non-conflict errors: tell Stripe to retry.
+      return new NextResponse("db error", { status: 500 });
+    }
+  }
+
+  const { data: existing } = await admin
+    .from("webhook_events")
+    .select("processed_at")
+    .eq("provider", "stripe")
+    .eq("external_id", event.id)
+    .maybeSingle();
+
+  if (existing?.processed_at) {
+    return new NextResponse("ok", { status: 200 });
+  }
+
+  try {
+    switch (event.type) {
+      case "checkout.session.completed": {
+        await handleCheckoutCompleted(admin, event);
+        break;
+      }
+      case "payment_intent.payment_failed":
+      case "checkout.session.expired": {
+        await handleBookingExpired(admin, event);
+        break;
+      }
+      default: {
+        console.info("[stripe-webhook] ignoring event", { type: event.type });
+        break;
+      }
+    }
+  } catch (err) {
+    console.error("[stripe-webhook] handler threw", err);
+    // Do NOT mark processed_at — Stripe will retry.
+    return new NextResponse("handler error", { status: 500 });
+  }
+
+  await admin
+    .from("webhook_events")
+    .update({ processed_at: new Date().toISOString() })
+    .eq("provider", "stripe")
+    .eq("external_id", event.id);
+
+  return new NextResponse("ok", { status: 200 });
+}
+
+// ---------- handlers ----------
+
+type AdminClient = ReturnType<typeof createAdminClient>;
+
+async function handleCheckoutCompleted(
+  admin: AdminClient,
+  event: Stripe.Event,
+) {
+  const checkoutSession = event.data.object as Stripe.Checkout.Session;
+  const bookingId = checkoutSession.metadata?.booking_id;
+  if (!bookingId) {
+    console.warn("[stripe-webhook] checkout.completed missing booking_id", {
+      event_id: event.id,
+    });
+    return;
+  }
+
+  // Load the booking + the full chain we need for attribution + emails.
+  const { data: bookingRow, error: loadErr } = await admin
+    .from("bookings")
+    .select(
+      `
+      id,
+      user_id,
+      session_id,
+      status,
+      is_boost_first_booking,
+      amount_cents,
+      currency,
+      session:sessions!inner (
+        id,
+        starts_at,
+        capacity,
+        spots_taken,
+        activity:activities!inner (
+          id,
+          title_i18n,
+          venue:venues!inner (
+            id,
+            name,
+            partner:partners!inner (
+              id,
+              contact_email
+            )
+          )
+        )
+      )
+    `,
+    )
+    .eq("id", bookingId)
+    .maybeSingle();
+
+  if (loadErr || !bookingRow) {
+    console.error("[stripe-webhook] booking lookup failed", { loadErr, bookingId });
+    return;
+  }
+
+  // Double-delivery guard — already confirmed.
+  if ((bookingRow as { status: string }).status === "confirmed") {
+    return;
+  }
+
+  const sessionAny = unwrap(
+    (bookingRow as unknown as { session: unknown }).session as
+      | {
+          id: string;
+          starts_at: string;
+          capacity: number;
+          spots_taken: number;
+          activity: unknown;
+        }
+      | {
+          id: string;
+          starts_at: string;
+          capacity: number;
+          spots_taken: number;
+          activity: unknown;
+        }[]
+      | null,
+  );
+  if (!sessionAny) return;
+
+  const activityAny = unwrap(
+    (sessionAny as { activity: unknown }).activity as
+      | {
+          id: string;
+          title_i18n: Record<string, string> | null;
+          venue: unknown;
+        }
+      | {
+          id: string;
+          title_i18n: Record<string, string> | null;
+          venue: unknown;
+        }[]
+      | null,
+  );
+  const venueAny = unwrap(
+    (activityAny as { venue: unknown } | null)?.venue as
+      | { id: string; name: string; partner: unknown }
+      | { id: string; name: string; partner: unknown }[]
+      | null,
+  );
+  const partnerAny = unwrap(
+    (venueAny as { partner: unknown } | null)?.partner as
+      | { id: string; contact_email: string }
+      | { id: string; contact_email: string }[]
+      | null,
+  );
+
+  if (!activityAny || !venueAny || !partnerAny) {
+    console.error("[stripe-webhook] incomplete booking join", { bookingId });
+    return;
+  }
+
+  // Atomic capacity guard — increment only if spots_taken < capacity.
+  // Supabase JS lacks a native compare-and-swap for `col < other_col`, so
+  // we read capacity first (cheap — single integer column) and then
+  // update with an `lt` on the current spots_taken value. This is NOT a
+  // true CAS, but combined with the session row's CHECK constraint
+  // (`spots_taken <= capacity`) it collapses to a serialization error if
+  // two webhooks race, and the second one falls into the overbook branch.
+  const capacity = sessionAny.capacity;
+  const currentSpots = sessionAny.spots_taken;
+
+  let overbooked = false;
+  if (currentSpots >= capacity) {
+    overbooked = true;
+  } else {
+    const { data: updated, error: incErr } = await admin
+      .from("sessions")
+      .update({ spots_taken: currentSpots + 1 })
+      .eq("id", sessionAny.id)
+      .eq("spots_taken", currentSpots) // optimistic concurrency
+      .lt("spots_taken", capacity)
+      .select("id, spots_taken");
+    if (incErr || !updated || updated.length === 0) {
+      overbooked = true;
+    }
+  }
+
+  if (overbooked) {
+    // Overbook race — refund and flag. `refund_application_fee: true` is
+    // mandatory so Hakuna doesn't keep commission on a refunded booking
+    // (see cancelBooking for the same invariant).
+    const paymentIntentId =
+      typeof checkoutSession.payment_intent === "string"
+        ? checkoutSession.payment_intent
+        : checkoutSession.payment_intent?.id ?? null;
+    if (paymentIntentId) {
+      try {
+        await getStripe().refunds.create({
+          payment_intent: paymentIntentId,
+          refund_application_fee: true,
+          reason: "requested_by_customer",
+        });
+      } catch (err) {
+        console.error("[stripe-webhook] overbook refund failed", err);
+      }
+    }
+    await admin
+      .from("bookings")
+      .update({
+        status: "refunded_overbook",
+        stripe_payment_intent_id: paymentIntentId,
+      })
+      .eq("id", bookingId);
+
+    // Apology email — stub.
+    const locale: "pl" | "en" = "pl";
+    const activityTitle =
+      activityAny.title_i18n?.[locale] ??
+      activityAny.title_i18n?.pl ??
+      "Hakuna booking";
+    console.info("[stripe-webhook] TODO send overbook apology email", {
+      bookingId,
+      activityTitle,
+    });
+    return;
+  }
+
+  // Normal path — confirm booking.
+  const paymentIntentId =
+    typeof checkoutSession.payment_intent === "string"
+      ? checkoutSession.payment_intent
+      : checkoutSession.payment_intent?.id ?? null;
+
+  const { error: confirmErr } = await admin
+    .from("bookings")
+    .update({
+      status: "confirmed",
+      confirmed_at: new Date().toISOString(),
+      stripe_payment_intent_id: paymentIntentId,
+    })
+    .eq("id", bookingId);
+
+  if (confirmErr) {
+    console.error("[stripe-webhook] booking confirm update failed", confirmErr);
+    return;
+  }
+
+  // Attribution upsert — idempotent by design. `ignoreDuplicates: true`
+  // means the FIRST successful confirmation wins and subsequent attempts
+  // silently skip; attribution is permanent per the commission spec.
+  const userId = (bookingRow as { user_id: string }).user_id;
+  const wasBoostAttributed = Boolean(
+    (bookingRow as { is_boost_first_booking: boolean }).is_boost_first_booking,
+  );
+  const { error: attrErr } = await admin
+    .from("customer_partner_attribution")
+    .upsert(
+      {
+        user_id: userId,
+        partner_id: partnerAny.id,
+        first_booking_id: bookingId,
+        was_boost_attributed: wasBoostAttributed,
+      },
+      {
+        onConflict: "user_id,partner_id",
+        ignoreDuplicates: true,
+      },
+    );
+  if (attrErr) {
+    console.error("[stripe-webhook] attribution upsert failed", attrErr);
+  }
+
+  // Emails — resolve user locale + email.
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("locale")
+    .eq("id", userId)
+    .maybeSingle();
+  const locale: "pl" | "en" =
+    (profile?.locale as "pl" | "en" | undefined) === "en" ? "en" : "pl";
+
+  const activityTitle =
+    activityAny.title_i18n?.[locale] ??
+    activityAny.title_i18n?.pl ??
+    "Hakuna booking";
+
+  const startsAtDisplay = new Date(sessionAny.starts_at).toLocaleString(
+    locale,
+  );
+
+  // User email — look up from auth.users via admin (we don't have it on
+  // the booking row).
+  const { data: authUser } = await admin.auth.admin.getUserById(userId);
+  const userEmail = authUser?.user?.email ?? null;
+
+  try {
+    if (userEmail) {
+      await sendEmail({
+        to: userEmail,
+        subject:
+          locale === "pl" ? "Rezerwacja potwierdzona" : "Booking confirmed",
+        react: BookingConfirmation({
+          locale,
+          activityTitle,
+          startsAtDisplay,
+          venueName: venueAny.name,
+          bookingId,
+        }),
+      });
+    }
+    if (partnerAny.contact_email) {
+      // Reuse the cancellation template's "user view" style for now — a
+      // proper partner-notification template is a later polish step.
+      await sendEmail({
+        to: partnerAny.contact_email,
+        subject:
+          locale === "pl"
+            ? "Nowa rezerwacja"
+            : "New booking",
+        react: BookingConfirmation({
+          locale,
+          activityTitle,
+          startsAtDisplay,
+          venueName: venueAny.name,
+          bookingId,
+        }),
+      });
+    }
+  } catch (err) {
+    // Emails are best-effort — never fail the webhook on send errors.
+    // TODO: move to a deferred queue (Resend has one) so retries don't
+    // hammer the user inbox.
+    console.error("[stripe-webhook] confirmation email send failed", err);
+  }
+
+  // Silence unused-import lint for BookingCancelled in this file; it is
+  // imported for symmetry with cancel flows if we extend here later.
+  void BookingCancelled;
+}
+
+async function handleBookingExpired(admin: AdminClient, event: Stripe.Event) {
+  // Extract booking_id from either a checkout session or a payment intent.
+  let bookingId: string | null = null;
+  const obj = event.data.object as
+    | Stripe.Checkout.Session
+    | Stripe.PaymentIntent;
+  if ("metadata" in obj && obj.metadata) {
+    bookingId = (obj.metadata as Record<string, string>).booking_id ?? null;
+  }
+  if (!bookingId) {
+    console.warn("[stripe-webhook] expire event with no booking_id", {
+      type: event.type,
+    });
+    return;
+  }
+  const { error } = await admin
+    .from("bookings")
+    .update({ status: "expired" })
+    .eq("id", bookingId)
+    .eq("status", "pending"); // don't clobber already-confirmed rows
+  if (error) {
+    console.error("[stripe-webhook] expire update failed", error);
+  }
+}
+
+// Same unwrap helper as in bookingActions. Kept local to avoid re-exporting
+// Supabase join ergonomics as public API.
+function unwrap<T>(value: T | T[] | null | undefined): T | null {
+  if (value == null) return null;
+  return Array.isArray(value) ? (value[0] ?? null) : value;
+}

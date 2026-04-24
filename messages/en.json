@@ -761,10 +761,32 @@
       "insights": "Insights",
       "venue": "Venue profile",
       "payouts": "Payouts",
+      "payments": "Payments",
       "settings": "Settings",
       "backToSite": "← Back to Hakuna",
       "toggleMenu": "Toggle menu",
       "logout": "Log out"
+    },
+    "stripe": {
+      "title": "Payments",
+      "subtitle": "Connect Stripe to accept bookings and receive payouts.",
+      "status": {
+        "none": "Not connected",
+        "incomplete": "Onboarding in progress",
+        "connected": "Connected"
+      },
+      "cta": {
+        "connect": "Connect Stripe",
+        "resume": "Resume onboarding",
+        "refresh": "Refresh status"
+      },
+      "placeholder": {
+        "stripeMissing": "Stripe is not configured yet. Ask the Hakuna operator to set `STRIPE_SECRET_KEY`.",
+        "supabaseMissing": "Supabase is not configured yet. Ask the Hakuna operator to provision the database."
+      },
+      "sidebar": {
+        "payments": "Payments"
+      }
     },
     "venueSwitcher": {
       "label": "Venue"

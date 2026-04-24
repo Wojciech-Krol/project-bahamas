@@ -27,6 +27,9 @@ const clientSchema = z.object({
 
   // Phase 2: Turnstile public key (bot protection).
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1).optional(),
+
+  // Phase 3: Stripe publishable key (exposed to browser for client SDK).
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1).optional(),
 });
 
 const serverSchema = clientSchema.extend({
@@ -48,6 +51,13 @@ const serverSchema = clientSchema.extend({
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
   TURNSTILE_SECRET_KEY: z.string().min(1).optional(),
+
+  // Phase 3: Stripe. Keys required before a booking can actually charge;
+  // optional at build time so pre-launch checks still pass.
+  STRIPE_SECRET_KEY: z.string().min(1).optional(),
+  STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
+  STRIPE_CONNECT_WEBHOOK_SECRET: z.string().min(1).optional(),
+  CRON_SECRET: z.string().min(1).optional(),
 });
 
 const parsed = (isServer ? serverSchema : clientSchema).safeParse(process.env);

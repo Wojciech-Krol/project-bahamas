@@ -27,6 +27,7 @@ const PRIMARY: NavItem[] = [
 const SECONDARY: NavItem[] = [
   { href: "/partner/venue", icon: "storefront", labelKey: "venue" },
   { href: "/partner/payouts", icon: "payments", labelKey: "payouts" },
+  { href: "/partner/payments", icon: "payments", labelKey: "payments" },
   { href: "/partner/settings", icon: "settings", labelKey: "settings" },
 ];
 

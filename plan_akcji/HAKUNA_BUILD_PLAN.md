@@ -899,3 +899,57 @@ sub-task. Keep them short — one line per meaningful step._
   persist against. (b) SiteNavbar "Dashboard" link for authenticated
   partners/admins — needs a server wrapper refactor; reserved for a
   follow-up commit.
+- 2026-04-24 — Phase 3a on branch `phase/3a-bookings-commission`.
+  Installed `stripe`, `@stripe/stripe-js`, `vitest`, `@vitest/ui`.
+  Extended `src/env.ts` with STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET,
+  STRIPE_CONNECT_WEBHOOK_SECRET, CRON_SECRET,
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.
+- 2026-04-24 — Migration `0002_bookings.sql`: `partners.stripe_account_id`,
+  tables `listing_boosts` (XOR activity_id/venue_id), 
+  `customer_partner_attribution` (PK user_id+partner_id, immutable,
+  service-role write), `bookings.boost_id`. RLS: public sees only
+  boosts active-now; partner members see own; attribution select for
+  own or partner member. View `venue_rankings` for Phase 3.4 search
+  ORDER BY (has_active_boost, has_subscription, rating, created_at).
+- 2026-04-24 — Commission pure fn at `src/lib/payments/commission.ts`:
+  `computeCommission(input)` → `{ commissionBps, commissionCents,
+  isBoostFirstBooking, boostCommissionBps, reason }`. Constants:
+  BOOST_COMMISSION_TARGET_BPS=3500, RACK=4000, BASE_DEFAULT=2000.
+  Vitest suite at `tests/commission.spec.ts` — 12/12 pass (all four
+  Phase 3 Done-criteria scenarios + subscription edge cases + rounding).
+  Added `npm test` + `npm run test:watch` scripts.
+- 2026-04-24 — Stripe infra: `src/lib/payments/stripe.ts`
+  (`getStripe()`, server-only singleton, throws if key missing, pins
+  apiVersion `2026-04-22.dahlia` matching installed SDK v22.1.0).
+  `src/lib/payments/stripeConnect.ts`:
+  `createExpressAccount`, `createAccountLink`, `getAccountStatus`.
+  Partner-facing page at `app/[locale]/partner/(shell)/payments/`
+  (page + actions) — "Connect Stripe" / "Resume onboarding" /
+  "Refresh status" CTAs, degrades gracefully when Stripe/Supabase env
+  absent. Sidebar entry "Payments" added. `Partner.stripe.*` i18n.
+- 2026-04-24 — Booking pipeline: `src/lib/payments/bookingActions.ts`
+  with `createBooking(sessionId)` (full commission spec via
+  `computeCommission`, admin-client insert per plan, Stripe Checkout
+  Session with application_fee_amount + transfer_data.destination,
+  locale + payment_method_types per spec, rollback to expired on
+  error) and `cancelBooking(bookingId)` (48h window check, refund with
+  `refund_application_fee: true`, spots decrement, emails).
+- 2026-04-24 — Webhook handler at
+  `app/api/webhooks/stripe/route.ts`: signature verification via
+  `stripe.webhooks.constructEvent` on raw body, idempotency through
+  `webhook_events(provider, external_id)` unique, handlers for
+  `checkout.session.completed` (atomic spots increment via optimistic
+  concurrency; overbook refund with `refund_application_fee: true`;
+  attribution upsert on first-confirmed-booking),
+  `payment_intent.payment_failed` + `checkout.session.expired` →
+  booking expired.
+- 2026-04-24 — Cron at `app/api/cron/expire-bookings/route.ts`: Bearer
+  `CRON_SECRET` guard, flips pending bookings older than 30 min to
+  expired.
+- 2026-04-24 — Email templates `BookingConfirmation` +
+  `BookingCancelled` (audience prop for user vs. partner). Stubbed
+  where partner-specific copy can iterate later.
+- 2026-04-24 — Build green (63 routes incl. `/api/webhooks/stripe`,
+  `/api/cron/expire-bookings`, `/[locale]/partner/payments`). Tests
+  12/12. Phase 3a Done criteria's LIVE e2e still needs operator to
+  enable Stripe test mode + set webhooks.
