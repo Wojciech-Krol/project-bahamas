@@ -28,7 +28,12 @@ const CSP = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.mapbox.com",
   "img-src 'self' data: blob: https:",
   "font-src 'self' https://fonts.gstatic.com",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://api.mapbox.com https://events.mapbox.com https://*.resend.com https://challenges.cloudflare.com https://*.upstash.io",
+  // Sentry browser SDK posts errors / sessions / replays to its ingest
+  // endpoints. Without these, the SDK silently fails to report — exactly
+  // when we need it most. Cover both default (sentry.io) and EU
+  // (de.sentry.io / *.ingest.de.sentry.io) regions so changing project
+  // region doesn't require a deploy.
+  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://api.mapbox.com https://events.mapbox.com https://*.resend.com https://challenges.cloudflare.com https://*.upstash.io https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://sentry.io",
   "frame-src 'self' https://challenges.cloudflare.com https://js.stripe.com https://hooks.stripe.com",
   "worker-src 'self' blob:",
   "form-action 'self'",

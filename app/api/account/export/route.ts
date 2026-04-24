@@ -18,13 +18,20 @@ import { NextResponse } from "next/server";
 
 import { getCurrentUser } from "@/src/lib/db/server";
 import { createAdminClient } from "@/src/lib/db/admin";
+import { guardCsrf } from "@/src/lib/auth/csrf";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const VIEW_EVENTS_LIMIT = 10_000;
 
-export async function POST() {
+export async function POST(request: Request) {
+  // Cross-origin POSTs can force a logged-in user's browser to fire this
+  // endpoint, generating server work even though CORS keeps the attacker
+  // from reading the JSON. Lock to same-origin to remove the DoS lever.
+  const csrf = guardCsrf(request);
+  if (csrf) return csrf;
+
   const current = await getCurrentUser();
   if (!current) {
     return new NextResponse("Unauthorized", { status: 401 });

@@ -35,6 +35,7 @@ import {
 } from "@/src/lib/pos/adapter";
 import { sendEmail } from "@/src/lib/email/resend";
 import { PosSyncFailure } from "@/src/lib/email/templates/PosSyncFailure";
+import { verifyBearer } from "@/src/lib/auth/bearer";
 
 type ServerEnv = typeof env & {
   CRON_SECRET?: string;
@@ -75,9 +76,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const authHeader = request.headers.get("authorization");
-  const expected = `Bearer ${serverEnv.CRON_SECRET}`;
-  if (authHeader !== expected) {
+  if (!verifyBearer(request.headers.get("authorization"), serverEnv.CRON_SECRET)) {
     return new NextResponse("unauthorized", { status: 401 });
   }
 
