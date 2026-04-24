@@ -30,6 +30,7 @@ const SECONDARY: NavItem[] = [
   { href: "/partner/payouts", icon: "payments", labelKey: "payouts" },
   { href: "/partner/payments", icon: "payments", labelKey: "payments" },
   { href: "/partner/plans", icon: "card_membership", labelKey: "plans" },
+  { href: "/partner/integrations", icon: "sync", labelKey: "integrations" },
   { href: "/partner/settings", icon: "settings", labelKey: "settings" },
 ];
 

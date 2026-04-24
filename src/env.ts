@@ -64,6 +64,16 @@ const serverSchema = clientSchema.extend({
   // Stripe, and the page falls back to a "tier not configured" placeholder.
   STRIPE_PRICE_PARTNER_PLUS: z.string().min(1).optional(),
   STRIPE_PRICE_PARTNER_PRO: z.string().min(1).optional(),
+
+  // Phase 5: POS integration config encryption key. Base64-encoded 32 random
+  // bytes (aes-256-gcm). Optional at build time — the integrations page shows
+  // a placeholder, the cron returns 503, and partners cannot connect any POS
+  // provider until the operator sets this. Generate with
+  //   `openssl rand -base64 32`
+  // and store in the deployment env. Rotation requires re-encrypting every
+  // `pos_integrations.config_encrypted` blob — see src/lib/pos/crypto.ts for
+  // the plan. Never commit this value.
+  POS_CONFIG_ENCRYPTION_KEY: z.string().min(1).optional(),
 });
 
 const parsed = (isServer ? serverSchema : clientSchema).safeParse(process.env);
