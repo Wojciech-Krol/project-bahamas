@@ -1,13 +1,13 @@
-"use client";
+﻿"use client";
 
 import { use, useState } from "react";
 import { useTranslations } from "next-intl";
-import SiteNavbar from "../../../components/SiteNavbar";
-import SiteFooter from "../../../components/SiteFooter";
-import ReviewsSection from "../../../components/ReviewsSection";
-import { Icon } from "../../../components/Icon";
-import { ACTIVITY_DETAIL_BASE } from "../../../lib/mockData";
-import { useReviews } from "../../../lib/i18nData";
+import SiteNavbar from "@/app/components/SiteNavbar";
+import SiteFooter from "@/app/components/SiteFooter";
+import ReviewsSection from "@/app/components/ReviewsSection";
+import { Icon } from "@/app/components/Icon";
+import { ACTIVITY_DETAIL_BASE } from "@/app/lib/mockData";
+import { useReviews } from "@/app/lib/i18nData";
 
 export default function ActivityPage({
   params,

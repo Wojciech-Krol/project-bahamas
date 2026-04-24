@@ -777,4 +777,29 @@ the code, update here.
 _Claude Code: append dated entries here as you complete each phase or
 sub-task. Keep them short — one line per meaningful step._
 
-- _(empty — fill in as you work)_
+- 2026-04-24 — Phase 0 groundwork branch `phase/0-groundwork`.
+- 2026-04-24 — Skipped step 1 (proxy.ts → middleware.ts rename): Next 16
+  renamed `middleware` → `proxy`; current `proxy.ts` is already correct per
+  `node_modules/next/dist/docs/.../03-file-conventions/proxy.md`. Keeping it.
+- 2026-04-24 — Installed `zod` (4.3.6); `@types/node` already present.
+- 2026-04-24 — Added `src/env.ts` with Zod-validated env (server/client split,
+  empty schema for now — phases append).
+- 2026-04-24 — Added `.env.example` listing every key from the plan's running
+  list, grouped by phase.
+- 2026-04-24 — Created `app/[locale]/(marketing)/` route group; moved
+  `page.tsx`, `about/`, `activity/`, `blog/`, `cookies/`, `privacy/`,
+  `school/`, `search/`, `terms/` into it. URLs unchanged. Adapted plan from
+  `app/(marketing)/` → `app/[locale]/(marketing)/` because routes live under
+  the locale segment. Same adaptation will apply to `(auth)/` and
+  `(dashboard)/` in later phases.
+- 2026-04-24 — Converted relative imports in moved files to `@/*` alias to
+  avoid breakage from future moves.
+- 2026-04-24 — Scaffolded `app/[locale]/(auth)/`, `app/[locale]/(dashboard)/`,
+  `app/api/`, `src/lib/{db,email,payments,pos}/`,
+  `supabase/{migrations,seed}/` with `.gitkeep`.
+- 2026-04-24 — Rewrote `README.md` with Hakuna-specific stack, dev steps, env
+  setup, project structure, and pointer to this plan.
+- 2026-04-24 — `npm run build` green (51/51 static pages). Pre-existing lint
+  errors in `search/HeroSearchBar.tsx`, `search/MobileSearch.tsx`,
+  `MobileActivityCarousel.tsx` left untouched per CLAUDE.md ("Don't fix
+  errors in files you didn't edit").

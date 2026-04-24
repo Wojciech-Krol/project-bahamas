@@ -1,31 +1,31 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState, useCallback, Fragment } from "react";
 import { useTranslations } from "next-intl";
-import { Link, useRouter } from "../../src/i18n/navigation";
-import { buildSearchQuery } from "../lib/searchQuery";
-import SiteFooter from "../components/SiteFooter";
-import SiteNavbar from "../components/SiteNavbar";
-import BetaSignup from "../components/BetaSignup";
-import ReviewsSection from "../components/ReviewsSection";
-import ClosestToYouCarousel from "../components/ClosestToYouCarousel";
-import MobileActivityCarousel from "../components/MobileActivityCarousel";
-import { Icon } from "../components/Icon";
-import HeroSearchBar from "../components/search/HeroSearchBar";
-import SearchSegment from "../components/search/SearchSegment";
-import { MobileSearchPill, MobileSearchOverlay } from "../components/search/MobileSearch";
+import { Link, useRouter } from "@/src/i18n/navigation";
+import { buildSearchQuery } from "@/app/lib/searchQuery";
+import SiteFooter from "@/app/components/SiteFooter";
+import SiteNavbar from "@/app/components/SiteNavbar";
+import BetaSignup from "@/app/components/BetaSignup";
+import ReviewsSection from "@/app/components/ReviewsSection";
+import ClosestToYouCarousel from "@/app/components/ClosestToYouCarousel";
+import MobileActivityCarousel from "@/app/components/MobileActivityCarousel";
+import { Icon } from "@/app/components/Icon";
+import HeroSearchBar from "@/app/components/search/HeroSearchBar";
+import SearchSegment from "@/app/components/search/SearchSegment";
+import { MobileSearchPill, MobileSearchOverlay } from "@/app/components/search/MobileSearch";
 import {
   ActivityPanel,
   NeighborhoodPanel,
   WhenPanel,
   AgePanel,
-} from "../components/search/panels";
+} from "@/app/components/search/panels";
 import {
   formatMultiSelectDisplay,
   type SearchField,
   type AgeCounts,
-} from "../components/search/constants";
-import { useClosestActivities, useReviews } from "../lib/i18nData";
+} from "@/app/components/search/constants";
+import { useClosestActivities, useReviews } from "@/app/lib/i18nData";
 
 function useFormatActivities() {
   const tLabel = useTranslations("Search.activityLabels");
