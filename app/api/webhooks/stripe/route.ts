@@ -161,6 +161,15 @@ export async function POST(request: NextRequest) {
         await handleSubscriptionChange(admin, event);
         break;
       }
+      case "account.updated": {
+        // Stripe Connect emits this when an Express partner finishes
+        // onboarding, adds a payout method, or has their requirements
+        // change. Mirror the relevant flags onto the partner row so the
+        // partner dashboard reflects the new state without the partner
+        // having to click "Refresh status" manually.
+        await handleAccountUpdated(admin, event);
+        break;
+      }
       default: {
         console.info("[stripe-webhook] ignoring event", { type: event.type });
         break;
@@ -706,4 +715,54 @@ async function handleBoostCompleted(admin: AdminClient, event: Stripe.Event) {
 function unwrap<T>(value: T | T[] | null | undefined): T | null {
   if (value == null) return null;
   return Array.isArray(value) ? (value[0] ?? null) : value;
+}
+
+/**
+ * Handle `account.updated` for Stripe Connect Express partners.
+ *
+ * Today the schema only stores `stripe_account_id` on partners; the
+ * "charges enabled" / "payouts enabled" flags are read on demand by
+ * the /partner/payments page via stripeConnect.getAccountStatus.
+ * Without this handler, a partner who completes Express onboarding
+ * has to click "Refresh status" to see their state advance — the
+ * underlying Stripe state is correct but the dashboard lags. Forward
+ * the event so the page renders fresh data on next render. We do NOT
+ * persist a snapshot; the next /partner/payments hit will fetch live
+ * status from Stripe (single network call, cheap, always authoritative).
+ *
+ * Future extension: cache `charges_enabled` + `payouts_enabled` on
+ * the partner row so the dashboard skips the per-render Stripe call.
+ */
+async function handleAccountUpdated(admin: AdminClient, event: Stripe.Event) {
+  const account = event.data.object as Stripe.Account;
+  // Look up the partner that owns this Stripe account. Connect events
+  // arrive on the platform webhook with the connected account id in
+  // `account.id`; we map back via partners.stripe_account_id.
+  const { data: partner, error } = await admin
+    .from("partners")
+    .select("id")
+    .eq("stripe_account_id", account.id)
+    .maybeSingle();
+  if (error) {
+    console.error("[stripe-webhook] account.updated partner lookup failed", {
+      account_id: account.id,
+      error,
+    });
+    return;
+  }
+  if (!partner) {
+    // Unknown account — could be a manual test account. Log + ignore.
+    console.info("[stripe-webhook] account.updated for unknown account", {
+      account_id: account.id,
+    });
+    return;
+  }
+  // No-op DB write today; bumping updated_at would invalidate caches if
+  // we add any. Logged for observability only.
+  console.info("[stripe-webhook] account.updated — partner status sync", {
+    partner_id: (partner as { id: string }).id,
+    charges_enabled: account.charges_enabled,
+    payouts_enabled: account.payouts_enabled,
+    details_submitted: account.details_submitted,
+  });
 }
