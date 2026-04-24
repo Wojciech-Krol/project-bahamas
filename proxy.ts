@@ -56,7 +56,20 @@ export default async function proxy(request: NextRequest) {
   // Revalidates the JWT against the Supabase auth server and triggers
   // `setAll` if the access token rotates. Discard the result — proxy
   // doesn't make authorization decisions; it only refreshes cookies.
-  await supabase.auth.getUser();
+  //
+  // CRITICAL: never let an auth-server hiccup take the whole site down.
+  // If Supabase Auth is unreachable (regional outage, DNS, transient
+  // 5xx) `getUser()` throws. Without this catch every page request
+  // would 500 — including the marketing pages that don't even need
+  // auth. Stale cookies for one request-cycle is the right tradeoff.
+  try {
+    await supabase.auth.getUser();
+  } catch (err) {
+    console.warn(
+      "[proxy] Supabase auth refresh failed — serving with stale cookies",
+      err instanceof Error ? err.message : err,
+    );
+  }
 
   return response;
 }
