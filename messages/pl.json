@@ -684,5 +684,311 @@
         ]
       }
     }
+  },
+  "Partner": {
+    "brand": "Partner",
+    "nav": {
+      "overview": "Przegląd",
+      "classes": "Zajęcia",
+      "instructors": "Instruktorzy",
+      "bookings": "Rezerwacje",
+      "reviews": "Opinie",
+      "insights": "Statystyki",
+      "venue": "Profil obiektu",
+      "payouts": "Wypłaty",
+      "settings": "Ustawienia",
+      "backToSite": "← Powrót do Hakuny",
+      "toggleMenu": "Przełącz menu",
+      "logout": "Wyloguj"
+    },
+    "venueSwitcher": {
+      "label": "Obiekt"
+    },
+    "roles": {
+      "owner": "Właściciel",
+      "manager": "Menedżer",
+      "instructor": "Instruktor",
+      "viewer": "Obserwator"
+    },
+    "common": {
+      "savedJustNow": "Zapisano przed chwilą",
+      "preview": "Podgląd",
+      "publish": "Opublikuj",
+      "edit": "Edytuj",
+      "schedule": "Plan",
+      "duplicate": "Duplikuj",
+      "more": "Więcej",
+      "resend": "Wyślij ponownie",
+      "revoke": "Odwołaj",
+      "assign": "Przypisz",
+      "swap": "Zamień",
+      "viewLive": "Zobacz na żywo",
+      "viewWeek": "Zobacz tydzień →",
+      "viewFull": "Pełny plan →",
+      "viewBreakdown": "Zobacz szczegóły",
+      "newClass": "Nowe zajęcia",
+      "inviteInstructor": "Zaproś instruktora",
+      "search": "Szukaj",
+      "close": "Zamknij",
+      "minutes": "{count} min",
+      "waitlistShort": "na liście",
+      "full": "Komplet",
+      "capacity": "{booked}/{total}",
+      "waitlistCount": "{booked}/{total} · {waitlist} na liście"
+    },
+    "status": {
+      "levelAll": "Wszystkie poziomy",
+      "levelBeginner": "Początkujący",
+      "levelIntermediate": "Średniozaawansowany",
+      "levelAdvanced": "Zaawansowany",
+      "tagPopular": "Popularne",
+      "tagNew": "Nowe",
+      "tagFeatured": "Polecane",
+      "needsInstructor": "Brak instruktora",
+      "notAssigned": "Nieprzypisany",
+      "invited": "Zaproszony",
+      "verified": "Zweryfikowany"
+    },
+    "login": {
+      "urlbar": "hakuna.app/partner/login",
+      "badge": "Dostęp partnera",
+      "titleStart": "Witaj",
+      "titleEmph": "ponownie",
+      "titleEnd": ".",
+      "subtitle": "Panel dla Twojego studia, zajęć i zespołu.",
+      "email": "E-mail",
+      "password": "Hasło",
+      "forgot": "Nie pamiętasz?",
+      "submit": "Zaloguj się",
+      "newStudio": "Nowe studio na Hakuna?",
+      "apply": "Złóż wniosek →"
+    },
+    "overview": {
+      "dateBadge": "{weekday} · {date}",
+      "greetingStart": "Dzień dobry,",
+      "greetingEnd": ".",
+      "subtitle": "Masz dziś {classes, plural, one {# zajęcia} few {# zajęcia} many {# zajęć} other {# zajęć}} i {reviews, plural, one {# opinię} few {# opinie} many {# opinii} other {# opinii}} czekających na odpowiedź.",
+      "metrics": {
+        "bookings": "Rezerwacje · 7 dni",
+        "revenue": "Przychód · 7 dni",
+        "fillRate": "Śr. zapełnienie",
+        "rating": "Śr. ocena",
+        "ofCapacity": "pojemności",
+        "reviewsCount": "{count} opinii"
+      },
+      "schedule": {
+        "eyebrow": "Dziś",
+        "heading": "W planie"
+      },
+      "actions": {
+        "eyebrow": "Wymaga Twojej uwagi",
+        "heading": "Kolejka działań",
+        "reviewsReply": "{count, plural, one {# opinia czeka na odpowiedź} few {# opinie czekają na odpowiedź} many {# opinii czeka na odpowiedź} other {# opinii czeka na odpowiedź}}",
+        "reviewsOldest": "Najstarsza: {age}",
+        "noInstructorTitle": "{day} {time} · Brak instruktora",
+        "noInstructorSub": "{classTitle} — przypisz",
+        "lowBookingsTitle": "{classTitle} — mało rezerwacji",
+        "lowBookingsSub": "{booked}/{capacity} na {day}",
+        "payoutTitle": "Wypłata {amount} w {day}",
+        "payoutSub": "Zobacz szczegóły"
+      }
+    },
+    "classes": {
+      "countBadge": "{live} aktywnych · {drafts} szkiców",
+      "title": "Twoje",
+      "titleEmph": "zajęcia",
+      "searchPlaceholder": "Szukaj po tytule lub instruktorze…",
+      "filterLevel": "Wszystkie poziomy",
+      "filterInstructor": "Dowolny instruktor",
+      "filterStatus": "Status",
+      "tabs": {
+        "published": "Opublikowane",
+        "drafts": "Szkice",
+        "archived": "Zarchiwizowane"
+      },
+      "row": {
+        "perClass": "za zajęcia",
+        "nextSession": "Następna sesja"
+      }
+    },
+    "classEditor": {
+      "urlbar": "hakuna.app/partner/classes/{id}",
+      "editing": "Edycja zajęć",
+      "sections": {
+        "basics": "Podstawy",
+        "schedule": "Harmonogram",
+        "instructor": "Przypisany instruktor",
+        "pricing": "Cennik"
+      },
+      "fields": {
+        "title": "Tytuł zajęć",
+        "description": "Opis",
+        "level": "Poziom",
+        "duration": "Czas trwania",
+        "capacity": "Liczba miejsc",
+        "recurringDays": "Dni powtarzające się",
+        "startTime": "Godzina rozpoczęcia",
+        "room": "Sala",
+        "price": "Cena za zajęcia",
+        "pricingModel": "Model cenowy"
+      },
+      "weekdayInitials": ["N", "P", "W", "Ś", "C", "P", "S"],
+      "pricingModels": {
+        "per_class": "Za zajęcia",
+        "per_session": "Za sesję",
+        "per_term": "Za semestr",
+        "drop_in": "Wejście jednorazowe"
+      },
+      "alsoQualified": "Również kwalifikują się:",
+      "preview": {
+        "eyebrow": "Podgląd na żywo · strona publiczna",
+        "book": "Rezerwuj",
+        "leadInstructor": "Główny instruktor",
+        "duration": "Czas",
+        "level": "Poziom",
+        "capacity": "Miejsca"
+      }
+    },
+    "instructors": {
+      "countBadge": "{count} aktywnych",
+      "title": "Nasz",
+      "titleEmph": "zespół",
+      "cardStats": {
+        "classes": "Zajęć",
+        "rating": "Ocena",
+        "students": "Uczniów"
+      },
+      "inviteSentAgo": "Zaproszenie wysłane {age}",
+      "inviteCtaTitle": "Zaproś instruktora",
+      "inviteCtaSub": "Stworzy własny profil i pojawi się tu po akceptacji."
+    },
+    "venue": {
+      "urlbar": "hakuna.app/partner/venue",
+      "badge": "Profil publiczny",
+      "title": "Profil obiektu",
+      "viewLive": "Zobacz na żywo",
+      "sections": {
+        "identity": "Tożsamość",
+        "location": "Lokalizacja",
+        "photos": "Zdjęcia",
+        "stats": "Pasek statystyk"
+      },
+      "fields": {
+        "name": "Nazwa obiektu",
+        "tagline": "Motto",
+        "about": "O nas",
+        "aboutCounter": "{count} / {max}",
+        "address": "Adres",
+        "neighborhood": "Dzielnica",
+        "heroImage": "Zdjęcie główne",
+        "galleryHeading": "Galeria · {count} zdjęć",
+        "addNeighborhood": "+ Dodaj",
+        "replace": "Zmień",
+        "numberLabel": "Liczba"
+      },
+      "preview": {
+        "liveAt": "Na żywo · /school/{slug}",
+        "desktop": "Komputer",
+        "mobile": "Telefon",
+        "classesOffered": "Oferowane zajęcia",
+        "currentSchedule": "Aktualny plan",
+        "viewFull": "Pełny plan →",
+        "changesHint": "Zmiany pojawiają się tutaj podczas pisania.",
+        "reviewsCount": "{count} opinii"
+      }
+    },
+    "mock": {
+      "dateBadge": { "weekday": "Piątek", "date": "24 kwietnia" },
+      "user": {
+        "name": "Ava Morin",
+        "firstName": "Ava",
+        "initials": "AM",
+        "email": "ava@urbanrhythm.pl"
+      },
+      "venue": {
+        "name": "Urban Rhythm Academy",
+        "initial": "U",
+        "tagline": "Gdzie ruch spotyka mistrzostwo.",
+        "about": "Urban Rhythm Academy to miejsce dla tancerzy, performerów i wszystkich, którzy szukają czegoś więcej niż pojedynczych zajęć — szukają społeczności. Nasi instruktorzy to praktykujący profesjonaliści, a sale są zbudowane pod poważny trening.",
+        "address": "Marszałkowska 142, 00-061 Warszawa",
+        "slug": "urban-rhythm"
+      },
+      "neighborhoods": {
+        "srodmiescie": "Śródmieście",
+        "mokotow": "Mokotów",
+        "praga": "Praga"
+      },
+      "stats": [
+        { "value": "500+", "label": "Uczniów" },
+        { "value": "10+", "label": "Lat" },
+        { "value": "Pulse", "label": "Certyfikat" }
+      ],
+      "rating": { "value": "4.9", "count": 324 },
+      "classes": {
+        "contemporary": {
+          "title": "Contemporary Foundations",
+          "description": "Spokojna, ugruntowana sekwencja Hatha w świetle złotej godziny. Idealna na wyciszenie i poprawę elastyczności.",
+          "schedule": "Pon i Śr 18:00",
+          "room": "Sala 1"
+        },
+        "urbanFlow": {
+          "title": "Urban Flow Intermediate",
+          "description": "Energetyczna choreografia uliczna z akcentem współczesnym.",
+          "schedule": "Wt i Czw 19:30",
+          "room": "Sala 3"
+        },
+        "kidsLab": {
+          "title": "Kids Movement Lab",
+          "description": "Zabawa ruchem dla dzieci w wieku 7–12 lat.",
+          "schedule": "Sob 10:00",
+          "room": "Sala 2",
+          "ageLabel": "Wiek 7–12"
+        },
+        "proLab": {
+          "title": "Pro Performance Lab",
+          "description": "Trening na najwyższym poziomie dla zawodowych performerów.",
+          "schedule": "Nd 14:00",
+          "room": "Sala 4"
+        }
+      },
+      "instructors": {
+        "marcus": {
+          "name": "Marcus Thorne",
+          "initials": "MT",
+          "role": "Główny instruktor",
+          "credential": "Najlepszy choreograf 2023",
+          "specialties": ["Contemporary", "Urban"]
+        },
+        "noa": {
+          "name": "Noa Stein",
+          "initials": "NS",
+          "role": "Dzieci · Początkujący",
+          "credential": "Certyfikowany trener dzieci",
+          "specialties": ["Specjalista od dzieci", "Ruch"]
+        },
+        "elena": {
+          "name": "Elena Grace",
+          "initials": "EG",
+          "role": "Joga · Flow",
+          "credential": "RYT-500",
+          "specialties": ["Vinyasa", "Hatha"]
+        },
+        "kaiInvite": {
+          "email": "kai@example.com",
+          "sentAgo": "2 dni temu"
+        }
+      },
+      "schedule": [
+        { "id": "sess-1", "time": "11:00", "duration": 60, "classKey": "contemporary", "instructor": "marcus", "room": "Sala 1", "booked": 14, "capacity": 18, "accent": "primary" },
+        { "id": "sess-2", "time": "14:30", "duration": 90, "classKey": "kidsLab",      "instructor": "noa",    "room": "Sala 2", "booked": 8,  "capacity": 12, "accent": "secondary" },
+        { "id": "sess-3", "time": "19:30", "duration": 75, "classKey": "urbanFlow",   "instructor": "marcus", "room": "Sala 3", "booked": 18, "capacity": 18, "waitlist": 3, "accent": "primary" }
+      ],
+      "actions": [
+        { "id": "act-reviews", "icon": "reviews",      "tone": "primary",   "titleKey": "reviewsReply",    "subKey": "reviewsOldest",    "count": 2, "age": "2 dni temu" },
+        { "id": "act-noinstr", "icon": "event_busy",   "tone": "secondary", "titleKey": "noInstructorTitle", "subKey": "noInstructorSub",  "day": "Sob", "time": "10:00", "classTitle": "Kids Movement Lab" },
+        { "id": "act-lowbook", "icon": "trending_down","tone": "primary",   "titleKey": "lowBookingsTitle",  "subKey": "lowBookingsSub",   "classTitle": "Pro Performance Lab", "booked": 4, "capacity": 16, "day": "niedzielę" },
+        { "id": "act-payout",  "icon": "receipt_long", "tone": "muted",     "titleKey": "payoutTitle",       "subKey": "payoutSub",        "amount": "1 840 €", "day": "poniedziałek" }
+      ]
+    }
   }
 }
