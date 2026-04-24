@@ -17,10 +17,22 @@ const clientSchema = z.object({
   NEXT_PUBLIC_MAPBOX_TOKEN: z.string().min(1).optional(),
   NEXT_PUBLIC_MAPBOX_STYLE_URL: z.string().url().optional(),
   NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
+
+  // Phase 1: Supabase (public keys — exposed to browser).
+  // Optional during pre-launch so the marketing site keeps building before
+  // a Supabase project is provisioned. Auth / DB clients in `src/lib/db/*`
+  // throw a clear error if they're invoked without these set.
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1).optional(),
 });
 
 const serverSchema = clientSchema.extend({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+
+  // Phase 1: Supabase service role (server-only — bypasses RLS).
+  // Optional for the same reason as above. `src/lib/db/admin.ts` enforces
+  // its presence at call time.
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
 });
 
 const parsed = (isServer ? serverSchema : clientSchema).safeParse(process.env);

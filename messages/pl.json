@@ -36,7 +36,40 @@
   "Nav": {
     "explore": "Odkrywaj",
     "about": "O nas",
-    "toggleMenu": "Otwórz menu"
+    "toggleMenu": "Otwórz menu",
+    "logout": "Wyloguj się"
+  },
+  "Auth": {
+    "divider": "lub",
+    "field": {
+      "email": "Email",
+      "password": "Hasło",
+      "fullName": "Imię i nazwisko"
+    },
+    "button": {
+      "login": "Zaloguj się",
+      "signup": "Załóż konto",
+      "google": "Kontynuuj z Google",
+      "logout": "Wyloguj się"
+    },
+    "error": {
+      "invalidInput": "Sprawdź wprowadzone dane.",
+      "invalidCredentials": "Nieprawidłowy email lub hasło.",
+      "signupFailed": "Nie udało się założyć konta. Spróbuj ponownie.",
+      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+    },
+    "login": {
+      "title": "Witaj ponownie",
+      "subtitle": "Zaloguj się, by kontynuować rezerwacje.",
+      "noAccount": "Nie masz konta?",
+      "signupCta": "Załóż je"
+    },
+    "signup": {
+      "title": "Dołącz do Hakuny",
+      "subtitle": "Załóż konto i odkrywaj zajęcia w okolicy.",
+      "haveAccount": "Masz już konto?",
+      "loginCta": "Zaloguj się"
+    }
   },
   "Home": {
     "hero": {

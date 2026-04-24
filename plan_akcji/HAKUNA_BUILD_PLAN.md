@@ -803,3 +803,43 @@ sub-task. Keep them short — one line per meaningful step._
   errors in `search/HeroSearchBar.tsx`, `search/MobileSearch.tsx`,
   `MobileActivityCarousel.tsx` left untouched per CLAUDE.md ("Don't fix
   errors in files you didn't edit").
+- 2026-04-24 — Phase 1a started on branch `phase/1a-supabase`.
+- 2026-04-24 — Installed `@supabase/ssr` 0.10.2 + `@supabase/supabase-js`
+  2.104.1. Extended `src/env.ts` with Supabase URL / anon / service role
+  keys. Marked them `.optional()` so the marketing site keeps building
+  pre-config; clients in `src/lib/db/*` throw a clear error when invoked
+  without configuration.
+- 2026-04-24 — Wrote migration `supabase/migrations/0001_initial.sql` (775
+  lines): pgcrypto extension, all enums, all tables per spec (profiles,
+  partners, partner_members, venues, activities, sessions, reviews,
+  bookings, webhook_events), shared `set_updated_at` trigger, `auth.users
+  → profiles` bridge (`handle_new_user`, security definer), authorization
+  helpers (`is_admin`, `is_partner_member`, security definer), full RLS
+  policies on every table, all indexes from spec, storage buckets
+  (`venues`, `avatars`) with path-prefixed object policies, and
+  commented-out anon sanity-check SELECTs.
+- 2026-04-24 — Wrote Supabase clients: `src/lib/db/server.ts` (request-
+  scoped, async, official `getAll`/`setAll` cookie pattern with RSC
+  swallow comment + `getCurrentUser` helper using `auth.getUser()` not
+  `getSession()`), `src/lib/db/client.ts` (browser singleton),
+  `src/lib/db/admin.ts` (service-role, runtime-guarded against window).
+- 2026-04-24 — Updated `proxy.ts` to chain Supabase session refresh after
+  the next-intl middleware (intl owns the response; Supabase writes auth
+  cookies onto it). No-ops when Supabase env not configured.
+- 2026-04-24 — Auth pages: `app/[locale]/(auth)/` group with `layout.tsx`,
+  `login/page.tsx` + `LoginForm`, `signup/page.tsx` + `SignupForm`, shared
+  `actions.ts` (Server Actions: email/password login + signup, Google
+  OAuth via `signInWithOAuth`). OAuth callback at
+  `app/api/auth/callback/route.ts` (outside `[locale]` so the Supabase
+  redirect-URL allowlist is stable). Logout at
+  `app/api/auth/logout/route.ts` (POST only).
+- 2026-04-24 — Wired `SiteNavbar` Log in / Create account buttons to
+  `/login` and `/signup` via the locale-aware `Link`. Added `Auth.*` and
+  `Nav.logout` namespaces in `messages/{pl,en}.json`.
+- 2026-04-24 — Build green (57/57 static pages including new auth routes).
+  Operator action required to complete Phase 1a Done criteria: create the
+  Supabase project (eu-central-1), populate `.env.local` with the URL +
+  anon + service role keys, run `supabase db reset` against the migration,
+  enable Google OAuth in the Supabase dashboard with the callback URL
+  `<site>/api/auth/callback`, then verify signup end-to-end and the RLS
+  anon SELECT checks at the bottom of `0001_initial.sql`.

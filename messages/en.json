@@ -36,7 +36,40 @@
   "Nav": {
     "explore": "Explore",
     "about": "About",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "logout": "Log out"
+  },
+  "Auth": {
+    "divider": "or",
+    "field": {
+      "email": "Email",
+      "password": "Password",
+      "fullName": "Full name"
+    },
+    "button": {
+      "login": "Log in",
+      "signup": "Create account",
+      "google": "Continue with Google",
+      "logout": "Log out"
+    },
+    "error": {
+      "invalidInput": "Please check your input.",
+      "invalidCredentials": "Invalid email or password.",
+      "signupFailed": "Could not create account. Please try again.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to keep booking experiences.",
+      "noAccount": "No account yet?",
+      "signupCta": "Create one"
+    },
+    "signup": {
+      "title": "Join Hakuna",
+      "subtitle": "Create an account and discover activities nearby.",
+      "haveAccount": "Already have an account?",
+      "loginCta": "Log in"
+    }
   },
   "Home": {
     "hero": {
