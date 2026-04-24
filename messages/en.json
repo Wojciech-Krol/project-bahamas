@@ -764,6 +764,7 @@
       "payments": "Payments",
       "promote": "Promote",
       "plans": "Plans",
+      "integrations": "Integrations",
       "settings": "Settings",
       "backToSite": "← Back to Hakuna",
       "toggleMenu": "Toggle menu",
@@ -836,6 +837,54 @@
       },
       "errors": {
         "generic": "Could not start checkout. Please try again shortly."
+      }
+    },
+    "integrations": {
+      "title": "Integrations",
+      "subtitle": "Connect your booking system so your schedule syncs into Hakuna automatically.",
+      "statusActive": "Connected",
+      "statusNotConnected": "Not connected",
+      "statusDisabled": "Disabled",
+      "statusError": "Needs attention",
+      "lastSynced": "Last synced {time}",
+      "lastSyncedNever": "Never synced",
+      "lastError": "Last error: {error}",
+      "comingSoon": "Coming soon — waiting on API access",
+      "actions": {
+        "connect": "Connect",
+        "reconfigure": "Reconfigure",
+        "disconnect": "Disconnect"
+      },
+      "csv": {
+        "title": "CSV upload",
+        "description": "Upload a CSV with columns activity_name, starts_at, ends_at, capacity. Re-uploading overwrites the previous file.",
+        "uploadLabel": "Upload CSV",
+        "uploadCta": "Upload",
+        "mapHeader": "Map CSV activity names to your classes",
+        "mapIntro": "We couldn't auto-match these activity names from your CSV. Pick the Hakuna class each one should map to.",
+        "mapSelectLabel": "Maps to",
+        "mapSelectPlaceholder": "Select a class",
+        "mapConfirm": "Save mapping",
+        "uploadSuccess": "File uploaded — review the activity mapping below.",
+        "savedMapping": "Mapping saved — the next sync will run within 15 minutes.",
+        "errors": {
+          "notCsv": "Please upload a .csv file.",
+          "empty": "The file is empty.",
+          "missingColumn": "CSV is missing required columns: {columns}.",
+          "uploadFailed": "Upload failed: {error}",
+          "generic": "Something went wrong. Please try again."
+        }
+      },
+      "placeholder": {
+        "cryptoMissing": "POS integrations aren't configured yet — ask the operator to set POS_CONFIG_ENCRYPTION_KEY.",
+        "supabaseMissing": "Supabase is not configured yet. Ask the Hakuna operator to provision the database."
+      },
+      "providers": {
+        "csv": "CSV upload",
+        "activenow": "ActiveNow",
+        "wodguru": "WodGuru",
+        "efitness": "eFitness",
+        "langlion": "LangLion"
       }
     },
     "venueSwitcher": {

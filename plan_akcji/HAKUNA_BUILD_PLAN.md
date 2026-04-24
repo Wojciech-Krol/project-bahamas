@@ -982,6 +982,53 @@ sub-task. Keep them short — one line per meaningful step._
   UI shape unchanged (Activity[]).
 - 2026-04-24 — Build green (67 routes incl. `/[locale]/partner/plans`,
   `/[locale]/partner/promote`). Tests 12/12.
+- 2026-04-24 — Phase 4 on branch `phase/4-analytics`. Installed
+  `recharts`. Migration `0003_analytics.sql`: `view_events` table
+  (RLS service-role insert / partner-select), three SQL views
+  (`partner_daily_revenue`, `activity_conversion`, `session_occupancy`).
+  Client-side tracker at `app/components/analytics/useTrackView.ts` +
+  `TrackActivityView.tsx` with UUID guard (mock ids don't fire).
+  `/api/events/view` route (sendBeacon-friendly, 120 req/min/anon rate
+  limit, 503 without Supabase). Partner overview rewritten as Server
+  Component: RevenueCards (30d/90d/YTD), BookingsTrendChart (recharts
+  AreaChart, fixed 260px height), TopActivitiesList, OccupancyHeatmap
+  (pure CSS grid). `OverviewMock.tsx` preserved as the Supabase-missing
+  fallback. `Partner.analytics.*` i18n both locales. Build 67 routes,
+  tests 12/12 green.
+- 2026-04-24 — Phase 5a on branch `phase/5a-pos-framework-csv`.
+  Migration `0004_pos_integrations.sql`: `pos_integrations` table with
+  `config_encrypted bytea`, status check, `(partner_id, provider)`
+  unique, RLS partner-or-admin, private `pos-uploads` storage bucket
+  with path-prefixed policies. `src/env.ts` extended with
+  `POS_CONFIG_ENCRYPTION_KEY` (optional base64 32 bytes).
+- 2026-04-24 — POS framework: `src/lib/pos/crypto.ts` (aes-256-gcm,
+  `[IV 12][tag 16][ciphertext]` layout), `src/lib/pos/adapter.ts`
+  interface + registry (only csv today; ActiveNow/WodGuru/eFitness/
+  LangLion stubbed with TODO phase-5b…5e comments).
+  `src/lib/pos/adapters/csv.ts` with an inline pure-TS CSV parser
+  (quoted commas, doubled quotes, CRLF, BOM, missing final newline).
+  `/api/cron/pos-sync` route: Bearer CRON_SECRET, iterate active
+  integrations, upsert sessions on `(activity_id, pos_external_id)`,
+  track `consecutive_failures` → admin email at ≥3 via new
+  `PosSyncFailure` template.
+- 2026-04-24 — Partner integrations UI:
+  `app/[locale]/partner/(shell)/integrations/` page +
+  `CsvIntegrationCard.tsx` + `actions.ts`. Two-step flow: upload CSV
+  (validates MIME/ext/header, stores to pos-uploads, returns
+  `needsResolution: string[]`), then operator picks activity mappings
+  in `<select>`, `confirmActivityMap` reverse-checks ownership,
+  encrypts, upserts. Other providers render disabled "Coming soon"
+  pills. Sidebar "Integrations" entry. `Partner.integrations.*` +
+  `Partner.nav.integrations` i18n.
+- 2026-04-24 — Tests added: `tests/csvParser.spec.ts` (10 cases incl.
+  quoted commas, CRLF, BOM, multi-line quoted, tamper detection),
+  `tests/posCrypto.spec.ts` (GCM round-trip + tamper). Total 24/24.
+- 2026-04-24 — Build green (69 routes incl. `/[locale]/partner/
+  integrations`, `/api/cron/pos-sync`). Tests 24/24.
+- 2026-04-24 — DEFERRED: adapters for ActiveNow, WodGuru, eFitness,
+  LangLion (Phase 5b-5e). Per plan: need real API credentials and
+  sandbox access from each provider; cannot implement without risking
+  "scraping" shortcuts. Escalated to operator.
 - 2026-04-24 — Phase 4 on branch `wojtek/logo-navbar` (current).
   Migration `0003_analytics.sql`: `view_events` table (service-role
   insert only, partner-member select via activities→venues join, admin

@@ -764,6 +764,7 @@
       "payments": "Płatności",
       "promote": "Promuj",
       "plans": "Plany",
+      "integrations": "Integracje",
       "settings": "Ustawienia",
       "backToSite": "← Powrót do Hakuny",
       "toggleMenu": "Przełącz menu",
@@ -836,6 +837,54 @@
       },
       "errors": {
         "generic": "Nie udało się rozpocząć płatności. Spróbuj ponownie za chwilę."
+      }
+    },
+    "integrations": {
+      "title": "Integracje",
+      "subtitle": "Połącz swój system rezerwacji, aby grafik automatycznie synchronizował się z Hakuną.",
+      "statusActive": "Połączone",
+      "statusNotConnected": "Nie połączono",
+      "statusDisabled": "Wyłączone",
+      "statusError": "Wymaga uwagi",
+      "lastSynced": "Ostatnia synchronizacja {time}",
+      "lastSyncedNever": "Brak synchronizacji",
+      "lastError": "Ostatni błąd: {error}",
+      "comingSoon": "Wkrótce — czekamy na dostęp do API",
+      "actions": {
+        "connect": "Połącz",
+        "reconfigure": "Rekonfiguruj",
+        "disconnect": "Rozłącz"
+      },
+      "csv": {
+        "title": "Import CSV",
+        "description": "Wgraj plik CSV z kolumnami activity_name, starts_at, ends_at, capacity. Ponowne wgranie nadpisuje poprzedni plik.",
+        "uploadLabel": "Wgraj CSV",
+        "uploadCta": "Wgraj",
+        "mapHeader": "Dopasuj nazwy z CSV do swoich zajęć",
+        "mapIntro": "Nie udało się automatycznie dopasować tych nazw z CSV. Wybierz zajęcia Hakuny, do których ma prowadzić każda z nich.",
+        "mapSelectLabel": "Prowadzi do",
+        "mapSelectPlaceholder": "Wybierz zajęcia",
+        "mapConfirm": "Zapisz dopasowanie",
+        "uploadSuccess": "Plik wgrany — przejrzyj dopasowanie poniżej.",
+        "savedMapping": "Dopasowanie zapisane — najbliższa synchronizacja w ciągu 15 minut.",
+        "errors": {
+          "notCsv": "Wgraj plik .csv.",
+          "empty": "Plik jest pusty.",
+          "missingColumn": "W CSV brakuje wymaganych kolumn: {columns}.",
+          "uploadFailed": "Błąd wgrywania: {error}",
+          "generic": "Coś poszło nie tak. Spróbuj ponownie."
+        }
+      },
+      "placeholder": {
+        "cryptoMissing": "Integracje POS nie są jeszcze skonfigurowane — poproś operatora o ustawienie POS_CONFIG_ENCRYPTION_KEY.",
+        "supabaseMissing": "Supabase nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o skonfigurowanie bazy danych."
+      },
+      "providers": {
+        "csv": "Import CSV",
+        "activenow": "ActiveNow",
+        "wodguru": "WodGuru",
+        "efitness": "eFitness",
+        "langlion": "LangLion"
       }
     },
     "venueSwitcher": {
