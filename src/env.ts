@@ -51,7 +51,12 @@ const serverSchema = clientSchema.extend({
   // becomes a no-op without Upstash, email sending logs+skips without
   // Resend.
   RESEND_API_KEY: z.string().min(1).optional(),
-  RESEND_FROM_EMAIL: z.string().email().optional(),
+  // Resend accepts both bare addresses (`noreply@hakuna.app`) and the
+  // friendlier name form (`Hakuna <noreply@hakuna.app>`). z.string().email()
+  // would reject the second shape, breaking startup when the operator
+  // follows Resend's own docs. Accept any non-empty string instead — the
+  // Resend SDK validates the actual address downstream.
+  RESEND_FROM_EMAIL: z.string().min(1).optional(),
   ADMIN_NOTIFICATION_EMAIL: z.string().email().optional(),
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
