@@ -76,19 +76,9 @@ export async function GET(request: NextRequest) {
     try {
       const userId = row.user_id;
 
-      // 1. Strip user_id from bookings (keep the row for financial
-      //    records). We'd normally add an `anonymous` flag column for
-      //    reporting, but bookings already have `user_id IS NULL`
-      //    semantics that clearly mark orphaned records.
-      await admin.from("bookings").update({ user_id: null }).eq("user_id", userId);
-
-      // 2. Delete reviews authored by the user.
-      await admin.from("reviews").delete().eq("author_id", userId);
-
-      // 3. Anonymize profile columns the trigger wouldn't scrub
-      //    automatically on auth-user delete (cascade takes care of
-      //    the row itself, but belt-and-braces — if cascade ever
-      //    changes we still leave no PII behind).
+      // 1. Anonymize profile columns BEFORE the auth.users delete cascades
+      //    the profile row away. Belt-and-braces: even if the cascade ever
+      //    changes shape, there's no PII left to clean up.
       await admin
         .from("profiles")
         .update({
@@ -98,10 +88,23 @@ export async function GET(request: NextRequest) {
         })
         .eq("id", userId);
 
-      // 4. Replace email and delete the auth user. The email rewrite
-      //    before delete is defensive: Supabase logs may still hold
-      //    the old email in request payloads; by updating first we
-      //    ensure the last observable email is the tombstone value.
+      // 2. Replace email and delete the auth user. The email rewrite is
+      //    defensive — Supabase logs may still hold the old email in
+      //    request payloads, so the last observable email becomes a
+      //    tombstone value.
+      //
+      //    Cascading effects driven by FK actions defined in earlier
+      //    migrations:
+      //      * profiles.id -> auth.users.id ON DELETE CASCADE
+      //          (profile row dropped automatically)
+      //      * bookings.user_id -> auth.users.id ON DELETE SET NULL
+      //          (since migration 0007 — user_id becomes null,
+      //          bookings retained for accounting)
+      //      * reviews.author_id -> auth.users.id ON DELETE CASCADE
+      //          (reviews authored by the user are removed — short-form
+      //          opinions, no audit-retention requirement)
+      //      * customer_partner_attribution.user_id -> auth.users.id
+      //          ON DELETE CASCADE (per migration 0002)
       //
       //    `supabase.auth.admin.*` is present on the service-role
       //    client. TypeScript typing is loose in the raw client, so
@@ -117,7 +120,7 @@ export async function GET(request: NextRequest) {
         await authAdmin.deleteUser(userId);
       }
 
-      // 5. Mark queue row processed.
+      // 3. Mark queue row processed.
       await admin
         .from("account_deletion_queue")
         .update({ processed_at: new Date().toISOString() })
