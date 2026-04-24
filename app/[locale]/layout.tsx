@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../src/i18n/routing";
+import CookieConsent from "../components/CookieConsent";
 import "../globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -86,7 +87,10 @@ export default async function LocaleLayout({
         className="font-body antialiased bg-surface text-on-surface overflow-x-hidden w-full relative"
         suppressHydrationWarning
       >
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {children}
+          <CookieConsent />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

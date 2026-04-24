@@ -18,6 +18,7 @@
 import { useEffect } from "react";
 
 import { ensureAnonymousId } from "@/src/lib/analytics/tracking";
+import { readClientConsent } from "@/src/lib/consent";
 
 type TrackViewArgs = {
   activityId: string;
@@ -28,6 +29,13 @@ export function useTrackView({ activityId, sessionId }: TrackViewArgs): void {
   useEffect(() => {
     // empty id guard — nothing to track.
     if (!activityId) return;
+
+    // GDPR: skip entirely until the user has granted analytics consent.
+    // This has to be a runtime check, not a server-side decision, because
+    // the hook mounts in the browser and consent can change mid-session
+    // (banner just saved) without a route change.
+    const consent = readClientConsent();
+    if (!consent.analytics) return;
 
     const anonymousId = ensureAnonymousId();
     const referrer =

@@ -1255,5 +1255,38 @@
       "heading": "We've got your application",
       "body": "A confirmation has been sent to the email you provided. We'll be in touch within 3 business days."
     }
+  },
+  "Consent": {
+    "title": "We use cookies",
+    "description": "We use cookies to make Hakuna work, measure traffic, and serve you better. You choose what's on.",
+    "learnMore": "Learn more",
+    "accept": "Accept all",
+    "reject": "Essential only",
+    "customize": "Customize",
+    "save": "Save choice",
+    "essential": {
+      "title": "Essential",
+      "description": "Required for the site to work — sign-in, bookings, security. These can't be turned off."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "description": "Anonymous pageview stats on class listings. They help us improve Hakuna."
+    }
+  },
+  "Account": {
+    "title": "Your account",
+    "subtitle": "Manage your data on Hakuna.",
+    "export": {
+      "heading": "Download your data",
+      "description": "Generate a JSON file with everything we hold about you — profile, bookings, reviews.",
+      "button": "Download data (.json)"
+    },
+    "delete": {
+      "heading": "Delete account",
+      "description": "Request account deletion. Within 30 days your personal data will be anonymized and the account removed. Bookings are kept for financial records.",
+      "button": "Request account deletion",
+      "confirm": "Are you sure you want to delete your account?",
+      "pending": "Deletion requested — your data will be removed on {date}."
+    }
   }
 }

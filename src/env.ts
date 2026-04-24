@@ -30,6 +30,11 @@ const clientSchema = z.object({
 
   // Phase 3: Stripe publishable key (exposed to browser for client SDK).
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1).optional(),
+
+  // Phase 6: Sentry browser DSN. Safe to expose — it's a write-only token
+  // scoped to ingest. Keep distinct from the server DSN so dashboards can
+  // separate client-side JS crashes from server/edge exceptions.
+  NEXT_PUBLIC_SENTRY_DSN: z.string().min(1).optional(),
 });
 
 const serverSchema = clientSchema.extend({
@@ -74,6 +79,14 @@ const serverSchema = clientSchema.extend({
   // `pos_integrations.config_encrypted` blob — see src/lib/pos/crypto.ts for
   // the plan. Never commit this value.
   POS_CONFIG_ENCRYPTION_KEY: z.string().min(1).optional(),
+
+  // Phase 6: Sentry server DSN + release auth token.
+  // `SENTRY_DSN` drives server + edge SDK init. `SENTRY_AUTH_TOKEN` is
+  // consumed by `withSentryConfig` during `next build` to upload sourcemaps
+  // and create a release — when absent, the wrapper is skipped entirely so
+  // local builds don't fail asking for a token we haven't provisioned.
+  SENTRY_DSN: z.string().min(1).optional(),
+  SENTRY_AUTH_TOKEN: z.string().min(1).optional(),
 });
 
 const parsed = (isServer ? serverSchema : clientSchema).safeParse(process.env);

@@ -1,3 +1,5 @@
+// TODO-OPERATOR: sign DPA with Upstash before production (commit by launch — see LAUNCH_CHECKLIST.md).
+
 /**
  * Upstash-backed sliding-window rate limiter with graceful degradation.
  *

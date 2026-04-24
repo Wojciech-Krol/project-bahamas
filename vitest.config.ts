@@ -15,5 +15,9 @@ export default defineConfig({
     globals: false,
     environment: "node",
     include: ["tests/**/*.spec.ts", "src/**/*.spec.ts"],
+    // Playwright has its own runner at `tests/e2e/` — don't let vitest
+    // try to execute those specs (they import from `@playwright/test`
+    // and rely on a running dev server + browser).
+    exclude: ["node_modules", "dist", ".next", "tests/e2e/**"],
   },
 });
