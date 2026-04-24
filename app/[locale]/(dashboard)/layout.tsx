@@ -28,7 +28,15 @@ export default async function DashboardLayout({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const current = await getCurrentUser();
+  // `getCurrentUser` throws when Supabase env is missing. Treat that the same
+  // as "not an admin": notFound() — never leak existence of the dashboard,
+  // never crash the page with a 500.
+  let current;
+  try {
+    current = await getCurrentUser();
+  } catch {
+    notFound();
+  }
   const role = current?.profile?.role as string | undefined;
   if (!current || role !== "admin") {
     notFound();
