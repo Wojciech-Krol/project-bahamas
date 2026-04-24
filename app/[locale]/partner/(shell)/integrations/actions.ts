@@ -278,5 +278,11 @@ export async function disconnectCsv(formData: FormData): Promise<void> {
     .delete()
     .eq("partner_id", partnerId)
     .eq("provider", "csv");
+  // Clean up the stored CSV too — a half-disconnected integration with a
+  // stale file in storage is exactly the kind of inconsistency that bites
+  // partners later when they re-upload and wonder why old data shows up.
+  await admin.storage
+    .from(STORAGE_BUCKET)
+    .remove([`${partnerId}/latest.csv`]);
   revalidatePath(`/${locale}/partner/integrations`);
 }

@@ -26,6 +26,24 @@ import { ACTIVITIES_DATA, REVIEWS_DATA } from "../../app/lib/mockData";
 // ----------------------------------------------------------------------------
 
 function loadEnv(): { url: string; serviceRoleKey: string } {
+  // Hard refusal: do not seed against a production project unless the
+  // operator explicitly opts in. Seeding pollutes the partners table
+  // with demo rows + creates real auth users for fake reviewers, which
+  // is harmless in dev but a real cleanup nightmare on a live project.
+  if (
+    process.env.NODE_ENV === "production" &&
+    process.env.SEED_FORCE !== "1"
+  ) {
+    console.error(
+      [
+        "Seed aborted: NODE_ENV=production.",
+        "Refusing to seed against a production project.",
+        "Set SEED_FORCE=1 to override (only do this for a fresh staging environment).",
+      ].join("\n"),
+    );
+    process.exit(1);
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !serviceRoleKey) {

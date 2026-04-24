@@ -25,14 +25,16 @@ export async function requestAccountDeletion(
   _prev: { error?: string; success?: boolean } | undefined,
   formData: FormData,
 ): Promise<{ error?: string; success?: boolean }> {
+  const localeRaw = (formData.get("locale") as string) || "pl";
+  const locale = localeRaw === "en" ? "en" : "pl";
+
   const current = await getCurrentUser();
   if (!current) {
     // Hit from a stale client — send them to login, the account page
-    // will bounce them back here after signing in.
-    redirect("/login");
+    // will bounce them back here after signing in. Use the locale-prefixed
+    // path so the proxy doesn't burn a hop redirecting `/login` -> `/pl/login`.
+    redirect(`/${locale}/login`);
   }
-
-  const locale = (formData.get("locale") as string) ?? "pl";
 
   let admin;
   try {

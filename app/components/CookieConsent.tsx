@@ -27,11 +27,17 @@ import {
 } from "@/src/lib/consent";
 
 function writeConsentCookie(value: string) {
+  // `Secure` is required for HTTPS but breaks cookie writes over plain
+  // http://localhost during dev. Detect the runtime scheme and only add
+  // the flag when the page itself was served over https.
+  const isSecure =
+    typeof window !== "undefined" && window.location.protocol === "https:";
   document.cookie =
     `${CONSENT_COOKIE_NAME}=${encodeURIComponent(value)}` +
     `; Max-Age=${CONSENT_MAX_AGE_SECONDS}` +
     `; Path=/` +
-    `; SameSite=Lax`;
+    `; SameSite=Lax` +
+    (isSecure ? `; Secure` : "");
 }
 
 export default function CookieConsent() {
