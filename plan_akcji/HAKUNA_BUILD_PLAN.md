@@ -953,3 +953,32 @@ sub-task. Keep them short — one line per meaningful step._
   `/api/cron/expire-bookings`, `/[locale]/partner/payments`). Tests
   12/12. Phase 3a Done criteria's LIVE e2e still needs operator to
   enable Stripe test mode + set webhooks.
+- 2026-04-24 — Phase 3b on branch `phase/3b-subs-boost`.
+- 2026-04-24 — Subscriptions: `src/lib/payments/subscriptionTiers.ts`
+  (partner-plus-monthly 1500 bps / 149 PLN, partner-pro-monthly 1200 bps
+  / 299 PLN, reads STRIPE_PRICE_PARTNER_PLUS/PRO env — both optional).
+  `/partner/plans` page + `startSubscriptionCheckout` action
+  (Stripe Checkout `mode: 'subscription'` with
+  `subscription_data.metadata.partner_id + tier_key`). Webhook extended
+  to handle `customer.subscription.{created,updated,deleted}` — writes
+  `partners.subscription_tier` + `subscription_commission_bps` from tier
+  table; canceled/unpaid/past_due/deleted reset to 'none' + null.
+  Partner resolved via `metadata.partner_id` first, else fallback to
+  `customer.email`. Sidebar + i18n.
+- 2026-04-24 — Boost: `/partner/promote` page listing activities + venues
+  with 7/14/30-day duration options (49/89/169 PLN hardcoded pricing).
+  `promoteBoost` action inserts pending `listing_boosts` row(s), creates
+  Stripe Checkout `mode: 'payment'` with no `transfer_data` (Hakuna
+  keeps 100% of boost revenue). Webhook branch reads
+  `metadata.boost_id`/`boost_ids`, flips rows pending→active, sets
+  starts_at/ends_at/stripe_payment_id. venueAll = one row per venue
+  (XOR constraint in 0002 forbids both-null). Stripe metadata cap
+  guarded (500 chars / ~12 uuids); rollback to `?boost=error` if too
+  many venues. Sidebar + i18n.
+- 2026-04-24 — Search ranking wired to `venue_rankings` view: query
+  layer fetches venues' ranking in a second query + stable in-memory
+  sort `(has_active_boost desc, has_subscription desc, rating desc,
+  created_at desc)`. Falls back to natural order if view missing.
+  UI shape unchanged (Activity[]).
+- 2026-04-24 — Build green (67 routes incl. `/[locale]/partner/plans`,
+  `/[locale]/partner/promote`). Tests 12/12.

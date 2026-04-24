@@ -58,6 +58,12 @@ const serverSchema = clientSchema.extend({
   STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
   STRIPE_CONNECT_WEBHOOK_SECRET: z.string().min(1).optional(),
   CRON_SECRET: z.string().min(1).optional(),
+
+  // Phase 3.3: Stripe Billing subscription Price IDs. Optional — partners can
+  // browse the Plans page before the operator has created Products/Prices in
+  // Stripe, and the page falls back to a "tier not configured" placeholder.
+  STRIPE_PRICE_PARTNER_PLUS: z.string().min(1).optional(),
+  STRIPE_PRICE_PARTNER_PRO: z.string().min(1).optional(),
 });
 
 const parsed = (isServer ? serverSchema : clientSchema).safeParse(process.env);

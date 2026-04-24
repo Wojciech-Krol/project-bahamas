@@ -35,6 +35,7 @@ import { getStripe } from "@/src/lib/payments/stripe";
 import { sendEmail } from "@/src/lib/email/resend";
 import { BookingConfirmation } from "@/src/lib/email/templates/BookingConfirmation";
 import { BookingCancelled } from "@/src/lib/email/templates/BookingCancelled";
+import { findTierByPriceId } from "@/src/lib/payments/subscriptionTiers";
 
 type ServerEnv = typeof env & {
   STRIPE_WEBHOOK_SECRET?: string;
@@ -129,12 +130,27 @@ export async function POST(request: NextRequest) {
   try {
     switch (event.type) {
       case "checkout.session.completed": {
-        await handleCheckoutCompleted(admin, event);
+        // Boost purchases and booking checkouts share this event type. The
+        // metadata tells them apart: boost sessions always carry either
+        // `boost_id` or `boost_ids`, booking sessions carry `booking_id`.
+        const sess = event.data.object as Stripe.Checkout.Session;
+        const meta = sess.metadata ?? {};
+        if (meta.boost_id || meta.boost_ids) {
+          await handleBoostCompleted(admin, event);
+        } else {
+          await handleCheckoutCompleted(admin, event);
+        }
         break;
       }
       case "payment_intent.payment_failed":
       case "checkout.session.expired": {
         await handleBookingExpired(admin, event);
+        break;
+      }
+      case "customer.subscription.created":
+      case "customer.subscription.updated":
+      case "customer.subscription.deleted": {
+        await handleSubscriptionChange(admin, event);
         break;
       }
       default: {
@@ -472,6 +488,208 @@ async function handleBookingExpired(admin: AdminClient, event: Stripe.Event) {
     .eq("status", "pending"); // don't clobber already-confirmed rows
   if (error) {
     console.error("[stripe-webhook] expire update failed", error);
+  }
+}
+
+/**
+ * Handle `customer.subscription.{created,updated,deleted}` — Phase 3.3.
+ *
+ * Spec: `plan_akcji/HAKUNA_BUILD_PLAN.md` section "3.3 Subscriptions (partner
+ * tier)". When a subscription is active/trialing the partner row gets the
+ * matching tier + reduced commission rate. When it's canceled/unpaid/
+ * past_due (or the subscription is deleted outright), we fall back to
+ * `subscription_tier='none'` and clear `subscription_commission_bps` so
+ * `createBooking` reverts to the default commission per the commission spec.
+ *
+ * Partner resolution strategy (in priority order):
+ *   1. `subscription.metadata.partner_id` — set by
+ *      `startSubscriptionCheckout` via `subscription_data.metadata`. This is
+ *      the canonical path and always wins.
+ *   2. Fallback: match partner by `contact_email === customer.email`. Used
+ *      only when metadata is missing (manual subscription created by Hakuna
+ *      staff in the Stripe dashboard, legacy imports). Email matching is
+ *      best-effort — if multiple partners share an email the first one wins,
+ *      which matches the plan's "stub" wording for this fallback.
+ */
+async function handleSubscriptionChange(
+  admin: AdminClient,
+  event: Stripe.Event,
+) {
+  const subscription = event.data.object as Stripe.Subscription;
+
+  // Resolve the Price ID — take it from the first subscription item. Hakuna
+  // Billing only sells single-item subscriptions (one tier per partner).
+  const item = subscription.items?.data?.[0];
+  const priceId = item?.price?.id ?? null;
+  const tier = findTierByPriceId(priceId);
+
+  // Resolve the partner. Metadata path first.
+  const metadataPartnerId = subscription.metadata?.partner_id ?? null;
+  let partnerId: string | null = metadataPartnerId;
+
+  if (!partnerId) {
+    // Fallback: customer email → partners.contact_email.
+    const customerId =
+      typeof subscription.customer === "string"
+        ? subscription.customer
+        : subscription.customer?.id ?? null;
+    if (customerId) {
+      try {
+        const stripe = getStripe();
+        const customer = await stripe.customers.retrieve(customerId);
+        if (!customer.deleted) {
+          const email = (customer as Stripe.Customer).email ?? null;
+          if (email) {
+            const { data: byEmail } = await admin
+              .from("partners")
+              .select("id")
+              .eq("contact_email", email)
+              .limit(1);
+            partnerId = byEmail?.[0]?.id ?? null;
+          }
+        }
+      } catch (err) {
+        console.error("[stripe-webhook] customer lookup failed", err);
+      }
+    }
+  }
+
+  if (!partnerId) {
+    console.warn("[stripe-webhook] subscription event has no partner match", {
+      event_id: event.id,
+      subscription_id: subscription.id,
+    });
+    return;
+  }
+
+  // Decide the new partner state. `customer.subscription.deleted` always
+  // clears. Otherwise status drives the decision.
+  const status = subscription.status;
+  const isActive =
+    event.type !== "customer.subscription.deleted" &&
+    (status === "active" || status === "trialing");
+
+  if (isActive && tier) {
+    const { error } = await admin
+      .from("partners")
+      .update({
+        subscription_tier: tier.key,
+        subscription_commission_bps: tier.commissionBps,
+      })
+      .eq("id", partnerId);
+    if (error) {
+      console.error("[stripe-webhook] partner subscription update failed", error);
+    }
+    return;
+  }
+
+  // Inactive branch — canceled / unpaid / past_due / deleted, OR active but
+  // the price is unknown to us. Clear the tier so commission reverts.
+  if (
+    event.type === "customer.subscription.deleted" ||
+    status === "canceled" ||
+    status === "unpaid" ||
+    status === "past_due"
+  ) {
+    const { error } = await admin
+      .from("partners")
+      .update({
+        subscription_tier: "none",
+        subscription_commission_bps: null,
+      })
+      .eq("id", partnerId);
+    if (error) {
+      console.error("[stripe-webhook] partner subscription clear failed", error);
+    }
+    return;
+  }
+
+  // Active-but-unknown-price: log and leave the partner row untouched — an
+  // operator must map the Price ID in `subscriptionTiers.ts` before we can
+  // honour the new plan.
+  console.warn(
+    "[stripe-webhook] subscription active for unknown price — no tier mapping",
+    { subscription_id: subscription.id, price_id: priceId, status },
+  );
+}
+
+/**
+ * Handle `checkout.session.completed` for Boost purchases (Phase 3.4).
+ *
+ * Spec: `plan_akcji/HAKUNA_BUILD_PLAN.md` section "3.4 Boost (Booksy-style)".
+ *
+ * Metadata contract set by `app/[locale]/partner/(shell)/promote/actions.ts`:
+ *   - `duration_days` → "7" | "14" | "30"
+ *   - `boost_id`      → single uuid (activity / venue targets)
+ *   - `boost_ids`     → comma-joined uuids (venueAll target)
+ *   - plus `partner_id`, `target_type`, `target_id` for audit/debugging
+ *
+ * For each id, flip the `listing_boosts` row from `pending` → `active`,
+ * set `starts_at = now()` and `ends_at = starts_at + duration_days`, and
+ * write the Stripe `payment_intent` id on `stripe_payment_id`.
+ *
+ * Idempotency: the outer `webhook_events` dedup already catches exact event
+ * replays. Inside the handler we additionally match on `status = 'pending'`
+ * so a re-ran event against a boost row someone already flipped to `active`
+ * is a no-op.
+ */
+async function handleBoostCompleted(admin: AdminClient, event: Stripe.Event) {
+  const sess = event.data.object as Stripe.Checkout.Session;
+  const meta = sess.metadata ?? {};
+
+  const idList: string[] = [];
+  if (typeof meta.boost_id === "string" && meta.boost_id.length > 0) {
+    idList.push(meta.boost_id);
+  }
+  if (typeof meta.boost_ids === "string" && meta.boost_ids.length > 0) {
+    for (const raw of meta.boost_ids.split(",")) {
+      const id = raw.trim();
+      if (id.length > 0) idList.push(id);
+    }
+  }
+  if (idList.length === 0) {
+    console.warn("[stripe-webhook] boost.completed missing id metadata", {
+      event_id: event.id,
+    });
+    return;
+  }
+
+  const durationDays = Number(meta.duration_days);
+  if (!Number.isFinite(durationDays) || durationDays <= 0) {
+    console.error("[stripe-webhook] boost.completed invalid duration", {
+      event_id: event.id,
+      duration_days: meta.duration_days,
+    });
+    return;
+  }
+
+  const paymentIntentId =
+    typeof sess.payment_intent === "string"
+      ? sess.payment_intent
+      : sess.payment_intent?.id ?? null;
+
+  const startsAt = new Date();
+  const endsAt = new Date(
+    startsAt.getTime() + durationDays * 24 * 60 * 60 * 1000,
+  );
+
+  const { error } = await admin
+    .from("listing_boosts")
+    .update({
+      status: "active",
+      starts_at: startsAt.toISOString(),
+      ends_at: endsAt.toISOString(),
+      stripe_payment_id: paymentIntentId,
+    })
+    .in("id", idList)
+    .eq("status", "pending");
+
+  if (error) {
+    console.error("[stripe-webhook] boost activation failed", {
+      event_id: event.id,
+      error,
+    });
+    throw error; // surface to the outer catch so Stripe retries
   }
 }
 
