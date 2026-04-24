@@ -63,12 +63,6 @@ export default function HeroSearchBar({
   const isExpanded = activeField !== null;
   const renderField = activeField || lastActiveField;
 
-  useEffect(() => {
-    if (activeField !== null) {
-      setLastActiveField(activeField);
-    }
-  }, [activeField]);
-
   const close = useCallback(() => setActiveField(null), []);
 
   useEffect(() => {
@@ -91,8 +85,13 @@ export default function HeroSearchBar({
     return () => document.removeEventListener("mousedown", handler);
   }, [isExpanded, close]);
 
-  const toggle = (f: SearchField) =>
-    setActiveField((prev) => (prev === f ? null : f));
+  const toggle = (f: SearchField) => {
+    const next = activeField === f ? null : f;
+    setActiveField(next);
+    // Track the last non-null field so the dropdown can keep rendering
+    // its content while collapsing without a flash to empty.
+    if (next !== null) setLastActiveField(next);
+  };
 
   const fields: {
     field: SearchField;

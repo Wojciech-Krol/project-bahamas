@@ -161,13 +161,18 @@ function NavExpandedSearch({
   const t = useTranslations();
   const formatActivities = useFormatActivities();
   const [activeField, setActiveField] = useState<SearchField>(initialField);
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
   const barRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  // Reset active segment to the field the user clicked each time the
+  // overlay opens. Doing this during render (not in an effect) avoids
+  // a cascading re-render after open.
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) {
       setActiveField(initialField);
     }
-  }, [isOpen, initialField]);
+  }
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
