@@ -103,9 +103,88 @@ function composeActivity(row: ActivityRow, locale: Locale): Activity {
 }
 
 /**
+ * Boost-aware sort: order an activity list by the `venue_rankings` view
+ * columns `(has_active_boost desc, has_subscription desc, rating desc,
+ * created_at desc)` per plan section 3.4.
+ *
+ * Implementation choice: two-step lookup rather than a nested `.select()` on
+ * the view. Supabase PostgREST doesn't expose `venue_rankings` as an embedded
+ * table unless a foreign-key relationship is declared (it's a view, not a
+ * table), and hand-rolling the ranking in TS keeps the activities query
+ * simple + unchanged for callers. One extra round trip — negligible
+ * next to the composition cost of `ACTIVITY_SELECT`, and both queries hit
+ * `venue_id` indexed paths.
+ *
+ * Fallback: if the view read fails (e.g. migration 0002 not yet applied),
+ * return rows in their natural order so the caller still gets data.
+ */
+async function sortByVenueRankings<
+  T extends { venue: { id: string } | null },
+>(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  rows: T[],
+): Promise<T[]> {
+  if (rows.length === 0) return rows;
+
+  const venueIds = Array.from(
+    new Set(rows.map((r) => r.venue?.id).filter((v): v is string => !!v)),
+  );
+  if (venueIds.length === 0) return rows;
+
+  const { data: rankings, error } = await supabase
+    .from("venue_rankings")
+    .select("venue_id, has_active_boost, has_subscription, rating, created_at")
+    .in("venue_id", venueIds);
+
+  if (error) {
+    console.warn(
+      "[db/queries/activities.sortByVenueRankings] falling back to natural order",
+      error,
+    );
+    return rows;
+  }
+
+  type Ranking = {
+    venue_id: string;
+    has_active_boost: boolean | null;
+    has_subscription: boolean | null;
+    rating: number | null;
+    created_at: string | null;
+  };
+  const map = new Map<string, Ranking>();
+  for (const r of (rankings ?? []) as Ranking[]) {
+    map.set(r.venue_id, r);
+  }
+
+  // Stable sort by the composite key. Booleans are compared truthy > falsy,
+  // nulls are treated as falsy / lowest. `created_at desc` ties are broken
+  // by whatever order PostgREST returned the activity rows in.
+  return [...rows].sort((a, b) => {
+    const ra = a.venue?.id ? map.get(a.venue.id) : undefined;
+    const rb = b.venue?.id ? map.get(b.venue.id) : undefined;
+    const boostA = ra?.has_active_boost ? 1 : 0;
+    const boostB = rb?.has_active_boost ? 1 : 0;
+    if (boostA !== boostB) return boostB - boostA;
+    const subA = ra?.has_subscription ? 1 : 0;
+    const subB = rb?.has_subscription ? 1 : 0;
+    if (subA !== subB) return subB - subA;
+    const ratingA = Number(ra?.rating ?? 0);
+    const ratingB = Number(rb?.rating ?? 0);
+    if (ratingA !== ratingB) return ratingB - ratingA;
+    const createdA = ra?.created_at ?? "";
+    const createdB = rb?.created_at ?? "";
+    if (createdA !== createdB) return createdA < createdB ? 1 : -1;
+    return 0;
+  });
+}
+
+/**
  * Returns the N most recent published activities, joined to their venue.
  * Used to feed the "closest to you" rail on the home page until real
  * geo-sorting lands.
+ *
+ * Sort order: boosted venues first, then subscribed partners, then by rating
+ * and recency — see `sortByVenueRankings` + plan section 3.4.
  */
 export async function getClosestActivities(
   locale: Locale,
@@ -119,12 +198,17 @@ export async function getClosestActivities(
     return [];
   }
 
+  // Pull a wider window than `limit` so the boost/subscription re-sort has
+  // something to work with, then trim. 4x is arbitrary but bounds the
+  // over-read while leaving headroom for heavily-boosted catalogs.
+  const overscan = Math.max(limit * 4, 40);
+
   const { data, error } = await supabase
     .from("activities")
     .select(ACTIVITY_SELECT)
     .eq("is_published", true)
     .order("created_at", { ascending: false })
-    .limit(limit)
+    .limit(overscan)
     .returns<ActivityRow[]>();
 
   if (error) {
@@ -132,7 +216,8 @@ export async function getClosestActivities(
     return [];
   }
 
-  return (data ?? []).map((row) => composeActivity(row, locale));
+  const sorted = await sortByVenueRankings(supabase, data ?? []);
+  return sorted.slice(0, limit).map((row) => composeActivity(row, locale));
 }
 
 /** Loads a single activity by id (returns `null` if not found / unpublished). */
@@ -208,7 +293,8 @@ async function queryWithFilters(
     return [];
   }
 
-  return (data ?? []).map((row) => composeActivity(row, locale));
+  const sorted = await sortByVenueRankings(supabase, data ?? []);
+  return sorted.map((row) => composeActivity(row, locale));
 }
 
 /**

@@ -762,6 +762,8 @@
       "venue": "Profil obiektu",
       "payouts": "Wypłaty",
       "payments": "Płatności",
+      "promote": "Promuj",
+      "plans": "Plany",
       "settings": "Ustawienia",
       "backToSite": "← Powrót do Hakuny",
       "toggleMenu": "Przełącz menu",
@@ -786,6 +788,54 @@
       },
       "sidebar": {
         "payments": "Płatności"
+      }
+    },
+    "plans": {
+      "title": "Plany abonamentowe",
+      "subtitle": "Wybierz plan, aby obniżyć prowizję Hakuny i odblokować dodatkowe narzędzia dla partnerów.",
+      "currentBadge": "Aktywny",
+      "upgrade": "Przejdź na ten plan",
+      "active": "Aktywny plan",
+      "monthlyLabel": "/ miesiąc",
+      "commissionLabel": "prowizji od rezerwacji powracających klientów",
+      "tierNames": {
+        "partner-plus-monthly": "Partner Plus",
+        "partner-pro-monthly": "Partner Pro"
+      },
+      "placeholder": {
+        "stripeMissing": "Stripe nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o ustawienie kluczy Stripe Billing.",
+        "supabaseMissing": "Supabase nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o skonfigurowanie bazy danych."
+      },
+      "errors": {
+        "tierNotConfigured": "Plan jeszcze niedostępny"
+      }
+    },
+    "promote": {
+      "title": "Promuj ofertę",
+      "subtitle": "Wypromuj swoje zajęcia lub cały obiekt w wynikach wyszukiwania. Boost wyświetla Twoje treści wyżej, a pierwsza rezerwacja nowego klienta objęta jest jednorazową prowizją 35%.",
+      "activeUntil": "Aktywny boost kończy się {date}",
+      "notBoosted": "Brak aktywnego boosta",
+      "activateCta": "Aktywuj boost",
+      "sectionAll": "Promuj wszystkie obiekty",
+      "sectionAllDescription": "Zastosuj boost do każdego obiektu partnera jednocześnie.",
+      "sectionVenues": "Obiekty",
+      "sectionActivities": "Zajęcia",
+      "chooseDuration": "Wybierz czas trwania",
+      "priceLabel": "{price} PLN",
+      "purchase": "Kup boost",
+      "durationOptions": {
+        "7": "7 dni",
+        "14": "14 dni",
+        "30": "30 dni"
+      },
+      "successBanner": "Boost aktywowany — dziękujemy!",
+      "cancelledBanner": "Płatność anulowana. Możesz spróbować ponownie w dowolnym momencie.",
+      "placeholder": {
+        "stripeMissing": "Stripe nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o ustawienie `STRIPE_SECRET_KEY`.",
+        "supabaseMissing": "Supabase nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o skonfigurowanie bazy danych."
+      },
+      "errors": {
+        "generic": "Nie udało się rozpocząć płatności. Spróbuj ponownie za chwilę."
       }
     },
     "venueSwitcher": {
