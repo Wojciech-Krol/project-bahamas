@@ -87,6 +87,7 @@
     "error": {
       "invalidInput": "Sprawdź wprowadzone dane.",
       "invalidCredentials": "Nieprawidłowy email lub hasło.",
+      "emailNotConfirmed": "Potwierdź email klikając link, który wysłaliśmy podczas zakładania konta.",
       "signupFailed": "Nie udało się założyć konta. Spróbuj ponownie.",
       "generic": "Coś poszło nie tak. Spróbuj ponownie."
     },
@@ -101,6 +102,11 @@
       "subtitle": "Załóż konto i odkrywaj zajęcia w okolicy.",
       "haveAccount": "Masz już konto?",
       "loginCta": "Zaloguj się"
+    },
+    "checkEmail": {
+      "title": "Sprawdź skrzynkę",
+      "body": "Wysłaliśmy link potwierdzający na {email}. Kliknij go, by aktywować konto i zalogować się automatycznie.",
+      "hint": "Email może wylądować w spamie. Sprawdź też tam."
     }
   },
   "Home": {

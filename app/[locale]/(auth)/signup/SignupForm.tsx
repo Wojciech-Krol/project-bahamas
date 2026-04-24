@@ -16,6 +16,10 @@ export default function SignupForm({ locale }: { locale: string }) {
   const t = useTranslations("Auth");
   const [state, formAction] = useActionState(signupAction, initialState);
 
+  if (state.awaitingConfirmation) {
+    return <CheckEmailPanel email={state.email ?? ""} />;
+  }
+
   return (
     <div className="space-y-6">
       <form action={googleSignInAction}>
@@ -53,6 +57,24 @@ export default function SignupForm({ locale }: { locale: string }) {
         {state.error ? <ErrorBox message={t(`error.${state.error}`)} /> : null}
         <SubmitButton label={t("button.signup")} />
       </form>
+    </div>
+  );
+}
+
+function CheckEmailPanel({ email }: { email: string }) {
+  const t = useTranslations("Auth.checkEmail");
+  return (
+    <div className="rounded-2xl border border-on-surface/10 bg-surface-container-lowest p-6 space-y-3 text-center">
+      <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-2xl">
+        ✉️
+      </div>
+      <h2 className="font-headline text-xl font-bold text-on-surface">
+        {t("title")}
+      </h2>
+      <p className="text-on-surface/70 text-sm">
+        {t("body", { email })}
+      </p>
+      <p className="text-on-surface/50 text-xs">{t("hint")}</p>
     </div>
   );
 }

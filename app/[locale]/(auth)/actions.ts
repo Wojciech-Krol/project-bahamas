@@ -17,11 +17,21 @@ const signupSchema = credentialsSchema.extend({
 
 export type AuthActionState = {
   error?: string;
+  awaitingConfirmation?: boolean;
+  email?: string;
 };
 
 function originFromHeaders(host: string | null, proto: string | null) {
   if (!host) return "";
   return `${proto ?? "https"}://${host}`;
+}
+
+async function getOrigin(): Promise<string> {
+  const headerList = await headers();
+  return originFromHeaders(
+    headerList.get("x-forwarded-host") ?? headerList.get("host"),
+    headerList.get("x-forwarded-proto"),
+  );
 }
 
 export async function loginAction(
@@ -39,6 +49,16 @@ export async function loginAction(
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
+    // Supabase 2.x distinguishes the unconfirmed-email state via `code` /
+    // status. Surface a dedicated message so the form can prompt the user
+    // to check their inbox instead of saying "wrong password".
+    const code = (error as { code?: string }).code;
+    if (
+      code === "email_not_confirmed" ||
+      error.message.toLowerCase().includes("confirm")
+    ) {
+      return { error: "emailNotConfirmed" };
+    }
     return { error: "invalidCredentials" };
   }
 
@@ -59,29 +79,39 @@ export async function signupAction(
     return { error: "invalidInput" };
   }
 
+  const locale = (formData.get("locale") as string) || "pl";
+  const origin = await getOrigin();
+
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
-      data: { full_name: parsed.data.fullName },
+      data: { full_name: parsed.data.fullName, locale },
+      // PKCE confirmation link comes back here. The callback runs
+      // exchangeCodeForSession and sets the session cookie, then
+      // forwards to `next` so the user lands signed in.
+      emailRedirectTo: `${origin}/api/auth/callback?next=/${locale}`,
     },
   });
   if (error) {
     return { error: "signupFailed" };
   }
 
-  const locale = (formData.get("locale") as string) || "pl";
+  // When Supabase Auth has "Confirm email" turned ON (default for hosted
+  // projects), `signUp` returns the user but no session — the user has
+  // to click the link in the confirmation email before they can sign in.
+  // Don't redirect to home in that case; show a "check your inbox" panel.
+  if (!data.session) {
+    return { awaitingConfirmation: true, email: parsed.data.email };
+  }
+
   redirect(`/${locale}`);
 }
 
 export async function googleSignInAction(formData: FormData): Promise<void> {
   const locale = (formData.get("locale") as string) || "pl";
-  const headerList = await headers();
-  const origin = originFromHeaders(
-    headerList.get("x-forwarded-host") ?? headerList.get("host"),
-    headerList.get("x-forwarded-proto"),
-  );
+  const origin = await getOrigin();
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
