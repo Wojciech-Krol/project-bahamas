@@ -529,27 +529,20 @@ export async function cancelBooking(
     return { error: "refund_failed" };
   }
 
-  // Decrement spots_taken. Supabase JS doesn't expose atomic expressions
-  // like `col - 1`, so we re-read then update with a `gt` guard. The
-  // guard ensures we don't wrap the counter below zero even if the row
-  // races with another mutation — worst case the decrement silently skips.
-  const { data: sessAfter, error: sessErr } = await admin
-    .from("sessions")
-    .select("id, spots_taken")
-    .eq("id", sessionRow.id)
-    .maybeSingle();
-  if (sessErr || !sessAfter) {
-    console.error("[cancelBooking] session reload failed", sessErr);
+  // Decrement spots_taken atomically via the SQL helper from migration
+  // 0008. The helper clamps at zero, so concurrent cancels can't drive
+  // the counter negative. Previous read-then-write pattern lost
+  // decrements under races (two cancels each reading N → both writing
+  // N-1 → counter ends one too high).
+  const { error: decErr } = await admin.rpc("decrement_spots", {
+    s_id: sessionRow.id,
+  });
+  if (decErr) {
     // Refund already went through — don't fail the whole cancel here.
-  } else if (sessAfter.spots_taken > 0) {
-    const { error: decErr } = await admin
-      .from("sessions")
-      .update({ spots_taken: sessAfter.spots_taken - 1 })
-      .eq("id", sessionRow.id)
-      .gt("spots_taken", 0);
-    if (decErr) {
-      console.error("[cancelBooking] spots_taken decrement failed", decErr);
-    }
+    // Operator gets a Sentry hit; in the meantime the session row's
+    // counter is mildly stale and the next confirmation/expiry will
+    // eventually self-correct via the same helper.
+    console.error("[cancelBooking] spots_taken decrement failed", decErr);
   }
 
   // Flip booking status.
