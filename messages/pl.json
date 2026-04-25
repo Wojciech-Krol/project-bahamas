@@ -684,5 +684,94 @@
         ]
       }
     }
+  },
+  "CreateArticle": {
+    "ui": {
+      "lock": {
+        "title": "Wymagany dostep administratora",
+        "description": "Wpisz kod bezpieczenstwa, aby przejsc do panelu artykulu.",
+        "codePlaceholder": "Kod bezpieczenstwa",
+        "submitButton": "Odblokuj panel",
+        "invalidCode": "Niepoprawny kod bezpieczenstwa.",
+        "backToHome": "Powrot do strony glownej"
+      },
+      "dashboard": {
+        "title": "Panel tworzenia bloga",
+        "logout": "Wyloguj",
+        "articleTitlePlaceholder": "Tytul artykulu",
+        "articleSubtitlePlaceholder": "Podtytul artykulu",
+        "toolbar": {
+          "heading": "Pasek narzedzi",
+          "bold": "Pogrubienie",
+          "italic": "Kursywa",
+          "underline": "Podkreslenie",
+          "subtitle": "Podtytul",
+          "list": "Punkty",
+          "link": "Link",
+          "image": "Dodaj obraz"
+        },
+        "editorPlaceholder": "Zacznij pisac artykul...",
+        "actions": {
+          "saveDraft": "Zapisz szkic",
+          "publish": "Opublikuj",
+          "preview": "Podglad"
+        },
+        "imageUpload": {
+          "title": "Obraz wyrozniajacy",
+          "description": "Kliknij, aby przeslac lub upusc plik"
+        },
+        "states": {
+          "dirty": "Niezapisane zmiany",
+          "saving": "Zapisywanie szkicu...",
+          "saved": "Szkic zapisany",
+          "saveError": "Nie udalo sie zapisac szkicu.",
+          "publishing": "Publikowanie...",
+          "published": "Opublikowano",
+          "publishError": "Nie udalo sie opublikowac artykulu.",
+          "requiredFieldsMissing": "Brakuje wymaganych pol:",
+          "unsavedChangesWarning": "Masz niezapisane zmiany."
+        },
+        "requiredFields": {
+          "title": "Tytul",
+          "content": "Tresc",
+          "author": "Autor",
+          "category": "Kategoria"
+        },
+        "audit": {
+          "title": "Dziennik zmian",
+          "empty": "Brak akcji.",
+          "savedDraft": "Zapisano szkic",
+          "startedPublishing": "Rozpoczeto publikacje",
+          "published": "Artykul opublikowany",
+          "validationFailed": "Publikacja zablokowana przez walidacje"
+        },
+        "meta": {
+          "title": "Szczegoly wpisu",
+          "authorLabel": "Autor",
+          "authorPlaceholder": "Imie i nazwisko autora",
+          "categoryLabel": "Kategoria",
+          "categoryPlaceholder": "Wybierz lub wpisz kategorie",
+          "tagsLabel": "Tagi",
+          "tagsPlaceholder": "Dodaj tagi oddzielone przecinkami"
+        }
+      },
+      "preview": {
+        "notice": "Tryb podgladu — tak bedzie wygladac artykul po opublikowaniu.",
+        "backToEditor": "Powrot do edytora",
+        "draftBadge": "Podglad szkicu",
+        "publishedBadge": "Podglad opublikowany",
+        "untitled": "Artykul bez tytulu",
+        "unknownAuthor": "Autor nieznany",
+        "noCategory": "Bez kategorii",
+        "emptyTitle": "Brak tresci do podgladu",
+        "emptyDescription": "Zacznij pisac w edytorze, a potem wroc tutaj, aby zobaczyc, jak artykul bedzie wygladal.",
+        "emptyCta": "Otworz edytor",
+        "activitiesTitle": "Aktywnosci",
+        "activitiesDescription": "Dodaj aktywnosci ze strony, ktore sa powiazane z tym artykulem. Czytelnicy zobacza je jako maly ranking pod wpisem.",
+        "addActivity": "Dodaj aktywnosc ze strony",
+        "comingSoon": "Dostepne po podlaczeniu bazy danych",
+        "tagsLabel": "Tagi"
+      }
+    }
   }
 }
