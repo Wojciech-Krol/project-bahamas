@@ -2,7 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Link } from "@/src/i18n/navigation";
-import BrandLogo from "@/app/components/BrandLogo";
+import BrandLogo from "@/src/components/BrandLogo";
 
 export default async function AuthLayout({
   children,

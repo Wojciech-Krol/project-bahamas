@@ -4,7 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../src/i18n/routing";
-import CookieConsentGate from "../components/CookieConsentGate";
+import CookieConsentGate from "@/src/components/CookieConsentGate";
 import "../globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({

@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
-import BrandLogo from "@/app/components/BrandLogo";
+import BrandLogo from "@/src/components/BrandLogo";
 
 import {
   loginAction,

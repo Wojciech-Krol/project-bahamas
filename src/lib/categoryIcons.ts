@@ -1,4 +1,4 @@
-import type { ActivityKey } from "@/app/components/search/constants";
+import type { ActivityKey } from "@/src/components/search/constants";
 
 /**
  * Single source of truth: activity category key → Tabler icon name (without

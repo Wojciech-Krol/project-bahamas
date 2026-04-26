@@ -2,10 +2,10 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
-import SiteNavbar from "@/app/components/SiteNavbar";
-import SiteFooter from "@/app/components/SiteFooter";
-import ReviewsSection from "@/app/components/ReviewsSection";
-import { Icon } from "@/app/components/Icon";
+import SiteNavbar from "@/src/components/SiteNavbar";
+import SiteFooter from "@/src/components/SiteFooter";
+import ReviewsSection from "@/src/components/ReviewsSection";
+import { Icon } from "@/src/components/Icon";
 import type { Activity, Review, School } from "@/src/lib/mockData";
 
 function ClassCard({ c }: { c: Activity }) {

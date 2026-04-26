@@ -2,11 +2,11 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import SiteNavbar from "@/app/components/SiteNavbar";
-import SiteFooter from "@/app/components/SiteFooter";
-import ReviewsSection from "@/app/components/ReviewsSection";
-import { Icon } from "@/app/components/Icon";
-import TrackActivityView from "@/app/components/analytics/TrackActivityView";
+import SiteNavbar from "@/src/components/SiteNavbar";
+import SiteFooter from "@/src/components/SiteFooter";
+import ReviewsSection from "@/src/components/ReviewsSection";
+import { Icon } from "@/src/components/Icon";
+import TrackActivityView from "@/src/components/analytics/TrackActivityView";
 import { ACTIVITY_DETAIL_BASE, AVATAR } from "@/src/lib/mockData";
 import type { Activity, Review } from "@/src/lib/mockData";
 import type {

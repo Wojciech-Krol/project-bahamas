@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { notFound, redirect } from "next/navigation";
 
-import PartnerSidebarShell from "@/app/components/partner/PartnerSidebarShell";
+import PartnerSidebarShell from "@/src/components/partner/PartnerSidebarShell";
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
 import { env } from "@/src/env";
 

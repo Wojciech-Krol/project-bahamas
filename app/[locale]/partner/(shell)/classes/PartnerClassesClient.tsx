@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 import type { PartnerActivity } from "@/src/lib/db/queries";
 
 type Tab = "published" | "drafts" | "archived";

@@ -4,7 +4,7 @@ import { useActionState, useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/src/i18n/navigation";
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 import {
   createActivity,
   deleteActivity,
