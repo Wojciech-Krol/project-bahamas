@@ -1129,7 +1129,8 @@
         "identity": "Tożsamość",
         "location": "Lokalizacja",
         "photos": "Zdjęcia",
-        "stats": "Pasek statystyk"
+        "stats": "Pasek statystyk",
+        "visibility": "Widoczność"
       },
       "fields": {
         "name": "Nazwa obiektu",
@@ -1137,13 +1138,20 @@
         "about": "O nas",
         "aboutCounter": "{count} / {max}",
         "address": "Adres",
+        "city": "Miasto / dzielnica",
         "neighborhood": "Dzielnica",
         "heroImage": "Zdjęcie główne",
+        "heroImageUrl": "URL zdjęcia głównego",
         "galleryHeading": "Galeria · {count} zdjęć",
         "addNeighborhood": "+ Dodaj",
         "replace": "Zmień",
-        "numberLabel": "Liczba"
+        "numberLabel": "Liczba",
+        "publish": "Opublikowane",
+        "publishHint": "Widoczne dla klientów na stronie publicznej."
       },
+      "emptyState": "Nie masz jeszcze żadnego studia — utwórz pierwsze, aby kontynuować.",
+      "selectAnother": "Wybierz studio z listy powyżej.",
+      "savedToast": "Zapisano.",
       "preview": {
         "liveAt": "Na żywo · /school/{slug}",
         "desktop": "Komputer",
