@@ -247,6 +247,7 @@ export type PartnerVenueRaw = {
   address: string | null;
   city: string | null;
   heroImage: string | null;
+  gallery: string[];
   isPublished: boolean;
 };
 
@@ -265,7 +266,7 @@ export async function getPartnerVenueRawById(
   const { data, error } = await supabase
     .from("venues")
     .select(
-      "id, name, description_i18n, address, city, hero_image, is_published, partner_id",
+      "id, name, description_i18n, address, city, hero_image, gallery, is_published, partner_id",
     )
     .eq("id", venueId)
     .eq("partner_id", partnerId)
@@ -274,6 +275,7 @@ export async function getPartnerVenueRawById(
   if (error || !data) return null;
   const desc = ((data as { description_i18n: Record<string, string> | null })
     .description_i18n ?? {}) as Record<string, string>;
+  const galleryRaw = (data as { gallery: unknown }).gallery;
 
   return {
     id: data.id as string,
@@ -282,6 +284,7 @@ export async function getPartnerVenueRawById(
     address: (data.address as string | null) ?? null,
     city: (data.city as string | null) ?? null,
     heroImage: (data.hero_image as string | null) ?? null,
+    gallery: Array.isArray(galleryRaw) ? (galleryRaw as string[]) : [],
     isPublished: (data.is_published as boolean) ?? false,
   };
 }

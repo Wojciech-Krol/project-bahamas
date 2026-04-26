@@ -1152,6 +1152,22 @@
       "emptyState": "Nie masz jeszcze żadnego studia — utwórz pierwsze, aby kontynuować.",
       "selectAnother": "Wybierz studio z listy powyżej.",
       "savedToast": "Zapisano.",
+      "upload": {
+        "hint": "JPEG, PNG lub WebP, maks. 10 MB."
+      },
+      "uploadError": {
+        "no_file": "Wybierz plik.",
+        "too_large": "Plik jest za duży (maks. 10 MB).",
+        "not_image": "Tylko JPEG, PNG lub WebP.",
+        "forbidden": "Brak uprawnień do tego studia.",
+        "invalid_input": "Nieprawidłowe dane.",
+        "internal": "Błąd przesyłania. Spróbuj ponownie."
+      },
+      "gallery": {
+        "title": "Galeria",
+        "add": "Dodaj zdjęcie",
+        "remove": "Usuń zdjęcie"
+      },
       "preview": {
         "liveAt": "Na żywo · /school/{slug}",
         "desktop": "Komputer",

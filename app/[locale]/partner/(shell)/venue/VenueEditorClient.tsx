@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Icon } from "@/app/components/Icon";
 import { updateVenue, type VenueActionResult } from "./actions";
 import type { PartnerVenue, PartnerVenueRaw } from "@/src/lib/db/queries";
+import VenuePhotosManager from "./VenuePhotosManager";
 
 const initialState: VenueActionResult | null = null;
 
@@ -139,16 +140,9 @@ export default function VenueEditorClient({
           />
         </Section>
 
-        <Section icon="photo_library" title={t("sections.photos")}>
-          <FieldLabel>{tField("heroImageUrl")}</FieldLabel>
-          <input
-            name="heroImage"
-            type="url"
-            placeholder="https://…"
-            defaultValue={venue.heroImage ?? ""}
-            className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/50 rounded-xl focus:outline-none focus:border-primary font-medium"
-          />
-        </Section>
+        {/* Hero image is now managed by the photo manager below — keep the
+            field as a hidden input so updateVenue() does not null it out. */}
+        <input type="hidden" name="heroImage" value={venue.heroImage ?? ""} />
 
         <Section icon="visibility" title={t("sections.visibility")}>
           <label className="flex items-center gap-3 cursor-pointer">
@@ -182,6 +176,14 @@ export default function VenueEditorClient({
           <SubmitButton label={tCommon("save")} />
         </div>
       </form>
+
+      <div className="mt-6">
+        <VenuePhotosManager
+          venueId={venue.id}
+          initialHero={venue.heroImage}
+          initialGallery={venue.gallery}
+        />
+      </div>
     </div>
   );
 }

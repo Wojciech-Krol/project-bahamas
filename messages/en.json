@@ -1152,6 +1152,22 @@
       "emptyState": "No venue yet — create one to continue.",
       "selectAnother": "Pick a venue from the list above.",
       "savedToast": "Saved.",
+      "upload": {
+        "hint": "JPEG, PNG, or WebP, max 10 MB."
+      },
+      "uploadError": {
+        "no_file": "Pick a file first.",
+        "too_large": "File too large (10 MB max).",
+        "not_image": "Only JPEG, PNG, or WebP.",
+        "forbidden": "You don't have access to this venue.",
+        "invalid_input": "Invalid input.",
+        "internal": "Upload failed. Try again."
+      },
+      "gallery": {
+        "title": "Gallery",
+        "add": "Add photo",
+        "remove": "Remove photo"
+      },
       "preview": {
         "liveAt": "Live · /school/{slug}",
         "desktop": "Desktop",
