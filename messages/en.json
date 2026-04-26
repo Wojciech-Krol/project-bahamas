@@ -1193,6 +1193,30 @@
       "emptyState": "Invite your first instructor to populate the team.",
       "comingSoon": "Invitations land in Phase 2."
     },
+    "insights": {
+      "badge": "Analytics",
+      "title": "Insights",
+      "subtitle": "The full picture of how your studio is performing.",
+      "emptyPartner": "No data — join a partner first.",
+      "kpis": {
+        "bookings30d": "Bookings (30d)",
+        "avgBooking": "Avg booking (30d)",
+        "totalGrossYtd": "Gross YTD",
+        "activityBookings": "Top bookings"
+      },
+      "trend": {
+        "title": "Bookings trend",
+        "subtitle": "Confirmed bookings over the last 30 days."
+      },
+      "top": {
+        "title": "Top activities",
+        "subtitle": "Ranked by revenue in the period."
+      },
+      "heatmap": {
+        "title": "Weekly occupancy",
+        "subtitle": "Average seat fill across hours 0–24, last 60 days."
+      }
+    },
     "settings": {
       "badge": "Partner profile",
       "title": "Settings",
