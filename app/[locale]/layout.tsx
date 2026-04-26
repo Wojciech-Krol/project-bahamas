@@ -4,7 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../src/i18n/routing";
-import CookieConsentGate from "../components/CookieConsentGate";
+import CookieConsentGate from "@/src/components/CookieConsentGate";
 import "../globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -25,6 +25,8 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.club";
+
 export async function generateMetadata({
   params,
 }: {
@@ -32,21 +34,45 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
+  const titleDefault = t("titleDefault");
   return {
-    title: t("title"),
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: titleDefault,
+      template: t("titleTemplate"),
+    },
     description: t("description"),
     keywords: t("keywords").split(","),
     openGraph: {
-      title: t("title"),
+      title: titleDefault,
       description: t("description"),
       type: "website",
       locale: locale === "pl" ? "pl_PL" : "en_GB",
+      siteName: "Hakuna",
+      url: `${SITE_URL}/${locale}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: titleDefault,
+      description: t("description"),
     },
     alternates: {
       canonical: `/${locale}`,
       languages: {
         pl: "/pl",
         en: "/en",
+        "x-default": "/pl",
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
       },
     },
   };
@@ -78,6 +104,12 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"

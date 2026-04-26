@@ -1,9 +1,9 @@
 import { notFound, redirect } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
-import SiteFooter from "@/app/components/SiteFooter";
-import SiteNavbar from "@/app/components/SiteNavbar";
-import { Icon } from "@/app/components/Icon";
+import SiteFooter from "@/src/components/SiteFooter";
+import SiteNavbar from "@/src/components/SiteNavbar";
+import { Icon } from "@/src/components/Icon";
 import { Link } from "@/src/i18n/navigation";
 import { getBookingById } from "@/src/lib/db/queries";
 import { getCurrentUser } from "@/src/lib/db/server";
@@ -121,7 +121,10 @@ export default async function BookingDetailPage({
           <div className="p-6 md:p-8 space-y-6">
             <div>
               <Link
-                href={`/activity/${booking.activity.id}`}
+                href={{
+                  pathname: "/activity/[slug]",
+                  params: { slug: booking.activity.slug },
+                }}
                 className="text-sm font-bold uppercase tracking-widest text-primary hover:underline"
               >
                 {booking.activity.title}

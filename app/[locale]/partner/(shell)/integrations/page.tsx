@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
 import { env } from "@/src/env";
 import { CONNECTABLE_PROVIDERS, IMPLEMENTED_PROVIDERS, type PosProvider } from "@/src/lib/pos/adapter";

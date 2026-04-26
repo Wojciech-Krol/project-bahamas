@@ -4,8 +4,8 @@ import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useTranslations } from "next-intl";
 
-import TurnstileWidget from "@/app/components/TurnstileWidget";
-import { Icon } from "@/app/components/Icon";
+import TurnstileWidget from "@/src/components/TurnstileWidget";
+import { Icon } from "@/src/components/Icon";
 
 import { applyAsPartner, type ApplyActionState } from "./actions";
 

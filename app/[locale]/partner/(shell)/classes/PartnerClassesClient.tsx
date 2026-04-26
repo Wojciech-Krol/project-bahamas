@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 import type { PartnerActivity } from "@/src/lib/db/queries";
 
 type Tab = "published" | "drafts" | "archived";
@@ -62,7 +62,10 @@ function ClassRow({ a }: { a: PartnerActivity }) {
 
       <div className="flex gap-1 shrink-0">
         <Link
-          href={`/partner/classes/${a.id}`}
+          href={{
+            pathname: "/partner/classes/[id]",
+            params: { id: a.id },
+          }}
           title={tCommon("edit")}
           className="w-9 h-9 rounded-full bg-surface-container-low hover:bg-primary-fixed text-on-surface/60 hover:text-primary flex items-center justify-center transition-colors"
         >

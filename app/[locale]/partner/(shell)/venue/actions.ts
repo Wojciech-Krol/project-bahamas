@@ -99,8 +99,8 @@ export async function updateVenue(
   }
 
   revalidatePath("/partner/venue");
-  revalidatePath(`/pl/school/${venueId}`);
-  revalidatePath(`/en/school/${venueId}`);
+  revalidatePath(`/pl/szkola/[slug]`, "page");
+  revalidatePath(`/en/school/[slug]`, "page");
   return { ok: true };
 }
 
@@ -177,8 +177,8 @@ export async function uploadVenueHero(
   }
 
   revalidatePath("/partner/venue");
-  revalidatePath(`/pl/school/${venueId}`);
-  revalidatePath(`/en/school/${venueId}`);
+  revalidatePath(`/pl/szkola/[slug]`, "page");
+  revalidatePath(`/en/school/[slug]`, "page");
   return result;
 }
 
@@ -217,8 +217,8 @@ export async function uploadVenueGalleryPhoto(
   }
 
   revalidatePath("/partner/venue");
-  revalidatePath(`/pl/school/${venueId}`);
-  revalidatePath(`/en/school/${venueId}`);
+  revalidatePath(`/pl/szkola/[slug]`, "page");
+  revalidatePath(`/en/school/[slug]`, "page");
   return result;
 }
 
@@ -274,7 +274,7 @@ export async function removeVenueGalleryPhoto(
   }
 
   revalidatePath("/partner/venue");
-  revalidatePath(`/pl/school/${venueId}`);
-  revalidatePath(`/en/school/${venueId}`);
+  revalidatePath(`/pl/szkola/[slug]`, "page");
+  revalidatePath(`/en/school/[slug]`, "page");
   return { ok: true };
 }

@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
+import BrandLogo from "@/src/components/BrandLogo";
 
 import {
   loginAction,
@@ -26,9 +27,7 @@ export default function PartnerLoginPage() {
       <nav className="relative z-10 bg-surface/70 backdrop-blur-xl">
         <div className="flex justify-between items-center px-6 py-4 max-w-site mx-auto">
           <Link href="/partner" className="flex items-center gap-3">
-            <div className="text-2xl font-headline font-bold tracking-tighter text-primary">
-              HAKUNA
-            </div>
+            <BrandLogo size={34} />
             <div className="h-4 w-px bg-on-surface/20" />
             <div className="text-[0.65rem] font-headline font-bold uppercase tracking-[0.2em] text-on-surface/60">
               {t("brand")}
