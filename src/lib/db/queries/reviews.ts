@@ -128,6 +128,56 @@ export async function getReviews(
   return rows.map((row) => composeReview(row, authorById.get(row.author_id), locale));
 }
 
+/** Reviews for a specific venue, newest first. Used by the school page. */
+export async function getReviewsByVenue(
+  venueId: string,
+  locale: Locale,
+  limit = 12,
+): Promise<Review[]> {
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("reviews")
+    .select(REVIEW_SELECT)
+    .eq("venue_id", venueId)
+    .order("created_at", { ascending: false })
+    .limit(limit)
+    .returns<ReviewRow[]>();
+
+  if (error) {
+    console.error("[db/queries/reviews.getReviewsByVenue]", error);
+    return [];
+  }
+
+  const rows = data ?? [];
+  if (rows.length === 0) return [];
+
+  const authorIds = Array.from(
+    new Set(rows.map((r) => r.author_id).filter((v): v is string => !!v)),
+  );
+
+  const authorById = new Map<string, AuthorRow>();
+  if (authorIds.length > 0) {
+    const { data: authors, error: authorErr } = await supabase
+      .from("public_profiles")
+      .select("id, full_name, avatar_url")
+      .in("id", authorIds)
+      .returns<AuthorRow[]>();
+    if (!authorErr) {
+      for (const a of authors ?? []) authorById.set(a.id, a);
+    }
+  }
+
+  return rows.map((row) =>
+    composeReview(row, authorById.get(row.author_id), locale),
+  );
+}
+
 /** Reviews for a specific activity, newest first. Used by the activity page. */
 export async function getReviewsByActivity(
   activityId: string,
