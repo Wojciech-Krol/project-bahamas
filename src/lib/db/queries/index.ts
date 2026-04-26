@@ -16,6 +16,8 @@ export {
   getReviews,
   getReviewsByActivity,
   getReviewsByVenue,
+  getReviewsForPartner,
+  type PartnerReview,
 } from "./reviews";
 export { getUpcomingSessionsByActivity, getSessionById } from "./sessions";
 export {
