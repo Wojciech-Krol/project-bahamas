@@ -31,11 +31,13 @@ export {
   getPartnerActivityById,
   getPartnerActivityRawById,
   getPartnerMembers,
+  getPartnerProfile,
   getPartnerVenueRawById,
   getVenuesByPartner,
   type PartnerActivity,
   type PartnerActivityRaw,
   type PartnerMember,
+  type PartnerProfile,
   type PartnerVenue,
   type PartnerVenueRaw,
 } from "./partner";

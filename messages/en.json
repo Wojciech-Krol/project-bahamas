@@ -1193,6 +1193,34 @@
       "emptyState": "Invite your first instructor to populate the team.",
       "comingSoon": "Invitations land in Phase 2."
     },
+    "settings": {
+      "badge": "Partner profile",
+      "title": "Settings",
+      "savedToast": "Saved.",
+      "contactSupport": "Reach out to our team to change these values.",
+      "sections": {
+        "profile": "Public profile",
+        "account": "Account details"
+      },
+      "fields": {
+        "name": "Partner name",
+        "slug": "Page identifier",
+        "slugHint": "Appears in the URL: /school/your-id. Lowercase + dashes only.",
+        "contactEmail": "Contact email",
+        "city": "City",
+        "status": "Status",
+        "commission": "Platform commission",
+        "subscription": "Plan",
+        "subscriptionCommission": "Commission under plan"
+      },
+      "error": {
+        "invalid_input": "Check the fields and try again.",
+        "invalid_slug": "Identifier accepts lowercase letters, digits, and dashes only.",
+        "slug_taken": "That identifier is already taken.",
+        "forbidden": "You don't have access.",
+        "internal": "Save failed. Please try again."
+      }
+    },
     "mock": {
       "dateBadge": { "weekday": "Friday", "date": "April 24" },
       "user": {
