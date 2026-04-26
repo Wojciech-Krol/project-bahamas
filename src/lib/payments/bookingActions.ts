@@ -28,6 +28,7 @@
  */
 
 import { headers } from "next/headers";
+import * as Sentry from "@sentry/nextjs";
 
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
 import { createAdminClient } from "@/src/lib/db/admin";
@@ -629,6 +630,10 @@ export async function cancelBooking(
   } catch (err) {
     // Email failures must not roll back the refund; log and proceed.
     console.error("[cancelBooking] email send failed", err);
+    Sentry.captureException(err, {
+      tags: { kind: "email_send_fail", surface: "cancel_booking" },
+      extra: { bookingId },
+    });
   }
 
   return { ok: true };
