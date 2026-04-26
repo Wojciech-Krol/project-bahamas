@@ -918,6 +918,7 @@
       "save": "Save",
       "create": "Create",
       "cancel": "Cancel",
+      "back": "Back",
       "delete": "Delete",
       "minutes": "{count} min",
       "waitlistShort": "waitlist",
