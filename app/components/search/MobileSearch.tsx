@@ -75,10 +75,15 @@ export function MobileSearchOverlay({
   const t = useTranslations();
   const formatActivities = useFormatActivities();
   const [expandedField, setExpandedField] = useState<SearchField>("activities");
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
 
-  useEffect(() => {
+  // Reset the expanded section to "activities" each time the overlay
+  // opens. Done during render — not in an effect — so we don't trigger
+  // the cascading-render anti-pattern.
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) setExpandedField("activities");
-  }, [isOpen]);
+  }
 
   useEffect(() => {
     if (isOpen) {

@@ -11,6 +11,7 @@ export default function SearchSegment({
   label,
   displayValue,
   placeholder,
+  placeholderClassName,
   onClick,
 }: {
   field: SearchField;
@@ -20,6 +21,7 @@ export default function SearchSegment({
   label: string;
   displayValue: string;
   placeholder: string;
+  placeholderClassName?: string;
   onClick: () => void;
 }) {
   const isActive = activeField === field;
@@ -49,7 +51,7 @@ export default function SearchSegment({
         <div
           className={`text-[0.9rem] font-semibold truncate ${
             displayValue ? "text-on-surface" : "text-on-surface/30"
-          }`}
+          } ${!displayValue && placeholderClassName ? placeholderClassName : ""}`}
         >
           {displayValue || placeholder}
         </div>

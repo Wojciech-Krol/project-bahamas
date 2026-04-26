@@ -48,12 +48,16 @@ export default function MobileActivityCarousel({
   }, []);
 
   useEffect(() => {
-    update();
     const el = scrollerRef.current;
     if (!el) return;
+    // Defer initial measurement to a microtask via rAF so the setState
+    // happens outside the effect body. Scroll/resize fire from external
+    // events thereafter, which is the allowed pattern.
+    const raf = requestAnimationFrame(update);
     el.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     return () => {
+      cancelAnimationFrame(raf);
       el.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };

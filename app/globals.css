@@ -271,6 +271,38 @@
   }
 }
 
+/* ─── Hero Juicy Stage (Motion + GSAP take care of orbs/halo/scroll) ─── */
+.hero-juicy {
+  /* No isolation: lets the search-bar popup (z-30 inside hero) layer
+     above sibling sections of <main> like the Closest carousel. */
+}
+
+/* ─── Typewriter cursor caret ─── */
+.typewriter-caret::after {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 0.95em;
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  background: currentColor;
+  opacity: 0.7;
+  animation: typewriter-blink 1.05s steps(2) infinite;
+}
+
+@keyframes typewriter-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-caret::after {
+    animation: none !important;
+  }
+}
+
 /* ─── Mobile Calendar: single month ─── */
 @media (max-width: 767px) {
   .calendar-wrapper .rdp-months {
