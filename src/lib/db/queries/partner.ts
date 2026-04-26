@@ -129,6 +129,85 @@ export async function getActivitiesByPartner(
   return (data ?? []).map((r) => compose(r, locale));
 }
 
+export type PartnerVenue = {
+  id: string;
+  name: string;
+  city: string | null;
+  isPublished: boolean;
+};
+
+/** Venues owned by the partner. Used by the class editor to pick a venue
+ * and by the venue settings page. */
+export async function getVenuesByPartner(
+  partnerId: string,
+): Promise<PartnerVenue[]> {
+  if (!partnerId) return [];
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("venues")
+    .select("id, name, city, is_published")
+    .eq("partner_id", partnerId)
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("[db/queries/partner.getVenuesByPartner]", error);
+    return [];
+  }
+
+  return (data ?? []).map((r) => ({
+    id: r.id as string,
+    name: r.name as string,
+    city: (r.city as string | null) ?? null,
+    isPublished: (r.is_published as boolean) ?? false,
+  }));
+}
+
+/** Returns the raw i18n bag fields too, so the editor can populate per-locale
+ * inputs. The compose() helper above flattens to a single locale; the editor
+ * needs PL + EN side by side. */
+export type PartnerActivityRaw = PartnerActivity & {
+  titleI18n: Record<string, string>;
+  descriptionI18n: Record<string, string>;
+};
+
+export async function getPartnerActivityRawById(
+  activityId: string,
+  partnerId: string,
+  locale: Locale,
+): Promise<PartnerActivityRaw | null> {
+  if (!activityId || !partnerId) return null;
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("activities")
+    .select(PARTNER_ACTIVITY_SELECT)
+    .eq("id", activityId)
+    .eq("venue.partner_id", partnerId)
+    .maybeSingle<PartnerActivityRow>();
+
+  if (error || !data) return null;
+
+  const composed = compose(data, locale);
+  const titleBag = (data.title_i18n ?? {}) as Record<string, string>;
+  const descBag = (data.description_i18n ?? {}) as Record<string, string>;
+  return {
+    ...composed,
+    titleI18n: { pl: titleBag.pl ?? "", en: titleBag.en ?? "" },
+    descriptionI18n: { pl: descBag.pl ?? "", en: descBag.en ?? "" },
+  };
+}
+
 /** Single activity by id, scoped to the partner. Returns null when the id
  * doesn't belong to the partner (RLS already blocks read but we double-check
  * the join in case the calling page already trusts a stale id from the URL). */

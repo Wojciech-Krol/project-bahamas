@@ -934,6 +934,10 @@
       "inviteInstructor": "Invite instructor",
       "search": "Search",
       "close": "Close",
+      "save": "Save",
+      "create": "Create",
+      "cancel": "Cancel",
+      "delete": "Delete",
       "minutes": "{count} min",
       "waitlistShort": "waitlist",
       "full": "Full",
@@ -1050,23 +1054,41 @@
     "classEditor": {
       "urlbar": "hakuna.app/partner/classes/{id}",
       "editing": "Editing class",
+      "newClass": "New class",
+      "untitled": "Untitled",
+      "confirmDelete": "Delete this class? This cannot be undone.",
       "sections": {
         "basics": "Basics",
         "schedule": "Schedule",
         "instructor": "Assigned instructor",
-        "pricing": "Pricing"
+        "pricing": "Pricing",
+        "media": "Media"
       },
       "fields": {
         "title": "Class title",
         "description": "Description",
         "level": "Level",
-        "duration": "Duration",
+        "duration": "Duration (min)",
         "capacity": "Capacity",
         "recurringDays": "Recurring days",
         "startTime": "Start time",
         "room": "Room",
-        "price": "Price per class",
-        "pricingModel": "Pricing model"
+        "price": "Price",
+        "pricingModel": "Pricing model",
+        "currency": "Currency",
+        "venue": "Venue",
+        "noVenues": "No venues — create a studio first.",
+        "category": "Category",
+        "ageGroup": "Age group",
+        "heroImage": "Hero image URL",
+        "publish": "Published",
+        "publishHint": "Visible to customers on the public page."
+      },
+      "error": {
+        "invalid_input": "Check the fields and try again.",
+        "forbidden": "You don't have access to this action.",
+        "internal": "Save failed. Please try again.",
+        "not_found": "Class not found."
       },
       "weekdayInitials": ["S", "M", "T", "W", "T", "F", "S"],
       "pricingModels": {

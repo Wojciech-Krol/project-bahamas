@@ -934,6 +934,10 @@
       "inviteInstructor": "Zaproś instruktora",
       "search": "Szukaj",
       "close": "Zamknij",
+      "save": "Zapisz",
+      "create": "Utwórz",
+      "cancel": "Anuluj",
+      "delete": "Usuń",
       "minutes": "{count} min",
       "waitlistShort": "na liście",
       "full": "Komplet",
@@ -1050,23 +1054,41 @@
     "classEditor": {
       "urlbar": "hakuna.app/partner/classes/{id}",
       "editing": "Edycja zajęć",
+      "newClass": "Nowe zajęcia",
+      "untitled": "Bez tytułu",
+      "confirmDelete": "Usunąć te zajęcia? Tej operacji nie można cofnąć.",
       "sections": {
         "basics": "Podstawy",
         "schedule": "Harmonogram",
         "instructor": "Przypisany instruktor",
-        "pricing": "Cennik"
+        "pricing": "Cennik",
+        "media": "Multimedia"
       },
       "fields": {
         "title": "Tytuł zajęć",
         "description": "Opis",
         "level": "Poziom",
-        "duration": "Czas trwania",
+        "duration": "Czas trwania (min)",
         "capacity": "Liczba miejsc",
         "recurringDays": "Dni powtarzające się",
         "startTime": "Godzina rozpoczęcia",
         "room": "Sala",
-        "price": "Cena za zajęcia",
-        "pricingModel": "Model cenowy"
+        "price": "Cena",
+        "pricingModel": "Model cenowy",
+        "currency": "Waluta",
+        "venue": "Miejsce",
+        "noVenues": "Brak miejsc — najpierw utwórz studio.",
+        "category": "Kategoria",
+        "ageGroup": "Grupa wiekowa",
+        "heroImage": "URL zdjęcia głównego",
+        "publish": "Opublikowane",
+        "publishHint": "Widoczne dla klientów na stronie publicznej."
+      },
+      "error": {
+        "invalid_input": "Sprawdź pola i spróbuj ponownie.",
+        "forbidden": "Brak uprawnień do tej operacji.",
+        "internal": "Błąd zapisu. Spróbuj ponownie.",
+        "not_found": "Nie znaleziono zajęć."
       },
       "weekdayInitials": ["N", "P", "W", "Ś", "C", "P", "S"],
       "pricingModels": {
