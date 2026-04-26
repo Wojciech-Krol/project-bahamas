@@ -18,7 +18,12 @@ export {
   getReviewsByVenue,
 } from "./reviews";
 export { getUpcomingSessionsByActivity, getSessionById } from "./sessions";
-export { getBookingById, type BookingDetail } from "./bookings";
+export {
+  getBookingById,
+  getBookingsByPartner,
+  type BookingDetail,
+  type PartnerBookingRow_UI,
+} from "./bookings";
 export {
   getActivitiesByPartner,
   getPartnerActivityById,
