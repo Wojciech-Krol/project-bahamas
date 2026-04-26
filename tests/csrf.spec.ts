@@ -16,9 +16,9 @@ describe("isSameOriginRequest", () => {
     );
   });
 
-  it("trusts Sec-Fetch-Site: same-site", () => {
+  it("rejects Sec-Fetch-Site: same-site (sibling-subdomain CSRF wedge)", () => {
     expect(isSameOriginRequest(req({ "sec-fetch-site": "same-site" }))).toBe(
-      true,
+      false,
     );
   });
 

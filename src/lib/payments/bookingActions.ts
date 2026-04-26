@@ -28,6 +28,7 @@
  */
 
 import { headers } from "next/headers";
+import * as Sentry from "@sentry/nextjs";
 
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
 import { createAdminClient } from "@/src/lib/db/admin";
@@ -35,6 +36,7 @@ import { getStripe } from "@/src/lib/payments/stripe";
 import { computeCommission } from "@/src/lib/payments/commission";
 import { sendEmail } from "@/src/lib/email/resend";
 import { BookingCancelled } from "@/src/lib/email/templates/BookingCancelled";
+import { createBookingRateLimiter } from "@/src/lib/ratelimit";
 
 // ---------- local types (intentionally NOT exported) ----------
 
@@ -119,6 +121,14 @@ export async function createBooking(
     return { error: "internal" };
   }
   if (!currentUser) return { error: "not_signed_in" };
+
+  // 1b. Rate-limit per user. Authenticated, but a button-mash or scripted
+  //    create-then-abandon flood holds capacity until the 30-min cron
+  //    sweeps the pending row. 5/min is comfortably above any human pace.
+  const limit = await createBookingRateLimiter.check(currentUser.user.id);
+  if (!limit.success) {
+    return { error: "rate_limited" };
+  }
 
   // 2. Load session + activity + venue + partner via the REQUEST-SCOPED
   //    client. RLS allows the anon/user role to see sessions whose parent
@@ -543,19 +553,53 @@ export async function cancelBooking(
     // counter is mildly stale and the next confirmation/expiry will
     // eventually self-correct via the same helper.
     console.error("[cancelBooking] spots_taken decrement failed", decErr);
+    Sentry.captureException(decErr, {
+      tags: { kind: "decrement_spots_fail" },
+      extra: { bookingId, sessionId: sessionRow.id },
+    });
   }
 
-  // Flip booking status.
-  const { error: bookingUpdateErr } = await admin
-    .from("bookings")
-    .update({
-      status: "cancelled",
-      cancelled_at: new Date().toISOString(),
-    })
-    .eq("id", bookingId);
+  // Flip booking status. The Stripe refund is already through at this
+  // point, so a failure here leaves the system in a perceived
+  // double-charge state from the user's POV (refund processed but the
+  // page still shows "confirmed"). Retry a few times with backoff before
+  // giving up; only then surface the error AND escalate to Sentry with
+  // enough detail (bookingId + paymentIntentId) for ops to reconcile by
+  // hand. The Stripe refund is idempotent on payment_intent so retrying
+  // the row update never double-refunds.
+  const cancelledAt = new Date().toISOString();
+  let bookingUpdateErr: { message?: string } | null = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const { error } = await admin
+      .from("bookings")
+      .update({ status: "cancelled", cancelled_at: cancelledAt })
+      .eq("id", bookingId);
+    if (!error) {
+      bookingUpdateErr = null;
+      break;
+    }
+    bookingUpdateErr = error;
+    // Exponential backoff: 100ms, 400ms, 900ms.
+    await new Promise((resolve) =>
+      setTimeout(resolve, 100 * (attempt + 1) * (attempt + 1)),
+    );
+  }
 
   if (bookingUpdateErr) {
-    console.error("[cancelBooking] booking status update failed", bookingUpdateErr);
+    console.error(
+      "[cancelBooking] booking status update failed after retries",
+      bookingUpdateErr,
+    );
+    Sentry.captureException(bookingUpdateErr, {
+      level: "error",
+      tags: { kind: "cancel_status_update_fail", needsManualReconcile: "true" },
+      extra: {
+        bookingId,
+        paymentIntentId,
+        note:
+          "Stripe refund already processed; row still shows confirmed. Manual reconcile required.",
+      },
+    });
     return { error: "internal" };
   }
 
@@ -620,6 +664,10 @@ export async function cancelBooking(
   } catch (err) {
     // Email failures must not roll back the refund; log and proceed.
     console.error("[cancelBooking] email send failed", err);
+    Sentry.captureException(err, {
+      tags: { kind: "email_send_fail", surface: "cancel_booking" },
+      extra: { bookingId },
+    });
   }
 
   return { ok: true };
