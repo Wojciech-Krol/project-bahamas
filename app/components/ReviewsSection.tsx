@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Icon } from "./Icon";
-import Reveal from "./Reveal";
+import Reveal, { RevealItem } from "./Reveal";
 import type { Review } from "../lib/mockData";
 
 function Stars({ rating }: { rating: number }) {
@@ -35,17 +35,17 @@ export default function ReviewsSection({
         stagger={0.08}
         className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14"
       >
-        <Reveal.Item>
+        <RevealItem>
           <span className="inline-block bg-primary-fixed/60 px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-4">
             {t("badge")}
           </span>
           <h2 className="font-headline font-bold text-4xl md:text-6xl leading-none tracking-tight text-on-surface">
             {resolvedTitle}
           </h2>
-        </Reveal.Item>
-        <Reveal.Item as="p" className="text-on-surface/60 text-lg max-w-md">
+        </RevealItem>
+        <RevealItem as="p" className="text-on-surface/60 text-lg max-w-md">
           {resolvedSubtitle}
-        </Reveal.Item>
+        </RevealItem>
       </Reveal>
 
       <Reveal
@@ -54,7 +54,7 @@ export default function ReviewsSection({
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
       >
         {reviews.map((r) => (
-          <Reveal.Item
+          <RevealItem
             key={r.id}
             as="article"
             className="bg-surface-container-lowest rounded-[1.5rem] p-6 md:p-7 border border-on-surface/[0.05] editorial-shadow flex flex-col gap-4"
@@ -78,7 +78,7 @@ export default function ReviewsSection({
                 )}
               </div>
             </div>
-          </Reveal.Item>
+          </RevealItem>
         ))}
       </Reveal>
     </section>

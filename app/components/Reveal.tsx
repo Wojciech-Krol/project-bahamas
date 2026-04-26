@@ -211,3 +211,4 @@ function Item({
 }
 
 Reveal.Item = Item;
+export { Item as RevealItem };

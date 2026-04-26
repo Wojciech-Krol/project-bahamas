@@ -123,6 +123,30 @@
         "climbing tonight",
         "pottery this weekend",
         "boxing before work"
+      ],
+      "placeholdersNeighborhood": [
+        "Mokotów",
+        "Śródmieście",
+        "Praga Północ",
+        "Wola",
+        "Żoliborz",
+        "Saska Kępa"
+      ],
+      "placeholdersWhen": [
+        "tonight",
+        "this weekend",
+        "Saturday morning",
+        "in an hour",
+        "tomorrow after 6pm",
+        "Friday evening"
+      ],
+      "placeholdersAge": [
+        "2 adults",
+        "family with kids",
+        "adults only",
+        "teens + 1 adult",
+        "kid + caregiver",
+        "group of 4"
       ]
     },
     "closest": {

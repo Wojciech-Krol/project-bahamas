@@ -123,6 +123,30 @@
         "wspinaczka dziś wieczorem",
         "ceramika w weekend",
         "boks rano przed pracą"
+      ],
+      "placeholdersNeighborhood": [
+        "Mokotów",
+        "Śródmieście",
+        "Praga Północ",
+        "Wola",
+        "Żoliborz",
+        "Saska Kępa"
+      ],
+      "placeholdersWhen": [
+        "dziś wieczorem",
+        "w weekend",
+        "w sobotę rano",
+        "za godzinę",
+        "jutro po 18:00",
+        "w piątek wieczorem"
+      ],
+      "placeholdersAge": [
+        "2 dorosłych",
+        "rodzina z dziećmi",
+        "tylko dla dorosłych",
+        "nastolatki + 1 dorosły",
+        "dziecko + opiekun",
+        "grupa 4 osób"
       ]
     },
     "closest": {
