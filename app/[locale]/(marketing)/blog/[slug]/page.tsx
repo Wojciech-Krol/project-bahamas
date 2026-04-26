@@ -54,7 +54,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
   const allArticles = await getAllArticles(locale);
   const related = allArticles.filter((a) => a.slug !== slug).slice(0, 3);
 
-  const siteUrl = "https://hakuna.example";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.club";
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",

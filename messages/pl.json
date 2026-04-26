@@ -290,6 +290,10 @@
     "linkedin": "LinkedIn"
   },
   "About": {
+    "meta": {
+      "title": "O Hakunie — miejski przewodnik po lokalnych zajęciach",
+      "description": "Hakuna to platforma do odkrywania i rezerwowania zajęć w Twojej okolicy. Poznaj naszą wizję, zespół i historię."
+    },
     "badge": "Nasza wizja",
     "heroStart": "Miasto, w którym",
     "heroEmphasis": "naprawdę",
