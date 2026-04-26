@@ -1,10 +1,11 @@
 "use client";
 
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 import { Icon } from "../Icon";
 import SearchSegment from "./SearchSegment";
 import { ActivityPanel, NeighborhoodPanel, WhenPanel, AgePanel } from "./panels";
+import { useSequencedTypewriter } from "./useTypewriterPlaceholder";
 import {
   formatMultiSelectDisplay,
   type AgeCounts,
@@ -57,17 +58,41 @@ export default function HeroSearchBar({
 }) {
   const t = useTranslations();
   const formatActivities = useFormatActivities();
+  const messages = useMessages() as {
+    Home?: {
+      hero?: {
+        placeholders?: string[];
+        placeholdersNeighborhood?: string[];
+        placeholdersWhen?: string[];
+        placeholdersAge?: string[];
+      };
+    };
+  };
+  const placeholders = messages.Home?.hero?.placeholders ?? [];
+  const placeholdersNeighborhood =
+    messages.Home?.hero?.placeholdersNeighborhood ?? [];
+  const placeholdersWhen = messages.Home?.hero?.placeholdersWhen ?? [];
+  const placeholdersAge = messages.Home?.hero?.placeholdersAge ?? [];
   const [activeField, setActiveField] = useState<SearchField>(null);
   const [lastActiveField, setLastActiveField] = useState<SearchField>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const isExpanded = activeField !== null;
   const renderField = activeField || lastActiveField;
 
-  useEffect(() => {
-    if (activeField !== null) {
-      setLastActiveField(activeField);
-    }
-  }, [activeField]);
+  const fieldPrompts = [
+    placeholders,
+    placeholdersNeighborhood,
+    placeholdersWhen,
+    placeholdersAge,
+  ];
+  const sequencerEnabled = activeField === null;
+  const seq = useSequencedTypewriter(fieldPrompts, sequencerEnabled);
+
+  const fieldEmpty = [!activities, !neighborhood, !when, !ageLabel];
+  const fieldKeys: SearchField[] = ["activities", "neighborhood", "when", "age"];
+  const typewriterShownIdx =
+    sequencerEnabled && fieldEmpty[seq.activeIdx] ? seq.activeIdx : -1;
 
   const close = useCallback(() => setActiveField(null), []);
 
@@ -81,7 +106,12 @@ export default function HeroSearchBar({
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (barRef.current && !barRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (
+        barRef.current &&
+        !barRef.current.contains(target) &&
+        (!panelRef.current || !panelRef.current.contains(target))
+      ) {
         close();
       }
     };
@@ -91,64 +121,71 @@ export default function HeroSearchBar({
     return () => document.removeEventListener("mousedown", handler);
   }, [isExpanded, close]);
 
-  const toggle = (f: SearchField) =>
-    setActiveField((prev) => (prev === f ? null : f));
+  const toggle = (f: SearchField) => {
+    const next = activeField === f ? null : f;
+    setActiveField(next);
+    // Track the last non-null field so the dropdown can keep rendering
+    // its content while collapsing without a flash to empty.
+    if (next !== null) setLastActiveField(next);
+  };
 
-  const fields: {
+  const baseFields: {
     field: SearchField;
     icon: string;
     label: string;
     value: string;
-    placeholder: string;
+    staticPlaceholder: string;
   }[] = [
     {
       field: "activities",
       icon: "search",
       label: t("Search.field.activitiesLabel"),
       value: formatMultiSelectDisplay(formatActivities(activities)),
-      placeholder: t("Search.field.activitiesPlaceholder"),
+      staticPlaceholder: t("Search.field.activitiesPlaceholder"),
     },
     {
       field: "neighborhood",
       icon: "near_me",
       label: t("Search.field.neighborhoodLabel"),
       value: neighborhood,
-      placeholder: t("Search.field.neighborhoodPlaceholder"),
+      staticPlaceholder: t("Search.field.neighborhoodPlaceholder"),
     },
     {
       field: "when",
       icon: "calendar_today",
       label: t("Search.field.whenLabel"),
       value: when,
-      placeholder: t("Search.field.whenPlaceholder"),
+      staticPlaceholder: t("Search.field.whenPlaceholder"),
     },
     {
       field: "age",
       icon: "person",
       label: t("Search.field.ageLabel"),
       value: ageLabel,
-      placeholder: t("Search.field.agePlaceholder"),
+      staticPlaceholder: t("Search.field.agePlaceholder"),
     },
   ];
 
+  const fields = baseFields.map((f, i) => {
+    const showTypewriter =
+      typewriterShownIdx === i && fieldKeys[i] === fieldKeys[seq.activeIdx];
+    return {
+      ...f,
+      placeholder: showTypewriter
+        ? seq.text || f.staticPlaceholder
+        : f.staticPlaceholder,
+      placeholderClassName: showTypewriter ? "typewriter-caret" : undefined,
+    };
+  });
+
   return (
     <div ref={containerRef} className={`${className} relative z-30`}>
-      <div
-        className={`fixed inset-0 bg-on-surface/30 transition-opacity duration-300 ${
-          isExpanded
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-        style={{ zIndex: 25 }}
-        onClick={close}
-      />
-
       <div ref={barRef} className="relative" style={{ zIndex: 30 }}>
         <div
-          className={`rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative border-2 ${
+          className={`rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative ${
             isExpanded
-              ? "bg-surface-container-high shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] scale-[1.02] border-transparent"
-              : "bg-surface-container-lowest shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] hover:scale-[1.015] border-[#AD1F53]"
+              ? "bg-surface-container-high shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] scale-[1.02]"
+              : "bg-surface-container-lowest shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] hover:scale-[1.015]"
           }`}
         >
           <div className="flex flex-col md:flex-row items-center gap-1 md:gap-0 p-2.5 transition-all duration-300 relative z-10">
@@ -162,6 +199,7 @@ export default function HeroSearchBar({
                   label={f.label}
                   displayValue={f.value}
                   placeholder={f.placeholder}
+                  placeholderClassName={f.placeholderClassName}
                   onClick={() => toggle(f.field)}
                 />
                 {i < fields.length - 1 && (
@@ -202,26 +240,25 @@ export default function HeroSearchBar({
           </div>
         </div>
 
-        <div
-          className={`absolute left-0 right-0 mt-3 bg-surface-container-lowest rounded-[2rem] editorial-shadow overflow-hidden transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)] ${
-            isExpanded
-              ? "opacity-100 translate-y-0 max-h-[500px]"
-              : "opacity-0 -translate-y-4 max-h-0 pointer-events-none"
-          }`}
-        >
-          {renderField === "activities" && (
-            <ActivityPanel value={activities} onChange={onActivitiesChange} />
-          )}
-          {renderField === "neighborhood" && (
-            <NeighborhoodPanel value={neighborhood} onChange={onNeighborhoodChange} />
-          )}
-          {renderField === "when" && (
-            <WhenPanel value={when} onChange={onWhenChange} />
-          )}
-          {renderField === "age" && (
-            <AgePanel counts={ageCounts} onUpdate={onAgeUpdate} />
-          )}
-        </div>
+        {isExpanded && (
+          <div
+            ref={panelRef}
+            className="absolute left-0 right-0 mt-3 bg-surface-container-lowest rounded-[2rem] editorial-shadow overflow-hidden"
+          >
+            {renderField === "activities" && (
+              <ActivityPanel value={activities} onChange={onActivitiesChange} />
+            )}
+            {renderField === "neighborhood" && (
+              <NeighborhoodPanel value={neighborhood} onChange={onNeighborhoodChange} />
+            )}
+            {renderField === "when" && (
+              <WhenPanel value={when} onChange={onWhenChange} />
+            )}
+            {renderField === "age" && (
+              <AgePanel counts={ageCounts} onUpdate={onAgeUpdate} />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

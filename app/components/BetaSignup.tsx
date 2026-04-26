@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Icon } from "./Icon";
+import Reveal from "./Reveal";
 
 type Props = {
   title?: string;
@@ -38,14 +39,15 @@ export default function BetaSignup({
 
   return (
     <section className="max-w-site mx-auto px-4 md:px-6 py-12 md:py-20">
-      <div
+      <Reveal
+        stagger={0.1}
         className={`rounded-[2rem] md:rounded-[3rem] px-6 md:px-16 py-12 md:py-20 text-center overflow-hidden relative ${
           variant === "business"
             ? "bg-surface-container-high"
             : "bg-gradient-to-br from-primary to-tertiary text-on-primary"
         }`}
       >
-        <div
+        <Reveal.Item
           className={`inline-block px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest mb-6 ${
             variant === "business"
               ? "bg-primary-fixed text-primary"
@@ -53,23 +55,25 @@ export default function BetaSignup({
           }`}
         >
           {variant === "business" ? t("businessBadge") : t("betaBadge")}
-        </div>
-        <h2
+        </Reveal.Item>
+        <Reveal.Item
+          as="h2"
           className={`font-headline font-extrabold text-3xl md:text-5xl tracking-tight mb-4 ${
             variant === "business" ? "text-on-surface" : ""
           }`}
         >
           {resolvedTitle}
-        </h2>
-        <p
+        </Reveal.Item>
+        <Reveal.Item
+          as="p"
           className={`max-w-2xl mx-auto text-base md:text-lg mb-8 ${
             variant === "business" ? "text-on-surface/70" : "text-on-primary/80"
           }`}
         >
           {resolvedSubtitle}
-        </p>
+        </Reveal.Item>
         {status === "success" ? (
-          <div
+          <Reveal.Item
             className={`inline-flex items-center gap-2 px-6 py-4 rounded-2xl font-semibold ${
               variant === "business"
                 ? "bg-primary text-on-primary"
@@ -78,37 +82,39 @@ export default function BetaSignup({
           >
             <Icon name="check_circle" className="text-[22px]" />
             {t("success")}
-          </div>
+          </Reveal.Item>
         ) : (
-          <form
-            onSubmit={onSubmit}
-            className="max-w-xl mx-auto flex flex-col sm:flex-row gap-3 items-stretch"
-          >
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t("emailPlaceholder")}
-              className={`flex-1 px-5 py-4 rounded-2xl text-base font-medium focus:outline-none focus:ring-2 ${
-                variant === "business"
-                  ? "bg-surface-container-lowest text-on-surface placeholder:text-on-surface/40 focus:ring-primary/30"
-                  : "bg-white/95 text-on-surface placeholder:text-on-surface/40 focus:ring-white"
-              }`}
-            />
-            <button
-              type="submit"
-              className={`px-8 py-4 rounded-2xl font-headline uppercase tracking-widest text-[0.75rem] font-bold transition-all hover:-translate-y-0.5 ${
-                variant === "business"
-                  ? "bg-primary text-on-primary hover:bg-tertiary"
-                  : "bg-white text-primary hover:bg-on-surface hover:text-on-primary"
-              }`}
+          <Reveal.Item>
+            <form
+              onSubmit={onSubmit}
+              className="max-w-xl mx-auto flex flex-col sm:flex-row gap-3 items-stretch"
             >
-              {resolvedCta}
-            </button>
-          </form>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t("emailPlaceholder")}
+                className={`flex-1 px-5 py-4 rounded-2xl text-base font-medium focus:outline-none focus:ring-2 ${
+                  variant === "business"
+                    ? "bg-surface-container-lowest text-on-surface placeholder:text-on-surface/40 focus:ring-primary/30"
+                    : "bg-white/95 text-on-surface placeholder:text-on-surface/40 focus:ring-white"
+                }`}
+              />
+              <button
+                type="submit"
+                className={`px-8 py-4 rounded-2xl font-headline uppercase tracking-widest text-[0.75rem] font-bold transition-all hover:-translate-y-0.5 ${
+                  variant === "business"
+                    ? "bg-primary text-on-primary hover:bg-tertiary"
+                    : "bg-white text-primary hover:bg-on-surface hover:text-on-primary"
+                }`}
+              >
+                {resolvedCta}
+              </button>
+            </form>
+          </Reveal.Item>
         )}
-      </div>
+      </Reveal>
     </section>
   );
 }

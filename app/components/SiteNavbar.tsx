@@ -12,7 +12,10 @@ export default function SiteNavbar({ children }: { children?: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(45,10,23,0.06)] transition-all duration-300">
+    <nav
+      data-testid="site-navbar"
+      className="fixed top-0 w-full z-50 bg-[#fdf9f0]/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(45,10,23,0.06)] transition-all duration-300"
+    >
       <div className="flex justify-between items-center px-4 md:px-8 h-16 md:h-[72px] max-w-site mx-auto relative">
         <div className="flex items-center gap-12 shrink-0">
           <Link href="/">
@@ -44,12 +47,18 @@ export default function SiteNavbar({ children }: { children?: ReactNode }) {
               <LanguageSwitcher />
             </div>
             <div className="md:hidden h-px bg-on-surface/5 my-2" />
-            <button className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors">
+            <Link
+              href="/login"
+              className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors"
+            >
               {t("Common.login")}
-            </button>
-            <button className="mt-1 bg-primary text-on-primary px-4 py-3 rounded-xl font-headline uppercase tracking-widest text-[0.8rem] font-bold hover:bg-tertiary transition-colors">
+            </Link>
+            <Link
+              href="/signup"
+              className="mt-1 inline-block text-center bg-primary text-on-primary px-4 py-3 rounded-xl font-headline uppercase tracking-widest text-[0.8rem] font-bold hover:bg-tertiary transition-colors"
+            >
               {t("Common.signup")}
-            </button>
+            </Link>
           </div>
         </div>
       )}

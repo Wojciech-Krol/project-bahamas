@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Icon } from "./Icon";
+import Reveal, { RevealItem } from "./Reveal";
 import type { Review } from "../lib/mockData";
 
 function Stars({ rating }: { rating: number }) {
@@ -30,22 +31,32 @@ export default function ReviewsSection({
   const resolvedSubtitle = subtitle ?? t("subtitle");
   return (
     <section className="max-w-site mx-auto px-4 md:px-6 py-12 md:py-24">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14">
-        <div>
+      <Reveal
+        stagger={0.08}
+        className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14"
+      >
+        <RevealItem>
           <span className="inline-block bg-primary-fixed/60 px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-4">
             {t("badge")}
           </span>
           <h2 className="font-headline font-bold text-4xl md:text-6xl leading-none tracking-tight text-on-surface">
             {resolvedTitle}
           </h2>
-        </div>
-        <p className="text-on-surface/60 text-lg max-w-md">{resolvedSubtitle}</p>
-      </div>
+        </RevealItem>
+        <RevealItem as="p" className="text-on-surface/60 text-lg max-w-md">
+          {resolvedSubtitle}
+        </RevealItem>
+      </Reveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+      <Reveal
+        stagger={0.1}
+        delay={0.15}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
+      >
         {reviews.map((r) => (
-          <article
+          <RevealItem
             key={r.id}
+            as="article"
             className="bg-surface-container-lowest rounded-[1.5rem] p-6 md:p-7 border border-on-surface/[0.05] editorial-shadow flex flex-col gap-4"
           >
             <Stars rating={r.rating} />
@@ -67,9 +78,9 @@ export default function ReviewsSection({
                 )}
               </div>
             </div>
-          </article>
+          </RevealItem>
         ))}
-      </div>
+      </Reveal>
     </section>
   );
 }
