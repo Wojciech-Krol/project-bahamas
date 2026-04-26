@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import {
+  getCurriculumRawByActivity,
+  getInstructorsRawByActivity,
   getPartnerActivityRawById,
   getVenuesByPartner,
 } from "@/src/lib/db/queries";
@@ -30,11 +32,30 @@ export default async function PartnerClassEditorPage({
   const venues = await getVenuesByPartner(partnerId);
 
   if (id === "new") {
-    return <ClassEditorClient activity={null} venues={venues} />;
+    return (
+      <ClassEditorClient
+        activity={null}
+        venues={venues}
+        initialCurriculum={[]}
+        initialInstructors={[]}
+      />
+    );
   }
 
   const activity = await getPartnerActivityRawById(id, partnerId, locale);
   if (!activity) notFound();
 
-  return <ClassEditorClient activity={activity} venues={venues} />;
+  const [curriculum, instructors] = await Promise.all([
+    getCurriculumRawByActivity(id),
+    getInstructorsRawByActivity(id),
+  ]);
+
+  return (
+    <ClassEditorClient
+      activity={activity}
+      venues={venues}
+      initialCurriculum={curriculum}
+      initialInstructors={instructors}
+    />
+  );
 }

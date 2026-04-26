@@ -9,17 +9,19 @@ import { Icon } from "@/app/components/Icon";
 import TrackActivityView from "@/app/components/analytics/TrackActivityView";
 import { ACTIVITY_DETAIL_BASE, AVATAR } from "@/app/lib/mockData";
 import type { Activity, Review } from "@/app/lib/mockData";
+import type {
+  CurriculumItem,
+  InstructorEntry,
+} from "@/src/lib/db/queries";
 import type { Locale, SessionSlot } from "@/src/lib/db/types";
 import { createBooking } from "@/src/lib/payments/bookingActions";
 
+// Pure decoration that does not vary per activity. Real curriculum +
+// instructor data comes via props from the DB; the avatar pile and
+// metadata icon set below are visual sugar with no data attached.
 const DECORATIVE = {
   joined: [AVATAR("j1"), AVATAR("j2"), AVATAR("j3")],
   joinedExtra: 12,
-  instructor: {
-    avatar: AVATAR("marcus"),
-    credIcons: ["workspace_premium", "military_tech"] as const,
-  },
-  curriculum: ACTIVITY_DETAIL_BASE.curriculum,
   metadataIcons: ACTIVITY_DETAIL_BASE.metadataIcons,
 };
 
@@ -42,12 +44,16 @@ export default function ActivityClient({
   activity,
   sessions,
   reviews,
+  curriculum,
+  instructors,
   locale,
 }: {
   id: string;
   activity: Activity;
   sessions: SessionSlot[];
   reviews: Review[];
+  curriculum: CurriculumItem[];
+  instructors: InstructorEntry[];
   locale: Locale;
 }) {
   const t = useTranslations("Activity");
@@ -167,79 +173,131 @@ export default function ActivityClient({
               </div>
             </section>
 
-            <section>
-              <h2 className="font-headline font-bold text-3xl md:text-4xl tracking-tight mb-8">
-                {t("curriculumFocus")}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {DECORATIVE.curriculum.map((c, idx) => (
-                  <article
-                    key={c.id}
-                    className={`bg-surface-container-lowest rounded-[1.5rem] p-6 border border-on-surface/[0.05] editorial-shadow ${
-                      c.image ? "md:col-span-2 flex flex-col md:flex-row gap-5" : ""
-                    }`}
-                  >
-                    {c.image && (
-                      <img
-                        src={c.image}
-                        alt=""
-                        className="w-full md:w-56 h-40 md:h-auto object-cover rounded-[1rem] shrink-0"
-                      />
-                    )}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="w-9 h-9 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-sm">
-                          {String(idx + 1).padStart(2, "0")}
-                        </span>
-                        <h3 className="font-headline font-bold text-lg md:text-xl">
-                          {tSample(`curriculum.${c.id}.title`)}
-                        </h3>
+            {curriculum.length > 0 && (
+              <section>
+                <h2 className="font-headline font-bold text-3xl md:text-4xl tracking-tight mb-8">
+                  {t("curriculumFocus")}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {curriculum.map((c, idx) => (
+                    <article
+                      key={c.id}
+                      className={`bg-surface-container-lowest rounded-[1.5rem] p-6 border border-on-surface/[0.05] editorial-shadow ${
+                        c.imageUrl ? "md:col-span-2 flex flex-col md:flex-row gap-5" : ""
+                      }`}
+                    >
+                      {c.imageUrl && (
+                        <img
+                          src={c.imageUrl}
+                          alt=""
+                          className="w-full md:w-56 h-40 md:h-auto object-cover rounded-[1rem] shrink-0"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="w-9 h-9 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-sm">
+                            {String(idx + 1).padStart(2, "0")}
+                          </span>
+                          <h3 className="font-headline font-bold text-lg md:text-xl">
+                            {c.title}
+                          </h3>
+                        </div>
+                        {c.description && (
+                          <p className="text-on-surface/70 leading-relaxed">
+                            {c.description}
+                          </p>
+                        )}
                       </div>
-                      <p className="text-on-surface/70 leading-relaxed">
-                        {tSample(`curriculum.${c.id}.description`)}
-                      </p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
 
-            <section className="bg-surface-container-low rounded-[2rem] p-6 md:p-10">
-              <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
-                <div className="relative shrink-0">
-                  <img
-                    src={DECORATIVE.instructor.avatar}
-                    alt={tSample("instructor.name")}
-                    className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover"
-                  />
-                  <span className="absolute bottom-1 right-1 w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center border-4 border-surface-container-low">
-                    <Icon name="verified" className="text-[18px]" />
-                  </span>
-                </div>
-                <div className="flex-1 text-center md:text-left">
-                  <div className="text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-2">
-                    {tSample("instructor.role")}
+            {instructors.length > 0 && (
+              <section className="space-y-6">
+                {instructors.map((inst, idx) => (
+                  <div
+                    key={inst.id}
+                    className={
+                      idx === 0
+                        ? "bg-surface-container-low rounded-[2rem] p-6 md:p-10"
+                        : "bg-surface-container-lowest rounded-[1.5rem] p-5 border border-on-surface/[0.05]"
+                    }
+                  >
+                    <div
+                      className={`flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start ${
+                        idx === 0 ? "" : "md:items-center"
+                      }`}
+                    >
+                      <div className="relative shrink-0">
+                        {inst.avatarUrl ? (
+                          <img
+                            src={inst.avatarUrl}
+                            alt={inst.name}
+                            className={
+                              idx === 0
+                                ? "w-32 h-32 md:w-40 md:h-40 rounded-full object-cover"
+                                : "w-20 h-20 rounded-full object-cover"
+                            }
+                          />
+                        ) : (
+                          <div
+                            className={`${
+                              idx === 0
+                                ? "w-32 h-32 md:w-40 md:h-40"
+                                : "w-20 h-20"
+                            } rounded-full bg-primary-fixed text-primary flex items-center justify-center font-headline font-extrabold text-3xl`}
+                          >
+                            {(inst.name || "?").charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        {idx === 0 && (
+                          <span className="absolute bottom-1 right-1 w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center border-4 border-surface-container-low">
+                            <Icon name="verified" className="text-[18px]" />
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex-1 text-center md:text-left min-w-0">
+                        {inst.role && (
+                          <div className="text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-2">
+                            {inst.role}
+                          </div>
+                        )}
+                        <h3
+                          className={`font-headline font-bold text-on-surface mb-3 ${
+                            idx === 0 ? "text-3xl" : "text-xl"
+                          }`}
+                        >
+                          {inst.name}
+                        </h3>
+                        {inst.bio && (
+                          <p className="text-on-surface/70 leading-relaxed mb-5">
+                            {inst.bio}
+                          </p>
+                        )}
+                        {inst.credentials.length > 0 && (
+                          <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                            {inst.credentials.map((c, i) => (
+                              <span
+                                key={`${c.icon}-${i}`}
+                                className="inline-flex items-center gap-2 bg-surface-container-lowest px-4 py-2 rounded-full text-sm font-semibold border border-on-surface/[0.06]"
+                              >
+                                <Icon
+                                  name={c.icon}
+                                  className="text-[18px] text-primary"
+                                />
+                                {c.label}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="font-headline font-bold text-3xl text-on-surface mb-3">
-                    {tSample("instructor.name")}
-                  </h3>
-                  <p className="text-on-surface/70 leading-relaxed mb-5">
-                    {tSample("instructor.bio")}
-                  </p>
-                  <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                    {DECORATIVE.instructor.credIcons.map((icon, i) => (
-                      <span
-                        key={icon}
-                        className="inline-flex items-center gap-2 bg-surface-container-lowest px-4 py-2 rounded-full text-sm font-semibold border border-on-surface/[0.06]"
-                      >
-                        <Icon name={icon} className="text-[18px] text-primary" />
-                        {tSample(`instructor.cred${i + 1}`)}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </section>
+                ))}
+              </section>
+            )}
           </div>
 
           <aside className="lg:sticky lg:top-28 space-y-5">

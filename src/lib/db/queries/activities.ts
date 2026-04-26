@@ -218,7 +218,7 @@ export async function getClosestActivities(
     .returns<ActivityRow[]>();
 
   if (error) {
-    console.error("[db/queries/activities.getClosestActivities]", error);
+    console.error("[db/queries/activities.getClosestActivities]", JSON.stringify(error, null, 2));
     return [];
   }
 

@@ -92,7 +92,7 @@ export async function getReviews(
   const { data, error } = await query.returns<ReviewRow[]>();
 
   if (error) {
-    console.error("[db/queries/reviews.getReviews]", error);
+    console.error("[db/queries/reviews.getReviews]", JSON.stringify(error, null, 2));
     return [];
   }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useTransition } from "react";
+import { useActionState, useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/navigation";
@@ -12,24 +12,162 @@ import {
   type ClassActionResult,
 } from "../actions";
 import type {
+  CurriculumItemRaw,
+  InstructorEntryRaw,
   PartnerActivityRaw,
   PartnerVenue,
 } from "@/src/lib/db/queries";
 
 const initialState: ClassActionResult | null = null;
 
+type CurriculumDraft = {
+  titlePl: string;
+  titleEn: string;
+  descriptionPl: string;
+  descriptionEn: string;
+  imageUrl: string;
+};
+
+type CredentialDraft = { icon: string; labelPl: string; labelEn: string };
+
+type InstructorDraft = {
+  name: string;
+  rolePl: string;
+  roleEn: string;
+  bioPl: string;
+  bioEn: string;
+  avatarUrl: string;
+  credentials: CredentialDraft[];
+};
+
+const EMPTY_CURRICULUM: CurriculumDraft = {
+  titlePl: "",
+  titleEn: "",
+  descriptionPl: "",
+  descriptionEn: "",
+  imageUrl: "",
+};
+
+const EMPTY_INSTRUCTOR: InstructorDraft = {
+  name: "",
+  rolePl: "",
+  roleEn: "",
+  bioPl: "",
+  bioEn: "",
+  avatarUrl: "",
+  credentials: [],
+};
+
+const EMPTY_CREDENTIAL: CredentialDraft = {
+  icon: "verified",
+  labelPl: "",
+  labelEn: "",
+};
+
 export default function ClassEditorClient({
   activity,
   venues,
+  initialCurriculum,
+  initialInstructors,
 }: {
   activity: PartnerActivityRaw | null;
   venues: PartnerVenue[];
+  initialCurriculum: CurriculumItemRaw[];
+  initialInstructors: InstructorEntryRaw[];
 }) {
   const t = useTranslations("Partner.classEditor");
   const tFields = useTranslations("Partner.classEditor.fields");
   const tCommon = useTranslations("Partner.common");
   const tErr = useTranslations("Partner.classEditor.error");
   const router = useRouter();
+
+  const [curriculum, setCurriculum] = useState<CurriculumDraft[]>(() =>
+    initialCurriculum.map((c) => ({
+      titlePl: c.titlePl,
+      titleEn: c.titleEn,
+      descriptionPl: c.descriptionPl,
+      descriptionEn: c.descriptionEn,
+      imageUrl: c.imageUrl ?? "",
+    })),
+  );
+  const [instructors, setInstructors] = useState<InstructorDraft[]>(() =>
+    initialInstructors.map((i) => ({
+      name: i.name,
+      rolePl: i.rolePl,
+      roleEn: i.roleEn,
+      bioPl: i.bioPl,
+      bioEn: i.bioEn,
+      avatarUrl: i.avatarUrl ?? "",
+      credentials: i.credentials.map((c) => ({
+        icon: c.icon,
+        labelPl: c.labelPl,
+        labelEn: c.labelEn,
+      })),
+    })),
+  );
+
+  function updateCurriculum(idx: number, patch: Partial<CurriculumDraft>) {
+    setCurriculum((prev) =>
+      prev.map((row, i) => (i === idx ? { ...row, ...patch } : row)),
+    );
+  }
+  function addCurriculum() {
+    setCurriculum((prev) => [...prev, { ...EMPTY_CURRICULUM }]);
+  }
+  function removeCurriculum(idx: number) {
+    setCurriculum((prev) => prev.filter((_, i) => i !== idx));
+  }
+
+  function updateInstructor(idx: number, patch: Partial<InstructorDraft>) {
+    setInstructors((prev) =>
+      prev.map((row, i) => (i === idx ? { ...row, ...patch } : row)),
+    );
+  }
+  function addInstructor() {
+    setInstructors((prev) => [...prev, { ...EMPTY_INSTRUCTOR, credentials: [] }]);
+  }
+  function removeInstructor(idx: number) {
+    setInstructors((prev) => prev.filter((_, i) => i !== idx));
+  }
+  function updateCredential(
+    instIdx: number,
+    credIdx: number,
+    patch: Partial<CredentialDraft>,
+  ) {
+    setInstructors((prev) =>
+      prev.map((row, i) =>
+        i === instIdx
+          ? {
+              ...row,
+              credentials: row.credentials.map((c, j) =>
+                j === credIdx ? { ...c, ...patch } : c,
+              ),
+            }
+          : row,
+      ),
+    );
+  }
+  function addCredential(instIdx: number) {
+    setInstructors((prev) =>
+      prev.map((row, i) =>
+        i === instIdx
+          ? { ...row, credentials: [...row.credentials, { ...EMPTY_CREDENTIAL }] }
+          : row,
+      ),
+    );
+  }
+  function removeCredential(instIdx: number, credIdx: number) {
+    setInstructors((prev) =>
+      prev.map((row, i) =>
+        i === instIdx
+          ? {
+              ...row,
+              credentials: row.credentials.filter((_, j) => j !== credIdx),
+            }
+          : row,
+      ),
+    );
+  }
 
   const isNew = activity === null;
   const action = async (
@@ -268,6 +406,261 @@ export default function ClassEditorClient({
                 />
               </Field>
             </section>
+
+            <div className="border-t border-dashed border-on-surface/10" />
+
+            <section>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-headline font-bold text-lg">
+                  {t("sections.curriculum")}
+                </h3>
+                <button
+                  type="button"
+                  onClick={addCurriculum}
+                  className="text-[0.7rem] font-bold uppercase tracking-widest text-primary hover:underline"
+                >
+                  + {t("addCurriculumItem")}
+                </button>
+              </div>
+              {curriculum.length === 0 ? (
+                <p className="text-sm text-on-surface/50">
+                  {t("emptyCurriculum")}
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {curriculum.map((row, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-surface-container-low rounded-2xl p-4 space-y-3"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface/50">
+                          {String(idx + 1).padStart(2, "0")}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => removeCurriculum(idx)}
+                          className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface/60 hover:text-error"
+                        >
+                          {tCommon("delete")}
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <input
+                          value={row.titlePl}
+                          onChange={(e) =>
+                            updateCurriculum(idx, { titlePl: e.target.value })
+                          }
+                          placeholder={`${tFields("title")} (PL)`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-sm font-semibold"
+                        />
+                        <input
+                          value={row.titleEn}
+                          onChange={(e) =>
+                            updateCurriculum(idx, { titleEn: e.target.value })
+                          }
+                          placeholder={`${tFields("title")} (EN)`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-sm font-semibold"
+                        />
+                        <textarea
+                          value={row.descriptionPl}
+                          onChange={(e) =>
+                            updateCurriculum(idx, {
+                              descriptionPl: e.target.value,
+                            })
+                          }
+                          rows={2}
+                          placeholder={`${tFields("description")} (PL)`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-sm resize-none"
+                        />
+                        <textarea
+                          value={row.descriptionEn}
+                          onChange={(e) =>
+                            updateCurriculum(idx, {
+                              descriptionEn: e.target.value,
+                            })
+                          }
+                          rows={2}
+                          placeholder={`${tFields("description")} (EN)`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-sm resize-none"
+                        />
+                      </div>
+                      <input
+                        value={row.imageUrl}
+                        onChange={(e) =>
+                          updateCurriculum(idx, { imageUrl: e.target.value })
+                        }
+                        type="url"
+                        placeholder={t("fields.imageUrl")}
+                        className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-xs"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            <div className="border-t border-dashed border-on-surface/10" />
+
+            <section>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-headline font-bold text-lg">
+                  {t("sections.instructors")}
+                </h3>
+                <button
+                  type="button"
+                  onClick={addInstructor}
+                  className="text-[0.7rem] font-bold uppercase tracking-widest text-primary hover:underline"
+                >
+                  + {t("addInstructor")}
+                </button>
+              </div>
+              {instructors.length === 0 ? (
+                <p className="text-sm text-on-surface/50">
+                  {t("emptyInstructors")}
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {instructors.map((inst, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-surface-container-low rounded-2xl p-4 space-y-3"
+                    >
+                      <div className="flex items-center justify-between">
+                        <input
+                          value={inst.name}
+                          onChange={(e) =>
+                            updateInstructor(idx, { name: e.target.value })
+                          }
+                          required
+                          placeholder={t("fields.instructorName")}
+                          className="flex-1 px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary font-headline font-bold mr-2"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeInstructor(idx)}
+                          className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface/60 hover:text-error"
+                        >
+                          {tCommon("delete")}
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <input
+                          value={inst.rolePl}
+                          onChange={(e) =>
+                            updateInstructor(idx, { rolePl: e.target.value })
+                          }
+                          placeholder={`${t("fields.role")} (PL)`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-sm"
+                        />
+                        <input
+                          value={inst.roleEn}
+                          onChange={(e) =>
+                            updateInstructor(idx, { roleEn: e.target.value })
+                          }
+                          placeholder={`${t("fields.role")} (EN)`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-sm"
+                        />
+                        <textarea
+                          value={inst.bioPl}
+                          onChange={(e) =>
+                            updateInstructor(idx, { bioPl: e.target.value })
+                          }
+                          rows={2}
+                          placeholder={`${t("fields.bio")} (PL)`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-sm resize-none"
+                        />
+                        <textarea
+                          value={inst.bioEn}
+                          onChange={(e) =>
+                            updateInstructor(idx, { bioEn: e.target.value })
+                          }
+                          rows={2}
+                          placeholder={`${t("fields.bio")} (EN)`}
+                          className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-sm resize-none"
+                        />
+                      </div>
+                      <input
+                        value={inst.avatarUrl}
+                        onChange={(e) =>
+                          updateInstructor(idx, { avatarUrl: e.target.value })
+                        }
+                        type="url"
+                        placeholder={t("fields.avatarUrl")}
+                        className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg focus:outline-none focus:border-primary text-xs"
+                      />
+
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[0.6rem] font-bold uppercase tracking-[0.2em] text-on-surface/50">
+                            {t("fields.credentials")}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => addCredential(idx)}
+                            className="text-[0.65rem] font-bold uppercase tracking-widest text-primary hover:underline"
+                          >
+                            + {t("addCredential")}
+                          </button>
+                        </div>
+                        {inst.credentials.map((cred, ci) => (
+                          <div key={ci} className="grid grid-cols-[120px_1fr_1fr_auto] gap-2">
+                            <input
+                              value={cred.icon}
+                              onChange={(e) =>
+                                updateCredential(idx, ci, {
+                                  icon: e.target.value,
+                                })
+                              }
+                              placeholder="icon"
+                              className="px-2 py-1.5 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-xs font-mono"
+                            />
+                            <input
+                              value={cred.labelPl}
+                              onChange={(e) =>
+                                updateCredential(idx, ci, {
+                                  labelPl: e.target.value,
+                                })
+                              }
+                              placeholder="PL"
+                              className="px-2 py-1.5 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-xs"
+                            />
+                            <input
+                              value={cred.labelEn}
+                              onChange={(e) =>
+                                updateCredential(idx, ci, {
+                                  labelEn: e.target.value,
+                                })
+                              }
+                              placeholder="EN"
+                              className="px-2 py-1.5 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-xs"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeCredential(idx, ci)}
+                              className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface/60 hover:text-error px-2"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            <input
+              type="hidden"
+              name="curriculum"
+              value={JSON.stringify(curriculum)}
+            />
+            <input
+              type="hidden"
+              name="instructors"
+              value={JSON.stringify(instructors)}
+            />
 
             <div className="border-t border-dashed border-on-surface/10" />
 

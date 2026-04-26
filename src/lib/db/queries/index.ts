@@ -21,6 +21,16 @@ export {
 } from "./reviews";
 export { getUpcomingSessionsByActivity, getSessionById } from "./sessions";
 export {
+  getCurriculumByActivity,
+  getCurriculumRawByActivity,
+  getInstructorsByActivity,
+  getInstructorsRawByActivity,
+  type CurriculumItem,
+  type CurriculumItemRaw,
+  type InstructorEntry,
+  type InstructorEntryRaw,
+} from "./activityContent";
+export {
   getBookingById,
   getBookingsByPartner,
   type BookingDetail,

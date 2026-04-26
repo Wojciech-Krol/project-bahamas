@@ -3,6 +3,8 @@ import { setRequestLocale } from "next-intl/server";
 
 import {
   getActivityById,
+  getCurriculumByActivity,
+  getInstructorsByActivity,
   getReviewsByActivity,
   getUpcomingSessionsByActivity,
 } from "@/src/lib/db/queries";
@@ -27,9 +29,11 @@ export default async function ActivityPage({
   const activity = await getActivityById(id, locale);
   if (!activity) notFound();
 
-  const [sessions, reviews] = await Promise.all([
+  const [sessions, reviews, curriculum, instructors] = await Promise.all([
     getUpcomingSessionsByActivity(id),
     getReviewsByActivity(id, locale),
+    getCurriculumByActivity(id, locale),
+    getInstructorsByActivity(id, locale),
   ]);
 
   return (
@@ -38,6 +42,8 @@ export default async function ActivityPage({
       activity={activity}
       sessions={sessions}
       reviews={reviews}
+      curriculum={curriculum}
+      instructors={instructors}
       locale={locale}
     />
   );
