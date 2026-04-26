@@ -12,7 +12,13 @@ import {
 
 const initialState: AuthActionState = {};
 
-export default function LoginForm({ locale }: { locale: string }) {
+export default function LoginForm({
+  locale,
+  next,
+}: {
+  locale: string;
+  next?: string;
+}) {
   const t = useTranslations("Auth");
   const [state, formAction] = useActionState(loginAction, initialState);
 
@@ -20,6 +26,7 @@ export default function LoginForm({ locale }: { locale: string }) {
     <div className="space-y-6">
       <form action={googleSignInAction}>
         <input type="hidden" name="locale" value={locale} />
+        {next ? <input type="hidden" name="next" value={next} /> : null}
         <GoogleButton label={t("button.google")} />
       </form>
 
@@ -27,6 +34,7 @@ export default function LoginForm({ locale }: { locale: string }) {
 
       <form action={formAction} className="space-y-4">
         <input type="hidden" name="locale" value={locale} />
+        {next ? <input type="hidden" name="next" value={next} /> : null}
         <Field
           id="email"
           type="email"

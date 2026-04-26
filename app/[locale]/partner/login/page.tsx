@@ -1,20 +1,22 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { Link, useRouter } from "../../../../src/i18n/navigation";
-import { useState, type FormEvent } from "react";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/src/i18n/navigation";
+
+import {
+  loginAction,
+  type AuthActionState,
+} from "../../(auth)/actions";
+
+const initialState: AuthActionState = {};
 
 export default function PartnerLoginPage() {
   const t = useTranslations("Partner");
-  const tMock = useTranslations("Partner.mock.user");
-  const router = useRouter();
-  const [email, setEmail] = useState(tMock("email"));
-  const [password, setPassword] = useState("••••••••••");
-
-  function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    router.push("/partner");
-  }
+  const tAuth = useTranslations("Auth");
+  const locale = useLocale();
+  const [state, formAction] = useActionState(loginAction, initialState);
 
   return (
     <div className="min-h-screen bg-surface text-on-surface relative overflow-hidden">
@@ -53,7 +55,9 @@ export default function PartnerLoginPage() {
           </h1>
           <p className="text-on-surface/60 mb-8">{t("login.subtitle")}</p>
 
-          <form className="space-y-4" onSubmit={onSubmit}>
+          <form className="space-y-4" action={formAction}>
+            <input type="hidden" name="locale" value={locale} />
+            <input type="hidden" name="next" value={`/${locale}/partner`} />
             <div>
               <label
                 htmlFor="partner-email"
@@ -63,9 +67,10 @@ export default function PartnerLoginPage() {
               </label>
               <input
                 id="partner-email"
+                name="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
                 className="w-full px-5 py-3.5 bg-surface-container-low border border-outline-variant/50 rounded-2xl focus:outline-none focus:border-primary text-on-surface font-medium"
               />
             </div>
@@ -77,27 +82,29 @@ export default function PartnerLoginPage() {
                 >
                   {t("login.password")}
                 </label>
-                <button
-                  type="button"
+                <Link
+                  href="/login"
                   className="text-[0.65rem] font-bold uppercase tracking-widest text-primary hover:underline"
                 >
                   {t("login.forgot")}
-                </button>
+                </Link>
               </div>
               <input
                 id="partner-password"
+                name="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={8}
+                autoComplete="current-password"
                 className="w-full px-5 py-3.5 bg-surface-container-low border border-outline-variant/50 rounded-2xl focus:outline-none focus:border-primary text-on-surface font-medium"
               />
             </div>
-            <button
-              type="submit"
-              className="w-full bg-primary text-on-primary py-4 rounded-2xl font-headline uppercase tracking-widest text-[0.75rem] font-bold hover:bg-tertiary transition-colors mt-2"
-            >
-              {t("login.submit")}
-            </button>
+            {state.error ? (
+              <div className="rounded-xl bg-error-container/40 px-3 py-2 text-sm text-on-error-container">
+                {tAuth(`error.${state.error}`)}
+              </div>
+            ) : null}
+            <SubmitButton label={t("login.submit")} />
           </form>
 
           <div className="mt-8 pt-6 border-t border-on-surface/5 text-center">
@@ -114,5 +121,18 @@ export default function PartnerLoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function SubmitButton({ label }: { label: string }) {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="w-full bg-primary text-on-primary py-4 rounded-2xl font-headline uppercase tracking-widest text-[0.75rem] font-bold hover:bg-tertiary transition-colors mt-2 disabled:opacity-50"
+    >
+      {label}
+    </button>
   );
 }

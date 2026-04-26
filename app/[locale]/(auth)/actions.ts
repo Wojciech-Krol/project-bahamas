@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { createClient } from "@/src/lib/db/server";
+import { safeNextPath } from "@/src/lib/auth/redirects";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
@@ -63,7 +64,8 @@ export async function loginAction(
   }
 
   const locale = (formData.get("locale") as string) || "pl";
-  redirect(`/${locale}`);
+  const next = safeNextPath(formData.get("next") as string | null, locale);
+  redirect(next);
 }
 
 export async function signupAction(
@@ -111,13 +113,14 @@ export async function signupAction(
 
 export async function googleSignInAction(formData: FormData): Promise<void> {
   const locale = (formData.get("locale") as string) || "pl";
+  const next = safeNextPath(formData.get("next") as string | null, locale);
   const origin = await getOrigin();
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${origin}/api/auth/callback?next=/${locale}`,
+      redirectTo: `${origin}/api/auth/callback?next=${encodeURIComponent(next)}`,
     },
   });
   if (error || !data.url) {
