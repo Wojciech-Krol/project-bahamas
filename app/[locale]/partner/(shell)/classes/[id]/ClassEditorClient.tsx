@@ -375,17 +375,14 @@ export default function ClassEditorClient({
                   />
                 </Field>
                 <Field label={t("fields.currency")}>
-                  <select
-                    name="currency"
-                    defaultValue={activity?.currency ?? "PLN"}
-                    required
-                    className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/50 rounded-xl focus:outline-none focus:border-primary font-semibold"
-                  >
-                    <option value="PLN">PLN</option>
-                    <option value="EUR">EUR</option>
-                    <option value="GBP">GBP</option>
-                    <option value="USD">USD</option>
-                  </select>
+                  {/* Locked to PLN — every Stripe Connect account on the
+                      platform settles in PLN, so the editor cannot offer
+                      other currencies safely. See
+                      classes/actions.ts upsertSchema. */}
+                  <input type="hidden" name="currency" value="PLN" />
+                  <div className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-on-surface/70 font-semibold">
+                    PLN
+                  </div>
                 </Field>
               </div>
             </section>
