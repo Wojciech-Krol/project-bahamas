@@ -1385,6 +1385,20 @@
       "confirmed": "Confirmed",
       "cancelled": "Cancelled",
       "expired": "Expired"
+    },
+    "cancelButton": "Cancel booking",
+    "cancelConfirmTitle": "Cancel this booking?",
+    "cancelConfirmBody": "You'll receive a full refund. This cannot be undone.",
+    "cancelSuccess": "Cancelled. Your refund will arrive in 1–2 business days.",
+    "cancelError": {
+      "too_late": "Bookings within 48 hours can't be cancelled online — contact the venue.",
+      "not_cancellable": "This booking can't be cancelled.",
+      "refund_failed": "Refund failed. Please contact support.",
+      "not_signed_in": "Please sign in to cancel.",
+      "forbidden": "You don't have access.",
+      "not_found": "Booking not found.",
+      "not_configured": "Payments aren't configured.",
+      "internal": "Something went wrong. Try again."
     }
   }
 }
