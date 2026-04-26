@@ -1306,5 +1306,23 @@
       "confirm": "Are you sure you want to delete your account?",
       "pending": "Deletion requested — your data will be removed on {date}."
     }
+  },
+  "BookingDetail": {
+    "title": "Your booking",
+    "referenceLabel": "Reference:",
+    "whenLabel": "When",
+    "amountLabel": "Amount",
+    "statusLabel": "Status",
+    "backHome": "Back to home",
+    "checkoutSuccessTitle": "Payment received",
+    "checkoutSuccessBody": "Thanks! Confirmation will appear here within a few seconds — refresh if you don't see it yet.",
+    "checkoutCancelledTitle": "Payment cancelled",
+    "checkoutCancelledBody": "We didn't charge you. You can try again from the activity page.",
+    "status": {
+      "pending": "Awaiting payment",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
   }
 }

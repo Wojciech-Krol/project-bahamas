@@ -1306,5 +1306,23 @@
       "confirm": "Czy na pewno chcesz usunąć konto?",
       "pending": "Zgłoszono usunięcie — dane zostaną usunięte {date}."
     }
+  },
+  "BookingDetail": {
+    "title": "Twoja rezerwacja",
+    "referenceLabel": "Numer rezerwacji:",
+    "whenLabel": "Termin",
+    "amountLabel": "Kwota",
+    "statusLabel": "Status",
+    "backHome": "Wróć na stronę główną",
+    "checkoutSuccessTitle": "Płatność przyjęta",
+    "checkoutSuccessBody": "Dziękujemy! Potwierdzenie pojawi się tutaj w ciągu kilku sekund — odśwież stronę, jeśli jeszcze nie widać.",
+    "checkoutCancelledTitle": "Płatność anulowana",
+    "checkoutCancelledBody": "Nie pobraliśmy żadnych środków. Możesz spróbować ponownie ze strony zajęć.",
+    "status": {
+      "pending": "Oczekuje na płatność",
+      "confirmed": "Potwierdzona",
+      "cancelled": "Anulowana",
+      "expired": "Wygasła"
+    }
   }
 }
