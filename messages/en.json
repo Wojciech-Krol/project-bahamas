@@ -1209,6 +1209,32 @@
       "emptyState": "Invite your first instructor to populate the team.",
       "comingSoon": "Invitations land in Phase 2."
     },
+    "payouts": {
+      "badge": "Payouts",
+      "title": "Payouts",
+      "subtitle": "Net balance and history of transfers to your bank account.",
+      "emptyPartner": "No data — join a partner first.",
+      "net": {
+        "last30d": "Net (30d)",
+        "last90d": "Net (90d)",
+        "ytd": "Net YTD",
+        "lifetime": "Net lifetime"
+      },
+      "stripe": {
+        "title": "Stripe payouts",
+        "notConnected": "Stripe account not connected yet",
+        "notConnectedBody": "Connect Stripe to receive payouts to your bank account.",
+        "connectCta": "Go to Payments",
+        "unavailable": "Couldn't fetch payouts. Try refreshing.",
+        "empty": "No payouts yet. They'll appear here once Stripe sends funds to your account."
+      },
+      "col": {
+        "amount": "Amount",
+        "arrival": "Arrival date",
+        "status": "Status",
+        "descriptor": "Statement descriptor"
+      }
+    },
     "insights": {
       "badge": "Analytics",
       "title": "Insights",

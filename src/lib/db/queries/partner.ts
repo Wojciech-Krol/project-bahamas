@@ -146,6 +146,7 @@ export type PartnerProfile = {
   commissionRateBps: number;
   subscriptionTier: string;
   subscriptionCommissionBps: number | null;
+  stripeAccountId: string | null;
 };
 
 export async function getPartnerProfile(
@@ -162,7 +163,7 @@ export async function getPartnerProfile(
   const { data, error } = await supabase
     .from("partners")
     .select(
-      "id, name, slug, contact_email, city, status, commission_rate_bps, subscription_tier, subscription_commission_bps",
+      "id, name, slug, contact_email, city, status, commission_rate_bps, subscription_tier, subscription_commission_bps, stripe_account_id",
     )
     .eq("id", partnerId)
     .maybeSingle();
@@ -180,6 +181,7 @@ export async function getPartnerProfile(
     subscriptionTier: (data.subscription_tier as string) ?? "none",
     subscriptionCommissionBps:
       (data.subscription_commission_bps as number | null) ?? null,
+    stripeAccountId: (data.stripe_account_id as string | null) ?? null,
   };
 }
 
