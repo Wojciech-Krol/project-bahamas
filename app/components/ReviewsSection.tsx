@@ -1,7 +1,7 @@
-import { useTranslations } from "next-intl";
+﻿import { useTranslations } from "next-intl";
 import { Icon } from "./Icon";
 import Reveal, { RevealItem } from "./Reveal";
-import type { Review } from "../lib/mockData";
+import type { Review }  from "@/src/lib/mockData";
 
 function Stars({ rating }: { rating: number }) {
   return (

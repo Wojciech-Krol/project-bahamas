@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useRef, useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Icon } from "./Icon";
 import ActivityRowCard from "./ActivityRowCard";
-import type { Activity } from "../lib/mockData";
+import type { Activity }  from "@/src/lib/mockData";
 
 export default function ClosestToYouCarousel({
   activities,

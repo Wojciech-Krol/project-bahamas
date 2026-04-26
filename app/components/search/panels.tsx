@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
@@ -8,7 +8,7 @@ import { pl as plLocale, enGB } from "date-fns/locale";
 import "react-day-picker/style.css";
 import { Icon } from "../Icon";
 import { TablerIcon } from "../TablerIcon";
-import { CATEGORY_ICONS } from "@/app/lib/categoryIcons";
+import { CATEGORY_ICONS } from "@/src/lib/categoryIcons";
 import {
   ACTIVITY_CATEGORIES,
   NEIGHBORHOOD_SUGGESTIONS,

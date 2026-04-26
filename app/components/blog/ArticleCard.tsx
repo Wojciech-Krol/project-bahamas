@@ -1,7 +1,7 @@
-import { Link } from "../../../src/i18n/navigation";
+﻿import { Link } from "../../../src/i18n/navigation";
 import CategoryPill from "./CategoryPill";
 import ArticleMeta from "./ArticleMeta";
-import type { BlogArticleSummary } from "../../lib/blogContent";
+import type { BlogArticleSummary }  from "@/src/lib/blogContent";
 
 type Props = {
   article: BlogArticleSummary;

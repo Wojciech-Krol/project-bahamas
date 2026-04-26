@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { AgeCounts } from "./constants";
-import type { SearchParams } from "../../lib/searchQuery";
+import type { SearchParams }  from "@/src/lib/searchQuery";
 
 export function useSearchState(initial?: Partial<SearchParams>) {
   const t = useTranslations("Search.ageLabel");

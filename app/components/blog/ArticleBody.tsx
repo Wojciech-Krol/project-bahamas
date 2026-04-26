@@ -1,4 +1,4 @@
-import type { ArticleBlock, RankingItem } from "../../lib/blogContent";
+﻿import type { ArticleBlock, RankingItem }  from "@/src/lib/blogContent";
 import { Icon } from "../Icon";
 
 function RankingCard({ item }: { item: RankingItem }) {

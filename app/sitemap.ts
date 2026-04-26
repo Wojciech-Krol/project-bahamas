@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { routing } from "../src/i18n/routing";
-import { getAllSlugs } from "./lib/blogContent";
+import { getAllSlugs } from "@/src/lib/blogContent";
 import { createAdminClient } from "../src/lib/db/admin";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.example";

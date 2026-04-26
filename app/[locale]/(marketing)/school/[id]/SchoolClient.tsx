@@ -6,7 +6,7 @@ import SiteNavbar from "@/app/components/SiteNavbar";
 import SiteFooter from "@/app/components/SiteFooter";
 import ReviewsSection from "@/app/components/ReviewsSection";
 import { Icon } from "@/app/components/Icon";
-import type { Activity, Review, School } from "@/app/lib/mockData";
+import type { Activity, Review, School } from "@/src/lib/mockData";
 
 function ClassCard({ c }: { c: Activity }) {
   const tCommon = useTranslations("Common");

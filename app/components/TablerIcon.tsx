@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import { Icon as IconifyIcon } from "@iconify/react";
-import { TABLER } from "@/app/lib/tablerIcons";
+import { TABLER } from "@/src/lib/tablerIcons";
 
 export function TablerIcon({
   name,
