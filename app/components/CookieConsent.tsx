@@ -16,44 +16,16 @@
  * keep the two in sync.
  */
 
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/src/i18n/navigation";
 import {
   CONSENT_COOKIE_NAME,
   CONSENT_MAX_AGE_SECONDS,
-  readClientConsent,
 } from "@/src/lib/consent";
 
-// `useSyncExternalStore` adapter for the consent cookie. Cookies don't
-// emit change events, so we expose a tiny pub/sub that `writeConsentCookie`
-// pings after each write. This keeps the banner subscription idiomatic
-// without the setState-in-effect anti-pattern.
-const consentListeners = new Set<() => void>();
-function subscribeConsent(listener: () => void) {
-  consentListeners.add(listener);
-  return () => {
-    consentListeners.delete(listener);
-  };
-}
-function notifyConsentChange() {
-  for (const l of consentListeners) l();
-}
-function getClientHasChoice() {
-  return readClientConsent().hasChoice;
-}
-function getServerHasChoice() {
-  // Server snapshot is constant: pretend nothing was chosen so the banner
-  // markup is stable on SSR. The client effect after hydration reconciles
-  // this against the real cookie.
-  return false;
-}
-
 function writeConsentCookie(value: string) {
-  // `Secure` is required for HTTPS but breaks cookie writes over plain
-  // http://localhost during dev. Detect the runtime scheme and only add
-  // the flag when the page itself was served over https.
   const isSecure =
     typeof window !== "undefined" && window.location.protocol === "https:";
   document.cookie =
@@ -62,28 +34,15 @@ function writeConsentCookie(value: string) {
     `; Path=/` +
     `; SameSite=Lax` +
     (isSecure ? `; Secure` : "");
-  notifyConsentChange();
 }
 
 export default function CookieConsent() {
   const t = useTranslations("Consent");
-  // Read the cookie via useSyncExternalStore so SSR and the first client
-  // render both report "hasn't chosen yet" (server snapshot is constant),
-  // avoiding hydration mismatch. After hydration the real cookie is
-  // observed and the banner can hide if a choice was already made.
-  // `dismissed` lets the user's click instantly hide the banner without
-  // waiting for the cookie write to round-trip through the store.
-  const hasChoice = useSyncExternalStore(
-    subscribeConsent,
-    getClientHasChoice,
-    getServerHasChoice,
-  );
   const [dismissed, setDismissed] = useState(false);
   const [customize, setCustomize] = useState(false);
   const [analytics, setAnalytics] = useState(false);
-  const visible = !hasChoice && !dismissed;
 
-  if (!visible) return null;
+  if (dismissed) return null;
 
   function close() {
     setDismissed(true);

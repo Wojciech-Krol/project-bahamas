@@ -30,6 +30,7 @@ export default function ClosestToYouCarousel({
 
   const dragRef = useRef({
     active: false,
+    captured: false,
     pointerId: -1,
     startY: 0,
     lastY: 0,
@@ -162,11 +163,9 @@ export default function ClosestToYouCarousel({
     const el = scrollerRef.current;
     if (!el) return;
     cancelMomentum();
-    try {
-      el.setPointerCapture(e.pointerId);
-    } catch {}
     dragRef.current = {
       active: true,
+      captured: false,
       pointerId: e.pointerId,
       startY: e.clientY,
       lastY: e.clientY,
@@ -175,7 +174,6 @@ export default function ClosestToYouCarousel({
       startScrollTop: el.scrollTop,
       moved: false,
     };
-    setIsDragging(true);
   };
 
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -184,7 +182,15 @@ export default function ClosestToYouCarousel({
     const el = scrollerRef.current;
     if (!el) return;
     const delta = d.startY - e.clientY;
-    if (Math.abs(delta) > 4) d.moved = true;
+    if (!d.moved && Math.abs(delta) > 4) {
+      d.moved = true;
+      try {
+        el.setPointerCapture(e.pointerId);
+        d.captured = true;
+      } catch {}
+      setIsDragging(true);
+    }
+    if (!d.moved) return;
     el.scrollTop = d.startScrollTop + delta;
 
     const now = performance.now();
@@ -204,9 +210,12 @@ export default function ClosestToYouCarousel({
     setIsDragging(false);
     const el = scrollerRef.current;
     if (!el) return;
-    try {
-      el.releasePointerCapture(d.pointerId);
-    } catch {}
+    if (d.captured) {
+      try {
+        el.releasePointerCapture(d.pointerId);
+      } catch {}
+      d.captured = false;
+    }
     if (d.moved) {
       startMomentum(d.velocity);
     }
@@ -268,10 +277,6 @@ export default function ClosestToYouCarousel({
         </button>
       </div>
 
-      {/* Gradient masks */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 z-10 bg-gradient-to-b from-[#fdf9f0] to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 z-10 bg-gradient-to-t from-[#fdf9f0] to-transparent" />
-
       <div
         ref={scrollerRef}
         onPointerDown={onPointerDown}
@@ -280,6 +285,12 @@ export default function ClosestToYouCarousel({
         onPointerCancel={endDrag}
         onClickCapture={onClickCapture}
         onWheel={onWheel}
+        style={{
+          maskImage:
+            "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+        }}
         className={`flex flex-col gap-5 overflow-y-auto overflow-x-hidden no-scrollbar h-[520px] pl-6 pr-20 pt-[180px] pb-[180px] touch-pan-y select-none ${
           isDragging ? "cursor-grabbing" : "cursor-grab"
         }`}
@@ -292,8 +303,8 @@ export default function ClosestToYouCarousel({
               data-card
               className={`shrink-0 transition-all duration-500 ease-[cubic-bezier(.32,.72,0,1)] will-change-transform ${
                 isActive
-                  ? "translate-x-6 md:translate-x-10 scale-[1.02] opacity-100"
-                  : "translate-x-0 scale-[0.96] opacity-60"
+                  ? "translate-x-6 md:translate-x-10 scale-[1.02] [&_a>*]:opacity-100"
+                  : "translate-x-0 scale-[0.96] [&_a>*]:opacity-60"
               }`}
             >
               <ActivityRowCard activity={a} />

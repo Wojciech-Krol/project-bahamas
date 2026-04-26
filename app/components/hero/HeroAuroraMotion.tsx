@@ -137,6 +137,12 @@ export default function HeroAuroraMotion({
     <div
       className="absolute inset-0 overflow-hidden pointer-events-none -z-10"
       aria-hidden
+      style={{
+        maskImage:
+          "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+      }}
     >
       {ORBS.map((orb, i) => (
         <Orb key={i} orb={orb} mx={mx} my={my} index={i} />

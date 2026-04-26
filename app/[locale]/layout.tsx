@@ -4,7 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../src/i18n/routing";
-import CookieConsent from "../components/CookieConsent";
+import CookieConsentGate from "../components/CookieConsentGate";
 import "../globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -84,12 +84,12 @@ export default async function LocaleLayout({
         />
       </head>
       <body
-        className="font-body antialiased bg-surface text-on-surface overflow-x-hidden w-full relative"
+        className="font-body antialiased text-on-surface overflow-x-hidden w-full relative bg-[radial-gradient(ellipse_80%_55%_at_30%_18%,#ffe2d8_0%,transparent_70%),radial-gradient(ellipse_70%_50%_at_75%_45%,#fde7c4_0%,transparent_75%),linear-gradient(180deg,#fff1ec_0%,#fdf6e8_45%,#fef0d8_100%)] bg-fixed"
         suppressHydrationWarning
       >
         <NextIntlClientProvider>
           {children}
-          <CookieConsent />
+          <CookieConsentGate />
         </NextIntlClientProvider>
       </body>
     </html>

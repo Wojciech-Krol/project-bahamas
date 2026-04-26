@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  animate,
-  motion,
-  useMotionValue,
-  type MotionValue,
-} from "motion/react";
+import { animate, motion, useMotionValue } from "motion/react";
 import { useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -13,7 +8,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import HeroAuroraMotion from "./HeroAuroraMotion";
 import HeroHeadlineMotion from "./HeroHeadlineMotion";
-import HeroBarMagnetic from "./HeroBarMagnetic";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -37,11 +31,8 @@ export default function HeroJuicyStage({
   const stageRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  const cursorX = useMotionValue(0);
-  const cursorY = useMotionValue(0);
   const mxNorm = useMotionValue(0.5);
   const myNorm = useMotionValue(0.5);
-  const scrollProgress = useMotionValue(0);
 
   useEffect(() => {
     const el = stageRef.current;
@@ -57,8 +48,6 @@ export default function HeroJuicyStage({
       raf = null;
       if (!last.has) return;
       const rect = el.getBoundingClientRect();
-      cursorX.set(last.x);
-      cursorY.set(last.y);
       mxNorm.set(
         Math.max(0, Math.min(1, (last.x - rect.left) / Math.max(rect.width, 1))),
       );
@@ -78,15 +67,6 @@ export default function HeroJuicyStage({
     const onLeave = () => {
       animate(mxNorm, 0.5, { duration: 0.6, ease: "easeOut" });
       animate(myNorm, 0.5, { duration: 0.6, ease: "easeOut" });
-      const rect = el.getBoundingClientRect();
-      animate(cursorX, rect.left + rect.width / 2, {
-        duration: 0.6,
-        ease: "easeOut",
-      });
-      animate(cursorY, rect.top + rect.height / 2, {
-        duration: 0.6,
-        ease: "easeOut",
-      });
       last.has = false;
     };
 
@@ -98,7 +78,7 @@ export default function HeroJuicyStage({
       el.removeEventListener("pointerleave", onLeave);
       if (raf != null) cancelAnimationFrame(raf);
     };
-  }, [cursorX, cursorY, mxNorm, myNorm]);
+  }, [mxNorm, myNorm]);
 
   useGSAP(
     () => {
@@ -112,20 +92,12 @@ export default function HeroJuicyStage({
         return;
       }
 
-      const trigger = ScrollTrigger.create({
-        trigger: el,
-        start: "top top",
-        end: "bottom top",
-        scrub: 0.5,
-        onUpdate: (self) => scrollProgress.set(self.progress),
-      });
-
       if (overlayRef.current) {
         gsap.fromTo(
           overlayRef.current,
           { opacity: 0 },
           {
-            opacity: 0.9,
+            opacity: 0.35,
             ease: "none",
             scrollTrigger: {
               trigger: el,
@@ -136,10 +108,6 @@ export default function HeroJuicyStage({
           },
         );
       }
-
-      return () => {
-        trigger.kill();
-      };
     },
     { scope: stageRef as React.RefObject<HTMLElement> },
   );
@@ -147,7 +115,7 @@ export default function HeroJuicyStage({
   return (
     <section
       ref={stageRef}
-      className="hero-juicy relative overflow-hidden px-4 md:px-6 py-10 md:py-32"
+      className="hero-juicy relative overflow-x-clip px-4 md:px-6 pt-10 pb-6 md:pt-32 md:pb-16"
     >
       <HeroAuroraMotion mx={mxNorm} my={myNorm} />
 
@@ -173,13 +141,9 @@ export default function HeroJuicyStage({
         <div className="md:hidden w-full mb-6">{mobileSearch}</div>
 
         <div className="hidden md:contents">
-          <HeroBarMagneticGate
-            cursorX={cursorX}
-            cursorY={cursorY}
-            scrollProgress={scrollProgress}
-          >
+          <div data-hero-search className="w-full max-w-5xl flex justify-center">
             {desktopSearch}
-          </HeroBarMagneticGate>
+          </div>
 
           <motion.p
             className="text-on-surface/60 font-medium text-lg md:text-xl max-w-2xl mt-6"
@@ -195,31 +159,3 @@ export default function HeroJuicyStage({
   );
 }
 
-function HeroBarMagneticGate({
-  cursorX,
-  cursorY,
-  scrollProgress,
-  children,
-}: {
-  cursorX: MotionValue<number>;
-  cursorY: MotionValue<number>;
-  scrollProgress: MotionValue<number>;
-  children: React.ReactNode;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24, scale: 0.96 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 0.45, duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-      className="w-full flex justify-center"
-    >
-      <HeroBarMagnetic
-        cursorX={cursorX}
-        cursorY={cursorY}
-        scrollProgress={scrollProgress}
-      >
-        {children}
-      </HeroBarMagnetic>
-    </motion.div>
-  );
-}
