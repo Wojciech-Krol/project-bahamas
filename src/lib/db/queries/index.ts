@@ -22,5 +22,9 @@ export { getBookingById, type BookingDetail } from "./bookings";
 export {
   getActivitiesByPartner,
   getPartnerActivityById,
+  getPartnerActivityRawById,
+  getVenuesByPartner,
   type PartnerActivity,
+  type PartnerActivityRaw,
+  type PartnerVenue,
 } from "./partner";
