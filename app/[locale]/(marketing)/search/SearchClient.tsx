@@ -8,7 +8,16 @@ import { Icon } from "@/src/components/Icon";
 import PageSearchBar from "@/src/components/search/PageSearchBar";
 import { MobileSearchOverlay } from "@/src/components/search/MobileSearch";
 import { useSearchState } from "@/src/components/search/useSearchState";
-import MapboxMap from "@/src/components/MapboxMap";
+import dynamic from "next/dynamic";
+
+// Mapbox GL pulls ~90KB gzipped + 30KB CSS — keep it off the search page's
+// initial bundle. ssr:false because mapbox-gl touches `window` at import.
+const MapboxMap = dynamic(() => import("@/src/components/MapboxMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 bg-surface-container-low animate-pulse" />
+  ),
+});
 import MobileActivityCarousel from "@/src/components/MobileActivityCarousel";
 import { buildSearchQueryRecord, type SearchParams } from "@/src/lib/searchQuery";
 import type { Activity } from "@/src/lib/mockData";

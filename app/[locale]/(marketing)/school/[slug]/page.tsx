@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
+export const revalidate = 3600;
+export const dynamicParams = true;
+
 import { getReviewsByVenue, getVenueBySlug } from "@/src/lib/db/queries";
 import { routing } from "@/src/i18n/routing";
 import { getPathname } from "@/src/i18n/navigation";

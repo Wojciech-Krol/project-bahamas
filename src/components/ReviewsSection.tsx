@@ -1,4 +1,5 @@
-﻿import { useTranslations } from "next-intl";
+﻿import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Icon } from "./Icon";
 import Reveal, { RevealItem } from "./Reveal";
 import type { Review }  from "@/src/lib/mockData";
@@ -63,10 +64,12 @@ export default function ReviewsSection({
             <p className="text-on-surface/80 leading-relaxed">&ldquo;{r.text}&rdquo;</p>
             <div className="flex items-center gap-3 mt-auto pt-4 border-t border-on-surface/[0.06]">
               {r.avatar ? (
-                <img
+                <Image
                   src={r.avatar}
                   alt={r.name}
-                  className="w-11 h-11 rounded-full object-cover"
+                  width={44}
+                  height={44}
+                  className="rounded-full object-cover"
                 />
               ) : (
                 <div className="w-11 h-11 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-headline font-bold text-sm shrink-0">

@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import Image from "next/image";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "../../src/i18n/navigation";
@@ -134,10 +135,12 @@ export default function MobileActivityCarousel({
           >
             <div className="absolute inset-0 bg-gradient-to-br from-primary-fixed to-secondary-fixed">
               {a.imageUrl && (
-                <img
+                <Image
                   src={a.imageUrl}
                   alt={a.imageAlt}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 80vw, 320px"
+                  className="object-cover"
                   draggable={false}
                 />
               )}
@@ -243,10 +246,12 @@ export default function MobileActivityCarousel({
 
               <div className="flex items-center gap-3 pt-3 mt-1 border-t border-white/15">
                 {a.schoolAvatar && (
-                  <img
+                  <Image
                     src={a.schoolAvatar}
                     alt={a.schoolName ?? ""}
-                    className="w-10 h-10 rounded-full object-cover border-2 border-white/30"
+                    width={40}
+                    height={40}
+                    className="rounded-full object-cover border-2 border-white/30"
                   />
                 )}
                 <div className="flex-1 min-w-0">

@@ -2,6 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
+// Detail pages are static-by-default with hourly revalidation. Activities
+// change rarely (price tweaks, schedule swaps); a 1h TTL keeps Google's
+// crawler hitting cached HTML while still picking up partner edits within
+// an hour. Partner mutations also trigger revalidatePath in
+// classes/actions.ts so urgent updates propagate instantly.
+export const revalidate = 3600;
+export const dynamicParams = true;
+
 import {
   getActivityBySlug,
   getCurriculumByActivity,
