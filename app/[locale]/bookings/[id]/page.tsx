@@ -10,6 +10,10 @@ import { getCurrentUser } from "@/src/lib/db/server";
 import { routing } from "@/src/i18n/routing";
 import type { Locale } from "@/src/lib/db/types";
 
+import CancelBookingButton from "./CancelBookingButton";
+
+const CANCEL_CUTOFF_MS = 48 * 60 * 60 * 1000;
+
 function isLocale(value: string): value is Locale {
   return (routing.locales as readonly string[]).includes(value);
 }
@@ -72,6 +76,9 @@ export default async function BookingDetailPage({
       : null;
 
   const statusKey = `status.${booking.status}` as const;
+  const canCancel =
+    booking.status === "confirmed" &&
+    new Date(booking.session.startsAt).getTime() > Date.now() + CANCEL_CUTOFF_MS;
 
   return (
     <>
@@ -163,6 +170,12 @@ export default async function BookingDetailPage({
                 {t("backHome")}
               </Link>
             </div>
+
+            {canCancel && (
+              <div className="pt-4 border-t border-on-surface/[0.06]">
+                <CancelBookingButton bookingId={booking.id} />
+              </div>
+            )}
           </div>
         </article>
       </main>

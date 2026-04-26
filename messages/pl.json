@@ -1385,6 +1385,20 @@
       "confirmed": "Potwierdzona",
       "cancelled": "Anulowana",
       "expired": "Wygasła"
+    },
+    "cancelButton": "Anuluj rezerwację",
+    "cancelConfirmTitle": "Anulować tę rezerwację?",
+    "cancelConfirmBody": "Otrzymasz pełny zwrot. Tej operacji nie można cofnąć.",
+    "cancelSuccess": "Anulowano. Zwrot pojawi się w ciągu 1–2 dni roboczych.",
+    "cancelError": {
+      "too_late": "Rezerwacji do 48 h przed zajęciami nie można anulować online — skontaktuj się ze studiem.",
+      "not_cancellable": "Tej rezerwacji nie można anulować.",
+      "refund_failed": "Zwrot nie powiódł się. Skontaktuj się z pomocą techniczną.",
+      "not_signed_in": "Zaloguj się, aby anulować.",
+      "forbidden": "Brak uprawnień.",
+      "not_found": "Nie znaleziono rezerwacji.",
+      "not_configured": "Płatności nie są skonfigurowane.",
+      "internal": "Coś poszło nie tak. Spróbuj ponownie."
     }
   }
 }
