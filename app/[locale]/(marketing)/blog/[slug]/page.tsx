@@ -22,11 +22,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale, slug } = await params;
   const article = await getArticle(slug, locale);
   if (!article) return {};
-  const suffix = (await getTranslations({ locale, namespace: "Metadata.blogArticle" }))(
-    "titleSuffix"
-  );
   return {
-    title: `${article.title} ${suffix}`,
+    title: article.title,
     description: article.excerpt,
     openGraph: {
       title: article.title,

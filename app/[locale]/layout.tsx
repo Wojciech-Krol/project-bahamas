@@ -32,12 +32,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
+  const titleDefault = t("titleDefault");
   return {
-    title: t("title"),
+    title: {
+      default: titleDefault,
+      template: t("titleTemplate"),
+    },
     description: t("description"),
     keywords: t("keywords").split(","),
     openGraph: {
-      title: t("title"),
+      title: titleDefault,
       description: t("description"),
       type: "website",
       locale: locale === "pl" ? "pl_PL" : "en_GB",
