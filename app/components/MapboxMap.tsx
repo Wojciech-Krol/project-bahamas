@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { Activity } from "../lib/mockData";
+import { tablerSvgString } from "../lib/tablerIcons";
 
 type MapPoint = Pick<Activity, "id" | "title" | "price"> & {
   lng: number;
@@ -89,8 +90,8 @@ export default function MapboxMap({
         el.type = "button";
         el.className =
           "px-3 py-1.5 rounded-full bg-[var(--color-primary)] text-white text-xs font-bold shadow-lg hover:scale-110 transition-transform cursor-pointer flex items-center gap-1";
-        const iconName = p.icon ?? "map-pin";
-        el.innerHTML = `<img src="https://api.iconify.design/tabler/${iconName}.svg?color=%23fff&width=14&height=14" alt="" style="width:14px;height:14px;display:inline-block" /><span>${p.price}</span>`;
+        const svg = tablerSvgString(p.icon ?? "map-pin", "#fff", 14);
+        el.innerHTML = `${svg}<span>${p.price}</span>`;
         el.title = p.title;
         const marker = new mapboxgl.Marker({ element: el })
           .setLngLat([p.lng, p.lat])
