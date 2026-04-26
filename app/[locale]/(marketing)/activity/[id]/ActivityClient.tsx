@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import SiteNavbar from "@/app/components/SiteNavbar";
 import SiteFooter from "@/app/components/SiteFooter";
@@ -10,6 +10,7 @@ import TrackActivityView from "@/app/components/analytics/TrackActivityView";
 import { ACTIVITY_DETAIL_BASE, AVATAR } from "@/app/lib/mockData";
 import type { Activity, Review } from "@/app/lib/mockData";
 import type { Locale, SessionSlot } from "@/src/lib/db/types";
+import { createBooking } from "@/src/lib/payments/bookingActions";
 
 const DECORATIVE = {
   joined: [AVATAR("j1"), AVATAR("j2"), AVATAR("j3")],
@@ -52,15 +53,39 @@ export default function ActivityClient({
   const t = useTranslations("Activity");
   const tCommon = useTranslations("Common");
   const tSample = useTranslations("Activity.sample");
+  const tError = useTranslations("Activity.bookingError");
 
   const [selectedSessionId, setSelectedSessionId] = useState<string>(
     sessions[0]?.id ?? "",
   );
+  const [errorKey, setErrorKey] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
 
   const selectedSession = useMemo(
     () => sessions.find((s) => s.id === selectedSessionId) ?? sessions[0],
     [selectedSessionId, sessions],
   );
+
+  function onBook() {
+    if (!selectedSession) return;
+    setErrorKey(null);
+    const sessionId = selectedSession.id;
+    startTransition(async () => {
+      const result = await createBooking(sessionId);
+      if ("ok" in result && result.ok) {
+        window.location.href = result.checkoutUrl;
+        return;
+      }
+      if ("error" in result) {
+        if (result.error === "not_signed_in") {
+          const next = encodeURIComponent(`/${locale}/activity/${id}`);
+          window.location.href = `/${locale}/login?next=${next}`;
+          return;
+        }
+        setErrorKey(result.error);
+      }
+    });
+  }
 
   const heroImage = activity.imageUrl || ACTIVITY_DETAIL_BASE.heroImage;
   const tags = tSample.raw("tags") as string[];
@@ -282,11 +307,19 @@ export default function ActivityClient({
                 </div>
 
                 <button
+                  type="button"
+                  onClick={onBook}
                   className="w-full bg-primary text-on-primary py-4 rounded-full font-headline uppercase tracking-widest text-sm font-bold hover:bg-tertiary transition-colors disabled:opacity-50"
-                  disabled={!selectedSession || spotsLeft <= 0}
+                  disabled={!selectedSession || spotsLeft <= 0 || pending}
                 >
-                  {t("bookYourSpot")}
+                  {pending ? t("bookingProgress") : t("bookYourSpot")}
                 </button>
+
+                {errorKey && (
+                  <p className="text-xs text-error text-center" role="alert">
+                    {tError(errorKey)}
+                  </p>
+                )}
 
                 <p className="text-xs text-on-surface/50 text-center">
                   {t("freeCancel")}
@@ -337,10 +370,12 @@ export default function ActivityClient({
           </span>
         </div>
         <button
+          type="button"
+          onClick={onBook}
           className="ml-auto bg-primary text-on-primary px-6 py-3.5 rounded-full font-headline font-bold uppercase tracking-widest text-[0.75rem] shadow-[0_8px_20px_rgba(180,15,85,0.3)] active:scale-95 transition-transform disabled:opacity-50"
-          disabled={!selectedSession || spotsLeft <= 0}
+          disabled={!selectedSession || spotsLeft <= 0 || pending}
         >
-          {tCommon("bookNow")}
+          {pending ? t("bookingProgress") : tCommon("bookNow")}
         </button>
       </div>
 

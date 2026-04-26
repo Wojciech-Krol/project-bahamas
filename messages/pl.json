@@ -440,6 +440,17 @@
     "spotsLeft": "{count, plural, one {Zostało ostatnie miejsce!} few {Zostały jeszcze # miejsca} many {Zostało jeszcze # miejsc} other {Zostało jeszcze # miejsca}}",
     "spotsLeftShort": "{count, plural, one {zostało 1 miejsce} few {zostały # miejsca} many {zostało # miejsc} other {zostało # miejsca}}",
     "bookYourSpot": "Zarezerwuj miejsce",
+    "bookingProgress": "Przekierowywanie do płatności…",
+    "bookingError": {
+      "not_configured": "Płatności nie są jeszcze skonfigurowane. Spróbuj później.",
+      "not_signed_in": "Zaloguj się, aby zarezerwować.",
+      "internal": "Coś poszło nie tak. Spróbuj ponownie.",
+      "session_not_found": "Termin już nie jest dostępny.",
+      "partner_not_connected": "Studio nie obsługuje jeszcze płatności online.",
+      "session_not_bookable": "Tego terminu nie można już zarezerwować.",
+      "session_in_past": "Termin już się rozpoczął.",
+      "session_full": "Brak wolnych miejsc na ten termin."
+    },
     "noSessions": "Brak nadchodzących terminów. Sprawdź ponownie wkrótce.",
     "freeCancel": "Bezpłatna anulacja do 48 godzin przed zajęciami.",
     "joiningPulse": "Idą z Tobą",

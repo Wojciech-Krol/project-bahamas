@@ -440,6 +440,17 @@
     "spotsLeft": "{count, plural, one {Only 1 spot left!} other {Only # spots left!}}",
     "spotsLeftShort": "{count, plural, one {1 spot left} other {# spots left}}",
     "bookYourSpot": "Book your spot",
+    "bookingProgress": "Redirecting to checkout…",
+    "bookingError": {
+      "not_configured": "Payments are not configured yet. Try again later.",
+      "not_signed_in": "Please sign in to book.",
+      "internal": "Something went wrong. Please try again.",
+      "session_not_found": "That session is no longer available.",
+      "partner_not_connected": "This studio doesn't accept online payments yet.",
+      "session_not_bookable": "That session can no longer be booked.",
+      "session_in_past": "That session has already started.",
+      "session_full": "No spots left on that session."
+    },
     "noSessions": "No upcoming sessions. Check back soon.",
     "freeCancel": "Free cancellation up to 48 hours before class.",
     "joiningPulse": "Joining the session",
