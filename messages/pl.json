@@ -1193,6 +1193,30 @@
       "emptyState": "Tu pojawi się Twój zespół, gdy zaprosisz pierwszego instruktora.",
       "comingSoon": "Funkcja zaproszeń pojawi się w Phase 2."
     },
+    "insights": {
+      "badge": "Analityka",
+      "title": "Statystyki",
+      "subtitle": "Pełen obraz tego, jak działa Twoje studio.",
+      "emptyPartner": "Brak danych — najpierw dołącz do partnera.",
+      "kpis": {
+        "bookings30d": "Rezerwacje (30 d)",
+        "avgBooking": "Śr. rezerwacja (30 d)",
+        "totalGrossYtd": "Brutto YTD",
+        "activityBookings": "Top rezerwacje"
+      },
+      "trend": {
+        "title": "Trend rezerwacji",
+        "subtitle": "Potwierdzone rezerwacje w ciągu ostatnich 30 dni."
+      },
+      "top": {
+        "title": "Najlepsze zajęcia",
+        "subtitle": "Według przychodu w wybranym okresie."
+      },
+      "heatmap": {
+        "title": "Obłożenie tygodnia",
+        "subtitle": "Średnie wykorzystanie miejsc w godzinach 0–24, ostatnie 60 dni."
+      }
+    },
     "settings": {
       "badge": "Profil partnera",
       "title": "Ustawienia",
