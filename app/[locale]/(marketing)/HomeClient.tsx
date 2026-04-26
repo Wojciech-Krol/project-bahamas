@@ -11,6 +11,7 @@ import ReviewsSection from "@/app/components/ReviewsSection";
 import ClosestToYouCarousel from "@/app/components/ClosestToYouCarousel";
 import MobileActivityCarousel from "@/app/components/MobileActivityCarousel";
 import { Icon } from "@/app/components/Icon";
+import HeroAurora from "@/app/components/HeroAurora";
 import HeroSearchBar from "@/app/components/search/HeroSearchBar";
 import SearchSegment from "@/app/components/search/SearchSegment";
 import { MobileSearchPill, MobileSearchOverlay } from "@/app/components/search/MobileSearch";
@@ -415,10 +416,7 @@ export default function HomeClient({
             </div>
           </div>
 
-          <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-            <div className="absolute -top-20 -right-20 w-96 h-96 bg-secondary-fixed/30 rounded-full blur-[100px]" />
-            <div className="absolute bottom-0 -left-20 w-80 h-80 bg-primary-fixed/20 rounded-full blur-[80px]" />
-          </div>
+          <HeroAurora />
         </section>
 
         <section className="max-w-site mx-auto px-4 md:px-6 py-8 md:py-24">

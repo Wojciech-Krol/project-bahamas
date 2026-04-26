@@ -1,10 +1,11 @@
 "use client";
 
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 import { Icon } from "../Icon";
 import SearchSegment from "./SearchSegment";
 import { ActivityPanel, NeighborhoodPanel, WhenPanel, AgePanel } from "./panels";
+import { useTypewriterPlaceholder } from "./useTypewriterPlaceholder";
 import {
   formatMultiSelectDisplay,
   type AgeCounts,
@@ -57,11 +58,21 @@ export default function HeroSearchBar({
 }) {
   const t = useTranslations();
   const formatActivities = useFormatActivities();
+  const messages = useMessages() as {
+    Home?: { hero?: { placeholders?: string[] } };
+  };
+  const placeholders = messages.Home?.hero?.placeholders ?? [];
   const [activeField, setActiveField] = useState<SearchField>(null);
   const [lastActiveField, setLastActiveField] = useState<SearchField>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const isExpanded = activeField !== null;
   const renderField = activeField || lastActiveField;
+  const typewriterEnabled =
+    !activities && activeField !== "activities" && placeholders.length > 0;
+  const typewriterText = useTypewriterPlaceholder(
+    placeholders,
+    typewriterEnabled,
+  );
 
   const close = useCallback(() => setActiveField(null), []);
 
@@ -99,13 +110,17 @@ export default function HeroSearchBar({
     label: string;
     value: string;
     placeholder: string;
+    placeholderClassName?: string;
   }[] = [
     {
       field: "activities",
       icon: "search",
       label: t("Search.field.activitiesLabel"),
       value: formatMultiSelectDisplay(formatActivities(activities)),
-      placeholder: t("Search.field.activitiesPlaceholder"),
+      placeholder: typewriterEnabled
+        ? typewriterText || t("Search.field.activitiesPlaceholder")
+        : t("Search.field.activitiesPlaceholder"),
+      placeholderClassName: typewriterEnabled ? "typewriter-caret" : undefined,
     },
     {
       field: "neighborhood",
@@ -144,10 +159,11 @@ export default function HeroSearchBar({
 
       <div ref={barRef} className="relative" style={{ zIndex: 30 }}>
         <div
-          className={`rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative border-2 ${
+          data-expanded={isExpanded ? "true" : "false"}
+          className={`hero-bar-aura rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative border ${
             isExpanded
               ? "bg-surface-container-high shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] scale-[1.02] border-transparent"
-              : "bg-surface-container-lowest shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] hover:scale-[1.015] border-[#AD1F53]"
+              : "bg-surface-container-lowest shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] hover:scale-[1.015] border-transparent"
           }`}
         >
           <div className="flex flex-col md:flex-row items-center gap-1 md:gap-0 p-2.5 transition-all duration-300 relative z-10">
@@ -161,6 +177,7 @@ export default function HeroSearchBar({
                   label={f.label}
                   displayValue={f.value}
                   placeholder={f.placeholder}
+                  placeholderClassName={f.placeholderClassName}
                   onClick={() => toggle(f.field)}
                 />
                 {i < fields.length - 1 && (

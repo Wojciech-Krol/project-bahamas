@@ -114,7 +114,15 @@
       "titleStart": "Zacznij coś",
       "titleMiddle": "nowego",
       "titleEnd": "już dziś.",
-      "subtitle": "Setki zajęć zaczynających się w Twojej okolicy w najbliższe dwie godziny."
+      "subtitle": "Setki zajęć zaczynających się w Twojej okolicy w najbliższe dwie godziny.",
+      "placeholders": [
+        "joga w 2h",
+        "padel na Mokotowie",
+        "warsztaty dla dzieci po 18:00",
+        "wspinaczka dziś wieczorem",
+        "ceramika w weekend",
+        "boks rano przed pracą"
+      ]
     },
     "closest": {
       "badge": "Zaczyna się wkrótce",
@@ -468,7 +476,7 @@
       "dates": {
         "d1": { "label": "24 paź", "time": "18:00" },
         "d2": { "label": "26 paź", "time": "10:00" }
-      },
+      }
     }
   },
   "School": {
