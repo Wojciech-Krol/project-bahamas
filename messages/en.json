@@ -290,6 +290,10 @@
     "linkedin": "LinkedIn"
   },
   "About": {
+    "meta": {
+      "title": "About Hakuna — local activity discovery platform",
+      "description": "Hakuna helps you find and book activities near you. Learn about our vision, team, and story."
+    },
     "badge": "Our vision",
     "heroStart": "A city you",
     "heroEmphasis": "actually",

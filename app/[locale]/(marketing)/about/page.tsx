@@ -1,4 +1,6 @@
-﻿import { useTranslations } from "next-intl";
+﻿import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import SiteNavbar from "@/src/components/SiteNavbar";
 import SiteFooter from "@/src/components/SiteFooter";
 import BetaSignup from "@/src/components/BetaSignup";
@@ -12,7 +14,38 @@ const VALUE_KEYS = [
 
 const TIMELINE_KEYS = ["y2023", "y2024", "y2026"] as const;
 
-export default function AboutPage() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "About.meta" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      url: `/${locale}/about`,
+      type: "website",
+    },
+    alternates: {
+      canonical: `/${locale}/about`,
+      languages: { pl: "/pl/about", en: "/en/about", "x-default": "/pl/about" },
+    },
+  };
+}
+
+type AboutPageProps = { params: Promise<{ locale: string }> };
+
+export default async function AboutPage({ params }: AboutPageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <AboutBody />;
+}
+
+function AboutBody() {
   const t = useTranslations("About");
   const tValues = useTranslations("About.values");
   const tTimeline = useTranslations("About.timeline");

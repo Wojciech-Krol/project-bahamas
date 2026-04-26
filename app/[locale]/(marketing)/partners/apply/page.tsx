@@ -16,6 +16,12 @@ export async function generateMetadata({
   return {
     title: t("meta.title"),
     description: t("meta.description"),
+    openGraph: {
+      title: t("meta.title"),
+      description: t("meta.description"),
+      url: `/${locale}/partners/apply`,
+      type: "website",
+    },
     alternates: {
       canonical: `/${locale}/partners/apply`,
       languages: {
