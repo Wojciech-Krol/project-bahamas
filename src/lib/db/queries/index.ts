@@ -12,5 +12,9 @@ export {
   type ActivityFilters,
 } from "./activities";
 export { getVenueById } from "./venues";
-export { getReviews, getReviewsByActivity } from "./reviews";
+export {
+  getReviews,
+  getReviewsByActivity,
+  getReviewsByVenue,
+} from "./reviews";
 export { getUpcomingSessionsByActivity, getSessionById } from "./sessions";
