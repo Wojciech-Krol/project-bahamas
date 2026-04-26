@@ -440,6 +440,7 @@
     "spotsLeft": "{count, plural, one {Zostało ostatnie miejsce!} few {Zostały jeszcze # miejsca} many {Zostało jeszcze # miejsc} other {Zostało jeszcze # miejsca}}",
     "spotsLeftShort": "{count, plural, one {zostało 1 miejsce} few {zostały # miejsca} many {zostało # miejsc} other {zostało # miejsca}}",
     "bookYourSpot": "Zarezerwuj miejsce",
+    "noSessions": "Brak nadchodzących terminów. Sprawdź ponownie wkrótce.",
     "freeCancel": "Bezpłatna anulacja do 48 godzin przed zajęciami.",
     "joiningPulse": "Idą z Tobą",
     "alreadyBooked": "Już zarezerwowali",
