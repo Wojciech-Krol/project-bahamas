@@ -6,6 +6,8 @@ import { Link, useRouter } from "@/src/i18n/navigation";
 import { buildSearchQuery } from "@/app/lib/searchQuery";
 import SiteFooter from "@/app/components/SiteFooter";
 import SiteNavbar from "@/app/components/SiteNavbar";
+import ProximityDots from "@/app/components/ProximityDots";
+import Reveal from "@/app/components/Reveal";
 import BetaSignup from "@/app/components/BetaSignup";
 import ReviewsSection from "@/app/components/ReviewsSection";
 import ClosestToYouCarousel from "@/app/components/ClosestToYouCarousel";
@@ -370,6 +372,7 @@ export default function HomeClient({
 
   return (
     <>
+      <ProximityDots />
       <SiteNavbar>
         <CompactSearchBar
           visible={showCompactSearch}
@@ -382,7 +385,7 @@ export default function HomeClient({
         />
       </SiteNavbar>
 
-      <main className="pt-16 md:pt-[72px]">
+      <main className="pt-16 md:pt-[72px] relative z-10">
         <HeroJuicyStage
           titleStart={t("Home.hero.titleStart")}
           titleMiddle={t("Home.hero.titleMiddle")}
@@ -409,15 +412,15 @@ export default function HomeClient({
           }
         />
 
-        <section className="max-w-site mx-auto px-4 md:px-6 py-8 md:py-24">
+        <section className="max-w-site mx-auto px-4 md:px-6 pt-2 pb-8 md:pt-6 md:pb-24 relative">
           <div className="md:hidden">
             <MobileActivityCarousel activities={closestActivities} />
           </div>
 
           <div className="hidden md:block">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center">
-              <div className="space-y-8">
-                <div>
+              <Reveal stagger={0.09} className="space-y-8">
+                <Reveal.Item>
                   <span className="inline-block bg-secondary-container px-4 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-widest text-on-secondary-container mb-6">
                     {t("Home.closest.badge")}
                   </span>
@@ -425,17 +428,19 @@ export default function HomeClient({
                     {t("Home.closest.headingStart")} <br />
                     {t("Home.closest.headingEnd")}
                   </h2>
-                </div>
-                <p className="text-xl text-on-surface/60 max-w-md">
+                </Reveal.Item>
+                <Reveal.Item as="p" className="text-xl text-on-surface/60 max-w-md">
                   {t("Home.closest.body")}
-                </p>
-                <Link
-                  href="/search"
-                  className="inline-block bg-primary text-on-primary px-10 py-5 rounded-xl font-headline font-extrabold uppercase tracking-[0.2em] text-sm hover:translate-y-[-4px] transition-all hover:shadow-2xl hover:bg-tertiary"
-                >
-                  {t("Home.closest.cta")}
-                </Link>
-                <div className="grid grid-cols-2 gap-8 border-t border-on-surface/5 pt-6 max-w-md">
+                </Reveal.Item>
+                <Reveal.Item>
+                  <Link
+                    href="/search"
+                    className="inline-block bg-primary text-on-primary px-10 py-5 rounded-xl font-headline font-extrabold uppercase tracking-[0.2em] text-sm hover:translate-y-[-4px] transition-all hover:shadow-2xl hover:bg-tertiary"
+                  >
+                    {t("Home.closest.cta")}
+                  </Link>
+                </Reveal.Item>
+                <Reveal.Item className="grid grid-cols-2 gap-8 border-t border-on-surface/5 pt-6 max-w-md">
                   <div>
                     <div className="text-3xl font-bold text-primary">
                       {t("Home.closest.statHostsValue")}
@@ -452,9 +457,11 @@ export default function HomeClient({
                       {t("Home.closest.statArrivalLabel")}
                     </div>
                   </div>
-                </div>
-              </div>
-              <ClosestToYouCarousel activities={closestActivities} />
+                </Reveal.Item>
+              </Reveal>
+              <Reveal direction="right" delay={0.25} y={32} blur={2}>
+                <ClosestToYouCarousel activities={closestActivities} />
+              </Reveal>
             </div>
           </div>
         </section>
@@ -464,7 +471,9 @@ export default function HomeClient({
         <BetaSignup />
       </main>
 
-      <SiteFooter />
+      <div className="relative z-10">
+        <SiteFooter />
+      </div>
       <NavExpandedSearch
         isOpen={!!navExpandedField}
         initialField={navExpandedField || "activities"}

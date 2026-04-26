@@ -65,6 +65,7 @@ export default function HeroSearchBar({
   const [activeField, setActiveField] = useState<SearchField>(null);
   const [lastActiveField, setLastActiveField] = useState<SearchField>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const isExpanded = activeField !== null;
   const renderField = activeField || lastActiveField;
   const typewriterEnabled =
@@ -86,7 +87,12 @@ export default function HeroSearchBar({
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (barRef.current && !barRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (
+        barRef.current &&
+        !barRef.current.contains(target) &&
+        (!panelRef.current || !panelRef.current.contains(target))
+      ) {
         close();
       }
     };
@@ -147,16 +153,6 @@ export default function HeroSearchBar({
 
   return (
     <div ref={containerRef} className={`${className} relative z-30`}>
-      <div
-        className={`fixed inset-0 bg-on-surface/30 transition-opacity duration-300 ${
-          isExpanded
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-        style={{ zIndex: 25 }}
-        onClick={close}
-      />
-
       <div ref={barRef} className="relative" style={{ zIndex: 30 }}>
         <div
           className={`rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative ${
@@ -217,26 +213,25 @@ export default function HeroSearchBar({
           </div>
         </div>
 
-        <div
-          className={`absolute left-0 right-0 mt-3 bg-surface-container-lowest rounded-[2rem] editorial-shadow overflow-hidden transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)] ${
-            isExpanded
-              ? "opacity-100 translate-y-0 max-h-[500px]"
-              : "opacity-0 -translate-y-4 max-h-0 pointer-events-none"
-          }`}
-        >
-          {renderField === "activities" && (
-            <ActivityPanel value={activities} onChange={onActivitiesChange} />
-          )}
-          {renderField === "neighborhood" && (
-            <NeighborhoodPanel value={neighborhood} onChange={onNeighborhoodChange} />
-          )}
-          {renderField === "when" && (
-            <WhenPanel value={when} onChange={onWhenChange} />
-          )}
-          {renderField === "age" && (
-            <AgePanel counts={ageCounts} onUpdate={onAgeUpdate} />
-          )}
-        </div>
+        {isExpanded && (
+          <div
+            ref={panelRef}
+            className="absolute left-0 right-0 mt-3 bg-surface-container-lowest rounded-[2rem] editorial-shadow overflow-hidden"
+          >
+            {renderField === "activities" && (
+              <ActivityPanel value={activities} onChange={onActivitiesChange} />
+            )}
+            {renderField === "neighborhood" && (
+              <NeighborhoodPanel value={neighborhood} onChange={onNeighborhoodChange} />
+            )}
+            {renderField === "when" && (
+              <WhenPanel value={when} onChange={onWhenChange} />
+            )}
+            {renderField === "age" && (
+              <AgePanel counts={ageCounts} onUpdate={onAgeUpdate} />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

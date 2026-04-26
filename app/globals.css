@@ -273,7 +273,8 @@
 
 /* ─── Hero Juicy Stage (Motion + GSAP take care of orbs/halo/scroll) ─── */
 .hero-juicy {
-  isolation: isolate;
+  /* No isolation: lets the search-bar popup (z-30 inside hero) layer
+     above sibling sections of <main> like the Closest carousel. */
 }
 
 /* ─── Typewriter cursor caret ─── */

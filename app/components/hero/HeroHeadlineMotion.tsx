@@ -58,6 +58,7 @@ export default function HeroHeadlineMotion({
 
   return (
     <motion.h1
+      data-hero-headline
       className="font-headline font-extrabold text-[2.25rem] md:text-[6rem] leading-[1.1] md:leading-[1.05] tracking-tight text-on-surface mb-6 md:mb-12"
       variants={containerVariants}
       initial="hidden"
