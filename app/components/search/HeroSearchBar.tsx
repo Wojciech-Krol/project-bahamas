@@ -159,11 +159,10 @@ export default function HeroSearchBar({
 
       <div ref={barRef} className="relative" style={{ zIndex: 30 }}>
         <div
-          data-expanded={isExpanded ? "true" : "false"}
-          className={`hero-bar-aura rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative border ${
+          className={`rounded-full transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)] relative ${
             isExpanded
-              ? "bg-surface-container-high shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] scale-[1.02] border-transparent"
-              : "bg-surface-container-lowest shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] hover:scale-[1.015] border-transparent"
+              ? "bg-surface-container-high shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] scale-[1.02]"
+              : "bg-surface-container-lowest shadow-[0_10px_40px_-10px_rgba(232,64,122,0.12)] hover:shadow-[0_20px_60px_-15px_rgba(232,64,122,0.25)] hover:scale-[1.015]"
           }`}
         >
           <div className="flex flex-col md:flex-row items-center gap-1 md:gap-0 p-2.5 transition-all duration-300 relative z-10">
