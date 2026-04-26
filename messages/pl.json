@@ -1193,6 +1193,34 @@
       "emptyState": "Tu pojawi się Twój zespół, gdy zaprosisz pierwszego instruktora.",
       "comingSoon": "Funkcja zaproszeń pojawi się w Phase 2."
     },
+    "settings": {
+      "badge": "Profil partnera",
+      "title": "Ustawienia",
+      "savedToast": "Zapisano.",
+      "contactSupport": "Aby zmienić te wartości, skontaktuj się z naszym zespołem.",
+      "sections": {
+        "profile": "Profil publiczny",
+        "account": "Dane konta"
+      },
+      "fields": {
+        "name": "Nazwa partnera",
+        "slug": "Identyfikator strony",
+        "slugHint": "Pojawi się w URL-u: /school/twój-identyfikator. Małe litery + myślniki.",
+        "contactEmail": "E-mail kontaktowy",
+        "city": "Miasto",
+        "status": "Status",
+        "commission": "Prowizja platformy",
+        "subscription": "Plan",
+        "subscriptionCommission": "Prowizja w ramach planu"
+      },
+      "error": {
+        "invalid_input": "Sprawdź pola i spróbuj ponownie.",
+        "invalid_slug": "Identyfikator może zawierać tylko małe litery, cyfry i myślniki.",
+        "slug_taken": "Ten identyfikator jest już zajęty.",
+        "forbidden": "Brak uprawnień.",
+        "internal": "Błąd zapisu. Spróbuj ponownie."
+      }
+    },
     "mock": {
       "dateBadge": { "weekday": "Piątek", "date": "24 kwietnia" },
       "user": {

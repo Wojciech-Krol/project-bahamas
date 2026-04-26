@@ -136,6 +136,53 @@ export type PartnerVenue = {
   isPublished: boolean;
 };
 
+export type PartnerProfile = {
+  id: string;
+  name: string;
+  slug: string;
+  contactEmail: string;
+  city: string | null;
+  status: string;
+  commissionRateBps: number;
+  subscriptionTier: string;
+  subscriptionCommissionBps: number | null;
+};
+
+export async function getPartnerProfile(
+  partnerId: string,
+): Promise<PartnerProfile | null> {
+  if (!partnerId) return null;
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("partners")
+    .select(
+      "id, name, slug, contact_email, city, status, commission_rate_bps, subscription_tier, subscription_commission_bps",
+    )
+    .eq("id", partnerId)
+    .maybeSingle();
+
+  if (error || !data) return null;
+
+  return {
+    id: data.id as string,
+    name: data.name as string,
+    slug: data.slug as string,
+    contactEmail: data.contact_email as string,
+    city: (data.city as string | null) ?? null,
+    status: data.status as string,
+    commissionRateBps: (data.commission_rate_bps as number) ?? 2000,
+    subscriptionTier: (data.subscription_tier as string) ?? "none",
+    subscriptionCommissionBps:
+      (data.subscription_commission_bps as number | null) ?? null,
+  };
+}
+
 export type PartnerMember = {
   userId: string;
   role: string;
