@@ -136,6 +136,63 @@ export type PartnerVenue = {
   isPublished: boolean;
 };
 
+export type PartnerMember = {
+  userId: string;
+  role: string;
+  fullName: string;
+  avatarUrl: string;
+};
+
+export async function getPartnerMembers(
+  partnerId: string,
+): Promise<PartnerMember[]> {
+  if (!partnerId) return [];
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return [];
+  }
+
+  const { data: members, error } = await supabase
+    .from("partner_members")
+    .select("user_id, role")
+    .eq("partner_id", partnerId);
+
+  if (error || !members) {
+    if (error) console.error("[db/queries/partner.getPartnerMembers]", error);
+    return [];
+  }
+
+  if (members.length === 0) return [];
+
+  const userIds = members
+    .map((m) => (m as { user_id: string }).user_id)
+    .filter(Boolean);
+
+  type ProfileRow = { id: string; full_name: string | null; avatar_url: string | null };
+  const profileById = new Map<string, ProfileRow>();
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from("public_profiles")
+      .select("id, full_name, avatar_url")
+      .in("id", userIds)
+      .returns<ProfileRow[]>();
+    for (const p of profiles ?? []) profileById.set(p.id, p);
+  }
+
+  return members.map((m) => {
+    const r = m as { user_id: string; role: string };
+    const p = profileById.get(r.user_id);
+    return {
+      userId: r.user_id,
+      role: r.role,
+      fullName: p?.full_name ?? "",
+      avatarUrl: p?.avatar_url ?? "",
+    };
+  });
+}
+
 export type PartnerVenueRaw = {
   id: string;
   name: string;

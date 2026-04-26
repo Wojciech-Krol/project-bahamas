@@ -30,10 +30,12 @@ export {
   getActivitiesByPartner,
   getPartnerActivityById,
   getPartnerActivityRawById,
+  getPartnerMembers,
   getPartnerVenueRawById,
   getVenuesByPartner,
   type PartnerActivity,
   type PartnerActivityRaw,
+  type PartnerMember,
   type PartnerVenue,
   type PartnerVenueRaw,
 } from "./partner";
