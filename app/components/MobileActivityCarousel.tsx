@@ -129,13 +129,15 @@ export default function MobileActivityCarousel({
             data-card
             className={`snap-center shrink-0 ${cardSizeClass} rounded-[2rem] overflow-hidden relative editorial-shadow border border-on-surface/[0.05] bg-surface-container-lowest active:scale-[0.98] transition-transform`}
           >
-            <div className="absolute inset-0">
-              <img
-                src={a.imageUrl}
-                alt={a.imageAlt}
-                className="w-full h-full object-cover"
-                draggable={false}
-              />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-fixed to-secondary-fixed">
+              {a.imageUrl && (
+                <img
+                  src={a.imageUrl}
+                  alt={a.imageAlt}
+                  className="w-full h-full object-cover"
+                  draggable={false}
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c17]/95 via-[#1c1c17]/40 to-transparent" />
             </div>
 

@@ -78,6 +78,19 @@ function warnNotConfigured(scope: string): void {
   );
 }
 
+// Cream-to-blush gradient stand-in. Encoded inline so missing DB rows never
+// trigger the "empty src" browser warning, and so we don't ship a binary
+// asset to the bundle. Hex color matches the surface-container palette.
+export const ACTIVITY_HERO_PLACEHOLDER =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 10" preserveAspectRatio="none">' +
+      '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#FAEEDA"/><stop offset="1" stop-color="#E8C7B8"/>' +
+      "</linearGradient></defs>" +
+      '<rect width="16" height="10" fill="url(#g)"/></svg>',
+  );
+
 function composeActivity(row: ActivityRow, locale: Locale): Activity {
   const title = pick(row.title_i18n, locale);
   const description = pick(row.description_i18n, locale);
@@ -95,7 +108,7 @@ function composeActivity(row: ActivityRow, locale: Locale): Activity {
     location,
     neighborhood,
     price: formatPrice(row.price_cents, row.currency, locale),
-    imageUrl: row.hero_image ?? venue?.hero_image ?? "",
+    imageUrl: row.hero_image ?? venue?.hero_image ?? ACTIVITY_HERO_PLACEHOLDER,
     imageAlt: title,
     description: description || undefined,
     duration: formatDuration(row.duration_min, locale) || undefined,

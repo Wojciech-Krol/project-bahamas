@@ -20,12 +20,14 @@ function CompactCard({ activity }: { activity: Activity }) {
       href={`/activity/${activity.id}`}
       className="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden border border-on-surface/[0.05] editorial-shadow hover:-translate-y-0.5 transition-transform duration-200"
     >
-      <div className="relative aspect-[16/10] overflow-hidden">
-        <img
-          src={activity.imageUrl}
-          alt={activity.imageAlt}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+      <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary-fixed to-secondary-fixed">
+        {activity.imageUrl && (
+          <img
+            src={activity.imageUrl}
+            alt={activity.imageAlt}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        )}
         {activity.tag && (
           <span className="absolute top-2 left-2 bg-primary text-on-primary px-2.5 py-0.5 rounded-full text-[0.6rem] font-bold uppercase tracking-widest">
             {activity.tag}

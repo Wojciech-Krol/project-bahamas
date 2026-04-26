@@ -10,6 +10,7 @@
 import { createClient } from "@/src/lib/db/server";
 import type { Activity, Locale, School } from "@/src/lib/db/types";
 import { formatDuration, formatPrice, pick } from "./_i18n";
+import { ACTIVITY_HERO_PLACEHOLDER } from "./activities";
 
 type I18nBag = Record<string, string | null | undefined> | null;
 
@@ -83,7 +84,7 @@ function venueActivityToActivity(
     location: "",
     neighborhood: "",
     price: formatPrice(row.price_cents, row.currency, locale),
-    imageUrl: row.hero_image ?? "",
+    imageUrl: row.hero_image ?? ACTIVITY_HERO_PLACEHOLDER,
     imageAlt: title,
     description: description || undefined,
     duration: formatDuration(row.duration_min, locale) || undefined,
@@ -137,7 +138,7 @@ export async function getVenueById(
     id: data.id,
     name: data.name,
     tagline,
-    heroImage: data.hero_image ?? "",
+    heroImage: data.hero_image ?? ACTIVITY_HERO_PLACEHOLDER,
     logo,
     rating: Number(data.rating ?? 0),
     reviewCount: data.review_count ?? 0,
