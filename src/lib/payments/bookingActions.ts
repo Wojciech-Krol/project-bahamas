@@ -35,6 +35,7 @@ import { getStripe } from "@/src/lib/payments/stripe";
 import { computeCommission } from "@/src/lib/payments/commission";
 import { sendEmail } from "@/src/lib/email/resend";
 import { BookingCancelled } from "@/src/lib/email/templates/BookingCancelled";
+import { createBookingRateLimiter } from "@/src/lib/ratelimit";
 
 // ---------- local types (intentionally NOT exported) ----------
 
@@ -119,6 +120,14 @@ export async function createBooking(
     return { error: "internal" };
   }
   if (!currentUser) return { error: "not_signed_in" };
+
+  // 1b. Rate-limit per user. Authenticated, but a button-mash or scripted
+  //    create-then-abandon flood holds capacity until the 30-min cron
+  //    sweeps the pending row. 5/min is comfortably above any human pace.
+  const limit = await createBookingRateLimiter.check(currentUser.user.id);
+  if (!limit.success) {
+    return { error: "rate_limited" };
+  }
 
   // 2. Load session + activity + venue + partner via the REQUEST-SCOPED
   //    client. RLS allows the anon/user role to see sessions whose parent

@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { createAdminClient } from "@/src/lib/db/admin";
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
+import { venueUploadRateLimiter } from "@/src/lib/ratelimit";
 
 const PHOTO_BUCKET = "venues";
 const PHOTO_MAX_BYTES = 10 * 1024 * 1024; // 10 MB
@@ -128,6 +129,11 @@ async function uploadVenuePhoto(
   if (!venueId) return { error: "invalid_input" };
   const partnerId = await resolveOwningPartnerId(venueId);
   if (!partnerId) return { error: "forbidden" };
+
+  // Rate-limit per partner so a malicious or runaway script can't fill the
+  // venues storage bucket. 30/h is more than enough for real gallery edits.
+  const limit = await venueUploadRateLimiter.check(partnerId);
+  if (!limit.success) return { error: "rate_limited" };
 
   const file = readUploadedFile(formData);
   if (!file) return { error: "no_file" };

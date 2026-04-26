@@ -89,6 +89,7 @@
       "invalidCredentials": "Nieprawidłowy email lub hasło.",
       "emailNotConfirmed": "Potwierdź email klikając link, który wysłaliśmy podczas zakładania konta.",
       "signupFailed": "Nie udało się założyć konta. Spróbuj ponownie.",
+      "rateLimited": "Zbyt wiele prób — spróbuj ponownie za chwilę.",
       "generic": "Coś poszło nie tak. Spróbuj ponownie."
     },
     "login": {
@@ -449,7 +450,8 @@
       "partner_not_connected": "Studio nie obsługuje jeszcze płatności online.",
       "session_not_bookable": "Tego terminu nie można już zarezerwować.",
       "session_in_past": "Termin już się rozpoczął.",
-      "session_full": "Brak wolnych miejsc na ten termin."
+      "session_full": "Brak wolnych miejsc na ten termin.",
+      "rate_limited": "Zbyt wiele prób — odczekaj chwilę i spróbuj ponownie."
     },
     "noSessions": "Brak nadchodzących terminów. Sprawdź ponownie wkrótce.",
     "freeCancel": "Bezpłatna anulacja do 48 godzin przed zajęciami.",
@@ -1153,6 +1155,7 @@
         "not_image": "Tylko JPEG, PNG lub WebP.",
         "forbidden": "Brak uprawnień do tego studia.",
         "invalid_input": "Nieprawidłowe dane.",
+        "rate_limited": "Zbyt wiele plików w krótkim czasie — spróbuj ponownie później.",
         "internal": "Błąd przesyłania. Spróbuj ponownie."
       },
       "gallery": {
