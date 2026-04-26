@@ -64,6 +64,19 @@ if (isProd) {
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["10.5.0.2"],
+  images: {
+    formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      // Supabase Storage — venues + avatars buckets
+      { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
+      // Stock imagery used by mock data + blog covers
+      { protocol: "https", hostname: "images.unsplash.com" },
+      // Avatar placeholder service
+      { protocol: "https", hostname: "i.pravatar.cc" },
+      // Mapbox attribution + tile previews (used by static map images, not gl)
+      { protocol: "https", hostname: "api.mapbox.com" },
+    ],
+  },
   async headers() {
     return [
       {

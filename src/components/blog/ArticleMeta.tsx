@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { format } from "date-fns";
 import { pl as plLocale, enGB } from "date-fns/locale";
 
@@ -28,10 +29,12 @@ export default function ArticleMeta({
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      <img
+      <Image
         src={authorAvatar}
         alt=""
-        className="w-10 h-10 rounded-full object-cover ring-2 ring-white/40"
+        width={40}
+        height={40}
+        className="rounded-full object-cover ring-2 ring-white/40"
       />
       <div className="flex flex-col leading-tight">
         <span className={`font-semibold text-sm ${nameColor}`}>

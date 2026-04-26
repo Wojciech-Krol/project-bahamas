@@ -1,4 +1,5 @@
-﻿import { Link } from "../../../src/i18n/navigation";
+﻿import Image from "next/image";
+import { Link } from "../../../src/i18n/navigation";
 import CategoryPill from "./CategoryPill";
 import ArticleMeta from "./ArticleMeta";
 import type { BlogArticleSummary }  from "@/src/lib/blogContent";
@@ -29,10 +30,12 @@ export default function ArticleCard({
       }`}
     >
       <div className={`relative overflow-hidden ${aspect}`}>
-        <img
+        <Image
           src={article.coverImage}
           alt={article.coverAlt}
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[600ms]"
+          fill
+          sizes={isFeatured ? "(max-width: 768px) 100vw, 60vw" : "(max-width: 768px) 100vw, 33vw"}
+          className="object-cover group-hover:scale-105 transition-transform duration-[600ms]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
         <div className="absolute top-4 left-4 flex items-center gap-2">

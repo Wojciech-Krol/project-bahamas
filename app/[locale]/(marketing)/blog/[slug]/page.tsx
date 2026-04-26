@@ -14,6 +14,9 @@ import { getAllArticles, getAllSlugs, getArticle } from "@/src/lib/blogContent";
 
 type PageProps = { params: Promise<{ locale: string; slug: string }> };
 
+// Blog content is mostly authored copy — revalidate once per day.
+export const revalidate = 86400;
+
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
 }
