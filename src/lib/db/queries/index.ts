@@ -6,12 +6,13 @@
 
 export {
   getActivityById,
+  getActivityBySlug,
   getClosestActivities,
   getFilteredActivities,
   getSearchResults,
   type ActivityFilters,
 } from "./activities";
-export { getVenueById } from "./venues";
+export { getVenueById, getVenueBySlug } from "./venues";
 export {
   getReviews,
   getReviewsByActivity,

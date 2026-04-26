@@ -15,6 +15,7 @@
 
 export type Activity = {
   id: string;
+  slug: string;
   title: string;
   time: string;
   location: string;
@@ -29,6 +30,7 @@ export type Activity = {
   instructorName?: string;
   duration?: string;
   schoolId?: string;
+  schoolSlug?: string;
   schoolName?: string;
   schoolAvatar?: string;
   rating?: number;
@@ -47,6 +49,7 @@ export type Review = {
 
 export type School = {
   id: string;
+  slug: string;
   name: string;
   tagline: string;
   heroImage: string;

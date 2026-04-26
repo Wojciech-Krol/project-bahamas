@@ -23,7 +23,7 @@ export default function ArticleCard({
 
   return (
     <Link
-      href={`/blog/${article.slug}`}
+      href={{ pathname: "/blog/[slug]", params: { slug: article.slug } }}
       className={`group relative flex flex-col overflow-hidden rounded-[2rem] bg-surface-container-lowest border border-on-surface/[0.05] editorial-shadow hover:-translate-y-1 hover:shadow-[0px_30px_60px_rgba(45,10,23,0.12)] transition-all duration-300 ${
         isFeatured ? "h-full" : ""
       }`}

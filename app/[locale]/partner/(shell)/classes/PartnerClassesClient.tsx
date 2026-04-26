@@ -62,7 +62,10 @@ function ClassRow({ a }: { a: PartnerActivity }) {
 
       <div className="flex gap-1 shrink-0">
         <Link
-          href={`/partner/classes/${a.id}`}
+          href={{
+            pathname: "/partner/classes/[id]",
+            params: { id: a.id },
+          }}
           title={tCommon("edit")}
           className="w-9 h-9 rounded-full bg-surface-container-low hover:bg-primary-fixed text-on-surface/60 hover:text-primary flex items-center justify-center transition-colors"
         >

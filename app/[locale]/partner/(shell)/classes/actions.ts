@@ -273,8 +273,8 @@ export async function updateActivity(
   revalidatePath("/partner/classes");
   revalidatePath(`/partner/classes/${activityId}`);
   // Public-facing activity page also needs to refresh.
-  revalidatePath(`/pl/activity/${activityId}`);
-  revalidatePath(`/en/activity/${activityId}`);
+  revalidatePath(`/pl/zajecia/[slug]`, "page");
+  revalidatePath(`/en/activity/[slug]`, "page");
   return { ok: true, id: activityId };
 }
 

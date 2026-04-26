@@ -20,6 +20,7 @@ type I18nBag = Record<string, string | null | undefined> | null;
 
 type ActivityRow = {
   id: string;
+  slug: string | null;
   title_i18n: I18nBag;
   description_i18n: I18nBag;
   price_cents: number;
@@ -33,6 +34,7 @@ type ActivityRow = {
   venue:
     | {
         id: string;
+        slug: string | null;
         name: string;
         address: string | null;
         city: string | null;
@@ -51,6 +53,7 @@ type ActivityRow = {
  */
 const ACTIVITY_SELECT = `
   id,
+  slug,
   title_i18n,
   description_i18n,
   price_cents,
@@ -63,6 +66,7 @@ const ACTIVITY_SELECT = `
   created_at,
   venue:venues!inner (
     id,
+    slug,
     name,
     address,
     city,
@@ -103,6 +107,7 @@ function composeActivity(row: ActivityRow, locale: Locale): Activity {
 
   return {
     id: row.id,
+    slug: row.slug ?? row.id,
     title: title || row.id,
     time: "", // TODO Phase 1b+: compute from next `sessions.starts_at`.
     location,
@@ -114,6 +119,7 @@ function composeActivity(row: ActivityRow, locale: Locale): Activity {
     duration: formatDuration(row.duration_min, locale) || undefined,
     level: row.level ?? undefined,
     schoolId: venue?.id ?? undefined,
+    schoolSlug: venue?.slug ?? undefined,
     schoolName: venueName || undefined,
     // `tag`, `joined`, `rating`, `reviewCount`, `instructorAvatar`,
     // `schoolAvatar` aren't on the current schema — leave undefined for
@@ -260,6 +266,34 @@ export async function getActivityById(
 
   if (error) {
     console.error("[db/queries/activities.getActivityById]", error);
+    return null;
+  }
+
+  if (!data) return null;
+  return composeActivity(data, locale);
+}
+
+/** Loads a single activity by slug (SEO-friendly URL lookup). */
+export async function getActivityBySlug(
+  slug: string,
+  locale: Locale,
+): Promise<Activity | null> {
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    warnNotConfigured("activities.getActivityBySlug");
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("activities")
+    .select(ACTIVITY_SELECT)
+    .eq("slug", slug)
+    .maybeSingle<ActivityRow>();
+
+  if (error) {
+    console.error("[db/queries/activities.getActivityBySlug]", error);
     return null;
   }
 

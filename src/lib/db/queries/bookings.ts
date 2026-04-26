@@ -31,11 +31,13 @@ type BookingDetailRow = {
         activity:
           | {
               id: string;
+              slug: string | null;
               title_i18n: I18nBag;
               hero_image: string | null;
               venue:
                 | {
                     id: string;
+                    slug: string | null;
                     name: string;
                     address: string | null;
                     city: string | null;
@@ -62,10 +64,12 @@ const BOOKING_DETAIL_SELECT = `
     ends_at,
     activity:activities!inner (
       id,
+      slug,
       title_i18n,
       hero_image,
       venue:venues!inner (
         id,
+        slug,
         name,
         address,
         city
@@ -90,11 +94,13 @@ export type BookingDetail = {
   };
   activity: {
     id: string;
+    slug: string;
     title: string;
     heroImage: string | null;
   };
   venue: {
     id: string;
+    slug: string;
     name: string;
     location: string;
   };
@@ -121,11 +127,13 @@ function compose(row: BookingDetailRow, locale: Locale): BookingDetail | null {
     },
     activity: {
       id: activity.id,
+      slug: activity.slug ?? activity.id,
       title: pick(activity.title_i18n, locale) || activity.id,
       heroImage: activity.hero_image,
     },
     venue: {
       id: venue.id,
+      slug: venue.slug ?? venue.id,
       name: venue.name,
       location: venue.address ?? venue.city ?? "",
     },

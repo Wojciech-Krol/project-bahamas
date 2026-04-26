@@ -121,7 +121,10 @@ export default async function BookingDetailPage({
           <div className="p-6 md:p-8 space-y-6">
             <div>
               <Link
-                href={`/activity/${booking.activity.id}`}
+                href={{
+                  pathname: "/activity/[slug]",
+                  params: { slug: booking.activity.slug },
+                }}
                 className="text-sm font-bold uppercase tracking-widest text-primary hover:underline"
               >
                 {booking.activity.title}

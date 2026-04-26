@@ -125,7 +125,10 @@ export default function MobileActivityCarousel({
           : items.map((a) => (
           <Link
             key={a.id}
-            href={`/activity/${a.id}`}
+            href={{
+              pathname: "/activity/[slug]",
+              params: { slug: a.slug ?? a.id },
+            }}
             data-card
             className={`snap-center shrink-0 ${cardSizeClass} rounded-[2rem] overflow-hidden relative editorial-shadow border border-on-surface/[0.05] bg-surface-container-lowest active:scale-[0.98] transition-transform`}
           >

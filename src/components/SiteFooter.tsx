@@ -1,14 +1,21 @@
 import { useTranslations } from "next-intl";
 import { Link } from "../../src/i18n/navigation";
+import type { AppPathname } from "../../src/i18n/routing";
 import { Icon } from "./Icon";
 import BrandLogo from "./BrandLogo";
 import Reveal, { RevealItem } from "./Reveal";
+
+type StaticPath = Exclude<AppPathname, `${string}[${string}]${string}`>;
+
+type FooterLink =
+  | { href: StaticPath; label: string; external?: false }
+  | { href: string; label: string; external: true };
 
 export default function SiteFooter() {
   const t = useTranslations("Footer");
 
   const tBlog = useTranslations("blog");
-  const links: { href: string; label: string; external?: boolean }[] = [
+  const links: FooterLink[] = [
     { href: "/blog", label: tBlog("title") },
     { href: "/privacy", label: t("privacy") },
     { href: "/terms", label: t("terms") },
