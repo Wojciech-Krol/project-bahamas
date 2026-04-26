@@ -27,6 +27,7 @@
  */
 
 import { NextResponse, type NextRequest } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import type Stripe from "stripe";
 
 import { env } from "@/src/env";
@@ -410,6 +411,10 @@ async function handleCheckoutCompleted(
         });
       } catch (err) {
         console.error("[stripe-webhook] overbook apology email failed", err);
+        Sentry.captureException(err, {
+          tags: { kind: "email_send_fail", surface: "overbook_apology" },
+          extra: { bookingId },
+        });
       }
     }
     return;
@@ -521,6 +526,10 @@ async function handleCheckoutCompleted(
     // TODO: move to a deferred queue (Resend has one) so retries don't
     // hammer the user inbox.
     console.error("[stripe-webhook] confirmation email send failed", err);
+    Sentry.captureException(err, {
+      tags: { kind: "email_send_fail", surface: "stripe_webhook" },
+      extra: { bookingId },
+    });
   }
 
   // Silence unused-import lint for BookingCancelled in this file; it is
