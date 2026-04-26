@@ -114,7 +114,15 @@
       "titleStart": "Start something",
       "titleMiddle": "new",
       "titleEnd": "today.",
-      "subtitle": "Hundreds of activities starting near you in the next two hours."
+      "subtitle": "Hundreds of activities starting near you in the next two hours.",
+      "placeholders": [
+        "yoga in 2h",
+        "padel in Mokotów",
+        "kids workshops after 6pm",
+        "climbing tonight",
+        "pottery this weekend",
+        "boxing before work"
+      ]
     },
     "closest": {
       "badge": "Starting soon",
