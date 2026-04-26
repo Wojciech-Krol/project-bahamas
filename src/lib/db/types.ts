@@ -60,4 +60,14 @@ export type School = {
   gallery: string[];
 };
 
+export type SessionSlot = {
+  id: string;
+  activityId: string;
+  startsAt: string;
+  endsAt: string;
+  capacity: number;
+  spotsTaken: number;
+  spotsLeft: number;
+};
+
 export type Locale = "pl" | "en";

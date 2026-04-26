@@ -440,6 +440,7 @@
     "spotsLeft": "{count, plural, one {Only 1 spot left!} other {Only # spots left!}}",
     "spotsLeftShort": "{count, plural, one {1 spot left} other {# spots left}}",
     "bookYourSpot": "Book your spot",
+    "noSessions": "No upcoming sessions. Check back soon.",
     "freeCancel": "Free cancellation up to 48 hours before class.",
     "joiningPulse": "Joining the session",
     "alreadyBooked": "Already booked for this session",
