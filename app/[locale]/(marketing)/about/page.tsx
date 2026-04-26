@@ -5,6 +5,13 @@ import SiteNavbar from "@/src/components/SiteNavbar";
 import SiteFooter from "@/src/components/SiteFooter";
 import BetaSignup from "@/src/components/BetaSignup";
 import { Icon } from "@/src/components/Icon";
+import { localizedAlternates } from "@/app/lib/seoMeta";
+import { routing } from "@/src/i18n/routing";
+import type { Locale } from "@/src/lib/db/types";
+
+function isLocale(value: string): value is Locale {
+  return (routing.locales as readonly string[]).includes(value);
+}
 
 const VALUE_KEYS = [
   { key: "spontaneity", icon: "bolt" },
@@ -19,21 +26,20 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale: raw } = await params;
+  const locale: Locale = isLocale(raw) ? raw : "pl";
   const t = await getTranslations({ locale, namespace: "About.meta" });
+  const alternates = localizedAlternates(locale, "/about");
   return {
     title: t("title"),
     description: t("description"),
     openGraph: {
       title: t("title"),
       description: t("description"),
-      url: `/${locale}/about`,
+      url: alternates.canonical,
       type: "website",
     },
-    alternates: {
-      canonical: `/${locale}/about`,
-      languages: { pl: "/pl/about", en: "/en/about", "x-default": "/pl/about" },
-    },
+    alternates,
   };
 }
 

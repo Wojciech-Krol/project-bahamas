@@ -5,6 +5,7 @@ import { getFilteredActivities } from "@/src/lib/db/queries/activities";
 import { parseSearchQuery } from "@/src/lib/searchQuery";
 import { routing } from "@/src/i18n/routing";
 import type { Locale } from "@/src/lib/db/types";
+import { localizedAlternates } from "@/app/lib/seoMeta";
 
 import SearchClient from "./SearchClient";
 
@@ -19,7 +20,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> {
-  const [{ locale }, sp] = await Promise.all([params, searchParams]);
+  const [{ locale: raw }, sp] = await Promise.all([params, searchParams]);
+  const locale: Locale = isLocale(raw) ? raw : "pl";
   const t = await getTranslations({ locale, namespace: "Metadata" });
   const hasParams = Object.values(sp).some(
     (v) => v !== undefined && v !== "" && v !== "0",
@@ -35,10 +37,7 @@ export async function generateMetadata({
       index: !hasParams,
       follow: true,
     },
-    alternates: {
-      canonical: `/${locale}/search`,
-      languages: { pl: "/pl/search", en: "/en/search" },
-    },
+    alternates: localizedAlternates(locale, "/search"),
   };
 }
 

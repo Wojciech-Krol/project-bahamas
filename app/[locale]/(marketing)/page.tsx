@@ -10,6 +10,7 @@ import {
   organizationSchema,
   websiteSchema,
 } from "@/app/lib/structuredData";
+import { localizedAlternates } from "@/app/lib/seoMeta";
 
 import HomeClient from "./HomeClient";
 
@@ -22,21 +23,20 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale: raw } = await params;
+  const locale: Locale = isLocale(raw) ? raw : "pl";
   const t = await getTranslations({ locale, namespace: "Metadata" });
+  const alternates = localizedAlternates(locale, "/");
   return {
     title: t("titleDefault"),
     description: t("description"),
     openGraph: {
       title: t("ogTitle"),
       description: t("ogDescription"),
-      url: `/${locale}`,
+      url: alternates.canonical,
       type: "website",
     },
-    alternates: {
-      canonical: `/${locale}`,
-      languages: { pl: "/pl", en: "/en", "x-default": "/pl" },
-    },
+    alternates,
   };
 }
 
