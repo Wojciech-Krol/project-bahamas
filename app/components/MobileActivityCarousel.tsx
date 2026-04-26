@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "../../src/i18n/navigation";
 import { Icon } from "./Icon";
-import type { Activity } from "../lib/mockData";
+import type { Activity }  from "@/src/lib/mockData";
 
 export default function MobileActivityCarousel({
   activities,

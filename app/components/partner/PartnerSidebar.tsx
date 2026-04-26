@@ -1,11 +1,11 @@
-"use client";
+﻿"use client";
 
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "../../../src/i18n/navigation";
 import { Icon } from "../Icon";
 import BrandLogo from "../BrandLogo";
 import VenueSwitcher from "./VenueSwitcher";
-import { CURRENT_USER } from "../../lib/partnerMockData";
+import { CURRENT_USER }  from "@/src/lib/partnerMockData";
 
 type NavItem = {
   href: string;

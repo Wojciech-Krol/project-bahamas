@@ -10,7 +10,7 @@ import ArticleBody from "@/app/components/blog/ArticleBody";
 import ArticleCard from "@/app/components/blog/ArticleCard";
 import ArticleMeta from "@/app/components/blog/ArticleMeta";
 import CategoryPill from "@/app/components/blog/CategoryPill";
-import { getAllArticles, getAllSlugs, getArticle } from "@/app/lib/blogContent";
+import { getAllArticles, getAllSlugs, getArticle } from "@/src/lib/blogContent";
 
 type PageProps = { params: Promise<{ locale: string; slug: string }> };
 

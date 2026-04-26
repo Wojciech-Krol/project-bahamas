@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import type { Activity } from "../lib/mockData";
-import { tablerSvgString } from "../lib/tablerIcons";
+import type { Activity }  from "@/src/lib/mockData";
+import { tablerSvgString }  from "@/src/lib/tablerIcons";
 
 type MapPoint = Pick<Activity, "id" | "title" | "price"> & {
   lng: number;

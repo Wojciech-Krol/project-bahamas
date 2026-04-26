@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback, Fragment } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/src/i18n/navigation";
-import { buildSearchQuery } from "@/app/lib/searchQuery";
+import { buildSearchQuery } from "@/src/lib/searchQuery";
 import SiteFooter from "@/app/components/SiteFooter";
 import SiteNavbar from "@/app/components/SiteNavbar";
 import ProximityDots from "@/app/components/ProximityDots";
@@ -28,7 +28,7 @@ import {
   type SearchField,
   type AgeCounts,
 } from "@/app/components/search/constants";
-import type { Activity, Review } from "@/app/lib/mockData";
+import type { Activity, Review } from "@/src/lib/mockData";
 
 function useFormatActivities() {
   const tLabel = useTranslations("Search.activityLabels");

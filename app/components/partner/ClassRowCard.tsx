@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useTranslations } from "next-intl";
 import { Link } from "../../../src/i18n/navigation";
 import { Icon } from "../Icon";
-import type { PartnerClassBase } from "../../lib/partnerMockData";
-import { instructorById } from "../../lib/partnerMockData";
+import type { PartnerClassBase }  from "@/src/lib/partnerMockData";
+import { instructorById }  from "@/src/lib/partnerMockData";
 
 type Props = {
   data: PartnerClassBase;

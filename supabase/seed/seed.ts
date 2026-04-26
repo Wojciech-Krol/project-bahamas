@@ -19,7 +19,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-import { ACTIVITIES_DATA, REVIEWS_DATA } from "../../app/lib/mockData";
+import { ACTIVITIES_DATA, REVIEWS_DATA } from "../../src/lib/mockData";
 
 // ----------------------------------------------------------------------------
 // env

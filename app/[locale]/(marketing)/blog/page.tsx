@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import SiteNavbar from "@/app/components/SiteNavbar";
 import SiteFooter from "@/app/components/SiteFooter";
 import ArticleCard from "@/app/components/blog/ArticleCard";
-import { getAllArticles } from "@/app/lib/blogContent";
+import { getAllArticles } from "@/src/lib/blogContent";
 
 type PageProps = { params: Promise<{ locale: string }> };
 

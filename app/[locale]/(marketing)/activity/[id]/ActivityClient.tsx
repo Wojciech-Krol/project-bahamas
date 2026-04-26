@@ -7,8 +7,8 @@ import SiteFooter from "@/app/components/SiteFooter";
 import ReviewsSection from "@/app/components/ReviewsSection";
 import { Icon } from "@/app/components/Icon";
 import TrackActivityView from "@/app/components/analytics/TrackActivityView";
-import { ACTIVITY_DETAIL_BASE, AVATAR } from "@/app/lib/mockData";
-import type { Activity, Review } from "@/app/lib/mockData";
+import { ACTIVITY_DETAIL_BASE, AVATAR } from "@/src/lib/mockData";
+import type { Activity, Review } from "@/src/lib/mockData";
 import type {
   CurriculumItem,
   InstructorEntry,

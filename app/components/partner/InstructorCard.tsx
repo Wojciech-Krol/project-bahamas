@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useTranslations } from "next-intl";
 import { Icon } from "../Icon";
-import type { PartnerInstructorBase } from "../../lib/partnerMockData";
+import type { PartnerInstructorBase }  from "@/src/lib/partnerMockData";
 
 export default function InstructorCard({ data }: { data: PartnerInstructorBase }) {
   const tInst = useTranslations("Partner.mock.instructors");

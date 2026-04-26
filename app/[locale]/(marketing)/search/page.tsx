@@ -1,7 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 
 import { getFilteredActivities } from "@/src/lib/db/queries/activities";
-import { parseSearchQuery } from "@/app/lib/searchQuery";
+import { parseSearchQuery } from "@/src/lib/searchQuery";
 import { routing } from "@/src/i18n/routing";
 import type { Locale } from "@/src/lib/db/types";
 

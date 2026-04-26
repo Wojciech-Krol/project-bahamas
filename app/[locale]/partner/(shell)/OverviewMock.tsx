@@ -20,7 +20,7 @@ import ActionQueueItem from "@/app/components/partner/ActionQueueItem";
 import {
   OVERVIEW_METRICS,
   SPARKLINE_PATHS,
-} from "@/app/lib/partnerMockData";
+} from "@/src/lib/partnerMockData";
 
 type ScheduleEntry = {
   id: string;

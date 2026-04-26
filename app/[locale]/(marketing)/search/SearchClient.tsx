@@ -10,9 +10,9 @@ import { MobileSearchOverlay } from "@/app/components/search/MobileSearch";
 import { useSearchState } from "@/app/components/search/useSearchState";
 import MapboxMap from "@/app/components/MapboxMap";
 import MobileActivityCarousel from "@/app/components/MobileActivityCarousel";
-import { buildSearchQuery, type SearchParams } from "@/app/lib/searchQuery";
-import type { Activity } from "@/app/lib/mockData";
-import { tablerIconForTitle } from "@/app/lib/categoryIcons";
+import { buildSearchQuery, type SearchParams } from "@/src/lib/searchQuery";
+import type { Activity } from "@/src/lib/mockData";
+import { tablerIconForTitle } from "@/src/lib/categoryIcons";
 
 function CompactCard({ activity }: { activity: Activity }) {
   const t = useTranslations();

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -6,7 +6,7 @@ import { useRouter } from "../../../src/i18n/navigation";
 import HeroSearchBar from "./HeroSearchBar";
 import { MobileSearchPill, MobileSearchOverlay } from "./MobileSearch";
 import { useSearchState } from "./useSearchState";
-import { buildSearchQuery, parseSearchQuery } from "../../lib/searchQuery";
+import { buildSearchQuery, parseSearchQuery }  from "@/src/lib/searchQuery";
 
 export default function PageSearchBar({
   className = "w-full",
