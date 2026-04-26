@@ -56,7 +56,13 @@ const upsertSchema = z.object({
   ageGroup: z.string().max(60).optional(),
   durationMin: z.coerce.number().int().min(5).max(720),
   price: z.coerce.number().min(0).max(100000),
-  currency: z.enum(["PLN", "EUR", "GBP", "USD"]),
+  // Currency is locked to PLN: every Stripe Connect account on the platform
+  // settles in PLN, so accepting other currencies on the editor would let
+  // partners create activities that Stripe accepts but settles with a
+  // surprise FX conversion. Multi-currency support is a separate feature
+  // that needs per-partner Stripe account currency awareness — see
+  // AUDIT_FINDINGS.md entry #3.
+  currency: z.literal("PLN"),
   heroImage: optionalUrl,
   isPublished: z.coerce.boolean().optional(),
   curriculum: z.array(curriculumItemSchema).max(20).default([]),

@@ -24,16 +24,23 @@ import { NextResponse } from "next/server";
  *     Chromium / Firefox / Safari for fetches and form submissions. When
  *     present and equal to `same-origin` (or `none` for top-level navs),
  *     the request is trusted.
+ *   * `same-site` is intentionally REJECTED. It covers sibling subdomains
+ *     under the same eTLD+1 — anything on `*.hakuna.app` would qualify.
+ *     If the platform ever serves a partner-branded subdomain or shares
+ *     a `vercel.app` suffix with untrusted projects, accepting `same-site`
+ *     is a CSRF wedge for the POST routes this guard protects (logout,
+ *     account export). See AUDIT_FINDINGS.md entry #5.
  *   * Fallback: parse the `Origin` header and compare to the request's
  *     own host (via `x-forwarded-host` or `host`).
  */
 export function isSameOriginRequest(request: Request): boolean {
   const sff = request.headers.get("sec-fetch-site");
-  if (sff === "same-origin" || sff === "same-site" || sff === "none") {
+  if (sff === "same-origin" || sff === "none") {
     return true;
   }
   if (sff) {
-    // sec-fetch-site explicitly says cross-site/cross-origin. Reject.
+    // sec-fetch-site present but not same-origin/none (incl. same-site).
+    // Reject.
     return false;
   }
   // Old browsers without sec-fetch-site: fall back to Origin matching.

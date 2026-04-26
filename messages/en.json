@@ -89,6 +89,7 @@
       "invalidCredentials": "Invalid email or password.",
       "emailNotConfirmed": "Confirm your email by clicking the link we sent during signup.",
       "signupFailed": "Could not create account. Please try again.",
+      "rateLimited": "Too many attempts — please try again shortly.",
       "generic": "Something went wrong. Please try again."
     },
     "login": {
@@ -457,7 +458,8 @@
       "partner_not_connected": "This studio doesn't accept online payments yet.",
       "session_not_bookable": "That session can no longer be booked.",
       "session_in_past": "That session has already started.",
-      "session_full": "No spots left on that session."
+      "session_full": "No spots left on that session.",
+      "rate_limited": "Too many attempts — wait a moment and try again."
     },
     "noSessions": "No upcoming sessions. Check back soon.",
     "freeCancel": "Free cancellation up to 48 hours before class.",
@@ -924,6 +926,7 @@
       "save": "Save",
       "create": "Create",
       "cancel": "Cancel",
+      "back": "Back",
       "delete": "Delete",
       "minutes": "{count} min",
       "waitlistShort": "waitlist",
@@ -1161,6 +1164,7 @@
         "not_image": "Only JPEG, PNG, or WebP.",
         "forbidden": "You don't have access to this venue.",
         "invalid_input": "Invalid input.",
+        "rate_limited": "Too many uploads in a short window — try again later.",
         "internal": "Upload failed. Try again."
       },
       "gallery": {

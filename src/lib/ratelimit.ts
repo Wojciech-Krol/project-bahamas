@@ -126,6 +126,48 @@ export const partnerApplyRateLimiter = createRateLimiter("partner-apply", {
   requests: 5,
 });
 
+/** Login attempts: 10 per 15 minutes per IP. Higher than typical because
+ *  password managers + autofill can rapid-fire failed attempts; we tune
+ *  for that without giving credential-stuffing real headroom. */
+export const loginRateLimiter = createRateLimiter("login", {
+  windowSeconds: 15 * 60,
+  requests: 10,
+});
+
+/** Signups: 3 per hour per IP. Bots that spin up disposable inboxes get
+ *  caught quickly; legitimate users only sign up once. */
+export const signupRateLimiter = createRateLimiter("signup", {
+  windowSeconds: 60 * 60,
+  requests: 3,
+});
+
+/** Booking creation: 5 per minute per user. A real booker clicks once
+ *  and waits for the Stripe redirect; anything more is button-mash or
+ *  inventory griefing. */
+export const createBookingRateLimiter = createRateLimiter("create-booking", {
+  windowSeconds: 60,
+  requests: 5,
+});
+
+/** Photo uploads: 30 per hour per partner. Generous enough for a real
+ *  gallery refresh, restrictive enough that no single partner can blow
+ *  the storage bucket budget on their own. */
+export const venueUploadRateLimiter = createRateLimiter("venue-upload", {
+  windowSeconds: 60 * 60,
+  requests: 30,
+});
+
+/** Account deletion request: 1 per 24 hours per user. Deletion is
+ *  reversible only via support, so we never want a button-mash to
+ *  enqueue multiple deletions. */
+export const accountDeletionRateLimiter = createRateLimiter(
+  "account-deletion",
+  {
+    windowSeconds: 24 * 60 * 60,
+    requests: 1,
+  },
+);
+
 /**
  * Extract a best-effort client IP. Reads standard proxy headers in the
  * order Vercel / Cloudflare / generic reverse proxies set them. Accepts

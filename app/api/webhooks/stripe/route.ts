@@ -27,6 +27,7 @@
  */
 
 import { NextResponse, type NextRequest } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import type Stripe from "stripe";
 
 import { env } from "@/src/env";
@@ -35,6 +36,7 @@ import { getStripe } from "@/src/lib/payments/stripe";
 import { sendEmail } from "@/src/lib/email/resend";
 import { BookingConfirmation } from "@/src/lib/email/templates/BookingConfirmation";
 import { BookingCancelled } from "@/src/lib/email/templates/BookingCancelled";
+import { BookingOverbooked } from "@/src/lib/email/templates/BookingOverbooked";
 import { findTierByPriceId } from "@/src/lib/payments/subscriptionTiers";
 
 type ServerEnv = typeof env & {
@@ -326,30 +328,22 @@ async function handleCheckoutCompleted(
     return;
   }
 
-  // Atomic capacity guard — increment only if spots_taken < capacity.
-  // Supabase JS lacks a native compare-and-swap for `col < other_col`, so
-  // we read capacity first (cheap — single integer column) and then
-  // update with an `lt` on the current spots_taken value. This is NOT a
-  // true CAS, but combined with the session row's CHECK constraint
-  // (`spots_taken <= capacity`) it collapses to a serialization error if
-  // two webhooks race, and the second one falls into the overbook branch.
-  const capacity = sessionAny.capacity;
-  const currentSpots = sessionAny.spots_taken;
-
-  let overbooked = false;
-  if (currentSpots >= capacity) {
-    overbooked = true;
-  } else {
-    const { data: updated, error: incErr } = await admin
-      .from("sessions")
-      .update({ spots_taken: currentSpots + 1 })
-      .eq("id", sessionAny.id)
-      .eq("spots_taken", currentSpots) // optimistic concurrency
-      .lt("spots_taken", capacity)
-      .select("id, spots_taken");
-    if (incErr || !updated || updated.length === 0) {
-      overbooked = true;
-    }
+  // Atomic capacity guard — defer the compare-and-increment to the
+  // `increment_spots(s_id)` SQL helper from migration 0008. The helper does
+  // `update sessions set spots_taken = spots_taken + 1 where id = ? and
+  //  spots_taken < capacity returning spots_taken` in a single statement, so
+  // two concurrent webhooks for the same session serialise correctly: the
+  // first wins and increments, the second's WHERE matches zero rows and the
+  // RPC returns NULL. NULL therefore unambiguously means "no capacity left",
+  // not "race lost between an unrelated read and our write" — which is the
+  // bug the previous read-then-CAS pattern shipped (see AUDIT_FINDINGS.md
+  // entry #1).
+  const { data: newCount, error: incErr } = await admin.rpc("increment_spots", {
+    s_id: sessionAny.id,
+  });
+  const overbooked = !!incErr || newCount === null;
+  if (incErr) {
+    console.error("[stripe-webhook] increment_spots rpc failed", incErr);
   }
 
   if (overbooked) {
@@ -379,16 +373,50 @@ async function handleCheckoutCompleted(
       })
       .eq("id", bookingId);
 
-    // Apology email — stub.
-    const locale: "pl" | "en" = "pl";
+    // Apology email to the customer. The card has already been refunded
+    // by the time this lands; the email exists so the user understands the
+    // refund context instead of having to chase it through Stripe alone.
+    const userId = (bookingRow as { user_id: string }).user_id;
+    let userLocale: "pl" | "en" = "pl";
+    let userEmail: string | null = null;
+    try {
+      const { data: authUser } = await admin.auth.admin.getUserById(userId);
+      userEmail = authUser?.user?.email ?? null;
+      const metaLocale = (authUser?.user?.user_metadata as
+        | { locale?: string }
+        | null)?.locale;
+      if (metaLocale === "en") userLocale = "en";
+    } catch (err) {
+      console.error("[stripe-webhook] overbook user lookup failed", err);
+    }
+
     const activityTitle =
-      activityAny.title_i18n?.[locale] ??
+      activityAny.title_i18n?.[userLocale] ??
       activityAny.title_i18n?.pl ??
       "Hakuna booking";
-    console.info("[stripe-webhook] TODO send overbook apology email", {
-      bookingId,
-      activityTitle,
-    });
+
+    if (userEmail) {
+      try {
+        await sendEmail({
+          to: userEmail,
+          subject:
+            userLocale === "pl"
+              ? "Rezerwacja nie powiodła się — pełen zwrot"
+              : "Booking unsuccessful — full refund issued",
+          react: BookingOverbooked({
+            locale: userLocale,
+            activityTitle,
+            bookingId,
+          }),
+        });
+      } catch (err) {
+        console.error("[stripe-webhook] overbook apology email failed", err);
+        Sentry.captureException(err, {
+          tags: { kind: "email_send_fail", surface: "overbook_apology" },
+          extra: { bookingId },
+        });
+      }
+    }
     return;
   }
 
@@ -498,6 +526,10 @@ async function handleCheckoutCompleted(
     // TODO: move to a deferred queue (Resend has one) so retries don't
     // hammer the user inbox.
     console.error("[stripe-webhook] confirmation email send failed", err);
+    Sentry.captureException(err, {
+      tags: { kind: "email_send_fail", surface: "stripe_webhook" },
+      extra: { bookingId },
+    });
   }
 
   // Silence unused-import lint for BookingCancelled in this file; it is

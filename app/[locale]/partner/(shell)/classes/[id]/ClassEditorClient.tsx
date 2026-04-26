@@ -3,7 +3,7 @@
 import { useActionState, useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/src/i18n/navigation";
+import { Link, useRouter } from "@/src/i18n/navigation";
 import { Icon } from "@/app/components/Icon";
 import {
   createActivity,
@@ -69,11 +69,13 @@ export default function ClassEditorClient({
   venues,
   initialCurriculum,
   initialInstructors,
+  mode = "drawer",
 }: {
   activity: PartnerActivityRaw | null;
   venues: PartnerVenue[];
   initialCurriculum: CurriculumItemRaw[];
   initialInstructors: InstructorEntryRaw[];
+  mode?: "drawer" | "page";
 }) {
   const t = useTranslations("Partner.classEditor");
   const tFields = useTranslations("Partner.classEditor.fields");
@@ -208,49 +210,8 @@ export default function ClassEditorClient({
   const descPl = activity?.descriptionI18n.pl ?? "";
   const descEn = activity?.descriptionI18n.en ?? "";
 
-  return (
-    <div className="relative min-h-screen">
-      <button
-        type="button"
-        onClick={close}
-        className="absolute inset-0 bg-on-surface/20 cursor-default"
-        aria-label={tCommon("close")}
-      />
-
-      <aside className="absolute top-0 right-0 bottom-0 w-full max-w-[900px] bg-surface rounded-l-[2rem] overflow-hidden flex flex-col shadow-[-30px_0_80px_-20px_rgba(45,10,23,0.3)]">
-        <header className="px-8 py-5 border-b border-on-surface/5 flex items-center justify-between bg-surface-container-low">
-          <div className="flex items-center gap-3 min-w-0">
-            <button
-              type="button"
-              onClick={close}
-              className="w-9 h-9 rounded-full bg-surface-container-lowest hover:bg-primary-fixed text-on-surface/60 hover:text-primary flex items-center justify-center shrink-0"
-              aria-label={tCommon("close")}
-            >
-              <Icon name="close" className="text-[20px]" />
-            </button>
-            <div className="min-w-0">
-              <div className="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface/50">
-                {isNew ? t("newClass") : t("editing")}
-              </div>
-              <div className="font-headline font-bold text-lg truncate">
-                {titlePl || titleEn || t("untitled")}
-              </div>
-            </div>
-          </div>
-          {!isNew && (
-            <button
-              type="button"
-              onClick={onDelete}
-              disabled={isDeleting}
-              className="text-[0.7rem] font-bold uppercase tracking-widest text-on-surface/60 hover:text-error disabled:opacity-50 px-3 py-2"
-            >
-              {tCommon("delete")}
-            </button>
-          )}
-        </header>
-
-        <form action={formAction} className="flex-1 overflow-auto">
-          <div className="p-8 space-y-8">
+  const formBody = (
+    <>
             <section>
               <h3 className="font-headline font-bold text-lg mb-4">
                 {t("sections.basics")}
@@ -375,17 +336,14 @@ export default function ClassEditorClient({
                   />
                 </Field>
                 <Field label={t("fields.currency")}>
-                  <select
-                    name="currency"
-                    defaultValue={activity?.currency ?? "PLN"}
-                    required
-                    className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/50 rounded-xl focus:outline-none focus:border-primary font-semibold"
-                  >
-                    <option value="PLN">PLN</option>
-                    <option value="EUR">EUR</option>
-                    <option value="GBP">GBP</option>
-                    <option value="USD">USD</option>
-                  </select>
+                  {/* Locked to PLN — every Stripe Connect account on the
+                      platform settles in PLN, so the editor cannot offer
+                      other currencies safely. See
+                      classes/actions.ts upsertSchema. */}
+                  <input type="hidden" name="currency" value="PLN" />
+                  <div className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-on-surface/70 font-semibold">
+                    PLN
+                  </div>
                 </Field>
               </div>
             </section>
@@ -686,7 +644,92 @@ export default function ClassEditorClient({
                 {tErr(state.error)}
               </div>
             )}
+    </>
+  );
+
+  if (mode === "page") {
+    return (
+      <div className="max-w-[1100px] mx-auto px-6 md:px-10 py-8">
+        <header className="mb-8">
+          <Link
+            href="/partner/classes"
+            className="inline-flex items-center gap-2 text-[0.7rem] font-bold uppercase tracking-widest text-on-surface/60 hover:text-primary mb-4"
+          >
+            <Icon name="arrow_back" className="text-[18px]" />
+            {tCommon("back")}
+          </Link>
+          <div className="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface/50 mb-2">
+            {t("newClass")}
           </div>
+          <h1 className="font-headline font-extrabold text-3xl md:text-4xl tracking-tight">
+            {titlePl || titleEn || t("untitled")}
+          </h1>
+        </header>
+
+        <form action={formAction}>
+          <div className="space-y-8">{formBody}</div>
+
+          <footer className="sticky bottom-0 mt-8 -mx-6 md:-mx-10 px-6 md:px-10 py-4 bg-surface-container-low/90 backdrop-blur border-t border-on-surface/5 flex items-center justify-end gap-3">
+            <Link
+              href="/partner/classes"
+              className="px-5 py-2.5 rounded-xl font-headline uppercase tracking-widest text-[0.7rem] font-bold text-on-surface/60 hover:text-on-surface"
+            >
+              {tCommon("cancel")}
+            </Link>
+            <SubmitButton
+              labelSave={tCommon("save")}
+              labelCreate={tCommon("create")}
+              isNew={isNew}
+            />
+          </footer>
+        </form>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative min-h-screen">
+      <button
+        type="button"
+        onClick={close}
+        className="absolute inset-0 bg-on-surface/20 cursor-default"
+        aria-label={tCommon("close")}
+      />
+
+      <aside className="absolute top-0 right-0 bottom-0 w-full max-w-[900px] bg-surface rounded-l-[2rem] overflow-hidden flex flex-col shadow-[-30px_0_80px_-20px_rgba(45,10,23,0.3)]">
+        <header className="px-8 py-5 border-b border-on-surface/5 flex items-center justify-between bg-surface-container-low">
+          <div className="flex items-center gap-3 min-w-0">
+            <button
+              type="button"
+              onClick={close}
+              className="w-9 h-9 rounded-full bg-surface-container-lowest hover:bg-primary-fixed text-on-surface/60 hover:text-primary flex items-center justify-center shrink-0"
+              aria-label={tCommon("close")}
+            >
+              <Icon name="close" className="text-[20px]" />
+            </button>
+            <div className="min-w-0">
+              <div className="text-[0.6rem] font-bold uppercase tracking-widest text-on-surface/50">
+                {isNew ? t("newClass") : t("editing")}
+              </div>
+              <div className="font-headline font-bold text-lg truncate">
+                {titlePl || titleEn || t("untitled")}
+              </div>
+            </div>
+          </div>
+          {!isNew && (
+            <button
+              type="button"
+              onClick={onDelete}
+              disabled={isDeleting}
+              className="text-[0.7rem] font-bold uppercase tracking-widest text-on-surface/60 hover:text-error disabled:opacity-50 px-3 py-2"
+            >
+              {tCommon("delete")}
+            </button>
+          )}
+        </header>
+
+        <form action={formAction} className="flex-1 overflow-auto">
+          <div className="p-8 space-y-8">{formBody}</div>
 
           <footer className="sticky bottom-0 px-8 py-4 border-t border-on-surface/5 bg-surface flex items-center justify-end gap-2">
             <button
