@@ -1,18 +1,16 @@
 {
   "Metadata": {
-    "title": "HAKUNA | Zacznij coś nowego — dziś",
+    "titleDefault": "Znajdź coś dla siebie",
+    "titleTemplate": "%s · Znajdź coś dla siebie",
     "description": "Znajdź i zarezerwuj najlepsze zajęcia obok Ciebie. Joga, sport, ceramika, muzyka — odkryj to, co dzieje się w Twojej okolicy w najbliższe dwie godziny.",
-    "ogTitle": "HAKUNA | Zacznij coś nowego — dziś",
+    "ogTitle": "Znajdź coś dla siebie",
     "ogDescription": "Znajdź i zarezerwuj najlepsze zajęcia obok Ciebie.",
     "keywords": "zajęcia, warsztaty, joga, sport, taniec, ceramika, muzyka, Warszawa, Hakuna, rezerwacja",
     "blog": {
-      "title": "Dziennik Hakuny | Historie, przewodniki i miejskie podpowiedzi",
+      "title": "Dziennik Hakuny",
       "description": "Cotygodniowe teksty o życiu w mieście, dobrostanie i tym, jak powiedzieć „tak” swojej okolicy. Ręcznie pisane przewodniki społeczności Hakuna.",
       "ogTitle": "Dziennik Hakuny",
       "ogDescription": "Historie, przewodniki i miejskie podpowiedzi od społeczności Hakuny."
-    },
-    "blogArticle": {
-      "titleSuffix": "| Dziennik Hakuny"
     }
   },
   "Common": {
