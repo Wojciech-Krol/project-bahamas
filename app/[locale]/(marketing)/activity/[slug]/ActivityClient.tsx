@@ -84,7 +84,7 @@ export default function ActivityClient({
       }
       if ("error" in result) {
         if (result.error === "not_signed_in") {
-          const next = encodeURIComponent(`/${locale}/activity/${id}`);
+          const next = encodeURIComponent(window.location.pathname);
           window.location.href = `/${locale}/login?next=${next}`;
           return;
         }

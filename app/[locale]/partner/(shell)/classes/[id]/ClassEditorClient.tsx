@@ -181,7 +181,10 @@ export default function ClassEditorClient({
       : await updateActivity(activity.id, formData);
     if ("ok" in result && result.ok) {
       if (isNew) {
-        router.push(`/partner/classes/${result.id}`);
+        router.push({
+          pathname: "/partner/classes/[id]",
+          params: { id: result.id },
+        });
       }
     }
     return result;

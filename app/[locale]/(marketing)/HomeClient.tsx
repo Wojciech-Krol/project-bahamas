@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback, Fragment } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/src/i18n/navigation";
-import { buildSearchQuery } from "@/src/lib/searchQuery";
+import { buildSearchQueryRecord } from "@/src/lib/searchQuery";
 import SiteFooter from "@/src/components/SiteFooter";
 import SiteNavbar from "@/src/components/SiteNavbar";
 import ProximityDots from "@/src/components/ProximityDots";
@@ -346,8 +346,13 @@ export default function HomeClient({
   }, []);
 
   const submitSearch = useCallback(() => {
-    const qs = buildSearchQuery({ activities, neighborhood, when, ageCounts });
-    router.push(`/search${qs ? `?${qs}` : ""}`);
+    const query = buildSearchQueryRecord({
+      activities,
+      neighborhood,
+      when,
+      ageCounts,
+    });
+    router.push({ pathname: "/search", query });
     setNavExpandedField(null);
     setMobileSearchOpen(false);
   }, [activities, neighborhood, when, ageCounts, router]);

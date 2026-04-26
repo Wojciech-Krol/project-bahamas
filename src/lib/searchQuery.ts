@@ -25,6 +25,17 @@ export function buildSearchQuery(p: SearchParams): string {
   return sp.toString();
 }
 
+export function buildSearchQueryRecord(p: SearchParams): Record<string, string> {
+  const out: Record<string, string> = {};
+  if (p.activities) out.activities = p.activities;
+  if (p.neighborhood) out.neighborhood = p.neighborhood;
+  if (p.when) out.when = p.when;
+  if (p.ageCounts.kids) out.kids = String(p.ageCounts.kids);
+  if (p.ageCounts.teens) out.teens = String(p.ageCounts.teens);
+  if (p.ageCounts.adults !== 1) out.adults = String(p.ageCounts.adults);
+  return out;
+}
+
 type ParamSource =
   | URLSearchParams
   | { get(key: string): string | null }

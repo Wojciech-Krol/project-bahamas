@@ -38,7 +38,10 @@ function ClassCard({ c }: { c: Activity }) {
         <div className="flex items-center justify-between mt-auto pt-3">
           <span className="font-bold text-primary">{c.price}</span>
           <Link
-            href={`/activity/${c.id}`}
+            href={{
+              pathname: "/activity/[slug]",
+              params: { slug: c.slug ?? c.id },
+            }}
             className="bg-primary-fixed text-primary px-4 py-2 rounded-full font-semibold text-sm hover:bg-primary hover:text-on-primary transition-colors"
           >
             {tCommon("book")}

@@ -2,13 +2,16 @@
 
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "../../../src/i18n/navigation";
+import type { AppPathname } from "../../../src/i18n/routing";
 import { Icon } from "../Icon";
 import BrandLogo from "../BrandLogo";
 import VenueSwitcher from "./VenueSwitcher";
 import { CURRENT_USER }  from "@/src/lib/partnerMockData";
 
+type StaticPath = Exclude<AppPathname, `${string}[${string}]${string}`>;
+
 type NavItem = {
-  href: string;
+  href: StaticPath;
   icon: string;
   labelKey: string;
   badge?: string;

@@ -6,7 +6,7 @@ import { useRouter } from "../../../src/i18n/navigation";
 import HeroSearchBar from "./HeroSearchBar";
 import { MobileSearchPill, MobileSearchOverlay } from "./MobileSearch";
 import { useSearchState } from "./useSearchState";
-import { buildSearchQuery, parseSearchQuery }  from "@/src/lib/searchQuery";
+import { buildSearchQueryRecord, parseSearchQuery } from "@/src/lib/searchQuery";
 
 export default function PageSearchBar({
   className = "w-full",
@@ -23,8 +23,8 @@ export default function PageSearchBar({
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const submit = useCallback(() => {
-    const qs = buildSearchQuery(s.params);
-    router.push(`/search${qs ? `?${qs}` : ""}`);
+    const query = buildSearchQueryRecord(s.params);
+    router.push({ pathname: "/search", query });
   }, [s.params, router]);
 
   return (

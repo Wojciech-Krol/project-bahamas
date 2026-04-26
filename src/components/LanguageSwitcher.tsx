@@ -1,6 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { useRouter, usePathname } from "../../src/i18n/navigation";
 import { routing, type Locale } from "../../src/i18n/routing";
 import { useState, useRef, useEffect } from "react";
@@ -21,6 +22,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
   const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
+  const params = useParams();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -36,7 +38,12 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
   const switchTo = (next: Locale) => {
     setOpen(false);
     if (next === locale) return;
-    router.replace(pathname, { locale: next });
+    // next-intl's typed pathnames refuse a bare dynamic pathname (e.g.
+    // "/activity/[slug]") because the union type forces params to match
+    // a specific pathname literal; we pass the current params through so
+    // the locale swap stays on the same route.
+    const target = { pathname, params } as Parameters<typeof router.replace>[0];
+    router.replace(target, { locale: next });
   };
 
   return (

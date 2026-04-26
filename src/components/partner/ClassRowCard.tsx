@@ -124,7 +124,10 @@ export default function ClassRowCard({ data }: Props) {
       <div className="flex gap-1 shrink-0">
         {data.needsInstructor ? (
           <Link
-            href={`/partner/classes/${data.id}`}
+            href={{
+              pathname: "/partner/classes/[id]",
+              params: { id: data.id },
+            }}
             className="bg-primary text-on-primary px-4 py-2 rounded-full text-[0.65rem] font-bold uppercase tracking-widest whitespace-nowrap"
           >
             {tCommon("assign")}
@@ -139,7 +142,10 @@ export default function ClassRowCard({ data }: Props) {
               <Icon name="content_copy" className="text-[18px]" />
             </button>
             <Link
-              href={`/partner/classes/${data.id}`}
+              href={{
+                pathname: "/partner/classes/[id]",
+                params: { id: data.id },
+              }}
               title={tCommon("edit")}
               className="w-9 h-9 rounded-full bg-surface-container-low hover:bg-primary-fixed text-on-surface/60 hover:text-primary flex items-center justify-center transition-colors"
             >

@@ -10,7 +10,7 @@ import { MobileSearchOverlay } from "@/src/components/search/MobileSearch";
 import { useSearchState } from "@/src/components/search/useSearchState";
 import MapboxMap from "@/src/components/MapboxMap";
 import MobileActivityCarousel from "@/src/components/MobileActivityCarousel";
-import { buildSearchQuery, type SearchParams } from "@/src/lib/searchQuery";
+import { buildSearchQueryRecord, type SearchParams } from "@/src/lib/searchQuery";
 import type { Activity } from "@/src/lib/mockData";
 import { tablerIconForTitle } from "@/src/lib/categoryIcons";
 
@@ -18,7 +18,10 @@ function CompactCard({ activity }: { activity: Activity }) {
   const t = useTranslations();
   return (
     <Link
-      href={`/activity/${activity.id}`}
+      href={{
+        pathname: "/activity/[slug]",
+        params: { slug: activity.slug ?? activity.id },
+      }}
       className="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden border border-on-surface/[0.05] editorial-shadow hover:-translate-y-0.5 transition-transform duration-200"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary-fixed to-secondary-fixed">
@@ -192,10 +195,10 @@ export default function SearchClient({
   const [isPending, startTransition] = useTransition();
 
   const submit = useCallback(() => {
-    const qs = buildSearchQuery(s.params);
+    const query = buildSearchQueryRecord(s.params);
     setSearchOpen(false);
     startTransition(() => {
-      router.push(`/search${qs ? `?${qs}` : ""}`);
+      router.push({ pathname: "/search", query });
     });
   }, [s.params, router]);
 
