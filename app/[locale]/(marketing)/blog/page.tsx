@@ -1,9 +1,9 @@
 ﻿import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import SiteNavbar from "@/app/components/SiteNavbar";
-import SiteFooter from "@/app/components/SiteFooter";
-import ArticleCard from "@/app/components/blog/ArticleCard";
-import { getAllArticles } from "@/app/lib/blogContent";
+import SiteNavbar from "@/src/components/SiteNavbar";
+import SiteFooter from "@/src/components/SiteFooter";
+import ArticleCard from "@/src/components/blog/ArticleCard";
+import { getAllArticles } from "@/src/lib/blogContent";
 
 type PageProps = { params: Promise<{ locale: string }> };
 

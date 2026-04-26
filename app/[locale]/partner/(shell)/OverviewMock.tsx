@@ -13,14 +13,14 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
-import { Icon } from "@/app/components/Icon";
-import MetricCard from "@/app/components/partner/MetricCard";
-import ScheduleRow from "@/app/components/partner/ScheduleRow";
-import ActionQueueItem from "@/app/components/partner/ActionQueueItem";
+import { Icon } from "@/src/components/Icon";
+import MetricCard from "@/src/components/partner/MetricCard";
+import ScheduleRow from "@/src/components/partner/ScheduleRow";
+import ActionQueueItem from "@/src/components/partner/ActionQueueItem";
 import {
   OVERVIEW_METRICS,
   SPARKLINE_PATHS,
-} from "@/app/lib/partnerMockData";
+} from "@/src/lib/partnerMockData";
 
 type ScheduleEntry = {
   id: string;

@@ -3,16 +3,19 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/src/i18n/navigation";
 import { routing } from "@/src/i18n/routing";
-import SiteNavbar from "@/app/components/SiteNavbar";
-import SiteFooter from "@/app/components/SiteFooter";
-import { Icon } from "@/app/components/Icon";
-import ArticleBody from "@/app/components/blog/ArticleBody";
-import ArticleCard from "@/app/components/blog/ArticleCard";
-import ArticleMeta from "@/app/components/blog/ArticleMeta";
-import CategoryPill from "@/app/components/blog/CategoryPill";
-import { getAllArticles, getAllSlugs, getArticle } from "@/app/lib/blogContent";
+import SiteNavbar from "@/src/components/SiteNavbar";
+import SiteFooter from "@/src/components/SiteFooter";
+import { Icon } from "@/src/components/Icon";
+import ArticleBody from "@/src/components/blog/ArticleBody";
+import ArticleCard from "@/src/components/blog/ArticleCard";
+import ArticleMeta from "@/src/components/blog/ArticleMeta";
+import CategoryPill from "@/src/components/blog/CategoryPill";
+import { getAllArticles, getAllSlugs, getArticle } from "@/src/lib/blogContent";
 
 type PageProps = { params: Promise<{ locale: string; slug: string }> };
+
+// Blog content is mostly authored copy — revalidate once per day.
+export const revalidate = 86400;
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -22,11 +25,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale, slug } = await params;
   const article = await getArticle(slug, locale);
   if (!article) return {};
-  const suffix = (await getTranslations({ locale, namespace: "Metadata.blogArticle" }))(
-    "titleSuffix"
-  );
   return {
-    title: `${article.title} ${suffix}`,
+    title: article.title,
     description: article.excerpt,
     openGraph: {
       title: article.title,
@@ -57,7 +57,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
   const allArticles = await getAllArticles(locale);
   const related = allArticles.filter((a) => a.slug !== slug).slice(0, 3);
 
-  const siteUrl = "https://hakuna.example";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.club";
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",

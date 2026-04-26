@@ -1,31 +1,46 @@
 "use client";
 
-import { useCallback, useMemo, useState, useRef } from "react";
+import { useCallback, useMemo, useState, useRef, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/src/i18n/navigation";
-import SiteNavbar from "@/app/components/SiteNavbar";
-import { Icon } from "@/app/components/Icon";
-import PageSearchBar from "@/app/components/search/PageSearchBar";
-import { MobileSearchOverlay } from "@/app/components/search/MobileSearch";
-import { useSearchState } from "@/app/components/search/useSearchState";
-import MapboxMap from "@/app/components/MapboxMap";
-import MobileActivityCarousel from "@/app/components/MobileActivityCarousel";
-import { buildSearchQuery, type SearchParams } from "@/app/lib/searchQuery";
-import type { Activity } from "@/app/lib/mockData";
+import SiteNavbar from "@/src/components/SiteNavbar";
+import { Icon } from "@/src/components/Icon";
+import PageSearchBar from "@/src/components/search/PageSearchBar";
+import { MobileSearchOverlay } from "@/src/components/search/MobileSearch";
+import { useSearchState } from "@/src/components/search/useSearchState";
+import dynamic from "next/dynamic";
+
+// Mapbox GL pulls ~90KB gzipped + 30KB CSS — keep it off the search page's
+// initial bundle. ssr:false because mapbox-gl touches `window` at import.
+const MapboxMap = dynamic(() => import("@/src/components/MapboxMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 bg-surface-container-low animate-pulse" />
+  ),
+});
+import MobileActivityCarousel from "@/src/components/MobileActivityCarousel";
+import { buildSearchQueryRecord, type SearchParams } from "@/src/lib/searchQuery";
+import type { Activity } from "@/src/lib/mockData";
+import { tablerIconForTitle } from "@/src/lib/categoryIcons";
 
 function CompactCard({ activity }: { activity: Activity }) {
   const t = useTranslations();
   return (
     <Link
-      href={`/activity/${activity.id}`}
+      href={{
+        pathname: "/activity/[slug]",
+        params: { slug: activity.slug ?? activity.id },
+      }}
       className="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden border border-on-surface/[0.05] editorial-shadow hover:-translate-y-0.5 transition-transform duration-200"
     >
-      <div className="relative aspect-[16/10] overflow-hidden">
-        <img
-          src={activity.imageUrl}
-          alt={activity.imageAlt}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+      <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary-fixed to-secondary-fixed">
+        {activity.imageUrl && (
+          <img
+            src={activity.imageUrl}
+            alt={activity.imageAlt}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        )}
         {activity.tag && (
           <span className="absolute top-2 left-2 bg-primary text-on-primary px-2.5 py-0.5 rounded-full text-[0.6rem] font-bold uppercase tracking-widest">
             {activity.tag}
@@ -76,17 +91,6 @@ function CompactCard({ activity }: { activity: Activity }) {
 }
 
 const WARSAW_CENTER: [number, number] = [21.0122, 52.2297];
-
-function activityIcon(title: string): string {
-  const t = title.toLowerCase();
-  if (t.includes("tennis") || t.includes("tenis")) return "sports_tennis";
-  if (t.includes("yoga") || t.includes("hatha") || t.includes("joga")) return "self_improvement";
-  if (t.includes("swim") || t.includes("pływan")) return "pool";
-  if (t.includes("guitar") || t.includes("music") || t.includes("gitar") || t.includes("muzyk")) return "music_note";
-  if (t.includes("boxing") || t.includes("boks")) return "sports_mma";
-  if (t.includes("run") || t.includes("biega")) return "directions_run";
-  return "location_on";
-}
 
 function MobileTopBar({
   onOpenSearch,
@@ -197,11 +201,14 @@ export default function SearchClient({
   const router = useRouter();
   const s = useSearchState(initial);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const submit = useCallback(() => {
-    const qs = buildSearchQuery(s.params);
-    router.push(`/search${qs ? `?${qs}` : ""}`);
+    const query = buildSearchQueryRecord(s.params);
     setSearchOpen(false);
+    startTransition(() => {
+      router.push({ pathname: "/search", query });
+    });
   }, [s.params, router]);
 
   const points = useMemo(
@@ -215,7 +222,7 @@ export default function SearchClient({
           price: r.price.split("/")[0],
           lng: WARSAW_CENTER[0] + Math.cos(angle) * radius,
           lat: WARSAW_CENTER[1] + Math.sin(angle) * radius * 0.6,
-          icon: activityIcon(r.title),
+          icon: tablerIconForTitle(r.title),
         };
       }),
     [results]
@@ -254,12 +261,13 @@ export default function SearchClient({
         city={t("Search.defaultCity")}
       >
         <MobileActivityCarousel
-          activities={results}
+          activities={isPending ? [] : results}
           showHeader={false}
           maxItems={results.length}
           fillHeight
           detailed
           fullWidth
+          loading={isPending}
           className="w-full h-full"
         />
       </MobileBottomSheet>

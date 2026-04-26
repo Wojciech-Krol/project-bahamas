@@ -3,32 +3,32 @@
 import { useEffect, useRef, useState, useCallback, Fragment } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/src/i18n/navigation";
-import { buildSearchQuery } from "@/app/lib/searchQuery";
-import SiteFooter from "@/app/components/SiteFooter";
-import SiteNavbar from "@/app/components/SiteNavbar";
-import ProximityDots from "@/app/components/ProximityDots";
-import Reveal from "@/app/components/Reveal";
-import BetaSignup from "@/app/components/BetaSignup";
-import ReviewsSection from "@/app/components/ReviewsSection";
-import ClosestToYouCarousel from "@/app/components/ClosestToYouCarousel";
-import MobileActivityCarousel from "@/app/components/MobileActivityCarousel";
-import { Icon } from "@/app/components/Icon";
-import HeroJuicyStage from "@/app/components/hero/HeroJuicyStage";
-import HeroSearchBar from "@/app/components/search/HeroSearchBar";
-import SearchSegment from "@/app/components/search/SearchSegment";
-import { MobileSearchPill, MobileSearchOverlay } from "@/app/components/search/MobileSearch";
+import { buildSearchQueryRecord } from "@/src/lib/searchQuery";
+import SiteFooter from "@/src/components/SiteFooter";
+import SiteNavbar from "@/src/components/SiteNavbar";
+import ProximityDots from "@/src/components/ProximityDots";
+import Reveal from "@/src/components/Reveal";
+import BetaSignup from "@/src/components/BetaSignup";
+import ReviewsSection from "@/src/components/ReviewsSection";
+import ClosestToYouCarousel from "@/src/components/ClosestToYouCarousel";
+import MobileActivityCarousel from "@/src/components/MobileActivityCarousel";
+import { Icon } from "@/src/components/Icon";
+import HeroJuicyStage from "@/src/components/hero/HeroJuicyStage";
+import HeroSearchBar from "@/src/components/search/HeroSearchBar";
+import SearchSegment from "@/src/components/search/SearchSegment";
+import { MobileSearchPill, MobileSearchOverlay } from "@/src/components/search/MobileSearch";
 import {
   ActivityPanel,
   NeighborhoodPanel,
   WhenPanel,
   AgePanel,
-} from "@/app/components/search/panels";
+} from "@/src/components/search/panels";
 import {
   formatMultiSelectDisplay,
   type SearchField,
   type AgeCounts,
-} from "@/app/components/search/constants";
-import type { Activity, Review } from "@/app/lib/mockData";
+} from "@/src/components/search/constants";
+import type { Activity, Review } from "@/src/lib/mockData";
 
 function useFormatActivities() {
   const tLabel = useTranslations("Search.activityLabels");
@@ -346,8 +346,13 @@ export default function HomeClient({
   }, []);
 
   const submitSearch = useCallback(() => {
-    const qs = buildSearchQuery({ activities, neighborhood, when, ageCounts });
-    router.push(`/search${qs ? `?${qs}` : ""}`);
+    const query = buildSearchQueryRecord({
+      activities,
+      neighborhood,
+      when,
+      ageCounts,
+    });
+    router.push({ pathname: "/search", query });
     setNavExpandedField(null);
     setMobileSearchOpen(false);
   }, [activities, neighborhood, when, ageCounts, router]);
@@ -414,6 +419,19 @@ export default function HomeClient({
 
         <section className="max-w-site mx-auto px-4 md:px-6 pt-2 pb-8 md:pt-6 md:pb-24 relative">
           <div className="md:hidden">
+            <Reveal stagger={0.08} className="mb-6 space-y-3">
+              <Reveal.Item>
+                <span className="inline-block bg-secondary-container px-3 py-1 rounded-full text-[0.6rem] font-bold uppercase tracking-widest text-on-secondary-container">
+                  {t("Home.closest.badge")}
+                </span>
+              </Reveal.Item>
+              <Reveal.Item as="h2" className="text-4xl font-headline font-bold leading-[1.05] tracking-tighter">
+                {t("Home.closest.headingStart")} {t("Home.closest.headingEnd")}
+              </Reveal.Item>
+              <Reveal.Item as="p" className="text-base text-on-surface/60">
+                {t("Home.closest.body")}
+              </Reveal.Item>
+            </Reveal>
             <MobileActivityCarousel activities={closestActivities} />
           </div>
 

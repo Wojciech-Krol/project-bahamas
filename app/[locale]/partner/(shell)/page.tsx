@@ -26,10 +26,10 @@ import { pick } from "@/src/lib/db/queries/_i18n";
 import { createClient } from "@/src/lib/db/server";
 import type { Locale } from "@/src/lib/db/types";
 
-import BookingsTrendChart from "@/app/components/partner/analytics/BookingsTrendChart";
-import OccupancyHeatmap from "@/app/components/partner/analytics/OccupancyHeatmap";
-import RevenueCards from "@/app/components/partner/analytics/RevenueCards";
-import TopActivitiesList from "@/app/components/partner/analytics/TopActivitiesList";
+import BookingsTrendChart from "@/src/components/partner/analytics/BookingsTrendChart";
+import OccupancyHeatmap from "@/src/components/partner/analytics/OccupancyHeatmap";
+import RevenueCards from "@/src/components/partner/analytics/RevenueCards";
+import TopActivitiesList from "@/src/components/partner/analytics/TopActivitiesList";
 
 import OverviewMock from "./OverviewMock";
 

@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
 import { getAccountStatus, type AccountStatus } from "@/src/lib/payments/stripeConnect";
 import { env } from "@/src/env";

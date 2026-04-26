@@ -1,18 +1,16 @@
 {
   "Metadata": {
-    "title": "HAKUNA | Start something new — today",
+    "titleDefault": "Find your thing",
+    "titleTemplate": "%s · Find your thing",
     "description": "Find and book the best activities near you. Yoga, sport, pottery, music — discover what's happening in your neighborhood in the next two hours.",
-    "ogTitle": "HAKUNA | Start something new — today",
+    "ogTitle": "Find your thing",
     "ogDescription": "Find and book the best activities near you.",
     "keywords": "activities, classes, sports, yoga, pottery, workshops, dance, music, Hakuna, booking",
     "blog": {
-      "title": "The Hakuna Journal | Stories, guides & city picks",
+      "title": "The Hakuna Journal",
       "description": "Weekly reads on local life, wellness, and how to say yes to your city. Hand-written guides from the Hakuna community.",
       "ogTitle": "The Hakuna Journal",
       "ogDescription": "Stories, guides & city picks from the Hakuna community."
-    },
-    "blogArticle": {
-      "titleSuffix": "| Hakuna Journal"
     }
   },
   "Common": {
@@ -292,6 +290,10 @@
     "linkedin": "LinkedIn"
   },
   "About": {
+    "meta": {
+      "title": "About Hakuna — local activity discovery platform",
+      "description": "Hakuna helps you find and book activities near you. Learn about our vision, team, and story."
+    },
     "badge": "Our vision",
     "heroStart": "A city you",
     "heroEmphasis": "actually",
