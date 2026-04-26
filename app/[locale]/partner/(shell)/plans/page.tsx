@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
 import { SUBSCRIPTION_TIERS, type SubscriptionTier } from "@/src/lib/payments/subscriptionTiers";
 import { env } from "@/src/env";

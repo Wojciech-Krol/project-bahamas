@@ -3,7 +3,7 @@
 import { useActionState, useMemo, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 
 import {
   confirmActivityMap,

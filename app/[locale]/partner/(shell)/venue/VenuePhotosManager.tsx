@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 
 import {
   removeVenueGalleryPhoto,

@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 import { getPartnerMembers } from "@/src/lib/db/queries";
 import { getPartnerIdForCurrentUser } from "@/src/lib/db/queries/analytics";
 

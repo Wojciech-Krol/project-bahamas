@@ -9,9 +9,9 @@ import { createClient } from "@/src/lib/db/server";
 import { routing } from "@/src/i18n/routing";
 import type { Locale } from "@/src/lib/db/types";
 
-import BookingsTrendChart from "@/app/components/partner/analytics/BookingsTrendChart";
-import OccupancyHeatmap from "@/app/components/partner/analytics/OccupancyHeatmap";
-import TopActivitiesList from "@/app/components/partner/analytics/TopActivitiesList";
+import BookingsTrendChart from "@/src/components/partner/analytics/BookingsTrendChart";
+import OccupancyHeatmap from "@/src/components/partner/analytics/OccupancyHeatmap";
+import TopActivitiesList from "@/src/components/partner/analytics/TopActivitiesList";
 
 function isLocale(value: string): value is Locale {
   return (routing.locales as readonly string[]).includes(value);

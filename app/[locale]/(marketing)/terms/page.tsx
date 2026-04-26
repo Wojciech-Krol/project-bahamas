@@ -1,4 +1,4 @@
-﻿import LegalPage from "@/app/components/LegalPage";
+﻿import LegalPage from "@/src/components/LegalPage";
 
 const SECTIONS = ["eligibility", "bookings", "cancellation", "conduct", "liability", "changes"] as const;
 

@@ -8,7 +8,7 @@
  * server component so this module stays locale-free.
  */
 
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 
 type Range = {
   label: string;

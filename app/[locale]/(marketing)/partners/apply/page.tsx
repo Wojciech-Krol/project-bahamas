@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import SiteFooter from "@/app/components/SiteFooter";
-import SiteNavbar from "@/app/components/SiteNavbar";
+import SiteFooter from "@/src/components/SiteFooter";
+import SiteNavbar from "@/src/components/SiteNavbar";
 
 import PartnerApplyForm from "./PartnerApplyForm";
 

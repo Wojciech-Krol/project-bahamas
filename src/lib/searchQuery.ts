@@ -1,4 +1,4 @@
-import type { AgeCounts } from "@/app/components/search/constants";
+import type { AgeCounts } from "@/src/components/search/constants";
 
 export type SearchParams = {
   activities: string;

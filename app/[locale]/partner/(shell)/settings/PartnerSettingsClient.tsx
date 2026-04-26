@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { useTranslations } from "next-intl";
 
-import { Icon } from "@/app/components/Icon";
+import { Icon } from "@/src/components/Icon";
 import type { PartnerProfile } from "@/src/lib/db/queries";
 
 import {
