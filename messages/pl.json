@@ -469,27 +469,6 @@
         "d1": { "label": "24 paź", "time": "18:00" },
         "d2": { "label": "26 paź", "time": "10:00" }
       },
-      "curriculum": {
-        "c1": {
-          "title": "Fundament kinetyczny",
-          "description": "Głębokie zrozumienie ciężaru i momentu. Uczysz się wykorzystywać grawitację jako paliwo przejść."
-        },
-        "c2": {
-          "title": "Miejskie tekstury",
-          "description": "Zderzenie płynnych linii tańca współczesnego z ostrym, izolowanym ruchem miasta."
-        },
-        "c3": {
-          "title": "Choreografia i niuans",
-          "description": "Ostatni etap to praca nad układem „Urban Flow”. Uczysz się czytać złożone rytmy i tłumaczyć je na ekspresję całego ciała."
-        }
-      },
-      "instructor": {
-        "role": "Główny prowadzący",
-        "name": "Marcus Thorne",
-        "bio": "Założyciel Kinetic Lab. Marcus choreografował trasy koncertowe i produkcje filmowe na całym świecie. Jego filozofia opiera się na pomoście między techniczną precyzją a surową, ludzką emocją.",
-        "cred1": "Choreograf Roku 2023",
-        "cred2": "15+ lat doświadczenia"
-      }
     }
   },
   "School": {
@@ -1057,10 +1036,17 @@
       "newClass": "Nowe zajęcia",
       "untitled": "Bez tytułu",
       "confirmDelete": "Usunąć te zajęcia? Tej operacji nie można cofnąć.",
+      "addCurriculumItem": "Dodaj punkt",
+      "addInstructor": "Dodaj instruktora",
+      "addCredential": "Dodaj certyfikat",
+      "emptyCurriculum": "Brak punktów programu — dodaj pierwszy punkt.",
+      "emptyInstructors": "Brak instruktorów — dodaj pierwszego.",
       "sections": {
         "basics": "Podstawy",
         "schedule": "Harmonogram",
         "instructor": "Przypisany instruktor",
+        "instructors": "Instruktorzy",
+        "curriculum": "Program zajęć",
         "pricing": "Cennik",
         "media": "Multimedia"
       },
@@ -1082,7 +1068,13 @@
         "ageGroup": "Grupa wiekowa",
         "heroImage": "URL zdjęcia głównego",
         "publish": "Opublikowane",
-        "publishHint": "Widoczne dla klientów na stronie publicznej."
+        "publishHint": "Widoczne dla klientów na stronie publicznej.",
+        "imageUrl": "URL zdjęcia (opcjonalnie)",
+        "instructorName": "Imię i nazwisko",
+        "role": "Rola",
+        "bio": "Bio",
+        "avatarUrl": "URL zdjęcia profilowego (opcjonalnie)",
+        "credentials": "Certyfikaty"
       },
       "error": {
         "invalid_input": "Sprawdź pola i spróbuj ponownie.",

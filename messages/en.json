@@ -468,27 +468,6 @@
       "dates": {
         "d1": { "label": "OCT 24", "time": "6:00 PM" },
         "d2": { "label": "OCT 26", "time": "10:00 AM" }
-      },
-      "curriculum": {
-        "c1": {
-          "title": "Kinetic foundation",
-          "description": "A deep dive into weight distribution and momentum control. Master the art of using gravity to power your transitions."
-        },
-        "c2": {
-          "title": "Urban textures",
-          "description": "The contrast between fluid contemporary lines and sharp, isolated urban movements."
-        },
-        "c3": {
-          "title": "Choreographic nuance",
-          "description": "The final phase focuses on the 'Urban Flow' routine. You'll learn to read complex rhythmic patterns through full-body expression."
-        }
-      },
-      "instructor": {
-        "role": "Lead instructor",
-        "name": "Marcus Thorne",
-        "bio": "Founder of the Kinetic Lab, Marcus has choreographed for world tours and international cinema. His philosophy centres on the bridge between technical excellence and raw human emotion.",
-        "cred1": "Best Choreographer 2023",
-        "cred2": "15+ years experience"
       }
     }
   },
@@ -1057,10 +1036,17 @@
       "newClass": "New class",
       "untitled": "Untitled",
       "confirmDelete": "Delete this class? This cannot be undone.",
+      "addCurriculumItem": "Add item",
+      "addInstructor": "Add instructor",
+      "addCredential": "Add credential",
+      "emptyCurriculum": "No curriculum yet — add the first item.",
+      "emptyInstructors": "No instructors yet — add the first one.",
       "sections": {
         "basics": "Basics",
         "schedule": "Schedule",
         "instructor": "Assigned instructor",
+        "instructors": "Instructors",
+        "curriculum": "Curriculum",
         "pricing": "Pricing",
         "media": "Media"
       },
@@ -1082,7 +1068,13 @@
         "ageGroup": "Age group",
         "heroImage": "Hero image URL",
         "publish": "Published",
-        "publishHint": "Visible to customers on the public page."
+        "publishHint": "Visible to customers on the public page.",
+        "imageUrl": "Image URL (optional)",
+        "instructorName": "Full name",
+        "role": "Role",
+        "bio": "Bio",
+        "avatarUrl": "Avatar URL (optional)",
+        "credentials": "Credentials"
       },
       "error": {
         "invalid_input": "Check the fields and try again.",
