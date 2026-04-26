@@ -1209,6 +1209,32 @@
       "emptyState": "Tu pojawi się Twój zespół, gdy zaprosisz pierwszego instruktora.",
       "comingSoon": "Funkcja zaproszeń pojawi się w Phase 2."
     },
+    "payouts": {
+      "badge": "Wypłaty",
+      "title": "Wypłaty",
+      "subtitle": "Saldo netto i historia transferów na Twoje konto bankowe.",
+      "emptyPartner": "Brak danych — najpierw dołącz do partnera.",
+      "net": {
+        "last30d": "Netto (30 d)",
+        "last90d": "Netto (90 d)",
+        "ytd": "Netto YTD",
+        "lifetime": "Netto łącznie"
+      },
+      "stripe": {
+        "title": "Wypłaty Stripe",
+        "notConnected": "Konto Stripe nie jest jeszcze połączone",
+        "notConnectedBody": "Połącz konto Stripe, aby otrzymywać wypłaty na rachunek bankowy.",
+        "connectCta": "Przejdź do płatności",
+        "unavailable": "Nie udało się pobrać listy wypłat. Spróbuj odświeżyć stronę.",
+        "empty": "Brak wypłat. Pojawią się tutaj, gdy Stripe wyśle środki na Twój rachunek."
+      },
+      "col": {
+        "amount": "Kwota",
+        "arrival": "Data zaksięgowania",
+        "status": "Status",
+        "descriptor": "Opis na wyciągu"
+      }
+    },
     "insights": {
       "badge": "Analityka",
       "title": "Statystyki",

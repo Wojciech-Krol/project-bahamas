@@ -70,6 +70,71 @@ function isoDate(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
+export type PartnerNetSummary = {
+  last30dCents: number;
+  last90dCents: number;
+  ytdCents: number;
+  lifetimeCents: number;
+};
+
+const ZERO_NET: PartnerNetSummary = {
+  last30dCents: 0,
+  last90dCents: 0,
+  ytdCents: 0,
+  lifetimeCents: 0,
+};
+
+/** Sum net_partner_cents from partner_daily_revenue across four time windows. */
+export async function getPartnerNetSummary(
+  partnerId: string,
+): Promise<PartnerNetSummary> {
+  if (!partnerId) return ZERO_NET;
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return ZERO_NET;
+  }
+
+  const { data, error } = await supabase
+    .from("partner_daily_revenue")
+    .select("day, net_partner_cents")
+    .eq("partner_id", partnerId);
+
+  if (error || !data) {
+    if (error) console.error("[getPartnerNetSummary]", error);
+    return ZERO_NET;
+  }
+
+  const now = Date.now();
+  const ms = (days: number) => days * 24 * 60 * 60 * 1000;
+  const cutoff30 = now - ms(30);
+  const cutoff90 = now - ms(90);
+  const ytdStart = new Date(Date.UTC(new Date().getUTCFullYear(), 0, 1)).getTime();
+
+  let last30 = 0;
+  let last90 = 0;
+  let ytd = 0;
+  let lifetime = 0;
+
+  for (const row of data as Array<{ day: string; net_partner_cents: number | null }>) {
+    const cents = row.net_partner_cents ?? 0;
+    const t = new Date(row.day).getTime();
+    if (Number.isNaN(t)) continue;
+    lifetime += cents;
+    if (t >= ytdStart) ytd += cents;
+    if (t >= cutoff90) last90 += cents;
+    if (t >= cutoff30) last30 += cents;
+  }
+
+  return {
+    last30dCents: last30,
+    last90dCents: last90,
+    ytdCents: ytd,
+    lifetimeCents: lifetime,
+  };
+}
+
 /** Resolve the partner_id for the signed-in user, or null. */
 export async function getPartnerIdForCurrentUser(): Promise<string | null> {
   try {
