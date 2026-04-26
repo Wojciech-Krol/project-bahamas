@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "../../../src/i18n/navigation";
 import { Icon } from "../Icon";
+import BrandLogo from "../BrandLogo";
 import VenueSwitcher from "./VenueSwitcher";
 import { CURRENT_USER } from "../../lib/partnerMockData";
 
@@ -78,9 +79,7 @@ export default function PartnerSidebar() {
   return (
     <aside className="w-64 shrink-0 bg-surface-container-low border-r border-on-surface/5 px-5 py-6 flex flex-col min-h-screen">
       <Link href="/partner" className="flex items-center gap-2.5 mb-8 px-2">
-        <div className="text-xl font-headline font-bold tracking-tighter text-primary">
-          HAKUNA
-        </div>
+        <BrandLogo size={28} />
         <div className="h-4 w-px bg-on-surface/20" />
         <div className="text-[0.6rem] font-headline font-bold uppercase tracking-[0.2em] text-on-surface/60">
           {t("brand")}

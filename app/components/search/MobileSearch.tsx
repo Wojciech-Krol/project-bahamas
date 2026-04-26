@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 import { Icon } from "../Icon";
 import BrandLogo from "../BrandLogo";
 import { ActivityPanel, NeighborhoodPanel, WhenPanel, AgePanel } from "./panels";
@@ -10,6 +10,7 @@ import {
   type SearchField,
   type AgeCounts,
 } from "./constants";
+import { useTypewriterPlaceholder } from "./useTypewriterPlaceholder";
 
 function useFormatActivities() {
   const tLabel = useTranslations("Search.activityLabels");
@@ -30,14 +31,34 @@ function useFormatActivities() {
 
 export function MobileSearchPill({ onClick }: { onClick: () => void }) {
   const t = useTranslations("Search");
+  const messages = useMessages() as {
+    Home?: {
+      hero?: {
+        placeholders?: string[];
+        placeholdersNeighborhood?: string[];
+        placeholdersWhen?: string[];
+        placeholdersAge?: string[];
+      };
+    };
+  };
+  const prompts = [
+    ...(messages.Home?.hero?.placeholders ?? []),
+    ...(messages.Home?.hero?.placeholdersNeighborhood ?? []),
+    ...(messages.Home?.hero?.placeholdersWhen ?? []),
+    ...(messages.Home?.hero?.placeholdersAge ?? []),
+  ].filter(Boolean);
+  const fallback = t("mobilePillPlaceholder");
+  const typed = useTypewriterPlaceholder(prompts, prompts.length > 0);
+  const display = typed || fallback;
   return (
     <button
       onClick={onClick}
       className="md:hidden w-full flex items-center gap-3 bg-surface-container-lowest rounded-full px-5 py-3.5 shadow-[0_2px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.12)] active:scale-[0.98] transition-all duration-300 border border-on-surface/[0.06]"
     >
       <Icon name="search" className="text-[20px] text-on-surface/60" />
-      <span className="text-[0.9rem] font-semibold text-on-surface/40 flex-1 text-left">
-        {t("mobilePillPlaceholder")}
+      <span className="text-[0.9rem] font-semibold text-on-surface/50 flex-1 text-left truncate">
+        {display}
+        <span className="inline-block w-px h-3.5 align-middle ml-0.5 bg-primary animate-pulse" />
       </span>
     </button>
   );
@@ -174,43 +195,54 @@ export function MobileSearchOverlay({
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 pb-28">
-          {fields.map((f, i) => (
-            <div key={f.key}>
-              {expandedField === f.key ? (
-                <div className="bg-surface-container-lowest rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.08)] mb-4 overflow-hidden mobile-accordion-enter">
-                  <div className="flex items-center justify-between px-6 pt-5 pb-1">
-                    <h3 className="text-xl font-bold text-on-surface font-headline">
-                      {f.label}
-                    </h3>
-                    <button
-                      onClick={() => setExpandedField(null)}
-                      className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors"
-                    >
-                      <Icon name="expand_less" className="text-[20px] text-on-surface/40" />
-                    </button>
-                  </div>
-                  {renderPanel(f.key)}
-                </div>
-              ) : (
-                <button
-                  onClick={() => setExpandedField(f.key)}
-                  className="w-full flex items-center justify-between py-4 px-1 text-left active:bg-surface-container-low/50 transition-colors rounded-xl"
+          {fields.map((f, i) => {
+            const expanded = expandedField === f.key;
+            return (
+              <div key={f.key}>
+                <div
+                  className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                    expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
                 >
-                  <span className="text-sm font-semibold text-on-surface/50">
-                    {f.label}
-                  </span>
-                  <span className="text-sm font-bold text-on-surface">
-                    {f.value || f.emptyText}
-                  </span>
-                </button>
-              )}
-              {expandedField !== f.key &&
-                i < fields.length - 1 &&
-                expandedField !== fields[i + 1]?.key && (
-                  <div className="h-px bg-on-surface/[0.06] mx-1" />
+                  <div className="overflow-hidden min-h-0">
+                    <div className="bg-surface-container-lowest rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.08)] mb-4 overflow-hidden">
+                      <div className="flex items-center justify-between px-6 pt-5 pb-1">
+                        <h3 className="text-xl font-bold text-on-surface font-headline">
+                          {f.label}
+                        </h3>
+                        <button
+                          onClick={() => setExpandedField(null)}
+                          className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors"
+                          aria-label={t("Common.close")}
+                        >
+                          <Icon name="expand_less" className="text-[20px] text-on-surface/40" />
+                        </button>
+                      </div>
+                      {renderPanel(f.key)}
+                    </div>
+                  </div>
+                </div>
+                {!expanded && (
+                  <button
+                    onClick={() => setExpandedField(f.key)}
+                    className="w-full flex items-center justify-between py-4 px-1 text-left active:bg-surface-container-low/50 transition-colors rounded-xl"
+                  >
+                    <span className="text-sm font-semibold text-on-surface/50">
+                      {f.label}
+                    </span>
+                    <span className="text-sm font-bold text-on-surface">
+                      {f.value || f.emptyText}
+                    </span>
+                  </button>
                 )}
-            </div>
-          ))}
+                {!expanded &&
+                  i < fields.length - 1 &&
+                  expandedField !== fields[i + 1]?.key && (
+                    <div className="h-px bg-on-surface/[0.06] mx-1" />
+                  )}
+              </div>
+            );
+          })}
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 bg-surface/95 backdrop-blur-lg border-t border-on-surface/[0.06] px-6 py-4 flex items-center justify-between">

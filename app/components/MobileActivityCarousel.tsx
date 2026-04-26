@@ -15,6 +15,7 @@ export default function MobileActivityCarousel({
   fillHeight = false,
   detailed = false,
   fullWidth = false,
+  loading = false,
 }: {
   activities: Activity[];
   heading?: string;
@@ -24,6 +25,7 @@ export default function MobileActivityCarousel({
   fillHeight?: boolean;
   detailed?: boolean;
   fullWidth?: boolean;
+  loading?: boolean;
 }) {
   const t = useTranslations();
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -90,9 +92,37 @@ export default function MobileActivityCarousel({
         ref={scrollerRef}
         className={`flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth ${
           fullWidth ? "gap-0 w-full" : "gap-4 -mx-4 px-4 py-2"
-        } ${fillHeight ? "flex-1 min-h-0" : ""}`}
+        } ${fillHeight ? "flex-1 min-h-0" : ""} ${
+          loading ? "opacity-60 pointer-events-none transition-opacity" : "transition-opacity"
+        }`}
       >
-        {items.map((a) => (
+        {loading && items.length === 0
+          ? Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={`skeleton-${i}`}
+                className={`snap-center shrink-0 ${cardSizeClass} rounded-[2rem] overflow-hidden relative editorial-shadow border border-on-surface/[0.05] bg-surface-container-low animate-pulse`}
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-on-surface/15 via-on-surface/5 to-transparent" />
+                <div className="absolute top-5 left-5 right-5 flex flex-col gap-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="h-6 w-20 rounded-full bg-on-surface/15" />
+                    <div className="h-6 w-12 rounded-full bg-on-surface/15" />
+                  </div>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col gap-3">
+                  <div className="h-8 w-3/4 rounded bg-on-surface/15" />
+                  <div className="h-3 w-1/2 rounded bg-on-surface/12" />
+                  <div className="flex items-center gap-3 pt-3 mt-1 border-t border-on-surface/10">
+                    <div className="w-10 h-10 rounded-full bg-on-surface/15" />
+                    <div className="flex-1 space-y-1.5">
+                      <div className="h-2 w-1/4 rounded bg-on-surface/12" />
+                      <div className="h-3 w-1/2 rounded bg-on-surface/15" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          : items.map((a) => (
           <Link
             key={a.id}
             href={`/activity/${a.id}`}

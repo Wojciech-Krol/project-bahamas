@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { notFound, redirect } from "next/navigation";
 
-import PartnerSidebar from "@/app/components/partner/PartnerSidebar";
+import PartnerSidebarShell from "@/app/components/partner/PartnerSidebarShell";
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
 import { env } from "@/src/env";
 
@@ -49,8 +49,8 @@ export default async function PartnerShellLayout({
   }
 
   return (
-    <div className="min-h-screen bg-surface text-on-surface flex">
-      <PartnerSidebar />
+    <div className="min-h-screen bg-surface text-on-surface md:flex">
+      <PartnerSidebarShell />
       <main className="flex-1 min-w-0">{children}</main>
     </div>
   );

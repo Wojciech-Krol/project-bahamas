@@ -696,8 +696,8 @@ export default function ClassEditorClient({
         aria-label={tCommon("close")}
       />
 
-      <aside className="absolute top-0 right-0 bottom-0 w-full max-w-[900px] bg-surface rounded-l-[2rem] overflow-hidden flex flex-col shadow-[-30px_0_80px_-20px_rgba(45,10,23,0.3)]">
-        <header className="px-8 py-5 border-b border-on-surface/5 flex items-center justify-between bg-surface-container-low">
+      <aside className="absolute top-0 right-0 bottom-0 w-full max-w-full md:max-w-[900px] bg-surface md:rounded-l-[2rem] overflow-hidden flex flex-col shadow-[-30px_0_80px_-20px_rgba(45,10,23,0.3)]">
+        <header className="px-5 md:px-8 py-4 md:py-5 border-b border-on-surface/5 flex items-center justify-between bg-surface-container-low">
           <div className="flex items-center gap-3 min-w-0">
             <button
               type="button"
@@ -729,9 +729,9 @@ export default function ClassEditorClient({
         </header>
 
         <form action={formAction} className="flex-1 overflow-auto">
-          <div className="p-8 space-y-8">{formBody}</div>
+          <div className="p-5 md:p-8 space-y-6 md:space-y-8">{formBody}</div>
 
-          <footer className="sticky bottom-0 px-8 py-4 border-t border-on-surface/5 bg-surface flex items-center justify-end gap-2">
+          <footer className="sticky bottom-0 px-5 md:px-8 py-4 border-t border-on-surface/5 bg-surface flex items-center justify-end gap-2">
             <button
               type="button"
               onClick={close}

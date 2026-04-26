@@ -414,6 +414,19 @@ export default function HomeClient({
 
         <section className="max-w-site mx-auto px-4 md:px-6 pt-2 pb-8 md:pt-6 md:pb-24 relative">
           <div className="md:hidden">
+            <Reveal stagger={0.08} className="mb-6 space-y-3">
+              <Reveal.Item>
+                <span className="inline-block bg-secondary-container px-3 py-1 rounded-full text-[0.6rem] font-bold uppercase tracking-widest text-on-secondary-container">
+                  {t("Home.closest.badge")}
+                </span>
+              </Reveal.Item>
+              <Reveal.Item as="h2" className="text-4xl font-headline font-bold leading-[1.05] tracking-tighter">
+                {t("Home.closest.headingStart")} {t("Home.closest.headingEnd")}
+              </Reveal.Item>
+              <Reveal.Item as="p" className="text-base text-on-surface/60">
+                {t("Home.closest.body")}
+              </Reveal.Item>
+            </Reveal>
             <MobileActivityCarousel activities={closestActivities} />
           </div>
 

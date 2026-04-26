@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState, useRef } from "react";
+import { useCallback, useMemo, useState, useRef, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import SiteNavbar from "@/app/components/SiteNavbar";
@@ -197,11 +197,14 @@ export default function SearchClient({
   const router = useRouter();
   const s = useSearchState(initial);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const submit = useCallback(() => {
     const qs = buildSearchQuery(s.params);
-    router.push(`/search${qs ? `?${qs}` : ""}`);
     setSearchOpen(false);
+    startTransition(() => {
+      router.push(`/search${qs ? `?${qs}` : ""}`);
+    });
   }, [s.params, router]);
 
   const points = useMemo(
@@ -254,12 +257,13 @@ export default function SearchClient({
         city={t("Search.defaultCity")}
       >
         <MobileActivityCarousel
-          activities={results}
+          activities={isPending ? [] : results}
           showHeader={false}
           maxItems={results.length}
           fillHeight
           detailed
           fullWidth
+          loading={isPending}
           className="w-full h-full"
         />
       </MobileBottomSheet>

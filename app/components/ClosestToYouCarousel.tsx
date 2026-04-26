@@ -23,6 +23,7 @@ export default function ClosestToYouCarousel({
   const getCopyHeight = useCallback(() => {
     const el = scrollerRef.current;
     if (!el) return 0;
+    if (baseLen === 0) return 0;
     const cards = el.querySelectorAll<HTMLElement>("[data-card]");
     if (cards.length < baseLen * 2) return 0;
     return cards[baseLen].offsetTop - cards[0].offsetTop;
