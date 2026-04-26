@@ -11,7 +11,7 @@ import ReviewsSection from "@/app/components/ReviewsSection";
 import ClosestToYouCarousel from "@/app/components/ClosestToYouCarousel";
 import MobileActivityCarousel from "@/app/components/MobileActivityCarousel";
 import { Icon } from "@/app/components/Icon";
-import HeroAurora from "@/app/components/HeroAurora";
+import HeroJuicyStage from "@/app/components/hero/HeroJuicyStage";
 import HeroSearchBar from "@/app/components/search/HeroSearchBar";
 import SearchSegment from "@/app/components/search/SearchSegment";
 import { MobileSearchPill, MobileSearchOverlay } from "@/app/components/search/MobileSearch";
@@ -383,41 +383,31 @@ export default function HomeClient({
       </SiteNavbar>
 
       <main className="pt-16 md:pt-[72px]">
-        <section className="relative px-4 md:px-6 py-10 md:py-32">
-          <div className="max-w-site mx-auto text-center flex flex-col items-center">
-            <h1 className="font-headline font-extrabold text-[2.25rem] md:text-[6rem] leading-[1.1] md:leading-[1.05] tracking-tight text-on-surface mb-6 md:mb-12">
-              {t("Home.hero.titleStart")} <br />
-              <span className="text-primary italic">{t("Home.hero.titleMiddle")}</span>{" "}
-              {t("Home.hero.titleEnd")}
-            </h1>
-
-            <div className="md:hidden w-full mb-6">
-              <MobileSearchPill onClick={() => setMobileSearchOpen(true)} />
-            </div>
-
-            <div className="hidden md:contents">
-              <HeroSearchBar
-                containerRef={heroSearchRef}
-                activities={activities}
-                neighborhood={neighborhood}
-                when={when}
-                ageCounts={ageCounts}
-                ageLabel={ageLabel}
-                onActivitiesChange={setActivities}
-                onNeighborhoodChange={setNeighborhood}
-                onWhenChange={setWhen}
-                onAgeUpdate={handleAgeUpdate}
-                onSubmit={submitSearch}
-              />
-
-              <p className="text-on-surface/60 font-medium text-lg md:text-xl max-w-2xl mt-6">
-                {t("Home.hero.subtitle")}
-              </p>
-            </div>
-          </div>
-
-          <HeroAurora />
-        </section>
+        <HeroJuicyStage
+          titleStart={t("Home.hero.titleStart")}
+          titleMiddle={t("Home.hero.titleMiddle")}
+          titleEnd={t("Home.hero.titleEnd")}
+          subtitle={t("Home.hero.subtitle")}
+          mobileSearch={
+            <MobileSearchPill onClick={() => setMobileSearchOpen(true)} />
+          }
+          desktopSearch={
+            <HeroSearchBar
+              containerRef={heroSearchRef}
+              activities={activities}
+              neighborhood={neighborhood}
+              when={when}
+              ageCounts={ageCounts}
+              ageLabel={ageLabel}
+              onActivitiesChange={setActivities}
+              onNeighborhoodChange={setNeighborhood}
+              onWhenChange={setWhen}
+              onAgeUpdate={handleAgeUpdate}
+              onSubmit={submitSearch}
+              className="w-full"
+            />
+          }
+        />
 
         <section className="max-w-site mx-auto px-4 md:px-6 py-8 md:py-24">
           <div className="md:hidden">
