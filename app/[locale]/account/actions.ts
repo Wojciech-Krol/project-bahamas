@@ -20,6 +20,7 @@ import { revalidatePath } from "next/cache";
 
 import { getCurrentUser } from "@/src/lib/db/server";
 import { createAdminClient } from "@/src/lib/db/admin";
+import { accountDeletionRateLimiter } from "@/src/lib/ratelimit";
 
 export async function requestAccountDeletion(
   _prev: { error?: string; success?: boolean } | undefined,
@@ -34,6 +35,15 @@ export async function requestAccountDeletion(
     // will bounce them back here after signing in. Use the locale-prefixed
     // path so the proxy doesn't burn a hop redirecting `/login` -> `/pl/login`.
     redirect(`/${locale}/login`);
+  }
+
+  // Rate-limit per user — deletion is irreversible without support
+  // intervention, so we never want a button-mash to enqueue duplicates
+  // (the queue upsert is idempotent, but rejecting early keeps the
+  // bookkeeping simple).
+  const limit = await accountDeletionRateLimiter.check(current.user.id);
+  if (!limit.success) {
+    return { error: "Already requested. Contact support if this is wrong." };
   }
 
   let admin;

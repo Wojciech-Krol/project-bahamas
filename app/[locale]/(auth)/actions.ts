@@ -6,6 +6,11 @@ import { z } from "zod";
 
 import { createClient } from "@/src/lib/db/server";
 import { safeNextPath } from "@/src/lib/auth/redirects";
+import {
+  getClientIp,
+  loginRateLimiter,
+  signupRateLimiter,
+} from "@/src/lib/ratelimit";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
@@ -47,6 +52,15 @@ export async function loginAction(
     return { error: "invalidInput" };
   }
 
+  // Rate-limit before any auth work — a credential-stuffing run shouldn't
+  // be able to drive 1000 signInWithPassword calls/min/IP.
+  const headerList = await headers();
+  const ip = getClientIp(headerList);
+  const limit = await loginRateLimiter.check(ip);
+  if (!limit.success) {
+    return { error: "rateLimited" };
+  }
+
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
@@ -82,6 +96,16 @@ export async function signupAction(
   }
 
   const locale = (formData.get("locale") as string) || "pl";
+
+  // Rate-limit signups so disposable-inbox bots can't pre-register
+  // thousands of accounts. Real users only sign up once.
+  const headerList = await headers();
+  const ip = getClientIp(headerList);
+  const limit = await signupRateLimiter.check(ip);
+  if (!limit.success) {
+    return { error: "rateLimited" };
+  }
+
   const origin = await getOrigin();
 
   const supabase = await createClient();
