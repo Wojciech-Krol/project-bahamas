@@ -36,48 +36,49 @@ export type WhenKey =
 
 export const ACTIVITY_CATEGORIES: {
   key: CategoryKey;
-  items: { key: ActivityKey; emoji: string }[];
+  items: { key: ActivityKey }[];
 }[] = [
   {
     key: "sports",
     items: [
-      { key: "yoga", emoji: "🧘" },
-      { key: "tennis", emoji: "🎾" },
-      { key: "swimming", emoji: "🏊" },
-      { key: "climbing", emoji: "🧗" },
-      { key: "boxing", emoji: "🥊" },
-      { key: "running", emoji: "🏃" },
+      { key: "yoga" },
+      { key: "tennis" },
+      { key: "swimming" },
+      { key: "climbing" },
+      { key: "boxing" },
+      { key: "running" },
     ],
   },
   {
     key: "arts",
     items: [
-      { key: "pottery", emoji: "🎨" },
-      { key: "dance", emoji: "💃" },
-      { key: "music", emoji: "🎵" },
-      { key: "photography", emoji: "📸" },
-      { key: "cooking", emoji: "🍳" },
-      { key: "guitar", emoji: "🎸" },
+      { key: "pottery" },
+      { key: "dance" },
+      { key: "music" },
+      { key: "photography" },
+      { key: "cooking" },
+      { key: "guitar" },
     ],
   },
 ];
 
+// `icon` values are Tabler icon names (without the `tabler:` prefix).
 export const NEIGHBORHOOD_SUGGESTIONS: { key: NeighborhoodKey; icon: string }[] = [
-  { key: "srodmiescie", icon: "location_city" },
-  { key: "mokotow", icon: "park" },
-  { key: "praga", icon: "local_cafe" },
-  { key: "wola", icon: "music_note" },
-  { key: "saska", icon: "diversity_3" },
-  { key: "ursynow", icon: "castle" },
+  { key: "srodmiescie", icon: "building-skyscraper" },
+  { key: "mokotow", icon: "trees" },
+  { key: "praga", icon: "coffee" },
+  { key: "wola", icon: "music" },
+  { key: "saska", icon: "users-group" },
+  { key: "ursynow", icon: "building-castle" },
 ];
 
 export const WHEN_OPTIONS: { key: WhenKey; icon: string }[] = [
   { key: "now", icon: "bolt" },
-  { key: "today", icon: "today" },
-  { key: "tomorrow", icon: "event" },
-  { key: "thisWeek", icon: "date_range" },
-  { key: "thisWeekend", icon: "weekend" },
-  { key: "pickDate", icon: "calendar_month" },
+  { key: "today", icon: "calendar" },
+  { key: "tomorrow", icon: "calendar-event" },
+  { key: "thisWeek", icon: "calendar-week" },
+  { key: "thisWeekend", icon: "calendar-stats" },
+  { key: "pickDate", icon: "calendar-month" },
 ];
 
 export const AGE_GROUPS: { key: keyof AgeCounts }[] = [
