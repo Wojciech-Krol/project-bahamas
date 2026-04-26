@@ -35,6 +35,7 @@ import { getStripe } from "@/src/lib/payments/stripe";
 import { sendEmail } from "@/src/lib/email/resend";
 import { BookingConfirmation } from "@/src/lib/email/templates/BookingConfirmation";
 import { BookingCancelled } from "@/src/lib/email/templates/BookingCancelled";
+import { BookingOverbooked } from "@/src/lib/email/templates/BookingOverbooked";
 import { findTierByPriceId } from "@/src/lib/payments/subscriptionTiers";
 
 type ServerEnv = typeof env & {
@@ -371,16 +372,46 @@ async function handleCheckoutCompleted(
       })
       .eq("id", bookingId);
 
-    // Apology email — stub.
-    const locale: "pl" | "en" = "pl";
+    // Apology email to the customer. The card has already been refunded
+    // by the time this lands; the email exists so the user understands the
+    // refund context instead of having to chase it through Stripe alone.
+    const userId = (bookingRow as { user_id: string }).user_id;
+    let userLocale: "pl" | "en" = "pl";
+    let userEmail: string | null = null;
+    try {
+      const { data: authUser } = await admin.auth.admin.getUserById(userId);
+      userEmail = authUser?.user?.email ?? null;
+      const metaLocale = (authUser?.user?.user_metadata as
+        | { locale?: string }
+        | null)?.locale;
+      if (metaLocale === "en") userLocale = "en";
+    } catch (err) {
+      console.error("[stripe-webhook] overbook user lookup failed", err);
+    }
+
     const activityTitle =
-      activityAny.title_i18n?.[locale] ??
+      activityAny.title_i18n?.[userLocale] ??
       activityAny.title_i18n?.pl ??
       "Hakuna booking";
-    console.info("[stripe-webhook] TODO send overbook apology email", {
-      bookingId,
-      activityTitle,
-    });
+
+    if (userEmail) {
+      try {
+        await sendEmail({
+          to: userEmail,
+          subject:
+            userLocale === "pl"
+              ? "Rezerwacja nie powiodła się — pełen zwrot"
+              : "Booking unsuccessful — full refund issued",
+          react: BookingOverbooked({
+            locale: userLocale,
+            activityTitle,
+            bookingId,
+          }),
+        });
+      } catch (err) {
+        console.error("[stripe-webhook] overbook apology email failed", err);
+      }
+    }
     return;
   }
 
