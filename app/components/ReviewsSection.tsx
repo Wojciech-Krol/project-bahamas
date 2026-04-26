@@ -62,11 +62,17 @@ export default function ReviewsSection({
             <Stars rating={r.rating} />
             <p className="text-on-surface/80 leading-relaxed">&ldquo;{r.text}&rdquo;</p>
             <div className="flex items-center gap-3 mt-auto pt-4 border-t border-on-surface/[0.06]">
-              <img
-                src={r.avatar}
-                alt={r.name}
-                className="w-11 h-11 rounded-full object-cover"
-              />
+              {r.avatar ? (
+                <img
+                  src={r.avatar}
+                  alt={r.name}
+                  className="w-11 h-11 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-11 h-11 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-headline font-bold text-sm shrink-0">
+                  {(r.name || "?").charAt(0).toUpperCase()}
+                </div>
+              )}
               <div className="min-w-0">
                 <div className="font-semibold text-sm text-on-surface truncate">
                   {r.name}

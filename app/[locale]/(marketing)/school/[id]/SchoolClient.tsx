@@ -12,12 +12,14 @@ function ClassCard({ c }: { c: Activity }) {
   const tCommon = useTranslations("Common");
   return (
     <div className="bg-surface-container-lowest rounded-[1.5rem] overflow-hidden border border-on-surface/[0.05] editorial-shadow flex flex-col">
-      <div className="relative aspect-[16/10] overflow-hidden">
-        <img
-          src={c.imageUrl}
-          alt={c.imageAlt || c.title}
-          className="w-full h-full object-cover"
-        />
+      <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary-fixed to-secondary-fixed">
+        {c.imageUrl && (
+          <img
+            src={c.imageUrl}
+            alt={c.imageAlt || c.title}
+            className="w-full h-full object-cover"
+          />
+        )}
         {c.tag && (
           <span className="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-widest">
             {c.tag}

@@ -8,12 +8,14 @@ export default function ActivityRowCard({ activity }: { activity: Activity }) {
       href={`/activity/${activity.id}`}
       className="bg-surface-container-lowest p-4 md:p-5 rounded-[2rem] flex gap-4 md:gap-6 items-center border border-[#FAEEDA] editorial-shadow hover:scale-[1.02] transition-transform duration-300"
     >
-      <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden shrink-0">
-        <img
-          alt={activity.imageAlt}
-          className="w-full h-full object-cover"
-          src={activity.imageUrl}
-        />
+      <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden shrink-0 bg-gradient-to-br from-primary-fixed to-secondary-fixed">
+        {activity.imageUrl && (
+          <img
+            alt={activity.imageAlt}
+            className="w-full h-full object-cover"
+            src={activity.imageUrl}
+          />
+        )}
       </div>
       <div className="flex-grow min-w-0">
         <h3 className="text-lg md:text-2xl font-bold text-on-surface mb-1 truncate">
