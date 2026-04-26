@@ -2,6 +2,8 @@
 
 Operator checklist for flipping Hakuna from staging to production. Every item is a concrete action — no principles. Tick them off before the first real PLN touches the system.
 
+> **Read first**: `AUDIT_FINDINGS.md` lists every code-level gap discovered in the post-Phase-D audit. Items below are deploy-time / config-time tasks; items in the audit doc are code fixes that must land before this checklist starts.
+
 ## DNS + email
 
 - [ ] Point apex A / AAAA records (and `www` CNAME) at the Vercel project.
@@ -85,3 +87,48 @@ Operator checklist for flipping Hakuna from staging to production. Every item is
 - [ ] Add `npm run build` as a required PR check.
 - [ ] Configure GitHub → Vercel preview deployments so the Playwright suite can run against a real preview URL.
 - [ ] Confirm `.env.test` or repo secrets include the staging Turnstile site+secret (`1x00000000000000000000AA` always-passes pair) so e2e can actually submit forms.
+
+## Code fixes that must land before this checklist (see AUDIT_FINDINGS.md for detail)
+
+### P0 — must fix before any production traffic
+
+- [ ] **Booking race**: replace optimistic CAS at `app/api/webhooks/stripe/route.ts:336–353` with the `increment_spots` SQL helper from migration 0008. Currently a concurrent legitimate booking is mis-classified as overbook + refunded.
+- [ ] **Overbook apology email**: `app/api/webhooks/stripe/route.ts:382–392` only `console.info`s — implement a real `BookingOverbooked` email template + send.
+- [ ] **Currency whitelist**: `app/[locale]/partner/(shell)/classes/actions.ts` accepts `EUR/GBP/USD` for activity currency. Lock to `PLN` until multi-currency is intentional, OR enforce that the partner's Stripe Connect account currency matches.
+- [ ] **Verify `sb_secret_*` Supabase key works as service_role**: probe with an admin-client SELECT against `partners`. If it returns `permission denied`, swap to the legacy `service_role` JWT in `SUPABASE_SERVICE_ROLE_KEY`.
+- [ ] **CSRF same-site → same-origin**: `src/lib/auth/csrf.ts:32` — drop the `"same-site"` accept clause to prevent sibling-subdomain CSRF.
+- [ ] **`getSession` audit**: `grep -r "auth.getSession" app src` — every match must convert to `auth.getUser()` for authorization decisions.
+
+### P1 — must fix before user-visible launch
+
+- [ ] **Beta signup**: `app/components/BetaSignup.tsx` is a no-op form. Wire to a Server Action that persists to a `beta_signups` table + sends Resend confirmation.
+- [ ] **Search filters button** (desktop + mobile): `app/[locale]/(marketing)/search/SearchClient.tsx:281` has no handler. Wire OR remove.
+- [ ] **Search map**: pins are jittered Warsaw-center fakes. Add `lat, lng` to ACTIVITY_SELECT, render real coordinates.
+- [ ] **Favorite/heart button**: visual-only `e.preventDefault()`. Either ship a `favorites` table + RLS + action OR remove the icon.
+- [ ] **Activity `time` field**: empty string in the home/search rails. Compute next session start in `getClosestActivities` / `getFilteredActivities`.
+- [ ] **Sitemap dynamic routes**: `app/sitemap.ts` only emits static + blog. Add per-locale URLs for every published activity + venue.
+- [ ] **`/admin` in robots.ts disallow**: `app/robots.ts:8` only blocks `/partner`.
+- [ ] **Rate-limit auth endpoints**: extend the existing Upstash limiter to `loginAction`, `signupAction`, `googleSignInAction`, `requestAccountDeletion`.
+- [ ] **Rate-limit createBooking**: 5 per minute per user.
+- [ ] **Rate-limit photo uploads**: 30 per hour per partner; bucket-quota check.
+- [ ] **Cancel-booking refund vs status-update reconcile**: `bookingActions.ts:518–560` — retry the row update on failure, log to Sentry with bookingId + paymentIntentId.
+- [ ] **Sentry-wrap silent email failures**: `app/api/webhooks/stripe/route.ts:498–500` and `bookingActions.ts:621–623` — minimum, capture the exception with tags.
+- [ ] **POS error visibility on partner dashboard**: surface `pos_integrations.status` + `last_error` on `/partner/integrations`.
+- [ ] **POS providers (5 of 6)**: hardcoded "Coming soon" cards. Either ship adapters OR hide behind a feature flag with "request access" CTA.
+- [ ] **Account-deletion order**: cron should `auth.admin.deleteUser()` BEFORE anonymizing the profile, otherwise a deletion failure leaves orphaned PII.
+- [ ] **Partner sidebar uses CURRENT_USER mock**: swap to `getCurrentUser()` profile in `(shell)/layout.tsx`.
+- [ ] **TS errors in `tests/commission.spec.ts`**: hoist `overrides.partner` etc into named constants — currently blocks `tsc` as a CI required check.
+- [ ] **Server-action unit tests**: every action added in Phase D has zero unit coverage. Add at least auth-check + ownership-check tests for `partner/(shell)/{settings,classes,venue,reviews}/actions.ts`.
+- [ ] **Configure Supabase Auth → Resend SMTP**: signup confirmation + password reset emails currently go through Supabase default SMTP which lands in spam. Switch in Supabase dashboard, then test inbox arrival.
+
+### P2 — hardening + polish
+
+- [ ] **`webhook_events` admin SELECT policy**: cosmetic — admins should be able to read via the dashboard with their JWT, not just service-role bypass.
+- [ ] **Curriculum + instructors DELETE policy**: migration 0011 only allows admin DELETE — verify partner members can also delete their own rows.
+- [ ] **CSP frame-src**: tighten `https://js.stripe.com` to `https://checkout.stripe.com` for frames; keep `js.stripe.com` for script-src.
+- [ ] **OAuth callback locale fallback**: route hardcodes `pl` when `next` missing. Carry the originating locale in the OAuth state parameter.
+- [ ] **Stripe `STRIPE_CONNECT_WEBHOOK_SECRET` empty-string handling**: warn loudly if set-but-empty.
+- [ ] **Mapbox token absence**: `MapboxMap.tsx` shows error modal — switch to silent hide + list-only fallback when token missing.
+- [ ] **Image alt text**: hero/card images use `alt=""` — switch to descriptive alt for accessibility + SEO.
+- [ ] **POS encryption key rotation playbook**: document the procedure for re-encrypting `pos_integrations.config_encrypted` blobs.
+- [ ] **Sentry sourcemap upload required in production builds**: CI guard that fails the build when `SENTRY_AUTH_TOKEN` is missing in `vercel --prod`.
