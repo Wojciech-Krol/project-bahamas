@@ -1042,8 +1042,10 @@
       },
       "row": {
         "perClass": "per class",
-        "nextSession": "Next session"
-      }
+        "nextSession": "Next session",
+        "draftBadge": "Draft"
+      },
+      "emptyState": "No classes here yet."
     },
     "classEditor": {
       "urlbar": "hakuna.app/partner/classes/{id}",

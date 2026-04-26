@@ -1042,8 +1042,10 @@
       },
       "row": {
         "perClass": "za zajęcia",
-        "nextSession": "Następna sesja"
-      }
+        "nextSession": "Następna sesja",
+        "draftBadge": "Szkic"
+      },
+      "emptyState": "Nie masz jeszcze żadnych zajęć w tej sekcji."
     },
     "classEditor": {
       "urlbar": "hakuna.app/partner/classes/{id}",
