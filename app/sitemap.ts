@@ -1,28 +1,36 @@
 import type { MetadataRoute } from "next";
-import { routing } from "../src/i18n/routing";
+import { routing, type AppPathname } from "../src/i18n/routing";
+import { getPathname } from "../src/i18n/navigation";
 import { getAllSlugs } from "@/src/lib/blogContent";
 import { createAdminClient } from "../src/lib/db/admin";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.club";
 
-const STATIC_PATHS: {
-  path: string;
+type StaticPath = Exclude<AppPathname, `${string}[${string}]${string}`>;
+
+type StaticEntry = {
+  href: StaticPath;
   priority: number;
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
-}[] = [
-  { path: "", priority: 1.0, changeFrequency: "weekly" },
-  { path: "/about", priority: 0.7, changeFrequency: "monthly" },
-  { path: "/partners/apply", priority: 0.6, changeFrequency: "monthly" },
-  { path: "/search", priority: 0.5, changeFrequency: "daily" },
-  { path: "/blog", priority: 0.9, changeFrequency: "weekly" },
-  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
-  { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
-  { path: "/cookies", priority: 0.3, changeFrequency: "yearly" },
+};
+
+// Internal pathnames — getPathname rewrites each to the localized URL
+// (e.g. "/about" -> "/pl/o-nas" / "/en/about"). Keep this list in sync
+// with src/i18n/routing.ts pathnames.
+const STATIC_ENTRIES: StaticEntry[] = [
+  { href: "/", priority: 1.0, changeFrequency: "weekly" },
+  { href: "/about", priority: 0.7, changeFrequency: "monthly" },
+  { href: "/partners/apply", priority: 0.6, changeFrequency: "monthly" },
+  { href: "/search", priority: 0.5, changeFrequency: "daily" },
+  { href: "/blog", priority: 0.9, changeFrequency: "weekly" },
+  { href: "/privacy", priority: 0.3, changeFrequency: "yearly" },
+  { href: "/terms", priority: 0.3, changeFrequency: "yearly" },
+  { href: "/cookies", priority: 0.3, changeFrequency: "yearly" },
 ];
 
-function languageMap(pathSuffix: string): Record<string, string> {
+function staticAlternates(href: StaticPath): Record<string, string> {
   return Object.fromEntries(
-    routing.locales.map((l) => [l, `${SITE_URL}/${l}${pathSuffix}`]),
+    routing.locales.map((l) => [l, `${SITE_URL}${getPathname({ locale: l, href })}`]),
   );
 }
 
@@ -59,13 +67,13 @@ const SCHOOL_PATH: Record<string, string> = {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const staticEntries: MetadataRoute.Sitemap = STATIC_PATHS.flatMap((entry) =>
+  const staticEntries: MetadataRoute.Sitemap = STATIC_ENTRIES.flatMap((entry) =>
     routing.locales.map((locale) => ({
-      url: `${SITE_URL}/${locale}${entry.path}`,
+      url: `${SITE_URL}${getPathname({ locale, href: entry.href })}`,
       lastModified: now,
       changeFrequency: entry.changeFrequency,
       priority: entry.priority,
-      alternates: { languages: languageMap(entry.path) },
+      alternates: { languages: staticAlternates(entry.href) },
     })),
   );
 
@@ -75,7 +83,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.7,
-      alternates: { languages: languageMap(`/blog/${slug}`) },
+      alternates: {
+        languages: Object.fromEntries(
+          routing.locales.map((l) => [l, `${SITE_URL}/${l}/blog/${slug}`]),
+        ),
+      },
     })),
   );
 

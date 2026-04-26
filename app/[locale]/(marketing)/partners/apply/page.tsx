@@ -3,32 +3,35 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import SiteFooter from "@/src/components/SiteFooter";
 import SiteNavbar from "@/src/components/SiteNavbar";
+import { localizedAlternates } from "@/app/lib/seoMeta";
+import { routing } from "@/src/i18n/routing";
+import type { Locale } from "@/src/lib/db/types";
 
 import PartnerApplyForm from "./PartnerApplyForm";
+
+function isLocale(value: string): value is Locale {
+  return (routing.locales as readonly string[]).includes(value);
+}
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale: raw } = await params;
+  const locale: Locale = isLocale(raw) ? raw : "pl";
   const t = await getTranslations({ locale, namespace: "PartnerApply" });
+  const alternates = localizedAlternates(locale, "/partners/apply");
   return {
     title: t("meta.title"),
     description: t("meta.description"),
     openGraph: {
       title: t("meta.title"),
       description: t("meta.description"),
-      url: `/${locale}/partners/apply`,
+      url: alternates.canonical,
       type: "website",
     },
-    alternates: {
-      canonical: `/${locale}/partners/apply`,
-      languages: {
-        pl: "/pl/partners/apply",
-        en: "/en/partners/apply",
-      },
-    },
+    alternates,
   };
 }
 
