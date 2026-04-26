@@ -553,19 +553,53 @@ export async function cancelBooking(
     // counter is mildly stale and the next confirmation/expiry will
     // eventually self-correct via the same helper.
     console.error("[cancelBooking] spots_taken decrement failed", decErr);
+    Sentry.captureException(decErr, {
+      tags: { kind: "decrement_spots_fail" },
+      extra: { bookingId, sessionId: sessionRow.id },
+    });
   }
 
-  // Flip booking status.
-  const { error: bookingUpdateErr } = await admin
-    .from("bookings")
-    .update({
-      status: "cancelled",
-      cancelled_at: new Date().toISOString(),
-    })
-    .eq("id", bookingId);
+  // Flip booking status. The Stripe refund is already through at this
+  // point, so a failure here leaves the system in a perceived
+  // double-charge state from the user's POV (refund processed but the
+  // page still shows "confirmed"). Retry a few times with backoff before
+  // giving up; only then surface the error AND escalate to Sentry with
+  // enough detail (bookingId + paymentIntentId) for ops to reconcile by
+  // hand. The Stripe refund is idempotent on payment_intent so retrying
+  // the row update never double-refunds.
+  const cancelledAt = new Date().toISOString();
+  let bookingUpdateErr: { message?: string } | null = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const { error } = await admin
+      .from("bookings")
+      .update({ status: "cancelled", cancelled_at: cancelledAt })
+      .eq("id", bookingId);
+    if (!error) {
+      bookingUpdateErr = null;
+      break;
+    }
+    bookingUpdateErr = error;
+    // Exponential backoff: 100ms, 400ms, 900ms.
+    await new Promise((resolve) =>
+      setTimeout(resolve, 100 * (attempt + 1) * (attempt + 1)),
+    );
+  }
 
   if (bookingUpdateErr) {
-    console.error("[cancelBooking] booking status update failed", bookingUpdateErr);
+    console.error(
+      "[cancelBooking] booking status update failed after retries",
+      bookingUpdateErr,
+    );
+    Sentry.captureException(bookingUpdateErr, {
+      level: "error",
+      tags: { kind: "cancel_status_update_fail", needsManualReconcile: "true" },
+      extra: {
+        bookingId,
+        paymentIntentId,
+        note:
+          "Stripe refund already processed; row still shows confirmed. Manual reconcile required.",
+      },
+    });
     return { error: "internal" };
   }
 
