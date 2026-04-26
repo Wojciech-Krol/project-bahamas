@@ -128,6 +128,123 @@ export async function getReviews(
   return rows.map((row) => composeReview(row, authorById.get(row.author_id), locale));
 }
 
+export type PartnerReview = {
+  id: string;
+  rating: number;
+  text: string;
+  authorName: string;
+  authorAvatar: string;
+  activityTitle: string | null;
+  venueName: string;
+  partnerReply: string | null;
+  partnerReplyAt: string | null;
+  createdAt: string;
+};
+
+type PartnerReviewRow = {
+  id: string;
+  rating: number;
+  text: string | null;
+  author_id: string;
+  partner_reply: string | null;
+  partner_reply_at: string | null;
+  created_at: string;
+  venue:
+    | {
+        id: string;
+        name: string;
+        partner_id: string;
+      }
+    | null;
+  activity:
+    | {
+        id: string;
+        title_i18n: I18nBag;
+      }
+    | null;
+};
+
+/** All reviews for the partner's venues (across activities). Used by the
+ * partner reviews dashboard so they can read + reply. */
+export async function getReviewsForPartner(
+  partnerId: string,
+  locale: Locale,
+  limit = 50,
+): Promise<PartnerReview[]> {
+  if (!partnerId) return [];
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("reviews")
+    .select(
+      `
+      id,
+      rating,
+      text,
+      author_id,
+      partner_reply,
+      partner_reply_at,
+      created_at,
+      venue:venues!inner (
+        id,
+        name,
+        partner_id
+      ),
+      activity:activities (
+        id,
+        title_i18n
+      )
+    `,
+    )
+    .eq("venue.partner_id", partnerId)
+    .order("created_at", { ascending: false })
+    .limit(limit)
+    .returns<PartnerReviewRow[]>();
+
+  if (error) {
+    console.error("[db/queries/reviews.getReviewsForPartner]", error);
+    return [];
+  }
+
+  const rows = data ?? [];
+  if (rows.length === 0) return [];
+
+  // Author names via public_profiles (RLS safe).
+  const authorIds = Array.from(
+    new Set(rows.map((r) => r.author_id).filter((v): v is string => !!v)),
+  );
+  const authorById = new Map<string, AuthorRow>();
+  if (authorIds.length > 0) {
+    const { data: authors } = await supabase
+      .from("public_profiles")
+      .select("id, full_name, avatar_url")
+      .in("id", authorIds)
+      .returns<AuthorRow[]>();
+    for (const a of authors ?? []) authorById.set(a.id, a);
+  }
+
+  return rows.map((row) => {
+    const a = authorById.get(row.author_id);
+    return {
+      id: row.id,
+      rating: row.rating,
+      text: row.text ?? "",
+      authorName: a?.full_name ?? "",
+      authorAvatar: a?.avatar_url ?? "",
+      activityTitle: row.activity ? pick(row.activity.title_i18n, locale) : null,
+      venueName: row.venue?.name ?? "",
+      partnerReply: row.partner_reply,
+      partnerReplyAt: row.partner_reply_at,
+      createdAt: row.created_at,
+    };
+  });
+}
+
 /** Reviews for a specific venue, newest first. Used by the school page. */
 export async function getReviewsByVenue(
   venueId: string,
