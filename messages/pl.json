@@ -1163,6 +1163,36 @@
         "reviewsCount": "{count} opinii"
       }
     },
+    "bookings": {
+      "badge": "{count} rezerwacji",
+      "title": "Rezerwacje",
+      "emptyState": "Brak rezerwacji. Pojawią się tutaj, gdy klienci zaczną rezerwować.",
+      "col": {
+        "activity": "Zajęcia",
+        "session": "Termin",
+        "amount": "Kwota",
+        "status": "Status",
+        "created": "Utworzono"
+      }
+    },
+    "reviewsAdmin": {
+      "badge": "{count} opinii",
+      "title": "Opinie",
+      "emptyState": "Brak opinii. Po pierwszych zajęciach klienci będą mogli wystawić ocenę.",
+      "ratingLabel": "Ocena",
+      "replyLabel": "Twoja odpowiedź",
+      "replyPlaceholder": "Odpowiedz publicznie…",
+      "replyButton": "Odpowiedz",
+      "replyEdit": "Edytuj odpowiedź",
+      "replySaved": "Opublikowano.",
+      "replyError": "Nie udało się zapisać. Spróbuj ponownie."
+    },
+    "instructorsAdmin": {
+      "badge": "{count} osób w zespole",
+      "title": "Zespół",
+      "emptyState": "Tu pojawi się Twój zespół, gdy zaprosisz pierwszego instruktora.",
+      "comingSoon": "Funkcja zaproszeń pojawi się w Phase 2."
+    },
     "mock": {
       "dateBadge": { "weekday": "Piątek", "date": "24 kwietnia" },
       "user": {

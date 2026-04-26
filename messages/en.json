@@ -1163,6 +1163,36 @@
         "reviewsCount": "{count} reviews"
       }
     },
+    "bookings": {
+      "badge": "{count} bookings",
+      "title": "Bookings",
+      "emptyState": "No bookings yet. They'll appear here as customers book.",
+      "col": {
+        "activity": "Class",
+        "session": "Session",
+        "amount": "Amount",
+        "status": "Status",
+        "created": "Created"
+      }
+    },
+    "reviewsAdmin": {
+      "badge": "{count} reviews",
+      "title": "Reviews",
+      "emptyState": "No reviews yet. Customers can rate after their first session.",
+      "ratingLabel": "Rating",
+      "replyLabel": "Your reply",
+      "replyPlaceholder": "Reply publicly…",
+      "replyButton": "Reply",
+      "replyEdit": "Edit reply",
+      "replySaved": "Posted.",
+      "replyError": "Couldn't save. Try again."
+    },
+    "instructorsAdmin": {
+      "badge": "{count} on the team",
+      "title": "Team",
+      "emptyState": "Invite your first instructor to populate the team.",
+      "comingSoon": "Invitations land in Phase 2."
+    },
     "mock": {
       "dateBadge": { "weekday": "Friday", "date": "April 24" },
       "user": {

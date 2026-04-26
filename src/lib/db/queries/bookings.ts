@@ -132,6 +132,117 @@ function compose(row: BookingDetailRow, locale: Locale): BookingDetail | null {
   };
 }
 
+type PartnerBookingRow = {
+  id: string;
+  status: string;
+  amount_cents: number;
+  currency: string;
+  created_at: string;
+  user_id: string | null;
+  session:
+    | {
+        id: string;
+        starts_at: string;
+        activity:
+          | {
+              id: string;
+              title_i18n: I18nBag;
+              venue:
+                | {
+                    id: string;
+                    name: string;
+                    partner_id: string;
+                  }
+                | null;
+            }
+          | null;
+      }
+    | null;
+};
+
+export type PartnerBookingRow_UI = {
+  id: string;
+  status: BookingDetail["status"];
+  amountCents: number;
+  currency: string;
+  createdAt: string;
+  startsAt: string;
+  activityId: string;
+  activityTitle: string;
+  venueName: string;
+};
+
+/** Bookings for the partner — RLS scopes to bookings whose session belongs
+ * to a venue the partner owns. */
+export async function getBookingsByPartner(
+  partnerId: string,
+  locale: Locale,
+  limit = 100,
+): Promise<PartnerBookingRow_UI[]> {
+  if (!partnerId) return [];
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("bookings")
+    .select(
+      `
+      id,
+      status,
+      amount_cents,
+      currency,
+      created_at,
+      user_id,
+      session:sessions!inner (
+        id,
+        starts_at,
+        activity:activities!inner (
+          id,
+          title_i18n,
+          venue:venues!inner (
+            id,
+            name,
+            partner_id
+          )
+        )
+      )
+    `,
+    )
+    .eq("session.activity.venue.partner_id", partnerId)
+    .order("created_at", { ascending: false })
+    .limit(limit)
+    .returns<PartnerBookingRow[]>();
+
+  if (error) {
+    console.error("[db/queries/bookings.getBookingsByPartner]", error);
+    return [];
+  }
+
+  return (data ?? [])
+    .map((row): PartnerBookingRow_UI | null => {
+      const session = row.session;
+      const activity = session?.activity;
+      const venue = activity?.venue;
+      if (!session || !activity || !venue) return null;
+      return {
+        id: row.id,
+        status: (row.status as BookingDetail["status"]) ?? "pending",
+        amountCents: row.amount_cents,
+        currency: row.currency,
+        createdAt: row.created_at,
+        startsAt: session.starts_at,
+        activityId: activity.id,
+        activityTitle: pick(activity.title_i18n, locale) || activity.id,
+        venueName: venue.name,
+      };
+    })
+    .filter((r): r is PartnerBookingRow_UI => r !== null);
+}
+
 /**
  * Load a booking by id. Returns `null` when missing or when RLS hides it
  * from the caller.
