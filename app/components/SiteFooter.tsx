@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "../../src/i18n/navigation";
 import { Icon } from "./Icon";
 import BrandLogo from "./BrandLogo";
-import Reveal from "./Reveal";
+import Reveal, { RevealItem } from "./Reveal";
 
 export default function SiteFooter() {
   const t = useTranslations("Footer");
@@ -24,15 +24,15 @@ export default function SiteFooter() {
         stagger={0.08}
         className="flex flex-col md:flex-row justify-between items-center px-6 md:px-12 py-10 md:py-16 gap-8 max-w-site mx-auto"
       >
-        <Reveal.Item className="space-y-4 text-center md:text-left">
+        <RevealItem className="space-y-4 text-center md:text-left">
           <Link href="/">
             <BrandLogo size={32} />
           </Link>
           <p className="font-body text-sm leading-relaxed text-on-surface/60">
             {t("tagline")}
           </p>
-        </Reveal.Item>
-        <Reveal.Item className="flex flex-wrap justify-center gap-x-8 gap-y-4">
+        </RevealItem>
+        <RevealItem className="flex flex-wrap justify-center gap-x-8 gap-y-4">
           {links.map((l) =>
             l.external ? (
               <a
@@ -54,8 +54,8 @@ export default function SiteFooter() {
               </Link>
             )
           )}
-        </Reveal.Item>
-        <Reveal.Item className="flex gap-4">
+        </RevealItem>
+        <RevealItem className="flex gap-4">
           {["share", "favorite"].map((icon) => (
             <div
               key={icon}
@@ -64,7 +64,7 @@ export default function SiteFooter() {
               <Icon name={icon} className="text-[20px]" />
             </div>
           ))}
-        </Reveal.Item>
+        </RevealItem>
       </Reveal>
     </footer>
   );

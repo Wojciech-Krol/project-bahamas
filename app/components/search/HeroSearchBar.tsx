@@ -5,7 +5,7 @@ import { useMessages, useTranslations } from "next-intl";
 import { Icon } from "../Icon";
 import SearchSegment from "./SearchSegment";
 import { ActivityPanel, NeighborhoodPanel, WhenPanel, AgePanel } from "./panels";
-import { useTypewriterPlaceholder } from "./useTypewriterPlaceholder";
+import { useSequencedTypewriter } from "./useTypewriterPlaceholder";
 import {
   formatMultiSelectDisplay,
   type AgeCounts,
@@ -59,21 +59,40 @@ export default function HeroSearchBar({
   const t = useTranslations();
   const formatActivities = useFormatActivities();
   const messages = useMessages() as {
-    Home?: { hero?: { placeholders?: string[] } };
+    Home?: {
+      hero?: {
+        placeholders?: string[];
+        placeholdersNeighborhood?: string[];
+        placeholdersWhen?: string[];
+        placeholdersAge?: string[];
+      };
+    };
   };
   const placeholders = messages.Home?.hero?.placeholders ?? [];
+  const placeholdersNeighborhood =
+    messages.Home?.hero?.placeholdersNeighborhood ?? [];
+  const placeholdersWhen = messages.Home?.hero?.placeholdersWhen ?? [];
+  const placeholdersAge = messages.Home?.hero?.placeholdersAge ?? [];
   const [activeField, setActiveField] = useState<SearchField>(null);
   const [lastActiveField, setLastActiveField] = useState<SearchField>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const isExpanded = activeField !== null;
   const renderField = activeField || lastActiveField;
-  const typewriterEnabled =
-    !activities && activeField !== "activities" && placeholders.length > 0;
-  const typewriterText = useTypewriterPlaceholder(
+
+  const fieldPrompts = [
     placeholders,
-    typewriterEnabled,
-  );
+    placeholdersNeighborhood,
+    placeholdersWhen,
+    placeholdersAge,
+  ];
+  const sequencerEnabled = activeField === null;
+  const seq = useSequencedTypewriter(fieldPrompts, sequencerEnabled);
+
+  const fieldEmpty = [!activities, !neighborhood, !when, !ageLabel];
+  const fieldKeys: SearchField[] = ["activities", "neighborhood", "when", "age"];
+  const typewriterShownIdx =
+    sequencerEnabled && fieldEmpty[seq.activeIdx] ? seq.activeIdx : -1;
 
   const close = useCallback(() => setActiveField(null), []);
 
@@ -110,46 +129,54 @@ export default function HeroSearchBar({
     if (next !== null) setLastActiveField(next);
   };
 
-  const fields: {
+  const baseFields: {
     field: SearchField;
     icon: string;
     label: string;
     value: string;
-    placeholder: string;
-    placeholderClassName?: string;
+    staticPlaceholder: string;
   }[] = [
     {
       field: "activities",
       icon: "search",
       label: t("Search.field.activitiesLabel"),
       value: formatMultiSelectDisplay(formatActivities(activities)),
-      placeholder: typewriterEnabled
-        ? typewriterText || t("Search.field.activitiesPlaceholder")
-        : t("Search.field.activitiesPlaceholder"),
-      placeholderClassName: typewriterEnabled ? "typewriter-caret" : undefined,
+      staticPlaceholder: t("Search.field.activitiesPlaceholder"),
     },
     {
       field: "neighborhood",
       icon: "near_me",
       label: t("Search.field.neighborhoodLabel"),
       value: neighborhood,
-      placeholder: t("Search.field.neighborhoodPlaceholder"),
+      staticPlaceholder: t("Search.field.neighborhoodPlaceholder"),
     },
     {
       field: "when",
       icon: "calendar_today",
       label: t("Search.field.whenLabel"),
       value: when,
-      placeholder: t("Search.field.whenPlaceholder"),
+      staticPlaceholder: t("Search.field.whenPlaceholder"),
     },
     {
       field: "age",
       icon: "person",
       label: t("Search.field.ageLabel"),
       value: ageLabel,
-      placeholder: t("Search.field.agePlaceholder"),
+      staticPlaceholder: t("Search.field.agePlaceholder"),
     },
   ];
+
+  const fields = baseFields.map((f, i) => {
+    const showTypewriter =
+      typewriterShownIdx === i && fieldKeys[i] === fieldKeys[seq.activeIdx];
+    return {
+      ...f,
+      placeholder: showTypewriter
+        ? seq.text || f.staticPlaceholder
+        : f.staticPlaceholder,
+      placeholderClassName: showTypewriter ? "typewriter-caret" : undefined,
+    };
+  });
 
   return (
     <div ref={containerRef} className={`${className} relative z-30`}>
