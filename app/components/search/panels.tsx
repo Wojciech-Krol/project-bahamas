@@ -7,6 +7,8 @@ import { format } from "date-fns";
 import { pl as plLocale, enGB } from "date-fns/locale";
 import "react-day-picker/style.css";
 import { Icon } from "../Icon";
+import { TablerIcon } from "../TablerIcon";
+import { CATEGORY_ICONS } from "@/app/lib/categoryIcons";
 import {
   ACTIVITY_CATEGORIES,
   NEIGHBORHOOD_SUGGESTIONS,
@@ -60,7 +62,7 @@ export function ActivityPanel({
                         : "bg-surface-container-lowest border-on-surface/[0.06] text-on-surface hover:bg-primary-fixed/40 hover:border-primary/20 active:scale-95"
                     }`}
                   >
-                    <span className="text-lg">{a.emoji}</span>
+                    <TablerIcon name={CATEGORY_ICONS[a.key]} size={18} />
                     {tLabel(a.key)}
                   </button>
                 );
@@ -110,7 +112,7 @@ export function NeighborhoodPanel({
               className="flex items-center gap-3 p-3 rounded-2xl hover:bg-surface-container-low active:scale-[0.98] transition-all duration-200 text-left"
             >
               <div className="w-12 h-12 rounded-xl bg-primary-fixed/30 flex items-center justify-center shrink-0">
-                <Icon name={n.icon} className="text-[22px] text-primary" />
+                <TablerIcon name={n.icon} size={22} className="text-primary" />
               </div>
               <div>
                 <div className="font-semibold text-sm text-on-surface">{name}</div>
@@ -258,9 +260,10 @@ export function WhenPanel({
                   : "bg-surface-container-lowest border border-on-surface/[0.06] hover:bg-primary-fixed/30 hover:border-primary/20 text-on-surface"
               }`}
             >
-              <Icon
+              <TablerIcon
                 name={w.icon}
-                className={`text-[24px] ${isSelected ? "text-on-primary" : "text-primary"}`}
+                size={24}
+                className={isSelected ? "text-on-primary" : "text-primary"}
               />
               <span className="text-sm font-bold">{label}</span>
               <span

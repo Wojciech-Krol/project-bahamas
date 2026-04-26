@@ -12,6 +12,7 @@ import MapboxMap from "@/app/components/MapboxMap";
 import MobileActivityCarousel from "@/app/components/MobileActivityCarousel";
 import { buildSearchQuery, type SearchParams } from "@/app/lib/searchQuery";
 import type { Activity } from "@/app/lib/mockData";
+import { tablerIconForTitle } from "@/app/lib/categoryIcons";
 
 function CompactCard({ activity }: { activity: Activity }) {
   const t = useTranslations();
@@ -78,17 +79,6 @@ function CompactCard({ activity }: { activity: Activity }) {
 }
 
 const WARSAW_CENTER: [number, number] = [21.0122, 52.2297];
-
-function activityIcon(title: string): string {
-  const t = title.toLowerCase();
-  if (t.includes("tennis") || t.includes("tenis")) return "sports_tennis";
-  if (t.includes("yoga") || t.includes("hatha") || t.includes("joga")) return "self_improvement";
-  if (t.includes("swim") || t.includes("pływan")) return "pool";
-  if (t.includes("guitar") || t.includes("music") || t.includes("gitar") || t.includes("muzyk")) return "music_note";
-  if (t.includes("boxing") || t.includes("boks")) return "sports_mma";
-  if (t.includes("run") || t.includes("biega")) return "directions_run";
-  return "location_on";
-}
 
 function MobileTopBar({
   onOpenSearch,
@@ -220,7 +210,7 @@ export default function SearchClient({
           price: r.price.split("/")[0],
           lng: WARSAW_CENTER[0] + Math.cos(angle) * radius,
           lat: WARSAW_CENTER[1] + Math.sin(angle) * radius * 0.6,
-          icon: activityIcon(r.title),
+          icon: tablerIconForTitle(r.title),
         };
       }),
     [results]
