@@ -326,30 +326,22 @@ async function handleCheckoutCompleted(
     return;
   }
 
-  // Atomic capacity guard — increment only if spots_taken < capacity.
-  // Supabase JS lacks a native compare-and-swap for `col < other_col`, so
-  // we read capacity first (cheap — single integer column) and then
-  // update with an `lt` on the current spots_taken value. This is NOT a
-  // true CAS, but combined with the session row's CHECK constraint
-  // (`spots_taken <= capacity`) it collapses to a serialization error if
-  // two webhooks race, and the second one falls into the overbook branch.
-  const capacity = sessionAny.capacity;
-  const currentSpots = sessionAny.spots_taken;
-
-  let overbooked = false;
-  if (currentSpots >= capacity) {
-    overbooked = true;
-  } else {
-    const { data: updated, error: incErr } = await admin
-      .from("sessions")
-      .update({ spots_taken: currentSpots + 1 })
-      .eq("id", sessionAny.id)
-      .eq("spots_taken", currentSpots) // optimistic concurrency
-      .lt("spots_taken", capacity)
-      .select("id, spots_taken");
-    if (incErr || !updated || updated.length === 0) {
-      overbooked = true;
-    }
+  // Atomic capacity guard — defer the compare-and-increment to the
+  // `increment_spots(s_id)` SQL helper from migration 0008. The helper does
+  // `update sessions set spots_taken = spots_taken + 1 where id = ? and
+  //  spots_taken < capacity returning spots_taken` in a single statement, so
+  // two concurrent webhooks for the same session serialise correctly: the
+  // first wins and increments, the second's WHERE matches zero rows and the
+  // RPC returns NULL. NULL therefore unambiguously means "no capacity left",
+  // not "race lost between an unrelated read and our write" — which is the
+  // bug the previous read-then-CAS pattern shipped (see AUDIT_FINDINGS.md
+  // entry #1).
+  const { data: newCount, error: incErr } = await admin.rpc("increment_spots", {
+    s_id: sessionAny.id,
+  });
+  const overbooked = !!incErr || newCount === null;
+  if (incErr) {
+    console.error("[stripe-webhook] increment_spots rpc failed", incErr);
   }
 
   if (overbooked) {
