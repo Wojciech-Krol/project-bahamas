@@ -70,7 +70,6 @@ const ORBS: OrbDef[] = [
     parallax: 10,
     duration: 30,
     delay: -2,
-    hideOnMobile: true,
   },
 ];
 

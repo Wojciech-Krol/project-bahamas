@@ -46,15 +46,15 @@ export default function OccupancyHeatmap({
 
   return (
     <div className="bg-surface-container-lowest rounded-2xl border border-[#FAEEDA] editorial-shadow overflow-hidden">
-      <div className="p-6 pb-4">
+      <div className="p-4 md:p-6 pb-3 md:pb-4">
         <span className="text-[0.6rem] font-bold uppercase tracking-widest text-primary">
           {subtitle ?? title}
         </span>
-        <h3 className="font-headline font-bold text-2xl tracking-tight">
+        <h3 className="font-headline font-bold text-xl md:text-2xl tracking-tight">
           {title}
         </h3>
       </div>
-      <div className="px-6 pb-6 overflow-x-auto no-scrollbar">
+      <div className="px-4 md:px-6 pb-4 md:pb-6 overflow-x-auto md:no-scrollbar">
         {!hasData ? (
           <p className="text-on-surface/40 text-sm py-6 text-center">
             {emptyLabel}
