@@ -136,6 +136,52 @@ export type PartnerVenue = {
   isPublished: boolean;
 };
 
+export type PartnerVenueRaw = {
+  id: string;
+  name: string;
+  descriptionI18n: { pl: string; en: string };
+  address: string | null;
+  city: string | null;
+  heroImage: string | null;
+  isPublished: boolean;
+};
+
+export async function getPartnerVenueRawById(
+  venueId: string,
+  partnerId: string,
+): Promise<PartnerVenueRaw | null> {
+  if (!venueId || !partnerId) return null;
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("venues")
+    .select(
+      "id, name, description_i18n, address, city, hero_image, is_published, partner_id",
+    )
+    .eq("id", venueId)
+    .eq("partner_id", partnerId)
+    .maybeSingle();
+
+  if (error || !data) return null;
+  const desc = ((data as { description_i18n: Record<string, string> | null })
+    .description_i18n ?? {}) as Record<string, string>;
+
+  return {
+    id: data.id as string,
+    name: data.name as string,
+    descriptionI18n: { pl: desc.pl ?? "", en: desc.en ?? "" },
+    address: (data.address as string | null) ?? null,
+    city: (data.city as string | null) ?? null,
+    heroImage: (data.hero_image as string | null) ?? null,
+    isPublished: (data.is_published as boolean) ?? false,
+  };
+}
+
 /** Venues owned by the partner. Used by the class editor to pick a venue
  * and by the venue settings page. */
 export async function getVenuesByPartner(

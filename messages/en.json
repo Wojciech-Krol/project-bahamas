@@ -1129,7 +1129,8 @@
         "identity": "Identity",
         "location": "Location",
         "photos": "Photos",
-        "stats": "Stats strip"
+        "stats": "Stats strip",
+        "visibility": "Visibility"
       },
       "fields": {
         "name": "Venue name",
@@ -1137,13 +1138,20 @@
         "about": "About",
         "aboutCounter": "{count} / {max}",
         "address": "Address",
+        "city": "City / district",
         "neighborhood": "Neighborhood",
         "heroImage": "Hero image",
+        "heroImageUrl": "Hero image URL",
         "galleryHeading": "Gallery · {count} photos",
         "addNeighborhood": "+ Add",
         "replace": "Replace",
-        "numberLabel": "Number"
+        "numberLabel": "Number",
+        "publish": "Published",
+        "publishHint": "Visible to customers on the public page."
       },
+      "emptyState": "No venue yet — create one to continue.",
+      "selectAnother": "Pick a venue from the list above.",
+      "savedToast": "Saved.",
       "preview": {
         "liveAt": "Live · /school/{slug}",
         "desktop": "Desktop",

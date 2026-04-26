@@ -23,8 +23,10 @@ export {
   getActivitiesByPartner,
   getPartnerActivityById,
   getPartnerActivityRawById,
+  getPartnerVenueRawById,
   getVenuesByPartner,
   type PartnerActivity,
   type PartnerActivityRaw,
   type PartnerVenue,
+  type PartnerVenueRaw,
 } from "./partner";
