@@ -4,11 +4,19 @@ import SiteNavbar from "@/src/components/SiteNavbar";
 import SiteFooter from "@/src/components/SiteFooter";
 import ArticleCard from "@/src/components/blog/ArticleCard";
 import { getAllArticles } from "@/src/lib/blogContent";
+import { localizedAlternates } from "@/app/lib/seoMeta";
+import { routing } from "@/src/i18n/routing";
+import type { Locale } from "@/src/lib/db/types";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
+function isLocale(value: string): value is Locale {
+  return (routing.locales as readonly string[]).includes(value);
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale: raw } = await params;
+  const locale: Locale = isLocale(raw) ? raw : "pl";
   const t = await getTranslations({ locale, namespace: "Metadata.blog" });
   return {
     title: t("title"),
@@ -19,10 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: "website",
       locale: locale === "pl" ? "pl_PL" : "en_GB",
     },
-    alternates: {
-      canonical: `/${locale}/blog`,
-      languages: { pl: "/pl/blog", en: "/en/blog" },
-    },
+    alternates: localizedAlternates(locale, "/blog"),
   };
 }
 
