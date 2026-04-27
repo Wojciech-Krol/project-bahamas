@@ -378,3 +378,46 @@ export async function getFilteredActivities(
 ): Promise<Activity[]> {
   return queryWithFilters(locale, filters, "activities.getFilteredActivities");
 }
+
+/**
+ * Programmatic SEO landings: list activities of a given category in a
+ * given city. Drives `/pl/odkryj/[activity]/[city]` and similar.
+ *
+ * Empty results are not an error — the landing page still renders the
+ * intro, FAQ, and partner CTA, so Google still indexes useful content
+ * even when no studios have onboarded yet.
+ */
+export async function getActivitiesByCategoryAndCity(
+  category: string,
+  city: string,
+  locale: Locale,
+  limit = 24,
+): Promise<Activity[]> {
+  const results = await queryWithFilters(
+    locale,
+    { activities: [category], neighborhood: city },
+    "activities.getActivitiesByCategoryAndCity",
+  );
+  return results.slice(0, limit);
+}
+
+/**
+ * Same as the city landing query, but filtered down to a specific
+ * neighborhood. The `neighborhood` filter on `queryWithFilters` runs
+ * `ilike` on `venues.city`, so we pass the human-readable neighborhood
+ * name (e.g. "Mokotów"). Schema TODO: split venues into city +
+ * neighborhood columns once the partner UI captures them separately.
+ */
+export async function getActivitiesByCategoryAndNeighborhood(
+  category: string,
+  neighborhood: string,
+  locale: Locale,
+  limit = 24,
+): Promise<Activity[]> {
+  const results = await queryWithFilters(
+    locale,
+    { activities: [category], neighborhood },
+    "activities.getActivitiesByCategoryAndNeighborhood",
+  );
+  return results.slice(0, limit);
+}
