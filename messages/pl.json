@@ -289,6 +289,56 @@
     "instagram": "Instagram",
     "linkedin": "LinkedIn"
   },
+  "Landing": {
+    "common": {
+      "homeLabel": "Strona główna",
+      "discoverLabel": "Odkrywaj",
+      "noResultsTitle": "Nie ma jeszcze {activity} {cityIn}",
+      "noResultsBody": "Pracujemy nad zaproszeniem najlepszych miejsc {cityFrom}. W międzyczasie przejrzyj inne dzielnice albo daj znać swojemu ulubionemu studio.",
+      "ctaPartner": "Prowadzisz studio? Dołącz do Hakuny",
+      "neighborhoodsHeading": "Według dzielnicy",
+      "faqHeading": "Najczęstsze pytania",
+      "viewAllInCity": "Zobacz wszystkie zajęcia {cityIn}"
+    },
+    "intros": {
+      "yoga": {
+        "warszawa": "Joga w Warszawie ma swój rytm — od porannych vinyas na Mokotowie po świece i wieczorne yin na Pradze-Północ. Hakuna zbiera w jednym miejscu studia, instruktorów i otwarte zajęcia, które naprawdę warto dziś sprawdzić. Filtruj po dzielnicy, godzinie albo poziomie zaawansowania, zarezerwuj online i zjaw się na macie — bez maili, bez kombinowania. Niezależnie od tego, czy szukasz pierwszych zajęć dla początkujących, czy zaawansowanej praktyki ashtanga, w Warszawie znajdziesz miejsce, które pasuje do Twojego dnia. Sprawdź najbliższe sesje poniżej i dołącz do społeczności, która łączy ruch z codziennym dobrostanem."
+      }
+    },
+    "faq": {
+      "yoga": {
+        "items": [
+          {
+            "question": "Ile kosztują zajęcia jogi w Warszawie?",
+            "answer": "Pojedyncze wejście to zazwyczaj 50–80 zł, karnet open na miesiąc 200–360 zł w zależności od studia i dzielnicy. Studia w Śródmieściu są zwykle droższe niż na Pradze czy Ursynowie. Wiele miejsc oferuje pierwsze zajęcia za 1 zł albo darmowy próbny tydzień — sprawdź ofertę konkretnego studia."
+          },
+          {
+            "question": "Czy mogę zacząć jogę nie mając żadnego doświadczenia?",
+            "answer": "Tak — zajęcia oznaczone jako „początkujący” lub „basic” są właśnie dla osób, które dopiero zaczynają. Instruktor pokaże podstawowe pozycje (asany), oddech i bezpieczne ustawienie ciała. Mata zwykle jest na miejscu, weź wygodne, oddychające ubranie i butelkę wody."
+          },
+          {
+            "question": "Jaki styl jogi wybrać na początek?",
+            "answer": "Hatha i vinyasa to najpopularniejsze style dla początkujących. Hatha jest wolniejsza, daje więcej czasu na ustawienie pozycji. Vinyasa ma większą dynamikę i synchronizuje ruch z oddechem. Yin (długie pasywne pozycje) i restorative są świetne wieczorem na rozluźnienie."
+          },
+          {
+            "question": "Jak często powinienem chodzić na jogę?",
+            "answer": "Dla efektów wystarczą 2–3 sesje w tygodniu. Większość studiów oferuje karnety, które się opłacają już od 6 wejść w miesiącu. Wiele osób łączy 1 mocniejszą sesję (vinyasa, ashtanga) z 1 spokojniejszą (yin, hatha) — daje to balans między mobilnością a regeneracją."
+          },
+          {
+            "question": "Czy mogę zarezerwować pojedyncze zajęcia, czy muszę kupić karnet?",
+            "answer": "Tak, w Hakunie rezerwujesz pojedyncze zajęcia online — bez zobowiązania. Karnet wykupisz dopiero, gdy znajdziesz studio i styl, które Ci pasują."
+          }
+        ]
+      }
+    },
+    "cityHooks": {
+      "warszawa": "Stolica łączy energię biznesowego centrum, alternatywne sceny prawego brzegu i spokojniejsze, zielone Mokotów czy Żoliborz — każda dzielnica ma swój rytm.",
+      "krakow": "Od artystycznego Kazimierza po sportowe Krowodrzy — w Krakowie znajdziesz coś dla każdego stylu życia.",
+      "wroclaw": "Studencka energia Śródmieścia, kawiarniany klimat Krzyków i industrialna Fabryczna — Wrocław wciąga różnorodnością.",
+      "gdansk": "Bałtycki klimat Wrzeszcza i Oliwy spotyka się z tętniącym życiem Śródmieścia — Gdańsk to miasto, które łączy ruch z naturą.",
+      "poznan": "Poznań to gęsta, zwarta tkanka miasta — od historycznego Starego Miasta po artystyczne Jeżyce. Zajęcia masz pod ręką."
+    }
+  },
   "About": {
     "meta": {
       "title": "O Hakunie — miejski przewodnik po lokalnych zajęciach",

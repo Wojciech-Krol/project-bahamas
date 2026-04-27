@@ -18,7 +18,8 @@ const beVietnam = Be_Vietnam_Pro({
   subsets: ["latin", "latin-ext"],
   variable: "--font-be-vietnam",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  // Trimmed: 300 not used (no `font-light` class anywhere in the codebase).
+  weight: ["400", "500", "600", "700"],
 });
 
 export function generateStaticParams() {
@@ -107,9 +108,16 @@ export default async function LocaleLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/*
+          Material Symbols Outlined — subset to glyphs actually used via
+          <Icon name="…" />. Without `icon_names=` Google Fonts ships a
+          ~3.8 MB woff2 (every glyph in the catalog). The list below must
+          stay in sync with the icon names referenced in the codebase
+          (grep for `<Icon name=`).
+        */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_balance,add,add_a_photo,arrow_back,arrow_forward,arrow_forward_ios,arrow_upward,auto_awesome,bolt,calendar_today,card_membership,category,check,check_circle,circle,close,content_copy,edit,event,expand_less,expand_more,favorite,group,image,keyboard_arrow_down,keyboard_arrow_up,language,location_on,logout,map,menu,more_horiz,near_me,open_in_new,payments,person,person_add,photo_library,place,priority_high,refresh,remove,rocket_launch,schedule,schedule_send,search,signal_cellular_alt,star,sync_disabled,timer,tune,unfold_more,upload,upload_file,verified&display=swap"
         />
       </head>
       <body
