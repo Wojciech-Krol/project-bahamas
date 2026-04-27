@@ -1,10 +1,13 @@
 "use client";
 
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { useMessages, useTranslations } from "next-intl";
 import { Icon } from "../Icon";
 import SearchSegment from "./SearchSegment";
-import { ActivityPanel, NeighborhoodPanel, WhenPanel, AgePanel } from "./panels";
+import { ActivityPanel, NeighborhoodPanel, AgePanel } from "./panels";
+
+const WhenPanel = dynamic(() => import("./WhenPanel"), { ssr: false });
 import { useSequencedTypewriter } from "./useTypewriterPlaceholder";
 import {
   formatMultiSelectDisplay,

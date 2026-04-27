@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { useMessages, useTranslations } from "next-intl";
 import { Icon } from "../Icon";
 import BrandLogo from "../BrandLogo";
-import { ActivityPanel, NeighborhoodPanel, WhenPanel, AgePanel } from "./panels";
+import { ActivityPanel, NeighborhoodPanel, AgePanel } from "./panels";
+
+const WhenPanel = dynamic(() => import("./WhenPanel"), { ssr: false });
 import {
   formatMultiSelectDisplay,
   type SearchField,
