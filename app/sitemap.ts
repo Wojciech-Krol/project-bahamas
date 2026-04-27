@@ -3,6 +3,7 @@ import { routing, type AppPathname } from "../src/i18n/routing";
 import { getPathname } from "../src/i18n/navigation";
 import { getAllSlugs } from "@/src/lib/blogContent";
 import { createAdminClient } from "../src/lib/db/admin";
+import { allCityLandingParams } from "./lib/geo";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.club";
 
@@ -146,5 +147,49 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }),
     );
 
-  return [...staticEntries, ...blogEntries, ...activityEntries, ...venueEntries];
+  // Programmatic SEO landings — every (activity, city) combination gets
+  // its own URL. Priority 0.8 because city landings are the primary
+  // crawl entry points into specific intents like "joga warszawa".
+  const landingEntries: MetadataRoute.Sitemap = allCityLandingParams().flatMap(
+    ({ activity, city }) =>
+      routing.locales.map((locale) => {
+        const pathname = getPathname({
+          locale,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          href: {
+            pathname: "/discover/[activity]/[city]" as AppPathname,
+            params: { activity, city },
+          } as any,
+        });
+        return {
+          url: `${SITE_URL}${pathname}`,
+          lastModified: now,
+          changeFrequency: "weekly" as const,
+          priority: 0.8,
+          alternates: {
+            languages: Object.fromEntries(
+              routing.locales.map((l) => [
+                l,
+                `${SITE_URL}${getPathname({
+                  locale: l,
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  href: {
+                    pathname: "/discover/[activity]/[city]" as AppPathname,
+                    params: { activity, city },
+                  } as any,
+                })}`,
+              ]),
+            ),
+          },
+        };
+      }),
+  );
+
+  return [
+    ...staticEntries,
+    ...blogEntries,
+    ...activityEntries,
+    ...venueEntries,
+    ...landingEntries,
+  ];
 }

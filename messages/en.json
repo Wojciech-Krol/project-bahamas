@@ -289,6 +289,56 @@
     "instagram": "Instagram",
     "linkedin": "LinkedIn"
   },
+  "Landing": {
+    "common": {
+      "homeLabel": "Home",
+      "discoverLabel": "Discover",
+      "noResultsTitle": "No {activity} listings yet in {cityIn}",
+      "noResultsBody": "We're inviting the best venues in {cityFrom}. In the meantime, browse other neighborhoods or nominate your favorite studio.",
+      "ctaPartner": "Run a studio? Join Hakuna",
+      "neighborhoodsHeading": "By neighborhood",
+      "faqHeading": "Frequently asked questions",
+      "viewAllInCity": "See all activities in {cityIn}"
+    },
+    "intros": {
+      "yoga": {
+        "warszawa": "Yoga in Warsaw has its rhythm — morning vinyasa in Mokotów, candlelit yin in Praga at dusk. Hakuna gathers studios, teachers, and open classes worth checking today. Filter by neighborhood, time, or level, book online, and show up on the mat. Whether it's your first beginner class or a serious ashtanga practice, you'll find a fit here."
+      }
+    },
+    "faq": {
+      "yoga": {
+        "items": [
+          {
+            "question": "How much do yoga classes in Warsaw cost?",
+            "answer": "A drop-in is usually 50–80 PLN, monthly unlimited 200–360 PLN depending on studio and neighborhood. Many places offer a free trial week or a 1 PLN intro class — check the studio page."
+          },
+          {
+            "question": "Can I start yoga with zero experience?",
+            "answer": "Yes — classes labeled 'beginner' or 'basic' are exactly for that. Mats are usually provided. Wear something comfortable and breathable, bring water."
+          },
+          {
+            "question": "Which yoga style should I start with?",
+            "answer": "Hatha and vinyasa are the most beginner-friendly. Hatha is slower with more time on alignment. Vinyasa is more dynamic and links movement to breath. Yin and restorative are great evening sessions for unwinding."
+          },
+          {
+            "question": "How often should I practice?",
+            "answer": "2–3 sessions a week is plenty for visible benefits. Most studios offer monthly passes that pay off from 6 visits a month."
+          },
+          {
+            "question": "Can I book a single class or do I need a pass?",
+            "answer": "Yes — Hakuna lets you book single classes online with no commitment. Buy a pass once you've found a studio and style that fits."
+          }
+        ]
+      }
+    },
+    "cityHooks": {
+      "warszawa": "The capital blends business-district energy, alt scenes on the right bank, and quieter green areas like Mokotów or Żoliborz — every neighborhood has its rhythm.",
+      "krakow": "From artsy Kazimierz to athletic Krowodrza — Kraków offers a fit for every lifestyle.",
+      "wroclaw": "Student energy in Śródmieście, café vibes in Krzyki, industrial pull in Fabryczna — Wrocław pulls you in with variety.",
+      "gdansk": "Baltic mood in Wrzeszcz and Oliwa meets the buzz of Śródmieście — Gdańsk is a city that pairs movement with nature.",
+      "poznan": "Poznań packs a dense, walkable urban fabric — from the historic Old Town to creative Jeżyce. Activities are always close by."
+    }
+  },
   "About": {
     "meta": {
       "title": "About Hakuna — local activity discovery platform",
