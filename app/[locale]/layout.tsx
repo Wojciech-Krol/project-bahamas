@@ -56,14 +56,11 @@ export async function generateMetadata({
       title: titleDefault,
       description: t("description"),
     },
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        pl: "/pl",
-        en: "/en",
-        "x-default": "/pl",
-      },
-    },
+    // No alternates here on purpose. Each route owns its own canonical +
+    // hreflang via getPathname so localized pathnames (e.g. /pl/o-nas) get
+    // the right URL. If we set canonical at layout level, every child page
+    // without its own override would canonicalize to /pl — Google would
+    // then de-duplicate the whole site to the homepage.
     robots: {
       index: true,
       follow: true,

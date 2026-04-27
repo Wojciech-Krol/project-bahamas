@@ -4,6 +4,9 @@ export const routing = defineRouting({
   locales: ["pl", "en"],
   defaultLocale: "pl",
   localePrefix: "always",
+  // Hreflang advertised once via HTML <link rel="alternate"> in metadata.
+  // Validators flag duplication if next-intl also emits the Link header.
+  alternateLinks: false,
   pathnames: {
     "/": "/",
     "/about": { pl: "/o-nas", en: "/about" },
