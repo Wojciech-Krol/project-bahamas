@@ -5,6 +5,8 @@
  */
 
 export {
+  getActivitiesByCategoryAndCity,
+  getActivitiesByCategoryAndNeighborhood,
   getActivityById,
   getActivityBySlug,
   getClosestActivities,

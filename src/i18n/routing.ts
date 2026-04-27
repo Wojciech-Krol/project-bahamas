@@ -15,6 +15,10 @@ export const routing = defineRouting({
     "/blog/[slug]": "/blog/[slug]",
     "/activity/[slug]": { pl: "/zajecia/[slug]", en: "/activity/[slug]" },
     "/school/[slug]": { pl: "/szkola/[slug]", en: "/school/[slug]" },
+    "/discover/[activity]/[city]": {
+      pl: "/odkryj/[activity]/[city]",
+      en: "/discover/[activity]/[city]",
+    },
     "/partners/apply": {
       pl: "/partnerzy/zglos",
       en: "/partners/apply",
