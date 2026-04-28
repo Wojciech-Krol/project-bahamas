@@ -47,6 +47,8 @@ export const routing = defineRouting({
     "/partner/payments": "/partner/payments",
     "/partner/plans": "/partner/plans",
     "/partner/integrations": "/partner/integrations",
+    "/createarticle": "/createarticle",
+    "/createarticle/preview": "/createarticle/preview",
   },
 });
 

@@ -833,6 +833,95 @@
       }
     }
   },
+  "CreateArticle": {
+    "ui": {
+      "lock": {
+        "title": "Admin Access Required",
+        "description": "Enter the security code to continue to the article dashboard.",
+        "codePlaceholder": "Security code",
+        "submitButton": "Unlock dashboard",
+        "invalidCode": "Invalid security code.",
+        "backToHome": "Back to home"
+      },
+      "dashboard": {
+        "title": "Blog Creation Dashboard",
+        "logout": "Logout",
+        "articleTitlePlaceholder": "Article Title",
+        "articleSubtitlePlaceholder": "Article Subtitle",
+        "toolbar": {
+          "heading": "Toolbar",
+          "bold": "Bold",
+          "italic": "Italic",
+          "underline": "Underline",
+          "subtitle": "Subtitle",
+          "list": "Dots",
+          "link": "Link",
+          "image": "Add Image"
+        },
+        "editorPlaceholder": "Start writing your article...",
+        "actions": {
+          "saveDraft": "Save Draft",
+          "publish": "Publish",
+          "preview": "Preview"
+        },
+        "imageUpload": {
+          "title": "Featured Image",
+          "description": "Click to upload or drag and drop"
+        },
+        "states": {
+          "dirty": "Unsaved changes",
+          "saving": "Saving draft...",
+          "saved": "Draft saved",
+          "saveError": "Could not save draft.",
+          "publishing": "Publishing...",
+          "published": "Published",
+          "publishError": "Could not publish article.",
+          "requiredFieldsMissing": "Required fields missing:",
+          "unsavedChangesWarning": "You have unsaved changes."
+        },
+        "requiredFields": {
+          "title": "Title",
+          "content": "Content",
+          "author": "Author",
+          "category": "Category"
+        },
+        "audit": {
+          "title": "Audit Log",
+          "empty": "No actions yet.",
+          "savedDraft": "Draft saved",
+          "startedPublishing": "Publishing started",
+          "published": "Article published",
+          "validationFailed": "Publish blocked by validation"
+        },
+        "meta": {
+          "title": "Post Details",
+          "authorLabel": "Author",
+          "authorPlaceholder": "Author name",
+          "categoryLabel": "Category",
+          "categoryPlaceholder": "Select or type category",
+          "tagsLabel": "Tags",
+          "tagsPlaceholder": "Add tags separated by commas"
+        }
+      },
+      "preview": {
+        "notice": "Preview mode — this is what your article will look like once published.",
+        "backToEditor": "Back to editor",
+        "draftBadge": "Draft preview",
+        "publishedBadge": "Published preview",
+        "untitled": "Untitled article",
+        "unknownAuthor": "Unknown author",
+        "noCategory": "Uncategorized",
+        "emptyTitle": "Nothing to preview yet",
+        "emptyDescription": "Start writing in the editor, then come back here to see how your article will look.",
+        "emptyCta": "Open the editor",
+        "activitiesTitle": "Activities",
+        "activitiesDescription": "Add activities from the website that connect with this article. Readers will see them as a small ranking under the post.",
+        "addActivity": "Add activity from the website",
+        "comingSoon": "Available once the database is connected",
+        "tagsLabel": "Tags"
+      }
+    }
+  },
   "Partner": {
     "brand": "Partner",
     "nav": {
