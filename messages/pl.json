@@ -1,18 +1,16 @@
 {
   "Metadata": {
-    "title": "HAKUNA | Zacznij coś nowego — dziś",
+    "titleDefault": "Znajdź coś dla siebie",
+    "titleTemplate": "%s · Znajdź coś dla siebie",
     "description": "Znajdź i zarezerwuj najlepsze zajęcia obok Ciebie. Joga, sport, ceramika, muzyka — odkryj to, co dzieje się w Twojej okolicy w najbliższe dwie godziny.",
-    "ogTitle": "HAKUNA | Zacznij coś nowego — dziś",
+    "ogTitle": "Znajdź coś dla siebie",
     "ogDescription": "Znajdź i zarezerwuj najlepsze zajęcia obok Ciebie.",
     "keywords": "zajęcia, warsztaty, joga, sport, taniec, ceramika, muzyka, Warszawa, Hakuna, rezerwacja",
     "blog": {
-      "title": "Dziennik Hakuny | Historie, przewodniki i miejskie podpowiedzi",
+      "title": "Dziennik Hakuny",
       "description": "Cotygodniowe teksty o życiu w mieście, dobrostanie i tym, jak powiedzieć „tak” swojej okolicy. Ręcznie pisane przewodniki społeczności Hakuna.",
       "ogTitle": "Dziennik Hakuny",
       "ogDescription": "Historie, przewodniki i miejskie podpowiedzi od społeczności Hakuny."
-    },
-    "blogArticle": {
-      "titleSuffix": "| Dziennik Hakuny"
     }
   },
   "Common": {
@@ -36,14 +34,118 @@
   "Nav": {
     "explore": "Odkrywaj",
     "about": "O nas",
-    "toggleMenu": "Otwórz menu"
+    "toggleMenu": "Otwórz menu",
+    "logout": "Wyloguj się"
+  },
+  "Admin": {
+    "page": {
+      "title": "Zgłoszenia partnerów",
+      "subtitle": "Rozpatrz nowe zgłoszenia od miejsc, które chcą dołączyć do Hakuny.",
+      "empty": "Brak oczekujących zgłoszeń."
+    },
+    "nav": {
+      "brandTag": "Admin",
+      "partners": "Partnerzy",
+      "logout": "Wyloguj się"
+    },
+    "columns": {
+      "name": "Nazwa",
+      "email": "Email kontaktowy",
+      "city": "Miasto",
+      "applied": "Zgłoszono",
+      "actions": "Akcje"
+    },
+    "actions": {
+      "approve": "Zaakceptuj",
+      "reject": "Odrzuć"
+    },
+    "reject": {
+      "reasonLabel": "Powód (opcjonalnie)",
+      "reasonPlaceholder": "Krótka notatka, którą otrzyma zgłaszający.",
+      "confirm": "Wyślij odrzucenie"
+    },
+    "errors": {
+      "alreadyDecided": "To zgłoszenie zostało już rozpatrzone.",
+      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+    }
+  },
+  "Auth": {
+    "divider": "lub",
+    "field": {
+      "email": "Email",
+      "password": "Hasło",
+      "fullName": "Imię i nazwisko"
+    },
+    "button": {
+      "login": "Zaloguj się",
+      "signup": "Załóż konto",
+      "google": "Kontynuuj z Google",
+      "logout": "Wyloguj się"
+    },
+    "error": {
+      "invalidInput": "Sprawdź wprowadzone dane.",
+      "invalidCredentials": "Nieprawidłowy email lub hasło.",
+      "emailNotConfirmed": "Potwierdź email klikając link, który wysłaliśmy podczas zakładania konta.",
+      "signupFailed": "Nie udało się założyć konta. Spróbuj ponownie.",
+      "rateLimited": "Zbyt wiele prób — spróbuj ponownie za chwilę.",
+      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+    },
+    "login": {
+      "title": "Witaj ponownie",
+      "subtitle": "Zaloguj się, by kontynuować rezerwacje.",
+      "noAccount": "Nie masz konta?",
+      "signupCta": "Załóż je"
+    },
+    "signup": {
+      "title": "Dołącz do Hakuny",
+      "subtitle": "Załóż konto i odkrywaj zajęcia w okolicy.",
+      "haveAccount": "Masz już konto?",
+      "loginCta": "Zaloguj się"
+    },
+    "checkEmail": {
+      "title": "Sprawdź skrzynkę",
+      "body": "Wysłaliśmy link potwierdzający na {email}. Kliknij go, by aktywować konto i zalogować się automatycznie.",
+      "hint": "Email może wylądować w spamie. Sprawdź też tam."
+    }
   },
   "Home": {
     "hero": {
       "titleStart": "Zacznij coś",
       "titleMiddle": "nowego",
       "titleEnd": "już dziś.",
-      "subtitle": "Setki zajęć zaczynających się w Twojej okolicy w najbliższe dwie godziny."
+      "subtitle": "Setki zajęć zaczynających się w Twojej okolicy w najbliższe dwie godziny.",
+      "placeholders": [
+        "joga w 2h",
+        "padel na Mokotowie",
+        "warsztaty dla dzieci po 18:00",
+        "wspinaczka dziś wieczorem",
+        "ceramika w weekend",
+        "boks rano przed pracą"
+      ],
+      "placeholdersNeighborhood": [
+        "Mokotów",
+        "Śródmieście",
+        "Praga Północ",
+        "Wola",
+        "Żoliborz",
+        "Saska Kępa"
+      ],
+      "placeholdersWhen": [
+        "dziś wieczorem",
+        "w weekend",
+        "w sobotę rano",
+        "za godzinę",
+        "jutro po 18:00",
+        "w piątek wieczorem"
+      ],
+      "placeholdersAge": [
+        "2 dorosłych",
+        "rodzina z dziećmi",
+        "tylko dla dorosłych",
+        "nastolatki + 1 dorosły",
+        "dziecko + opiekun",
+        "grupa 4 osób"
+      ]
     },
     "closest": {
       "badge": "Zaczyna się wkrótce",
@@ -187,7 +289,61 @@
     "instagram": "Instagram",
     "linkedin": "LinkedIn"
   },
+  "Landing": {
+    "common": {
+      "homeLabel": "Strona główna",
+      "discoverLabel": "Odkrywaj",
+      "noResultsTitle": "Nie ma jeszcze {activity} {cityIn}",
+      "noResultsBody": "Pracujemy nad zaproszeniem najlepszych miejsc {cityFrom}. W międzyczasie przejrzyj inne dzielnice albo daj znać swojemu ulubionemu studio.",
+      "ctaPartner": "Prowadzisz studio? Dołącz do Hakuny",
+      "neighborhoodsHeading": "Według dzielnicy",
+      "faqHeading": "Najczęstsze pytania",
+      "viewAllInCity": "Zobacz wszystkie zajęcia {cityIn}"
+    },
+    "intros": {
+      "yoga": {
+        "warszawa": "Joga w Warszawie ma swój rytm — od porannych vinyas na Mokotowie po świece i wieczorne yin na Pradze-Północ. Hakuna zbiera w jednym miejscu studia, instruktorów i otwarte zajęcia, które naprawdę warto dziś sprawdzić. Filtruj po dzielnicy, godzinie albo poziomie zaawansowania, zarezerwuj online i zjaw się na macie — bez maili, bez kombinowania. Niezależnie od tego, czy szukasz pierwszych zajęć dla początkujących, czy zaawansowanej praktyki ashtanga, w Warszawie znajdziesz miejsce, które pasuje do Twojego dnia. Sprawdź najbliższe sesje poniżej i dołącz do społeczności, która łączy ruch z codziennym dobrostanem."
+      }
+    },
+    "faq": {
+      "yoga": {
+        "items": [
+          {
+            "question": "Ile kosztują zajęcia jogi w Warszawie?",
+            "answer": "Pojedyncze wejście to zazwyczaj 50–80 zł, karnet open na miesiąc 200–360 zł w zależności od studia i dzielnicy. Studia w Śródmieściu są zwykle droższe niż na Pradze czy Ursynowie. Wiele miejsc oferuje pierwsze zajęcia za 1 zł albo darmowy próbny tydzień — sprawdź ofertę konkretnego studia."
+          },
+          {
+            "question": "Czy mogę zacząć jogę nie mając żadnego doświadczenia?",
+            "answer": "Tak — zajęcia oznaczone jako „początkujący” lub „basic” są właśnie dla osób, które dopiero zaczynają. Instruktor pokaże podstawowe pozycje (asany), oddech i bezpieczne ustawienie ciała. Mata zwykle jest na miejscu, weź wygodne, oddychające ubranie i butelkę wody."
+          },
+          {
+            "question": "Jaki styl jogi wybrać na początek?",
+            "answer": "Hatha i vinyasa to najpopularniejsze style dla początkujących. Hatha jest wolniejsza, daje więcej czasu na ustawienie pozycji. Vinyasa ma większą dynamikę i synchronizuje ruch z oddechem. Yin (długie pasywne pozycje) i restorative są świetne wieczorem na rozluźnienie."
+          },
+          {
+            "question": "Jak często powinienem chodzić na jogę?",
+            "answer": "Dla efektów wystarczą 2–3 sesje w tygodniu. Większość studiów oferuje karnety, które się opłacają już od 6 wejść w miesiącu. Wiele osób łączy 1 mocniejszą sesję (vinyasa, ashtanga) z 1 spokojniejszą (yin, hatha) — daje to balans między mobilnością a regeneracją."
+          },
+          {
+            "question": "Czy mogę zarezerwować pojedyncze zajęcia, czy muszę kupić karnet?",
+            "answer": "Tak, w Hakunie rezerwujesz pojedyncze zajęcia online — bez zobowiązania. Karnet wykupisz dopiero, gdy znajdziesz studio i styl, które Ci pasują."
+          }
+        ]
+      }
+    },
+    "cityHooks": {
+      "warszawa": "Stolica łączy energię biznesowego centrum, alternatywne sceny prawego brzegu i spokojniejsze, zielone Mokotów czy Żoliborz — każda dzielnica ma swój rytm.",
+      "krakow": "Od artystycznego Kazimierza po sportowe Krowodrzy — w Krakowie znajdziesz coś dla każdego stylu życia.",
+      "wroclaw": "Studencka energia Śródmieścia, kawiarniany klimat Krzyków i industrialna Fabryczna — Wrocław wciąga różnorodnością.",
+      "gdansk": "Bałtycki klimat Wrzeszcza i Oliwy spotyka się z tętniącym życiem Śródmieścia — Gdańsk to miasto, które łączy ruch z naturą.",
+      "poznan": "Poznań to gęsta, zwarta tkanka miasta — od historycznego Starego Miasta po artystyczne Jeżyce. Zajęcia masz pod ręką."
+    }
+  },
   "About": {
+    "meta": {
+      "title": "O Hakunie — miejski przewodnik po lokalnych zajęciach",
+      "description": "Hakuna to platforma do odkrywania i rezerwowania zajęć w Twojej okolicy. Poznaj naszą wizję, zespół i historię."
+    },
     "badge": "Nasza wizja",
     "heroStart": "Miasto, w którym",
     "heroEmphasis": "naprawdę",
@@ -369,6 +525,19 @@
     "spotsLeft": "{count, plural, one {Zostało ostatnie miejsce!} few {Zostały jeszcze # miejsca} many {Zostało jeszcze # miejsc} other {Zostało jeszcze # miejsca}}",
     "spotsLeftShort": "{count, plural, one {zostało 1 miejsce} few {zostały # miejsca} many {zostało # miejsc} other {zostało # miejsca}}",
     "bookYourSpot": "Zarezerwuj miejsce",
+    "bookingProgress": "Przekierowywanie do płatności…",
+    "bookingError": {
+      "not_configured": "Płatności nie są jeszcze skonfigurowane. Spróbuj później.",
+      "not_signed_in": "Zaloguj się, aby zarezerwować.",
+      "internal": "Coś poszło nie tak. Spróbuj ponownie.",
+      "session_not_found": "Termin już nie jest dostępny.",
+      "partner_not_connected": "Studio nie obsługuje jeszcze płatności online.",
+      "session_not_bookable": "Tego terminu nie można już zarezerwować.",
+      "session_in_past": "Termin już się rozpoczął.",
+      "session_full": "Brak wolnych miejsc na ten termin.",
+      "rate_limited": "Zbyt wiele prób — odczekaj chwilę i spróbuj ponownie."
+    },
+    "noSessions": "Brak nadchodzących terminów. Sprawdź ponownie wkrótce.",
     "freeCancel": "Bezpłatna anulacja do 48 godzin przed zajęciami.",
     "joiningPulse": "Idą z Tobą",
     "alreadyBooked": "Już zarezerwowali",
@@ -385,27 +554,6 @@
       "dates": {
         "d1": { "label": "24 paź", "time": "18:00" },
         "d2": { "label": "26 paź", "time": "10:00" }
-      },
-      "curriculum": {
-        "c1": {
-          "title": "Fundament kinetyczny",
-          "description": "Głębokie zrozumienie ciężaru i momentu. Uczysz się wykorzystywać grawitację jako paliwo przejść."
-        },
-        "c2": {
-          "title": "Miejskie tekstury",
-          "description": "Zderzenie płynnych linii tańca współczesnego z ostrym, izolowanym ruchem miasta."
-        },
-        "c3": {
-          "title": "Choreografia i niuans",
-          "description": "Ostatni etap to praca nad układem „Urban Flow”. Uczysz się czytać złożone rytmy i tłumaczyć je na ekspresję całego ciała."
-        }
-      },
-      "instructor": {
-        "role": "Główny prowadzący",
-        "name": "Marcus Thorne",
-        "bio": "Założyciel Kinetic Lab. Marcus choreografował trasy koncertowe i produkcje filmowe na całym świecie. Jego filozofia opiera się na pomoście między techniczną precyzją a surową, ludzką emocją.",
-        "cred1": "Choreograf Roku 2023",
-        "cred2": "15+ lat doświadczenia"
       }
     }
   },
@@ -772,6 +920,748 @@
         "comingSoon": "Dostepne po podlaczeniu bazy danych",
         "tagsLabel": "Tagi"
       }
+    }
+  },
+  "Partner": {
+    "brand": "Partner",
+    "nav": {
+      "overview": "Przegląd",
+      "classes": "Zajęcia",
+      "instructors": "Instruktorzy",
+      "bookings": "Rezerwacje",
+      "reviews": "Opinie",
+      "insights": "Statystyki",
+      "venue": "Profil obiektu",
+      "payouts": "Wypłaty",
+      "payments": "Płatności",
+      "promote": "Promuj",
+      "plans": "Plany",
+      "integrations": "Integracje",
+      "settings": "Ustawienia",
+      "backToSite": "← Powrót do Hakuny",
+      "toggleMenu": "Przełącz menu",
+      "logout": "Wyloguj"
+    },
+    "stripe": {
+      "title": "Płatności",
+      "subtitle": "Połącz konto Stripe, aby przyjmować rezerwacje i otrzymywać wypłaty.",
+      "status": {
+        "none": "Brak połączenia",
+        "incomplete": "Konfiguracja w toku",
+        "connected": "Połączone"
+      },
+      "cta": {
+        "connect": "Połącz Stripe",
+        "resume": "Dokończ konfigurację",
+        "refresh": "Odśwież status"
+      },
+      "placeholder": {
+        "stripeMissing": "Stripe nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o ustawienie `STRIPE_SECRET_KEY`.",
+        "supabaseMissing": "Supabase nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o skonfigurowanie bazy danych."
+      },
+      "sidebar": {
+        "payments": "Płatności"
+      }
+    },
+    "plans": {
+      "title": "Plany abonamentowe",
+      "subtitle": "Wybierz plan, aby obniżyć prowizję Hakuny i odblokować dodatkowe narzędzia dla partnerów.",
+      "currentBadge": "Aktywny",
+      "upgrade": "Przejdź na ten plan",
+      "active": "Aktywny plan",
+      "monthlyLabel": "/ miesiąc",
+      "commissionLabel": "prowizji od rezerwacji powracających klientów",
+      "tierNames": {
+        "partner-plus-monthly": "Partner Plus",
+        "partner-pro-monthly": "Partner Pro"
+      },
+      "placeholder": {
+        "stripeMissing": "Stripe nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o ustawienie kluczy Stripe Billing.",
+        "supabaseMissing": "Supabase nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o skonfigurowanie bazy danych."
+      },
+      "errors": {
+        "tierNotConfigured": "Plan jeszcze niedostępny"
+      }
+    },
+    "promote": {
+      "title": "Promuj ofertę",
+      "subtitle": "Wypromuj swoje zajęcia lub cały obiekt w wynikach wyszukiwania. Boost wyświetla Twoje treści wyżej, a pierwsza rezerwacja nowego klienta objęta jest jednorazową prowizją 35%.",
+      "activeUntil": "Aktywny boost kończy się {date}",
+      "notBoosted": "Brak aktywnego boosta",
+      "activateCta": "Aktywuj boost",
+      "sectionAll": "Promuj wszystkie obiekty",
+      "sectionAllDescription": "Zastosuj boost do każdego obiektu partnera jednocześnie.",
+      "sectionVenues": "Obiekty",
+      "sectionActivities": "Zajęcia",
+      "chooseDuration": "Wybierz czas trwania",
+      "priceLabel": "{price} PLN",
+      "purchase": "Kup boost",
+      "durationOptions": {
+        "7": "7 dni",
+        "14": "14 dni",
+        "30": "30 dni"
+      },
+      "successBanner": "Boost aktywowany — dziękujemy!",
+      "cancelledBanner": "Płatność anulowana. Możesz spróbować ponownie w dowolnym momencie.",
+      "placeholder": {
+        "stripeMissing": "Stripe nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o ustawienie `STRIPE_SECRET_KEY`.",
+        "supabaseMissing": "Supabase nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o skonfigurowanie bazy danych."
+      },
+      "errors": {
+        "generic": "Nie udało się rozpocząć płatności. Spróbuj ponownie za chwilę."
+      }
+    },
+    "integrations": {
+      "title": "Integracje",
+      "subtitle": "Połącz swój system rezerwacji, aby grafik automatycznie synchronizował się z Hakuną.",
+      "statusActive": "Połączone",
+      "statusNotConnected": "Nie połączono",
+      "statusDisabled": "Wyłączone",
+      "statusError": "Wymaga uwagi",
+      "lastSynced": "Ostatnia synchronizacja {time}",
+      "lastSyncedNever": "Brak synchronizacji",
+      "lastError": "Ostatni błąd: {error}",
+      "comingSoon": "Wkrótce — czekamy na dostęp do API",
+      "actions": {
+        "connect": "Połącz",
+        "reconfigure": "Rekonfiguruj",
+        "disconnect": "Rozłącz"
+      },
+      "csv": {
+        "title": "Import CSV",
+        "description": "Wgraj plik CSV z kolumnami activity_name, starts_at, ends_at, capacity. Ponowne wgranie nadpisuje poprzedni plik.",
+        "uploadLabel": "Wgraj CSV",
+        "uploadCta": "Wgraj",
+        "mapHeader": "Dopasuj nazwy z CSV do swoich zajęć",
+        "mapIntro": "Nie udało się automatycznie dopasować tych nazw z CSV. Wybierz zajęcia Hakuny, do których ma prowadzić każda z nich.",
+        "mapSelectLabel": "Prowadzi do",
+        "mapSelectPlaceholder": "Wybierz zajęcia",
+        "mapConfirm": "Zapisz dopasowanie",
+        "uploadSuccess": "Plik wgrany — przejrzyj dopasowanie poniżej.",
+        "savedMapping": "Dopasowanie zapisane — najbliższa synchronizacja w ciągu 15 minut.",
+        "errors": {
+          "notCsv": "Wgraj plik .csv.",
+          "empty": "Plik jest pusty.",
+          "missingColumn": "W CSV brakuje wymaganych kolumn: {columns}.",
+          "uploadFailed": "Błąd wgrywania: {error}",
+          "generic": "Coś poszło nie tak. Spróbuj ponownie."
+        }
+      },
+      "placeholder": {
+        "cryptoMissing": "Integracje POS nie są jeszcze skonfigurowane — poproś operatora o ustawienie POS_CONFIG_ENCRYPTION_KEY.",
+        "supabaseMissing": "Supabase nie jest jeszcze skonfigurowany. Poproś operatora Hakuny o skonfigurowanie bazy danych."
+      },
+      "providers": {
+        "csv": "Import CSV",
+        "activenow": "ActiveNow",
+        "wodguru": "WodGuru",
+        "efitness": "eFitness",
+        "langlion": "LangLion"
+      }
+    },
+    "venueSwitcher": {
+      "label": "Obiekt"
+    },
+    "roles": {
+      "owner": "Właściciel",
+      "manager": "Menedżer",
+      "instructor": "Instruktor",
+      "viewer": "Obserwator"
+    },
+    "common": {
+      "savedJustNow": "Zapisano przed chwilą",
+      "preview": "Podgląd",
+      "publish": "Opublikuj",
+      "edit": "Edytuj",
+      "schedule": "Plan",
+      "duplicate": "Duplikuj",
+      "more": "Więcej",
+      "resend": "Wyślij ponownie",
+      "revoke": "Odwołaj",
+      "assign": "Przypisz",
+      "swap": "Zamień",
+      "viewLive": "Zobacz na żywo",
+      "viewWeek": "Zobacz tydzień →",
+      "viewFull": "Pełny plan →",
+      "viewBreakdown": "Zobacz szczegóły",
+      "newClass": "Nowe zajęcia",
+      "inviteInstructor": "Zaproś instruktora",
+      "search": "Szukaj",
+      "close": "Zamknij",
+      "save": "Zapisz",
+      "create": "Utwórz",
+      "cancel": "Anuluj",
+      "back": "Wróć",
+      "delete": "Usuń",
+      "minutes": "{count} min",
+      "waitlistShort": "na liście",
+      "full": "Komplet",
+      "capacity": "{booked}/{total}",
+      "waitlistCount": "{booked}/{total} · {waitlist} na liście"
+    },
+    "status": {
+      "levelAll": "Wszystkie poziomy",
+      "levelBeginner": "Początkujący",
+      "levelIntermediate": "Średniozaawansowany",
+      "levelAdvanced": "Zaawansowany",
+      "tagPopular": "Popularne",
+      "tagNew": "Nowe",
+      "tagFeatured": "Polecane",
+      "needsInstructor": "Brak instruktora",
+      "notAssigned": "Nieprzypisany",
+      "invited": "Zaproszony",
+      "verified": "Zweryfikowany"
+    },
+    "login": {
+      "urlbar": "hakuna.app/partner/login",
+      "badge": "Dostęp partnera",
+      "titleStart": "Witaj",
+      "titleEmph": "ponownie",
+      "titleEnd": ".",
+      "subtitle": "Panel dla Twojego studia, zajęć i zespołu.",
+      "email": "E-mail",
+      "password": "Hasło",
+      "forgot": "Nie pamiętasz?",
+      "submit": "Zaloguj się",
+      "newStudio": "Nowe studio na Hakuna?",
+      "apply": "Złóż wniosek →"
+    },
+    "overview": {
+      "dateBadge": "{weekday} · {date}",
+      "greetingStart": "Dzień dobry,",
+      "greetingEnd": ".",
+      "subtitle": "Masz dziś {classes, plural, one {# zajęcia} few {# zajęcia} many {# zajęć} other {# zajęć}} i {reviews, plural, one {# opinię} few {# opinie} many {# opinii} other {# opinii}} czekających na odpowiedź.",
+      "metrics": {
+        "bookings": "Rezerwacje · 7 dni",
+        "revenue": "Przychód · 7 dni",
+        "fillRate": "Śr. zapełnienie",
+        "rating": "Śr. ocena",
+        "ofCapacity": "pojemności",
+        "reviewsCount": "{count} opinii"
+      },
+      "schedule": {
+        "eyebrow": "Dziś",
+        "heading": "W planie"
+      },
+      "actions": {
+        "eyebrow": "Wymaga Twojej uwagi",
+        "heading": "Kolejka działań",
+        "reviewsReply": "{count, plural, one {# opinia czeka na odpowiedź} few {# opinie czekają na odpowiedź} many {# opinii czeka na odpowiedź} other {# opinii czeka na odpowiedź}}",
+        "reviewsOldest": "Najstarsza: {age}",
+        "noInstructorTitle": "{day} {time} · Brak instruktora",
+        "noInstructorSub": "{classTitle} — przypisz",
+        "lowBookingsTitle": "{classTitle} — mało rezerwacji",
+        "lowBookingsSub": "{booked}/{capacity} na {day}",
+        "payoutTitle": "Wypłata {amount} w {day}",
+        "payoutSub": "Zobacz szczegóły"
+      }
+    },
+    "analytics": {
+      "eyebrow": "Podsumowanie",
+      "heading": "Twoje studio w pigułce",
+      "subtitle": "Przychód, rezerwacje i zapełnienie we wszystkich zajęciach.",
+      "weekdays": ["Nd", "Pn", "Wt", "Śr", "Cz", "Pt", "Sb"],
+      "revenue": {
+        "title": "Przychód",
+        "netLabel": "Twój udział",
+        "last30d": "Ostatnie 30 dni",
+        "last90d": "Ostatnie 90 dni",
+        "ytd": "Od początku roku"
+      },
+      "trend": {
+        "title": "Trend rezerwacji",
+        "subtitle": "Ostatnie 30 dni",
+        "empty": "Brak rezerwacji w ostatnich 30 dniach.",
+        "tooltipLabel": "rezerwacji"
+      },
+      "top": {
+        "title": "Najpopularniejsze zajęcia",
+        "subtitle": "Według przychodu",
+        "empty": "Brak potwierdzonych rezerwacji — wypromuj zajęcia, aby zdobyć pierwszą.",
+        "bookingsLabel": "rezerwacji"
+      },
+      "heatmap": {
+        "title": "Mapa zapełnienia",
+        "subtitle": "Dzień × godzina · ostatnie 60 dni",
+        "empty": "Za mało sesji w ostatnich 60 dniach, by narysować mapę."
+      }
+    },
+    "classes": {
+      "countBadge": "{live} aktywnych · {drafts} szkiców",
+      "title": "Twoje",
+      "titleEmph": "zajęcia",
+      "searchPlaceholder": "Szukaj po tytule lub instruktorze…",
+      "filterLevel": "Wszystkie poziomy",
+      "filterInstructor": "Dowolny instruktor",
+      "filterStatus": "Status",
+      "tabs": {
+        "published": "Opublikowane",
+        "drafts": "Szkice",
+        "archived": "Zarchiwizowane"
+      },
+      "row": {
+        "perClass": "za zajęcia",
+        "nextSession": "Następna sesja",
+        "draftBadge": "Szkic"
+      },
+      "emptyState": "Nie masz jeszcze żadnych zajęć w tej sekcji."
+    },
+    "classEditor": {
+      "urlbar": "hakuna.app/partner/classes/{id}",
+      "editing": "Edycja zajęć",
+      "newClass": "Nowe zajęcia",
+      "untitled": "Bez tytułu",
+      "confirmDelete": "Usunąć te zajęcia? Tej operacji nie można cofnąć.",
+      "addCurriculumItem": "Dodaj punkt",
+      "addInstructor": "Dodaj instruktora",
+      "addCredential": "Dodaj certyfikat",
+      "emptyCurriculum": "Brak punktów programu — dodaj pierwszy punkt.",
+      "emptyInstructors": "Brak instruktorów — dodaj pierwszego.",
+      "sections": {
+        "basics": "Podstawy",
+        "schedule": "Harmonogram",
+        "instructor": "Przypisany instruktor",
+        "instructors": "Instruktorzy",
+        "curriculum": "Program zajęć",
+        "pricing": "Cennik",
+        "media": "Multimedia"
+      },
+      "fields": {
+        "title": "Tytuł zajęć",
+        "description": "Opis",
+        "level": "Poziom",
+        "duration": "Czas trwania (min)",
+        "capacity": "Liczba miejsc",
+        "recurringDays": "Dni powtarzające się",
+        "startTime": "Godzina rozpoczęcia",
+        "room": "Sala",
+        "price": "Cena",
+        "pricingModel": "Model cenowy",
+        "currency": "Waluta",
+        "venue": "Miejsce",
+        "noVenues": "Brak miejsc — najpierw utwórz studio.",
+        "category": "Kategoria",
+        "ageGroup": "Grupa wiekowa",
+        "heroImage": "URL zdjęcia głównego",
+        "publish": "Opublikowane",
+        "publishHint": "Widoczne dla klientów na stronie publicznej.",
+        "imageUrl": "URL zdjęcia (opcjonalnie)",
+        "instructorName": "Imię i nazwisko",
+        "role": "Rola",
+        "bio": "Bio",
+        "avatarUrl": "URL zdjęcia profilowego (opcjonalnie)",
+        "credentials": "Certyfikaty"
+      },
+      "error": {
+        "invalid_input": "Sprawdź pola i spróbuj ponownie.",
+        "forbidden": "Brak uprawnień do tej operacji.",
+        "internal": "Błąd zapisu. Spróbuj ponownie.",
+        "not_found": "Nie znaleziono zajęć."
+      },
+      "weekdayInitials": ["N", "P", "W", "Ś", "C", "P", "S"],
+      "pricingModels": {
+        "per_class": "Za zajęcia",
+        "per_session": "Za sesję",
+        "per_term": "Za semestr",
+        "drop_in": "Wejście jednorazowe"
+      },
+      "alsoQualified": "Również kwalifikują się:",
+      "preview": {
+        "eyebrow": "Podgląd na żywo · strona publiczna",
+        "book": "Rezerwuj",
+        "leadInstructor": "Główny instruktor",
+        "duration": "Czas",
+        "level": "Poziom",
+        "capacity": "Miejsca"
+      }
+    },
+    "instructors": {
+      "countBadge": "{count} aktywnych",
+      "title": "Nasz",
+      "titleEmph": "zespół",
+      "cardStats": {
+        "classes": "Zajęć",
+        "rating": "Ocena",
+        "students": "Uczniów"
+      },
+      "inviteSentAgo": "Zaproszenie wysłane {age}",
+      "inviteCtaTitle": "Zaproś instruktora",
+      "inviteCtaSub": "Stworzy własny profil i pojawi się tu po akceptacji."
+    },
+    "venue": {
+      "urlbar": "hakuna.app/partner/venue",
+      "badge": "Profil publiczny",
+      "title": "Profil obiektu",
+      "viewLive": "Zobacz na żywo",
+      "sections": {
+        "identity": "Tożsamość",
+        "location": "Lokalizacja",
+        "photos": "Zdjęcia",
+        "stats": "Pasek statystyk",
+        "visibility": "Widoczność"
+      },
+      "fields": {
+        "name": "Nazwa obiektu",
+        "tagline": "Motto",
+        "about": "O nas",
+        "aboutCounter": "{count} / {max}",
+        "address": "Adres",
+        "city": "Miasto / dzielnica",
+        "neighborhood": "Dzielnica",
+        "heroImage": "Zdjęcie główne",
+        "heroImageUrl": "URL zdjęcia głównego",
+        "galleryHeading": "Galeria · {count} zdjęć",
+        "addNeighborhood": "+ Dodaj",
+        "replace": "Zmień",
+        "numberLabel": "Liczba",
+        "publish": "Opublikowane",
+        "publishHint": "Widoczne dla klientów na stronie publicznej."
+      },
+      "emptyState": "Nie masz jeszcze żadnego studia — utwórz pierwsze, aby kontynuować.",
+      "selectAnother": "Wybierz studio z listy powyżej.",
+      "savedToast": "Zapisano.",
+      "upload": {
+        "hint": "JPEG, PNG lub WebP, maks. 10 MB."
+      },
+      "uploadError": {
+        "no_file": "Wybierz plik.",
+        "too_large": "Plik jest za duży (maks. 10 MB).",
+        "not_image": "Tylko JPEG, PNG lub WebP.",
+        "forbidden": "Brak uprawnień do tego studia.",
+        "invalid_input": "Nieprawidłowe dane.",
+        "rate_limited": "Zbyt wiele plików w krótkim czasie — spróbuj ponownie później.",
+        "internal": "Błąd przesyłania. Spróbuj ponownie."
+      },
+      "gallery": {
+        "title": "Galeria",
+        "add": "Dodaj zdjęcie",
+        "remove": "Usuń zdjęcie"
+      },
+      "preview": {
+        "liveAt": "Na żywo · /school/{slug}",
+        "desktop": "Komputer",
+        "mobile": "Telefon",
+        "classesOffered": "Oferowane zajęcia",
+        "currentSchedule": "Aktualny plan",
+        "viewFull": "Pełny plan →",
+        "changesHint": "Zmiany pojawiają się tutaj podczas pisania.",
+        "reviewsCount": "{count} opinii"
+      }
+    },
+    "bookings": {
+      "badge": "{count} rezerwacji",
+      "title": "Rezerwacje",
+      "emptyState": "Brak rezerwacji. Pojawią się tutaj, gdy klienci zaczną rezerwować.",
+      "col": {
+        "activity": "Zajęcia",
+        "session": "Termin",
+        "amount": "Kwota",
+        "status": "Status",
+        "created": "Utworzono"
+      }
+    },
+    "reviewsAdmin": {
+      "badge": "{count} opinii",
+      "title": "Opinie",
+      "emptyState": "Brak opinii. Po pierwszych zajęciach klienci będą mogli wystawić ocenę.",
+      "ratingLabel": "Ocena",
+      "replyLabel": "Twoja odpowiedź",
+      "replyPlaceholder": "Odpowiedz publicznie…",
+      "replyButton": "Odpowiedz",
+      "replyEdit": "Edytuj odpowiedź",
+      "replySaved": "Opublikowano.",
+      "replyError": "Nie udało się zapisać. Spróbuj ponownie."
+    },
+    "instructorsAdmin": {
+      "badge": "{count} osób w zespole",
+      "title": "Zespół",
+      "emptyState": "Tu pojawi się Twój zespół, gdy zaprosisz pierwszego instruktora.",
+      "comingSoon": "Funkcja zaproszeń pojawi się w Phase 2."
+    },
+    "payouts": {
+      "badge": "Wypłaty",
+      "title": "Wypłaty",
+      "subtitle": "Saldo netto i historia transferów na Twoje konto bankowe.",
+      "emptyPartner": "Brak danych — najpierw dołącz do partnera.",
+      "net": {
+        "last30d": "Netto (30 d)",
+        "last90d": "Netto (90 d)",
+        "ytd": "Netto YTD",
+        "lifetime": "Netto łącznie"
+      },
+      "stripe": {
+        "title": "Wypłaty Stripe",
+        "notConnected": "Konto Stripe nie jest jeszcze połączone",
+        "notConnectedBody": "Połącz konto Stripe, aby otrzymywać wypłaty na rachunek bankowy.",
+        "connectCta": "Przejdź do płatności",
+        "unavailable": "Nie udało się pobrać listy wypłat. Spróbuj odświeżyć stronę.",
+        "empty": "Brak wypłat. Pojawią się tutaj, gdy Stripe wyśle środki na Twój rachunek."
+      },
+      "col": {
+        "amount": "Kwota",
+        "arrival": "Data zaksięgowania",
+        "status": "Status",
+        "descriptor": "Opis na wyciągu"
+      }
+    },
+    "insights": {
+      "badge": "Analityka",
+      "title": "Statystyki",
+      "subtitle": "Pełen obraz tego, jak działa Twoje studio.",
+      "emptyPartner": "Brak danych — najpierw dołącz do partnera.",
+      "kpis": {
+        "bookings30d": "Rezerwacje (30 d)",
+        "avgBooking": "Śr. rezerwacja (30 d)",
+        "totalGrossYtd": "Brutto YTD",
+        "activityBookings": "Top rezerwacje"
+      },
+      "trend": {
+        "title": "Trend rezerwacji",
+        "subtitle": "Potwierdzone rezerwacje w ciągu ostatnich 30 dni."
+      },
+      "top": {
+        "title": "Najlepsze zajęcia",
+        "subtitle": "Według przychodu w wybranym okresie."
+      },
+      "heatmap": {
+        "title": "Obłożenie tygodnia",
+        "subtitle": "Średnie wykorzystanie miejsc w godzinach 0–24, ostatnie 60 dni."
+      }
+    },
+    "settings": {
+      "badge": "Profil partnera",
+      "title": "Ustawienia",
+      "savedToast": "Zapisano.",
+      "contactSupport": "Aby zmienić te wartości, skontaktuj się z naszym zespołem.",
+      "sections": {
+        "profile": "Profil publiczny",
+        "account": "Dane konta"
+      },
+      "fields": {
+        "name": "Nazwa partnera",
+        "slug": "Identyfikator strony",
+        "slugHint": "Pojawi się w URL-u: /school/twój-identyfikator. Małe litery + myślniki.",
+        "contactEmail": "E-mail kontaktowy",
+        "city": "Miasto",
+        "status": "Status",
+        "commission": "Prowizja platformy",
+        "subscription": "Plan",
+        "subscriptionCommission": "Prowizja w ramach planu"
+      },
+      "error": {
+        "invalid_input": "Sprawdź pola i spróbuj ponownie.",
+        "invalid_slug": "Identyfikator może zawierać tylko małe litery, cyfry i myślniki.",
+        "slug_taken": "Ten identyfikator jest już zajęty.",
+        "forbidden": "Brak uprawnień.",
+        "internal": "Błąd zapisu. Spróbuj ponownie."
+      }
+    },
+    "mock": {
+      "dateBadge": { "weekday": "Piątek", "date": "24 kwietnia" },
+      "user": {
+        "name": "Ava Morin",
+        "firstName": "Ava",
+        "initials": "AM",
+        "email": "ava@urbanrhythm.pl"
+      },
+      "venue": {
+        "name": "Urban Rhythm Academy",
+        "initial": "U",
+        "tagline": "Gdzie ruch spotyka mistrzostwo.",
+        "about": "Urban Rhythm Academy to miejsce dla tancerzy, performerów i wszystkich, którzy szukają czegoś więcej niż pojedynczych zajęć — szukają społeczności. Nasi instruktorzy to praktykujący profesjonaliści, a sale są zbudowane pod poważny trening.",
+        "address": "Marszałkowska 142, 00-061 Warszawa",
+        "slug": "urban-rhythm"
+      },
+      "neighborhoods": {
+        "srodmiescie": "Śródmieście",
+        "mokotow": "Mokotów",
+        "praga": "Praga"
+      },
+      "stats": [
+        { "value": "500+", "label": "Uczniów" },
+        { "value": "10+", "label": "Lat" },
+        { "value": "Pulse", "label": "Certyfikat" }
+      ],
+      "rating": { "value": "4.9", "count": 324 },
+      "classes": {
+        "contemporary": {
+          "title": "Contemporary Foundations",
+          "description": "Spokojna, ugruntowana sekwencja Hatha w świetle złotej godziny. Idealna na wyciszenie i poprawę elastyczności.",
+          "schedule": "Pon i Śr 18:00",
+          "room": "Sala 1"
+        },
+        "urbanFlow": {
+          "title": "Urban Flow Intermediate",
+          "description": "Energetyczna choreografia uliczna z akcentem współczesnym.",
+          "schedule": "Wt i Czw 19:30",
+          "room": "Sala 3"
+        },
+        "kidsLab": {
+          "title": "Kids Movement Lab",
+          "description": "Zabawa ruchem dla dzieci w wieku 7–12 lat.",
+          "schedule": "Sob 10:00",
+          "room": "Sala 2",
+          "ageLabel": "Wiek 7–12"
+        },
+        "proLab": {
+          "title": "Pro Performance Lab",
+          "description": "Trening na najwyższym poziomie dla zawodowych performerów.",
+          "schedule": "Nd 14:00",
+          "room": "Sala 4"
+        }
+      },
+      "instructors": {
+        "marcus": {
+          "name": "Marcus Thorne",
+          "initials": "MT",
+          "role": "Główny instruktor",
+          "credential": "Najlepszy choreograf 2023",
+          "specialties": ["Contemporary", "Urban"]
+        },
+        "noa": {
+          "name": "Noa Stein",
+          "initials": "NS",
+          "role": "Dzieci · Początkujący",
+          "credential": "Certyfikowany trener dzieci",
+          "specialties": ["Specjalista od dzieci", "Ruch"]
+        },
+        "elena": {
+          "name": "Elena Grace",
+          "initials": "EG",
+          "role": "Joga · Flow",
+          "credential": "RYT-500",
+          "specialties": ["Vinyasa", "Hatha"]
+        },
+        "kaiInvite": {
+          "email": "kai@example.com",
+          "sentAgo": "2 dni temu"
+        }
+      },
+      "schedule": [
+        { "id": "sess-1", "time": "11:00", "duration": 60, "classKey": "contemporary", "instructor": "marcus", "room": "Sala 1", "booked": 14, "capacity": 18, "accent": "primary" },
+        { "id": "sess-2", "time": "14:30", "duration": 90, "classKey": "kidsLab",      "instructor": "noa",    "room": "Sala 2", "booked": 8,  "capacity": 12, "accent": "secondary" },
+        { "id": "sess-3", "time": "19:30", "duration": 75, "classKey": "urbanFlow",   "instructor": "marcus", "room": "Sala 3", "booked": 18, "capacity": 18, "waitlist": 3, "accent": "primary" }
+      ],
+      "actions": [
+        { "id": "act-reviews", "icon": "reviews",      "tone": "primary",   "titleKey": "reviewsReply",    "subKey": "reviewsOldest",    "count": 2, "age": "2 dni temu" },
+        { "id": "act-noinstr", "icon": "event_busy",   "tone": "secondary", "titleKey": "noInstructorTitle", "subKey": "noInstructorSub",  "day": "Sob", "time": "10:00", "classTitle": "Kids Movement Lab" },
+        { "id": "act-lowbook", "icon": "trending_down","tone": "primary",   "titleKey": "lowBookingsTitle",  "subKey": "lowBookingsSub",   "classTitle": "Pro Performance Lab", "booked": 4, "capacity": 16, "day": "niedzielę" },
+        { "id": "act-payout",  "icon": "receipt_long", "tone": "muted",     "titleKey": "payoutTitle",       "subKey": "payoutSub",        "amount": "1 840 €", "day": "poniedziałek" }
+      ]
+    }
+  },
+  "PartnerApply": {
+    "meta": {
+      "title": "Zostań partnerem Hakuny",
+      "description": "Zgłoś swoje studio, szkołę lub klub i dołącz do marketplace aktywności w Polsce."
+    },
+    "badge": "Dla partnerów",
+    "title": "Zostań partnerem Hakuny",
+    "subtitle": "Wypełnij krótki formularz — sprawdzimy zgłoszenie i odezwiemy się w ciągu 3 dni roboczych.",
+    "replacementNote": "Ten formularz zastępuje dotychczasowe zapisy „Dodaj swoje zajęcia”.",
+    "field": {
+      "name": {
+        "label": "Nazwa studia / szkoły",
+        "placeholder": "np. Studio Joga Praga"
+      },
+      "contactEmail": {
+        "label": "Email kontaktowy",
+        "placeholder": "ty@twoje-studio.pl"
+      },
+      "city": {
+        "label": "Miasto",
+        "placeholder": "Warszawa"
+      },
+      "website": {
+        "label": "Strona www (opcjonalnie)",
+        "placeholder": "twoje-studio.pl"
+      },
+      "expected": {
+        "label": "Przewidywana liczba rezerwacji miesięcznie (opcjonalnie)",
+        "placeholder": "Wybierz zakres…",
+        "options": {
+          "lt50": "Mniej niż 50",
+          "50to200": "50–200",
+          "200to500": "200–500",
+          "gte500": "Ponad 500"
+        }
+      }
+    },
+    "submit": "Wyślij zgłoszenie",
+    "error": {
+      "invalidInput": "Sprawdź to pole.",
+      "rateLimited": "Za dużo prób. Spróbuj ponownie za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
+      "botCheck": "Nie udało się potwierdzić, że nie jesteś botem. Odśwież stronę i spróbuj ponownie.",
+      "server": "Coś poszło nie tak po naszej stronie. Spróbuj ponownie za chwilę."
+    },
+    "success": {
+      "heading": "Mamy Twoje zgłoszenie",
+      "body": "Wysłaliśmy potwierdzenie na podany adres email. Odezwiemy się w ciągu 3 dni roboczych."
+    }
+  },
+  "Consent": {
+    "title": "Używamy plików cookie",
+    "description": "Używamy cookies, żeby Hakuna działała, analizowała ruch i lepiej Ci służyła. Sam decydujesz, na co się zgadzasz.",
+    "learnMore": "Dowiedz się więcej",
+    "accept": "Akceptuję wszystkie",
+    "reject": "Tylko niezbędne",
+    "customize": "Dostosuj",
+    "save": "Zapisz wybór",
+    "essential": {
+      "title": "Niezbędne",
+      "description": "Potrzebne do działania serwisu — logowanie, koszyk, zabezpieczenia. Nie można ich wyłączyć."
+    },
+    "analytics": {
+      "title": "Analityka",
+      "description": "Anonimowe statystyki odwiedzin stron z zajęciami. Pomagają nam ulepszać Hakunę."
+    }
+  },
+  "Account": {
+    "title": "Twoje konto",
+    "subtitle": "Zarządzaj swoimi danymi w Hakunie.",
+    "export": {
+      "heading": "Pobierz swoje dane",
+      "description": "Wygeneruj plik JSON ze wszystkimi danymi, które mamy na Twój temat — profilem, rezerwacjami i opiniami.",
+      "button": "Pobierz dane (.json)"
+    },
+    "delete": {
+      "heading": "Usuń konto",
+      "description": "Zgłoś chęć usunięcia konta. W ciągu 30 dni Twoje dane osobowe zostaną zanonimizowane, a konto usunięte. Rezerwacje zachowujemy dla celów księgowych.",
+      "button": "Zgłoś usunięcie konta",
+      "confirm": "Czy na pewno chcesz usunąć konto?",
+      "pending": "Zgłoszono usunięcie — dane zostaną usunięte {date}."
+    }
+  },
+  "BookingDetail": {
+    "title": "Twoja rezerwacja",
+    "referenceLabel": "Numer rezerwacji:",
+    "whenLabel": "Termin",
+    "amountLabel": "Kwota",
+    "statusLabel": "Status",
+    "backHome": "Wróć na stronę główną",
+    "checkoutSuccessTitle": "Płatność przyjęta",
+    "checkoutSuccessBody": "Dziękujemy! Potwierdzenie pojawi się tutaj w ciągu kilku sekund — odśwież stronę, jeśli jeszcze nie widać.",
+    "checkoutCancelledTitle": "Płatność anulowana",
+    "checkoutCancelledBody": "Nie pobraliśmy żadnych środków. Możesz spróbować ponownie ze strony zajęć.",
+    "status": {
+      "pending": "Oczekuje na płatność",
+      "confirmed": "Potwierdzona",
+      "cancelled": "Anulowana",
+      "expired": "Wygasła"
+    },
+    "cancelButton": "Anuluj rezerwację",
+    "cancelConfirmTitle": "Anulować tę rezerwację?",
+    "cancelConfirmBody": "Otrzymasz pełny zwrot. Tej operacji nie można cofnąć.",
+    "cancelSuccess": "Anulowano. Zwrot pojawi się w ciągu 1–2 dni roboczych.",
+    "cancelError": {
+      "too_late": "Rezerwacji do 48 h przed zajęciami nie można anulować online — skontaktuj się ze studiem.",
+      "not_cancellable": "Tej rezerwacji nie można anulować.",
+      "refund_failed": "Zwrot nie powiódł się. Skontaktuj się z pomocą techniczną.",
+      "not_signed_in": "Zaloguj się, aby anulować.",
+      "forbidden": "Brak uprawnień.",
+      "not_found": "Nie znaleziono rezerwacji.",
+      "not_configured": "Płatności nie są skonfigurowane.",
+      "internal": "Coś poszło nie tak. Spróbuj ponownie."
     }
   }
 }
