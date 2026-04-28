@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Icon } from "../../components/Icon";
+import { TablerIcon } from "@/src/components/TablerIcon";
 
 type CreateArticleCopy = {
   dashboard: {
@@ -625,7 +625,7 @@ export default function CreateArticleAdminClient({
             onClick={() => runEditorCommand("bold")}
             className={sidebarItemClass(activeToolbar.bold)}
           >
-            <Icon name="format_bold" className="text-lg" />
+            <TablerIcon name="bold" className="text-lg" />
             <span className="font-medium">{copy.dashboard.toolbar.bold}</span>
           </button>
         </li>
@@ -637,7 +637,7 @@ export default function CreateArticleAdminClient({
             onClick={() => runEditorCommand("italic")}
             className={sidebarItemClass(activeToolbar.italic)}
           >
-            <Icon name="format_italic" className="text-lg" />
+            <TablerIcon name="italic" className="text-lg" />
             <span className="font-medium">{copy.dashboard.toolbar.italic}</span>
           </button>
         </li>
@@ -649,7 +649,7 @@ export default function CreateArticleAdminClient({
             onClick={() => runEditorCommand("underline")}
             className={sidebarItemClass(activeToolbar.underline)}
           >
-            <Icon name="format_underlined" className="text-lg" />
+            <TablerIcon name="underline" className="text-lg" />
             <span className="font-medium">{copy.dashboard.toolbar.underline}</span>
           </button>
         </li>
@@ -661,7 +661,7 @@ export default function CreateArticleAdminClient({
             onClick={toggleSubtitle}
             className={sidebarItemClass(activeToolbar.subtitle)}
           >
-            <Icon name="title" className="text-lg" />
+            <TablerIcon name="heading" className="text-lg" />
             <span className="font-medium">{copy.dashboard.toolbar.subtitle}</span>
           </button>
         </li>
@@ -673,7 +673,7 @@ export default function CreateArticleAdminClient({
             onClick={toggleDotMode}
             className={sidebarItemClass(activeToolbar.list)}
           >
-            <Icon name="format_list_bulleted" className="text-lg" />
+            <TablerIcon name="list" className="text-lg" />
             <span className="font-medium">{copy.dashboard.toolbar.list}</span>
           </button>
         </li>
@@ -685,7 +685,7 @@ export default function CreateArticleAdminClient({
             onClick={toggleLink}
             className={sidebarItemClass(activeToolbar.link)}
           >
-            <Icon name="link" className="text-lg" />
+            <TablerIcon name="link" className="text-lg" />
             <span className="font-medium">{copy.dashboard.toolbar.link}</span>
           </button>
         </li>
@@ -702,7 +702,7 @@ export default function CreateArticleAdminClient({
             onClick={openInlineImagePicker}
             className="flex w-full cursor-pointer items-center gap-3 rounded-lg border border-primary bg-primary px-3 py-2 text-sm font-semibold text-on-primary transition-colors hover:bg-primary/90"
           >
-            <Icon name="add_photo_alternate" className="text-lg" />
+            <TablerIcon name="photo-plus" className="text-lg" />
             <span>{copy.dashboard.toolbar.image}</span>
           </button>
         </li>
@@ -752,7 +752,7 @@ export default function CreateArticleAdminClient({
             </>
           ) : (
             <>
-              <Icon name="cloud_upload" className="text-2xl text-on-surface/50" />
+              <TablerIcon name="cloud-upload" className="text-2xl text-on-surface/50" />
               {copy.dashboard.imageUpload.description}
             </>
           )}
@@ -843,7 +843,7 @@ export default function CreateArticleAdminClient({
         onClick={openPreview}
         className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-outline/40 bg-surface-container-low px-4 py-2.5 text-sm font-medium text-on-surface transition-colors hover:bg-surface-container"
       >
-        <Icon name="visibility" className="text-base" />
+        <TablerIcon name="eye" className="text-base" />
         {copy.dashboard.actions.preview}
       </button>
       <button
@@ -852,7 +852,7 @@ export default function CreateArticleAdminClient({
         className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
         disabled={saveState === "saving"}
       >
-        <Icon name="save" className="text-base" />
+        <TablerIcon name="device-floppy" className="text-base" />
         {copy.dashboard.actions.saveDraft}
       </button>
     </div>
@@ -887,11 +887,11 @@ export default function CreateArticleAdminClient({
             aria-controls="admin-mobile-drawer"
             className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-outline/40 bg-surface-container-low text-on-surface hover:bg-surface-container md:hidden"
           >
-            <Icon name="menu" className="text-xl" />
+            <TablerIcon name="menu-2" className="text-xl" />
           </button>
 
           <div className="hidden h-9 w-9 items-center justify-center rounded-lg bg-primary/15 text-primary md:flex">
-            <Icon name="edit_note" className="text-xl" />
+            <TablerIcon name="edit" className="text-xl" />
           </div>
           <div className="min-w-0 leading-tight">
             <h1 className="truncate font-headline text-sm font-bold md:text-base">
@@ -931,7 +931,7 @@ export default function CreateArticleAdminClient({
               aria-label={copy.dashboard.logout}
               className="inline-flex h-9 cursor-pointer items-center justify-center gap-1 rounded-lg border border-outline/40 bg-surface-container-low px-2 text-sm font-medium text-on-surface hover:bg-surface-container md:px-3"
             >
-              <Icon name="logout" className="text-base" />
+              <TablerIcon name="logout" className="text-base" />
               <span className="hidden md:inline">{copy.dashboard.logout}</span>
             </button>
           </form>
@@ -942,7 +942,7 @@ export default function CreateArticleAdminClient({
             aria-label={copy.dashboard.actions.preview}
             className="inline-flex h-9 cursor-pointer items-center justify-center gap-1 rounded-lg border border-outline/40 bg-surface-container-low px-2 text-sm font-medium text-on-surface hover:bg-surface-container md:px-3"
           >
-            <Icon name="visibility" className="text-base" />
+            <TablerIcon name="eye" className="text-base" />
             <span className="hidden md:inline">{copy.dashboard.actions.preview}</span>
           </button>
 
@@ -953,7 +953,7 @@ export default function CreateArticleAdminClient({
             aria-label={copy.dashboard.actions.publish}
             className="inline-flex h-9 cursor-pointer items-center justify-center gap-1 rounded-lg bg-primary px-3 text-sm font-semibold text-on-primary transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70 md:px-4"
           >
-            <Icon name="send" className="text-base" />
+            <TablerIcon name="send" className="text-base" />
             <span className="hidden md:inline">{copy.dashboard.actions.publish}</span>
           </button>
         </div>
@@ -1050,7 +1050,7 @@ export default function CreateArticleAdminClient({
           <div className="flex h-14 shrink-0 items-center justify-between border-b border-outline/30 bg-surface-container-highest px-3">
             <div className="flex min-w-0 items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15 text-primary">
-                <Icon name="edit_note" className="text-xl" />
+                <TablerIcon name="edit" className="text-xl" />
               </div>
               <div className="min-w-0 leading-tight">
                 <p className="truncate font-headline text-sm font-bold">
@@ -1070,7 +1070,7 @@ export default function CreateArticleAdminClient({
               aria-label="Close menu"
               className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-outline/40 bg-surface-container-low text-on-surface hover:bg-surface-container"
             >
-              <Icon name="close" className="text-xl" />
+              <TablerIcon name="x" className="text-xl" />
             </button>
           </div>
 

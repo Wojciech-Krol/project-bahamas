@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "../../../src/i18n/navigation";
-import { Icon } from "../../components/Icon";
+import { TablerIcon } from "@/src/components/TablerIcon";
 
 type CreateArticleAccessCopy = {
   lock: {
@@ -30,7 +30,7 @@ export default function CreateArticleAccessClient({
       <div className="w-full max-w-lg rounded-2xl border border-outline/30 bg-surface-container-low p-8 shadow-sm md:p-10">
         <form className="flex flex-col items-center gap-6" action={unlockAction} method="post">
           <div className="flex h-14 w-14 items-center justify-center rounded-full border border-outline/40">
-            <Icon name="lock" className="text-3xl text-on-surface" />
+            <TablerIcon name="lock" className="text-3xl text-on-surface" />
           </div>
 
           <div className="space-y-3 text-center">

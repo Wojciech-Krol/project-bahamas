@@ -1,8 +1,8 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import SiteNavbar from "../../../components/SiteNavbar";
-import SiteFooter from "../../../components/SiteFooter";
+import SiteNavbar from "@/src/components/SiteNavbar";
+import SiteFooter from "@/src/components/SiteFooter";
 import CreateArticlePreviewClient from "./CreateArticlePreviewClient";
 
 const ACCESS_COOKIE = "create_article_access";

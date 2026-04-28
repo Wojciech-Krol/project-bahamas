@@ -32,6 +32,26 @@ import mapPin from "@iconify-icons/tabler/map-pin";
 import bike from "@iconify-icons/tabler/bike";
 import skiJumping from "@iconify-icons/tabler/snowflake";
 import barbell from "@iconify-icons/tabler/barbell";
+import lock from "@iconify-icons/tabler/lock";
+import bold from "@iconify-icons/tabler/bold";
+import italic from "@iconify-icons/tabler/italic";
+import underline from "@iconify-icons/tabler/underline";
+import heading from "@iconify-icons/tabler/heading";
+import list from "@iconify-icons/tabler/list";
+import link from "@iconify-icons/tabler/link";
+import photoPlus from "@iconify-icons/tabler/photo-plus";
+import cloudUpload from "@iconify-icons/tabler/cloud-upload";
+import eye from "@iconify-icons/tabler/eye";
+import deviceFloppy from "@iconify-icons/tabler/device-floppy";
+import edit from "@iconify-icons/tabler/edit";
+import send from "@iconify-icons/tabler/send";
+import article from "@iconify-icons/tabler/article";
+import buildingStore from "@iconify-icons/tabler/building-store";
+import menu2 from "@iconify-icons/tabler/menu-2";
+import x from "@iconify-icons/tabler/x";
+import logout from "@iconify-icons/tabler/logout";
+import arrowLeft from "@iconify-icons/tabler/arrow-left";
+import plus from "@iconify-icons/tabler/plus";
 
 export const TABLER: Record<string, IconifyIcon> = {
   yoga,
@@ -63,6 +83,26 @@ export const TABLER: Record<string, IconifyIcon> = {
   bike,
   "ski-jumping": skiJumping,
   barbell,
+  lock,
+  bold,
+  italic,
+  underline,
+  heading,
+  list,
+  link,
+  "photo-plus": photoPlus,
+  "cloud-upload": cloudUpload,
+  eye,
+  "device-floppy": deviceFloppy,
+  edit,
+  send,
+  article,
+  "building-store": buildingStore,
+  "menu-2": menu2,
+  x,
+  logout,
+  "arrow-left": arrowLeft,
+  plus,
 };
 
 /**
