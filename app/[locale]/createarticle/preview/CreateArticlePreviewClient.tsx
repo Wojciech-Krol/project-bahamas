@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "../../../../src/i18n/navigation";
-import { Icon } from "../../../components/Icon";
-import CategoryPill from "../../../components/blog/CategoryPill";
+import { TablerIcon } from "@/src/components/TablerIcon";
+import CategoryPill from "@/src/components/blog/CategoryPill";
 
 type DraftData = {
   title: string;
@@ -137,7 +137,7 @@ export default function CreateArticlePreviewClient({
       <main className="pt-24 md:pt-32 pb-24 min-h-[60vh]">
         <div className="max-w-2xl mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-fixed text-primary mb-6">
-            <Icon name="article" className="text-3xl" />
+            <TablerIcon name="article" className="text-3xl" />
           </div>
           <h1 className="font-headline font-extrabold text-3xl md:text-5xl tracking-tight text-on-surface">
             {copy.emptyTitle}
@@ -149,7 +149,7 @@ export default function CreateArticlePreviewClient({
             href="/createarticle"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-headline font-bold uppercase tracking-widest text-on-primary hover:bg-primary/90 transition-colors"
           >
-            <Icon name="edit_note" className="text-[18px]" />
+            <TablerIcon name="edit" className="text-[18px]" />
             {copy.emptyCta}
           </Link>
         </div>
@@ -167,14 +167,14 @@ export default function CreateArticlePreviewClient({
       <div className="bg-primary-fixed text-primary border-b border-primary/20">
         <div className="max-w-site mx-auto px-4 md:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
           <p className="flex items-center gap-2 text-sm font-medium">
-            <Icon name="visibility" className="text-[18px]" />
+            <TablerIcon name="eye" className="text-[18px]" />
             <span>{copy.notice}</span>
           </p>
           <Link
             href="/createarticle"
             className="inline-flex items-center gap-1 text-sm font-headline font-bold uppercase tracking-widest hover:-translate-x-0.5 transition-transform"
           >
-            <Icon name="arrow_back" className="text-[18px]" />
+            <TablerIcon name="arrow-left" className="text-[18px]" />
             {copy.backToEditor}
           </Link>
         </div>
@@ -279,7 +279,7 @@ export default function CreateArticlePreviewClient({
               title={copy.comingSoon}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-headline font-bold uppercase tracking-widest text-on-primary disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <Icon name="add" className="text-[18px]" />
+              <TablerIcon name="plus" className="text-[18px]" />
               {copy.addActivity}
             </button>
           </div>
@@ -293,7 +293,7 @@ export default function CreateArticlePreviewClient({
                 <div className="absolute top-3 left-3 flex items-center justify-center w-9 h-9 rounded-xl bg-primary/15 text-primary font-headline font-extrabold text-sm">
                   {slot}
                 </div>
-                <Icon name="add_business" className="text-3xl text-on-surface/35" />
+                <TablerIcon name="building-store" className="text-3xl text-on-surface/35" />
                 <p className="mt-3 text-sm text-on-surface/55">{copy.comingSoon}</p>
               </div>
             ))}
