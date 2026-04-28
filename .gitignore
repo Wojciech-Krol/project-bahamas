@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scratch + dev artifacts
+bash.exe.stackdump
+.playwright-mcp/
+plan_akcji/
+stitch_Designs/
+mocks/

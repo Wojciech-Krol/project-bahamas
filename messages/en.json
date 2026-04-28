@@ -1,18 +1,16 @@
 {
   "Metadata": {
-    "title": "HAKUNA | Start something new — today",
+    "titleDefault": "Find your thing",
+    "titleTemplate": "%s · Find your thing",
     "description": "Find and book the best activities near you. Yoga, sport, pottery, music — discover what's happening in your neighborhood in the next two hours.",
-    "ogTitle": "HAKUNA | Start something new — today",
+    "ogTitle": "Find your thing",
     "ogDescription": "Find and book the best activities near you.",
     "keywords": "activities, classes, sports, yoga, pottery, workshops, dance, music, Hakuna, booking",
     "blog": {
-      "title": "The Hakuna Journal | Stories, guides & city picks",
+      "title": "The Hakuna Journal",
       "description": "Weekly reads on local life, wellness, and how to say yes to your city. Hand-written guides from the Hakuna community.",
       "ogTitle": "The Hakuna Journal",
       "ogDescription": "Stories, guides & city picks from the Hakuna community."
-    },
-    "blogArticle": {
-      "titleSuffix": "| Hakuna Journal"
     }
   },
   "Common": {
@@ -36,14 +34,118 @@
   "Nav": {
     "explore": "Explore",
     "about": "About",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "logout": "Log out"
+  },
+  "Admin": {
+    "page": {
+      "title": "Partner applications",
+      "subtitle": "Review new applications from venues that want to join Hakuna.",
+      "empty": "No pending applications."
+    },
+    "nav": {
+      "brandTag": "Admin",
+      "partners": "Partners",
+      "logout": "Log out"
+    },
+    "columns": {
+      "name": "Name",
+      "email": "Contact email",
+      "city": "City",
+      "applied": "Applied",
+      "actions": "Actions"
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject"
+    },
+    "reject": {
+      "reasonLabel": "Reason (optional)",
+      "reasonPlaceholder": "A short note the applicant will see.",
+      "confirm": "Send rejection"
+    },
+    "errors": {
+      "alreadyDecided": "This application has already been decided.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "Auth": {
+    "divider": "or",
+    "field": {
+      "email": "Email",
+      "password": "Password",
+      "fullName": "Full name"
+    },
+    "button": {
+      "login": "Log in",
+      "signup": "Create account",
+      "google": "Continue with Google",
+      "logout": "Log out"
+    },
+    "error": {
+      "invalidInput": "Please check your input.",
+      "invalidCredentials": "Invalid email or password.",
+      "emailNotConfirmed": "Confirm your email by clicking the link we sent during signup.",
+      "signupFailed": "Could not create account. Please try again.",
+      "rateLimited": "Too many attempts — please try again shortly.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to keep booking experiences.",
+      "noAccount": "No account yet?",
+      "signupCta": "Create one"
+    },
+    "signup": {
+      "title": "Join Hakuna",
+      "subtitle": "Create an account and discover activities nearby.",
+      "haveAccount": "Already have an account?",
+      "loginCta": "Log in"
+    },
+    "checkEmail": {
+      "title": "Check your inbox",
+      "body": "We sent a confirmation link to {email}. Click it to activate your account and sign in automatically.",
+      "hint": "If you don't see it, check your spam folder."
+    }
   },
   "Home": {
     "hero": {
       "titleStart": "Start something",
       "titleMiddle": "new",
       "titleEnd": "today.",
-      "subtitle": "Hundreds of activities starting near you in the next two hours."
+      "subtitle": "Hundreds of activities starting near you in the next two hours.",
+      "placeholders": [
+        "yoga in 2h",
+        "padel in Mokotów",
+        "kids workshops after 6pm",
+        "climbing tonight",
+        "pottery this weekend",
+        "boxing before work"
+      ],
+      "placeholdersNeighborhood": [
+        "Mokotów",
+        "Śródmieście",
+        "Praga Północ",
+        "Wola",
+        "Żoliborz",
+        "Saska Kępa"
+      ],
+      "placeholdersWhen": [
+        "tonight",
+        "this weekend",
+        "Saturday morning",
+        "in an hour",
+        "tomorrow after 6pm",
+        "Friday evening"
+      ],
+      "placeholdersAge": [
+        "2 adults",
+        "family with kids",
+        "adults only",
+        "teens + 1 adult",
+        "kid + caregiver",
+        "group of 4"
+      ]
     },
     "closest": {
       "badge": "Starting soon",
@@ -187,7 +289,61 @@
     "instagram": "Instagram",
     "linkedin": "LinkedIn"
   },
+  "Landing": {
+    "common": {
+      "homeLabel": "Home",
+      "discoverLabel": "Discover",
+      "noResultsTitle": "No {activity} listings yet in {cityIn}",
+      "noResultsBody": "We're inviting the best venues in {cityFrom}. In the meantime, browse other neighborhoods or nominate your favorite studio.",
+      "ctaPartner": "Run a studio? Join Hakuna",
+      "neighborhoodsHeading": "By neighborhood",
+      "faqHeading": "Frequently asked questions",
+      "viewAllInCity": "See all activities in {cityIn}"
+    },
+    "intros": {
+      "yoga": {
+        "warszawa": "Yoga in Warsaw has its rhythm — morning vinyasa in Mokotów, candlelit yin in Praga at dusk. Hakuna gathers studios, teachers, and open classes worth checking today. Filter by neighborhood, time, or level, book online, and show up on the mat. Whether it's your first beginner class or a serious ashtanga practice, you'll find a fit here."
+      }
+    },
+    "faq": {
+      "yoga": {
+        "items": [
+          {
+            "question": "How much do yoga classes in Warsaw cost?",
+            "answer": "A drop-in is usually 50–80 PLN, monthly unlimited 200–360 PLN depending on studio and neighborhood. Many places offer a free trial week or a 1 PLN intro class — check the studio page."
+          },
+          {
+            "question": "Can I start yoga with zero experience?",
+            "answer": "Yes — classes labeled 'beginner' or 'basic' are exactly for that. Mats are usually provided. Wear something comfortable and breathable, bring water."
+          },
+          {
+            "question": "Which yoga style should I start with?",
+            "answer": "Hatha and vinyasa are the most beginner-friendly. Hatha is slower with more time on alignment. Vinyasa is more dynamic and links movement to breath. Yin and restorative are great evening sessions for unwinding."
+          },
+          {
+            "question": "How often should I practice?",
+            "answer": "2–3 sessions a week is plenty for visible benefits. Most studios offer monthly passes that pay off from 6 visits a month."
+          },
+          {
+            "question": "Can I book a single class or do I need a pass?",
+            "answer": "Yes — Hakuna lets you book single classes online with no commitment. Buy a pass once you've found a studio and style that fits."
+          }
+        ]
+      }
+    },
+    "cityHooks": {
+      "warszawa": "The capital blends business-district energy, alt scenes on the right bank, and quieter green areas like Mokotów or Żoliborz — every neighborhood has its rhythm.",
+      "krakow": "From artsy Kazimierz to athletic Krowodrza — Kraków offers a fit for every lifestyle.",
+      "wroclaw": "Student energy in Śródmieście, café vibes in Krzyki, industrial pull in Fabryczna — Wrocław pulls you in with variety.",
+      "gdansk": "Baltic mood in Wrzeszcz and Oliwa meets the buzz of Śródmieście — Gdańsk is a city that pairs movement with nature.",
+      "poznan": "Poznań packs a dense, walkable urban fabric — from the historic Old Town to creative Jeżyce. Activities are always close by."
+    }
+  },
   "About": {
+    "meta": {
+      "title": "About Hakuna — local activity discovery platform",
+      "description": "Hakuna helps you find and book activities near you. Learn about our vision, team, and story."
+    },
     "badge": "Our vision",
     "heroStart": "A city you",
     "heroEmphasis": "actually",
@@ -369,6 +525,19 @@
     "spotsLeft": "{count, plural, one {Only 1 spot left!} other {Only # spots left!}}",
     "spotsLeftShort": "{count, plural, one {1 spot left} other {# spots left}}",
     "bookYourSpot": "Book your spot",
+    "bookingProgress": "Redirecting to checkout…",
+    "bookingError": {
+      "not_configured": "Payments are not configured yet. Try again later.",
+      "not_signed_in": "Please sign in to book.",
+      "internal": "Something went wrong. Please try again.",
+      "session_not_found": "That session is no longer available.",
+      "partner_not_connected": "This studio doesn't accept online payments yet.",
+      "session_not_bookable": "That session can no longer be booked.",
+      "session_in_past": "That session has already started.",
+      "session_full": "No spots left on that session.",
+      "rate_limited": "Too many attempts — wait a moment and try again."
+    },
+    "noSessions": "No upcoming sessions. Check back soon.",
     "freeCancel": "Free cancellation up to 48 hours before class.",
     "joiningPulse": "Joining the session",
     "alreadyBooked": "Already booked for this session",
@@ -385,27 +554,6 @@
       "dates": {
         "d1": { "label": "OCT 24", "time": "6:00 PM" },
         "d2": { "label": "OCT 26", "time": "10:00 AM" }
-      },
-      "curriculum": {
-        "c1": {
-          "title": "Kinetic foundation",
-          "description": "A deep dive into weight distribution and momentum control. Master the art of using gravity to power your transitions."
-        },
-        "c2": {
-          "title": "Urban textures",
-          "description": "The contrast between fluid contemporary lines and sharp, isolated urban movements."
-        },
-        "c3": {
-          "title": "Choreographic nuance",
-          "description": "The final phase focuses on the 'Urban Flow' routine. You'll learn to read complex rhythmic patterns through full-body expression."
-        }
-      },
-      "instructor": {
-        "role": "Lead instructor",
-        "name": "Marcus Thorne",
-        "bio": "Founder of the Kinetic Lab, Marcus has choreographed for world tours and international cinema. His philosophy centres on the bridge between technical excellence and raw human emotion.",
-        "cred1": "Best Choreographer 2023",
-        "cred2": "15+ years experience"
       }
     }
   },
@@ -772,6 +920,748 @@
         "comingSoon": "Available once the database is connected",
         "tagsLabel": "Tags"
       }
+    }
+  },
+  "Partner": {
+    "brand": "Partner",
+    "nav": {
+      "overview": "Overview",
+      "classes": "Classes",
+      "instructors": "Instructors",
+      "bookings": "Bookings",
+      "reviews": "Reviews",
+      "insights": "Insights",
+      "venue": "Venue profile",
+      "payouts": "Payouts",
+      "payments": "Payments",
+      "promote": "Promote",
+      "plans": "Plans",
+      "integrations": "Integrations",
+      "settings": "Settings",
+      "backToSite": "← Back to Hakuna",
+      "toggleMenu": "Toggle menu",
+      "logout": "Log out"
+    },
+    "stripe": {
+      "title": "Payments",
+      "subtitle": "Connect Stripe to accept bookings and receive payouts.",
+      "status": {
+        "none": "Not connected",
+        "incomplete": "Onboarding in progress",
+        "connected": "Connected"
+      },
+      "cta": {
+        "connect": "Connect Stripe",
+        "resume": "Resume onboarding",
+        "refresh": "Refresh status"
+      },
+      "placeholder": {
+        "stripeMissing": "Stripe is not configured yet. Ask the Hakuna operator to set `STRIPE_SECRET_KEY`.",
+        "supabaseMissing": "Supabase is not configured yet. Ask the Hakuna operator to provision the database."
+      },
+      "sidebar": {
+        "payments": "Payments"
+      }
+    },
+    "plans": {
+      "title": "Subscription plans",
+      "subtitle": "Pick a plan to reduce Hakuna's commission on returning-customer bookings and unlock additional partner tooling.",
+      "currentBadge": "Active",
+      "upgrade": "Upgrade to this plan",
+      "active": "Current plan",
+      "monthlyLabel": "/ month",
+      "commissionLabel": "commission on returning-customer bookings",
+      "tierNames": {
+        "partner-plus-monthly": "Partner Plus",
+        "partner-pro-monthly": "Partner Pro"
+      },
+      "placeholder": {
+        "stripeMissing": "Stripe is not configured yet. Ask the Hakuna operator to provision the Stripe Billing keys.",
+        "supabaseMissing": "Supabase is not configured yet. Ask the Hakuna operator to provision the database."
+      },
+      "errors": {
+        "tierNotConfigured": "Plan not available yet"
+      }
+    },
+    "promote": {
+      "title": "Promote your offer",
+      "subtitle": "Boost your classes or an entire venue in search results. Boost lifts placement, and the first booking from a new customer is subject to a one-time 35% commission.",
+      "activeUntil": "Active boost ends {date}",
+      "notBoosted": "Not boosted",
+      "activateCta": "Activate boost",
+      "sectionAll": "Promote all venues",
+      "sectionAllDescription": "Apply a boost to every venue owned by this partner at once.",
+      "sectionVenues": "Venues",
+      "sectionActivities": "Classes",
+      "chooseDuration": "Choose a duration",
+      "priceLabel": "{price} PLN",
+      "purchase": "Buy boost",
+      "durationOptions": {
+        "7": "7 days",
+        "14": "14 days",
+        "30": "30 days"
+      },
+      "successBanner": "Boost activated — thank you!",
+      "cancelledBanner": "Payment cancelled. You can try again any time.",
+      "placeholder": {
+        "stripeMissing": "Stripe is not configured yet. Ask the Hakuna operator to set `STRIPE_SECRET_KEY`.",
+        "supabaseMissing": "Supabase is not configured yet. Ask the Hakuna operator to provision the database."
+      },
+      "errors": {
+        "generic": "Could not start checkout. Please try again shortly."
+      }
+    },
+    "integrations": {
+      "title": "Integrations",
+      "subtitle": "Connect your booking system so your schedule syncs into Hakuna automatically.",
+      "statusActive": "Connected",
+      "statusNotConnected": "Not connected",
+      "statusDisabled": "Disabled",
+      "statusError": "Needs attention",
+      "lastSynced": "Last synced {time}",
+      "lastSyncedNever": "Never synced",
+      "lastError": "Last error: {error}",
+      "comingSoon": "Coming soon — waiting on API access",
+      "actions": {
+        "connect": "Connect",
+        "reconfigure": "Reconfigure",
+        "disconnect": "Disconnect"
+      },
+      "csv": {
+        "title": "CSV upload",
+        "description": "Upload a CSV with columns activity_name, starts_at, ends_at, capacity. Re-uploading overwrites the previous file.",
+        "uploadLabel": "Upload CSV",
+        "uploadCta": "Upload",
+        "mapHeader": "Map CSV activity names to your classes",
+        "mapIntro": "We couldn't auto-match these activity names from your CSV. Pick the Hakuna class each one should map to.",
+        "mapSelectLabel": "Maps to",
+        "mapSelectPlaceholder": "Select a class",
+        "mapConfirm": "Save mapping",
+        "uploadSuccess": "File uploaded — review the activity mapping below.",
+        "savedMapping": "Mapping saved — the next sync will run within 15 minutes.",
+        "errors": {
+          "notCsv": "Please upload a .csv file.",
+          "empty": "The file is empty.",
+          "missingColumn": "CSV is missing required columns: {columns}.",
+          "uploadFailed": "Upload failed: {error}",
+          "generic": "Something went wrong. Please try again."
+        }
+      },
+      "placeholder": {
+        "cryptoMissing": "POS integrations aren't configured yet — ask the operator to set POS_CONFIG_ENCRYPTION_KEY.",
+        "supabaseMissing": "Supabase is not configured yet. Ask the Hakuna operator to provision the database."
+      },
+      "providers": {
+        "csv": "CSV upload",
+        "activenow": "ActiveNow",
+        "wodguru": "WodGuru",
+        "efitness": "eFitness",
+        "langlion": "LangLion"
+      }
+    },
+    "venueSwitcher": {
+      "label": "Venue"
+    },
+    "roles": {
+      "owner": "Owner",
+      "manager": "Manager",
+      "instructor": "Instructor",
+      "viewer": "Viewer"
+    },
+    "common": {
+      "savedJustNow": "Saved just now",
+      "preview": "Preview",
+      "publish": "Publish",
+      "edit": "Edit",
+      "schedule": "Schedule",
+      "duplicate": "Duplicate",
+      "more": "More",
+      "resend": "Resend",
+      "revoke": "Revoke",
+      "assign": "Assign",
+      "swap": "Swap",
+      "viewLive": "View live",
+      "viewWeek": "View week →",
+      "viewFull": "View full →",
+      "viewBreakdown": "View breakdown",
+      "newClass": "New class",
+      "inviteInstructor": "Invite instructor",
+      "search": "Search",
+      "close": "Close",
+      "save": "Save",
+      "create": "Create",
+      "cancel": "Cancel",
+      "back": "Back",
+      "delete": "Delete",
+      "minutes": "{count} min",
+      "waitlistShort": "waitlist",
+      "full": "Full",
+      "capacity": "{booked}/{total}",
+      "waitlistCount": "{booked}/{total} · {waitlist} waitlist"
+    },
+    "status": {
+      "levelAll": "All levels",
+      "levelBeginner": "Beginner",
+      "levelIntermediate": "Intermediate",
+      "levelAdvanced": "Advanced",
+      "tagPopular": "Popular",
+      "tagNew": "New",
+      "tagFeatured": "Featured",
+      "needsInstructor": "Needs instructor",
+      "notAssigned": "Not assigned",
+      "invited": "Invited",
+      "verified": "Verified"
+    },
+    "login": {
+      "urlbar": "hakuna.app/partner/login",
+      "badge": "Partner access",
+      "titleStart": "Welcome",
+      "titleEmph": "back",
+      "titleEnd": ".",
+      "subtitle": "The dashboard for your studio, classes and team.",
+      "email": "Email",
+      "password": "Password",
+      "forgot": "Forgot?",
+      "submit": "Sign in",
+      "newStudio": "New studio on Hakuna?",
+      "apply": "Apply →"
+    },
+    "overview": {
+      "dateBadge": "{weekday} · {date}",
+      "greetingStart": "Good morning,",
+      "greetingEnd": ".",
+      "subtitle": "You've got {classes, plural, one {# class} other {# classes}} today and {reviews, plural, one {# review} other {# reviews}} waiting for a reply.",
+      "metrics": {
+        "bookings": "Bookings · 7d",
+        "revenue": "Revenue · 7d",
+        "fillRate": "Avg. fill rate",
+        "rating": "Avg. rating",
+        "ofCapacity": "of capacity",
+        "reviewsCount": "{count} reviews"
+      },
+      "schedule": {
+        "eyebrow": "Today",
+        "heading": "On the schedule"
+      },
+      "actions": {
+        "eyebrow": "Needs you",
+        "heading": "Action queue",
+        "reviewsReply": "{count, plural, one {# review needs a reply} other {# reviews need a reply}}",
+        "reviewsOldest": "Oldest: {age}",
+        "noInstructorTitle": "{day} {time} · No instructor",
+        "noInstructorSub": "{classTitle} — assign",
+        "lowBookingsTitle": "{classTitle} — low bookings",
+        "lowBookingsSub": "{booked}/{capacity} for {day}",
+        "payoutTitle": "Payout of {amount} on {day}",
+        "payoutSub": "View breakdown"
+      }
+    },
+    "analytics": {
+      "eyebrow": "Overview",
+      "heading": "Your studio at a glance",
+      "subtitle": "Revenue, bookings and occupancy across your activities.",
+      "weekdays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      "revenue": {
+        "title": "Revenue",
+        "netLabel": "Your share",
+        "last30d": "Last 30 days",
+        "last90d": "Last 90 days",
+        "ytd": "Year to date"
+      },
+      "trend": {
+        "title": "Bookings trend",
+        "subtitle": "Last 30 days",
+        "empty": "No bookings in the last 30 days yet.",
+        "tooltipLabel": "bookings"
+      },
+      "top": {
+        "title": "Top activities",
+        "subtitle": "By revenue",
+        "empty": "No confirmed bookings yet — promote a class to get the first one in.",
+        "bookingsLabel": "bookings"
+      },
+      "heatmap": {
+        "title": "Occupancy heatmap",
+        "subtitle": "By day × hour · last 60 days",
+        "empty": "Not enough sessions in the last 60 days to chart occupancy."
+      }
+    },
+    "classes": {
+      "countBadge": "{live} live · {drafts} drafts",
+      "title": "Your",
+      "titleEmph": "classes",
+      "searchPlaceholder": "Search by title or instructor…",
+      "filterLevel": "All levels",
+      "filterInstructor": "Any instructor",
+      "filterStatus": "Status",
+      "tabs": {
+        "published": "Published",
+        "drafts": "Drafts",
+        "archived": "Archived"
+      },
+      "row": {
+        "perClass": "per class",
+        "nextSession": "Next session",
+        "draftBadge": "Draft"
+      },
+      "emptyState": "No classes here yet."
+    },
+    "classEditor": {
+      "urlbar": "hakuna.app/partner/classes/{id}",
+      "editing": "Editing class",
+      "newClass": "New class",
+      "untitled": "Untitled",
+      "confirmDelete": "Delete this class? This cannot be undone.",
+      "addCurriculumItem": "Add item",
+      "addInstructor": "Add instructor",
+      "addCredential": "Add credential",
+      "emptyCurriculum": "No curriculum yet — add the first item.",
+      "emptyInstructors": "No instructors yet — add the first one.",
+      "sections": {
+        "basics": "Basics",
+        "schedule": "Schedule",
+        "instructor": "Assigned instructor",
+        "instructors": "Instructors",
+        "curriculum": "Curriculum",
+        "pricing": "Pricing",
+        "media": "Media"
+      },
+      "fields": {
+        "title": "Class title",
+        "description": "Description",
+        "level": "Level",
+        "duration": "Duration (min)",
+        "capacity": "Capacity",
+        "recurringDays": "Recurring days",
+        "startTime": "Start time",
+        "room": "Room",
+        "price": "Price",
+        "pricingModel": "Pricing model",
+        "currency": "Currency",
+        "venue": "Venue",
+        "noVenues": "No venues — create a studio first.",
+        "category": "Category",
+        "ageGroup": "Age group",
+        "heroImage": "Hero image URL",
+        "publish": "Published",
+        "publishHint": "Visible to customers on the public page.",
+        "imageUrl": "Image URL (optional)",
+        "instructorName": "Full name",
+        "role": "Role",
+        "bio": "Bio",
+        "avatarUrl": "Avatar URL (optional)",
+        "credentials": "Credentials"
+      },
+      "error": {
+        "invalid_input": "Check the fields and try again.",
+        "forbidden": "You don't have access to this action.",
+        "internal": "Save failed. Please try again.",
+        "not_found": "Class not found."
+      },
+      "weekdayInitials": ["S", "M", "T", "W", "T", "F", "S"],
+      "pricingModels": {
+        "per_class": "Per class",
+        "per_session": "Per session",
+        "per_term": "Per term",
+        "drop_in": "Drop-in"
+      },
+      "alsoQualified": "Also qualified:",
+      "preview": {
+        "eyebrow": "Live preview · public page",
+        "book": "Book",
+        "leadInstructor": "Lead instructor",
+        "duration": "Duration",
+        "level": "Level",
+        "capacity": "Capacity"
+      }
+    },
+    "instructors": {
+      "countBadge": "{count} active",
+      "title": "The",
+      "titleEmph": "team",
+      "cardStats": {
+        "classes": "Classes",
+        "rating": "Rating",
+        "students": "Students"
+      },
+      "inviteSentAgo": "Invite sent {age}",
+      "inviteCtaTitle": "Invite an instructor",
+      "inviteCtaSub": "They'll create their own profile and appear here once accepted."
+    },
+    "venue": {
+      "urlbar": "hakuna.app/partner/venue",
+      "badge": "Public profile",
+      "title": "Venue profile",
+      "viewLive": "View live",
+      "sections": {
+        "identity": "Identity",
+        "location": "Location",
+        "photos": "Photos",
+        "stats": "Stats strip",
+        "visibility": "Visibility"
+      },
+      "fields": {
+        "name": "Venue name",
+        "tagline": "Tagline",
+        "about": "About",
+        "aboutCounter": "{count} / {max}",
+        "address": "Address",
+        "city": "City / district",
+        "neighborhood": "Neighborhood",
+        "heroImage": "Hero image",
+        "heroImageUrl": "Hero image URL",
+        "galleryHeading": "Gallery · {count} photos",
+        "addNeighborhood": "+ Add",
+        "replace": "Replace",
+        "numberLabel": "Number",
+        "publish": "Published",
+        "publishHint": "Visible to customers on the public page."
+      },
+      "emptyState": "No venue yet — create one to continue.",
+      "selectAnother": "Pick a venue from the list above.",
+      "savedToast": "Saved.",
+      "upload": {
+        "hint": "JPEG, PNG, or WebP, max 10 MB."
+      },
+      "uploadError": {
+        "no_file": "Pick a file first.",
+        "too_large": "File too large (10 MB max).",
+        "not_image": "Only JPEG, PNG, or WebP.",
+        "forbidden": "You don't have access to this venue.",
+        "invalid_input": "Invalid input.",
+        "rate_limited": "Too many uploads in a short window — try again later.",
+        "internal": "Upload failed. Try again."
+      },
+      "gallery": {
+        "title": "Gallery",
+        "add": "Add photo",
+        "remove": "Remove photo"
+      },
+      "preview": {
+        "liveAt": "Live · /school/{slug}",
+        "desktop": "Desktop",
+        "mobile": "Mobile",
+        "classesOffered": "Classes offered",
+        "currentSchedule": "Current schedule",
+        "viewFull": "View full →",
+        "changesHint": "Changes appear here as you type.",
+        "reviewsCount": "{count} reviews"
+      }
+    },
+    "bookings": {
+      "badge": "{count} bookings",
+      "title": "Bookings",
+      "emptyState": "No bookings yet. They'll appear here as customers book.",
+      "col": {
+        "activity": "Class",
+        "session": "Session",
+        "amount": "Amount",
+        "status": "Status",
+        "created": "Created"
+      }
+    },
+    "reviewsAdmin": {
+      "badge": "{count} reviews",
+      "title": "Reviews",
+      "emptyState": "No reviews yet. Customers can rate after their first session.",
+      "ratingLabel": "Rating",
+      "replyLabel": "Your reply",
+      "replyPlaceholder": "Reply publicly…",
+      "replyButton": "Reply",
+      "replyEdit": "Edit reply",
+      "replySaved": "Posted.",
+      "replyError": "Couldn't save. Try again."
+    },
+    "instructorsAdmin": {
+      "badge": "{count} on the team",
+      "title": "Team",
+      "emptyState": "Invite your first instructor to populate the team.",
+      "comingSoon": "Invitations land in Phase 2."
+    },
+    "payouts": {
+      "badge": "Payouts",
+      "title": "Payouts",
+      "subtitle": "Net balance and history of transfers to your bank account.",
+      "emptyPartner": "No data — join a partner first.",
+      "net": {
+        "last30d": "Net (30d)",
+        "last90d": "Net (90d)",
+        "ytd": "Net YTD",
+        "lifetime": "Net lifetime"
+      },
+      "stripe": {
+        "title": "Stripe payouts",
+        "notConnected": "Stripe account not connected yet",
+        "notConnectedBody": "Connect Stripe to receive payouts to your bank account.",
+        "connectCta": "Go to Payments",
+        "unavailable": "Couldn't fetch payouts. Try refreshing.",
+        "empty": "No payouts yet. They'll appear here once Stripe sends funds to your account."
+      },
+      "col": {
+        "amount": "Amount",
+        "arrival": "Arrival date",
+        "status": "Status",
+        "descriptor": "Statement descriptor"
+      }
+    },
+    "insights": {
+      "badge": "Analytics",
+      "title": "Insights",
+      "subtitle": "The full picture of how your studio is performing.",
+      "emptyPartner": "No data — join a partner first.",
+      "kpis": {
+        "bookings30d": "Bookings (30d)",
+        "avgBooking": "Avg booking (30d)",
+        "totalGrossYtd": "Gross YTD",
+        "activityBookings": "Top bookings"
+      },
+      "trend": {
+        "title": "Bookings trend",
+        "subtitle": "Confirmed bookings over the last 30 days."
+      },
+      "top": {
+        "title": "Top activities",
+        "subtitle": "Ranked by revenue in the period."
+      },
+      "heatmap": {
+        "title": "Weekly occupancy",
+        "subtitle": "Average seat fill across hours 0–24, last 60 days."
+      }
+    },
+    "settings": {
+      "badge": "Partner profile",
+      "title": "Settings",
+      "savedToast": "Saved.",
+      "contactSupport": "Reach out to our team to change these values.",
+      "sections": {
+        "profile": "Public profile",
+        "account": "Account details"
+      },
+      "fields": {
+        "name": "Partner name",
+        "slug": "Page identifier",
+        "slugHint": "Appears in the URL: /school/your-id. Lowercase + dashes only.",
+        "contactEmail": "Contact email",
+        "city": "City",
+        "status": "Status",
+        "commission": "Platform commission",
+        "subscription": "Plan",
+        "subscriptionCommission": "Commission under plan"
+      },
+      "error": {
+        "invalid_input": "Check the fields and try again.",
+        "invalid_slug": "Identifier accepts lowercase letters, digits, and dashes only.",
+        "slug_taken": "That identifier is already taken.",
+        "forbidden": "You don't have access.",
+        "internal": "Save failed. Please try again."
+      }
+    },
+    "mock": {
+      "dateBadge": { "weekday": "Friday", "date": "April 24" },
+      "user": {
+        "name": "Ava Morin",
+        "firstName": "Ava",
+        "initials": "AM",
+        "email": "ava@urbanrhythm.pl"
+      },
+      "venue": {
+        "name": "Urban Rhythm Academy",
+        "initial": "U",
+        "tagline": "Where movement meets mastery.",
+        "about": "Urban Rhythm Academy is a hub for dancers, performers and movement-lovers who want more than a class — they want a community. Our instructors are working professionals, our studios are built for serious training.",
+        "address": "Marszałkowska 142, 00-061 Warszawa",
+        "slug": "urban-rhythm"
+      },
+      "neighborhoods": {
+        "srodmiescie": "Śródmieście",
+        "mokotow": "Mokotów",
+        "praga": "Praga"
+      },
+      "stats": [
+        { "value": "500+", "label": "Students" },
+        { "value": "10+", "label": "Years" },
+        { "value": "Pulse", "label": "Certified" }
+      ],
+      "rating": { "value": "4.9", "count": 324 },
+      "classes": {
+        "contemporary": {
+          "title": "Contemporary Foundations",
+          "description": "Slow, grounded Hatha sequence lit by golden-hour light. Perfect for unwinding and improving flexibility.",
+          "schedule": "Mon & Wed 18:00",
+          "room": "Studio 1"
+        },
+        "urbanFlow": {
+          "title": "Urban Flow Intermediate",
+          "description": "High-energy urban choreography with a contemporary twist.",
+          "schedule": "Tue & Thu 19:30",
+          "room": "Studio 3"
+        },
+        "kidsLab": {
+          "title": "Kids Movement Lab",
+          "description": "Playful movement exploration for ages 7–12.",
+          "schedule": "Sat 10:00",
+          "room": "Studio 2",
+          "ageLabel": "Ages 7–12"
+        },
+        "proLab": {
+          "title": "Pro Performance Lab",
+          "description": "Elite-level training for professional performers.",
+          "schedule": "Sun 14:00",
+          "room": "Studio 4"
+        }
+      },
+      "instructors": {
+        "marcus": {
+          "name": "Marcus Thorne",
+          "initials": "MT",
+          "role": "Lead instructor",
+          "credential": "Best Choreographer 2023",
+          "specialties": ["Contemporary", "Urban"]
+        },
+        "noa": {
+          "name": "Noa Stein",
+          "initials": "NS",
+          "role": "Kids · Beginners",
+          "credential": "Certified youth coach",
+          "specialties": ["Kids specialist", "Movement"]
+        },
+        "elena": {
+          "name": "Elena Grace",
+          "initials": "EG",
+          "role": "Yoga · Flow",
+          "credential": "RYT-500",
+          "specialties": ["Vinyasa", "Hatha"]
+        },
+        "kaiInvite": {
+          "email": "kai@example.com",
+          "sentAgo": "2 days ago"
+        }
+      },
+      "schedule": [
+        { "id": "sess-1", "time": "11:00", "duration": 60, "classKey": "contemporary", "instructor": "marcus", "room": "Studio 1", "booked": 14, "capacity": 18, "accent": "primary" },
+        { "id": "sess-2", "time": "14:30", "duration": 90, "classKey": "kidsLab",      "instructor": "noa",    "room": "Studio 2", "booked": 8,  "capacity": 12, "accent": "secondary" },
+        { "id": "sess-3", "time": "19:30", "duration": 75, "classKey": "urbanFlow",   "instructor": "marcus", "room": "Studio 3", "booked": 18, "capacity": 18, "waitlist": 3, "accent": "primary" }
+      ],
+      "actions": [
+        { "id": "act-reviews", "icon": "reviews",      "tone": "primary",   "titleKey": "reviewsReply",    "subKey": "reviewsOldest",    "count": 2, "age": "2 days ago" },
+        { "id": "act-noinstr", "icon": "event_busy",   "tone": "secondary", "titleKey": "noInstructorTitle", "subKey": "noInstructorSub",  "day": "Sat", "time": "10:00", "classTitle": "Kids Movement Lab" },
+        { "id": "act-lowbook", "icon": "trending_down","tone": "primary",   "titleKey": "lowBookingsTitle",  "subKey": "lowBookingsSub",   "classTitle": "Pro Performance Lab", "booked": 4, "capacity": 16, "day": "Sunday" },
+        { "id": "act-payout",  "icon": "receipt_long", "tone": "muted",     "titleKey": "payoutTitle",       "subKey": "payoutSub",        "amount": "€1,840", "day": "Monday" }
+      ]
+    }
+  },
+  "PartnerApply": {
+    "meta": {
+      "title": "Become a Hakuna partner",
+      "description": "Apply to list your studio, school, or club on Hakuna's activity marketplace in Poland."
+    },
+    "badge": "For partners",
+    "title": "Become a Hakuna partner",
+    "subtitle": "Fill in this short form — we'll review your application and get back to you within 3 business days.",
+    "replacementNote": "This replaces the old 'Host an activity' signup form.",
+    "field": {
+      "name": {
+        "label": "Studio / school name",
+        "placeholder": "e.g. Praga Yoga Studio"
+      },
+      "contactEmail": {
+        "label": "Contact email",
+        "placeholder": "you@your-studio.com"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "Warsaw"
+      },
+      "website": {
+        "label": "Website (optional)",
+        "placeholder": "your-studio.com"
+      },
+      "expected": {
+        "label": "Expected monthly bookings (optional)",
+        "placeholder": "Pick a range…",
+        "options": {
+          "lt50": "Less than 50",
+          "50to200": "50–200",
+          "200to500": "200–500",
+          "gte500": "More than 500"
+        }
+      }
+    },
+    "submit": "Send application",
+    "error": {
+      "invalidInput": "Please check this field.",
+      "rateLimited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+      "botCheck": "We couldn't confirm you're not a bot. Refresh the page and try again.",
+      "server": "Something went wrong on our side. Please try again in a moment."
+    },
+    "success": {
+      "heading": "We've got your application",
+      "body": "A confirmation has been sent to the email you provided. We'll be in touch within 3 business days."
+    }
+  },
+  "Consent": {
+    "title": "We use cookies",
+    "description": "We use cookies to make Hakuna work, measure traffic, and serve you better. You choose what's on.",
+    "learnMore": "Learn more",
+    "accept": "Accept all",
+    "reject": "Essential only",
+    "customize": "Customize",
+    "save": "Save choice",
+    "essential": {
+      "title": "Essential",
+      "description": "Required for the site to work — sign-in, bookings, security. These can't be turned off."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "description": "Anonymous pageview stats on class listings. They help us improve Hakuna."
+    }
+  },
+  "Account": {
+    "title": "Your account",
+    "subtitle": "Manage your data on Hakuna.",
+    "export": {
+      "heading": "Download your data",
+      "description": "Generate a JSON file with everything we hold about you — profile, bookings, reviews.",
+      "button": "Download data (.json)"
+    },
+    "delete": {
+      "heading": "Delete account",
+      "description": "Request account deletion. Within 30 days your personal data will be anonymized and the account removed. Bookings are kept for financial records.",
+      "button": "Request account deletion",
+      "confirm": "Are you sure you want to delete your account?",
+      "pending": "Deletion requested — your data will be removed on {date}."
+    }
+  },
+  "BookingDetail": {
+    "title": "Your booking",
+    "referenceLabel": "Reference:",
+    "whenLabel": "When",
+    "amountLabel": "Amount",
+    "statusLabel": "Status",
+    "backHome": "Back to home",
+    "checkoutSuccessTitle": "Payment received",
+    "checkoutSuccessBody": "Thanks! Confirmation will appear here within a few seconds — refresh if you don't see it yet.",
+    "checkoutCancelledTitle": "Payment cancelled",
+    "checkoutCancelledBody": "We didn't charge you. You can try again from the activity page.",
+    "status": {
+      "pending": "Awaiting payment",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    },
+    "cancelButton": "Cancel booking",
+    "cancelConfirmTitle": "Cancel this booking?",
+    "cancelConfirmBody": "You'll receive a full refund. This cannot be undone.",
+    "cancelSuccess": "Cancelled. Your refund will arrive in 1–2 business days.",
+    "cancelError": {
+      "too_late": "Bookings within 48 hours can't be cancelled online — contact the venue.",
+      "not_cancellable": "This booking can't be cancelled.",
+      "refund_failed": "Refund failed. Please contact support.",
+      "not_signed_in": "Please sign in to cancel.",
+      "forbidden": "You don't have access.",
+      "not_found": "Booking not found.",
+      "not_configured": "Payments aren't configured.",
+      "internal": "Something went wrong. Try again."
     }
   }
 }

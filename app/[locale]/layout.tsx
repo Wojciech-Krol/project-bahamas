@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../src/i18n/routing";
+import CookieConsentGate from "@/src/components/CookieConsentGate";
 import "../globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -17,12 +18,15 @@ const beVietnam = Be_Vietnam_Pro({
   subsets: ["latin", "latin-ext"],
   variable: "--font-be-vietnam",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  // Trimmed: 300 not used (no `font-light` class anywhere in the codebase).
+  weight: ["400", "500", "600", "700"],
 });
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.club";
 
 export async function generateMetadata({
   params,
@@ -31,21 +35,42 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
+  const titleDefault = t("titleDefault");
   return {
-    title: t("title"),
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: titleDefault,
+      template: t("titleTemplate"),
+    },
     description: t("description"),
     keywords: t("keywords").split(","),
     openGraph: {
-      title: t("title"),
+      title: titleDefault,
       description: t("description"),
       type: "website",
       locale: locale === "pl" ? "pl_PL" : "en_GB",
+      siteName: "Hakuna",
+      url: `${SITE_URL}/${locale}`,
     },
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        pl: "/pl",
-        en: "/en",
+    twitter: {
+      card: "summary_large_image",
+      title: titleDefault,
+      description: t("description"),
+    },
+    // No alternates here on purpose. Each route owns its own canonical +
+    // hreflang via getPathname so localized pathnames (e.g. /pl/o-nas) get
+    // the right URL. If we set canonical at layout level, every child page
+    // without its own override would canonicalize to /pl — Google would
+    // then de-duplicate the whole site to the homepage.
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
       },
     },
   };
@@ -77,16 +102,32 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        {/*
+          Material Symbols Outlined — subset to glyphs actually used via
+          <Icon name="…" />. Without `icon_names=` Google Fonts ships a
+          ~3.8 MB woff2 (every glyph in the catalog). The list below must
+          stay in sync with the icon names referenced in the codebase
+          (grep for `<Icon name=`).
+        */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_balance,add,add_a_photo,arrow_back,arrow_forward,arrow_forward_ios,arrow_upward,auto_awesome,bolt,calendar_today,card_membership,category,check,check_circle,circle,close,content_copy,edit,event,expand_less,expand_more,favorite,group,image,keyboard_arrow_down,keyboard_arrow_up,language,location_on,logout,map,menu,more_horiz,near_me,open_in_new,payments,person,person_add,photo_library,place,priority_high,refresh,remove,rocket_launch,schedule,schedule_send,search,signal_cellular_alt,star,sync_disabled,timer,tune,unfold_more,upload,upload_file,verified&display=swap"
         />
       </head>
       <body
-        className="font-body antialiased bg-surface text-on-surface overflow-x-hidden w-full relative"
+        className="font-body antialiased text-on-surface overflow-x-hidden w-full relative bg-[radial-gradient(ellipse_80%_55%_at_30%_18%,#ffe2d8_0%,transparent_70%),radial-gradient(ellipse_70%_50%_at_75%_45%,#fde7c4_0%,transparent_75%),linear-gradient(180deg,#fff1ec_0%,#fdf6e8_45%,#fef0d8_100%)] bg-fixed"
         suppressHydrationWarning
       >
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {children}
+          <CookieConsentGate />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

@@ -1,7 +1,86 @@
-import createMiddleware from "next-intl/middleware";
-import { routing } from "./src/i18n/routing";
+import createIntlMiddleware from "next-intl/middleware";
+import { createServerClient } from "@supabase/ssr";
+import type { NextRequest, NextResponse } from "next/server";
 
-export default createMiddleware(routing);
+import { routing } from "./src/i18n/routing";
+import { env } from "./src/env";
+
+/**
+ * Next 16 proxy (formerly `middleware.ts`).
+ *
+ * Composes two responsibilities on every matched request:
+ *   1. next-intl locale routing — handles `/` → `/{defaultLocale}`,
+ *      locale negotiation, and rewrites for `localePrefix: "always"`.
+ *   2. Supabase auth session refresh — required by `@supabase/ssr` so that
+ *      auth cookies stay valid across RSC renders. The cookies have to land
+ *      on the response that next-intl produces, otherwise the locale
+ *      redirect would drop them.
+ *
+ * Order: intl first (it owns the response), then Supabase reads request
+ * cookies and writes refreshed cookies onto the same response.
+ *
+ * If Supabase isn't configured yet (pre-launch / fresh clone without
+ * `NEXT_PUBLIC_SUPABASE_*` set), the auth refresh is a no-op so the
+ * marketing site still serves.
+ */
+
+const intl = createIntlMiddleware(routing);
+
+export default async function proxy(request: NextRequest) {
+  const response = intl(request) as NextResponse;
+
+  if (
+    !env.NEXT_PUBLIC_SUPABASE_URL ||
+    !env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  ) {
+    return response;
+  }
+
+  const supabase = createServerClient(
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          // Per Supabase SSR docs: write rotated cookies to BOTH the
+          // request and the response. The response copy is what reaches
+          // the browser; the request copy is what any later read in this
+          // same request lifecycle (e.g. a Server Component fetched after
+          // proxy refreshes the JWT) would see. Skipping the request side
+          // means an in-flight request can render with a stale JWT even
+          // after we just refreshed it.
+          for (const { name, value, options } of cookiesToSet) {
+            request.cookies.set(name, value);
+            response.cookies.set(name, value, options);
+          }
+        },
+      },
+    },
+  );
+
+  // Revalidates the JWT against the Supabase auth server and triggers
+  // `setAll` if the access token rotates. Discard the result — proxy
+  // doesn't make authorization decisions; it only refreshes cookies.
+  //
+  // CRITICAL: never let an auth-server hiccup take the whole site down.
+  // If Supabase Auth is unreachable (regional outage, DNS, transient
+  // 5xx) `getUser()` throws. Without this catch every page request
+  // would 500 — including the marketing pages that don't even need
+  // auth. Stale cookies for one request-cycle is the right tradeoff.
+  try {
+    await supabase.auth.getUser();
+  } catch (err) {
+    console.warn(
+      "[proxy] Supabase auth refresh failed — serving with stale cookies",
+      err instanceof Error ? err.message : err,
+    );
+  }
+
+  return response;
+}
 
 export const config = {
   matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
