@@ -89,10 +89,9 @@ export default function HeartButton({
       } ${isPending ? "opacity-70" : ""}`}
     >
       <Icon
-        name={optimisticFavorited ? "favorite" : "favorite_border"}
-        className={`${sizes.icon} text-primary ${
-          optimisticFavorited ? "[font-variation-settings:'FILL'_1]" : ""
-        }`}
+        name="favorite"
+        filled={optimisticFavorited}
+        className={`${sizes.icon} text-primary transition-all`}
       />
     </button>
   );

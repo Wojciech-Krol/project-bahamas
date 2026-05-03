@@ -4,6 +4,7 @@ import {
   getBookingsByCurrentUser,
   type BookingDetail,
 } from "@/src/lib/db/queries";
+import { Icon } from "@/src/components/Icon";
 import { Link } from "@/src/i18n/navigation";
 
 import BookingRow from "./BookingRow";
@@ -29,7 +30,6 @@ function partition(rows: BookingDetail[]): {
       past.push(b);
     }
   }
-  // Upcoming sorted by soonest first; past by most recent.
   upcoming.sort(
     (a, b) =>
       new Date(a.session.startsAt).getTime() -
@@ -58,41 +58,54 @@ export default async function AccountBookingsPage({
   const { upcoming, past } = partition(bookings);
 
   return (
-    <>
-      <header className="mb-8 flex items-end justify-between gap-4 flex-wrap">
+    <div className="space-y-10">
+      <div className="flex items-end justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="font-headline text-3xl md:text-4xl font-bold mb-2">
+          <h2 className="font-headline font-bold text-2xl md:text-3xl tracking-tight">
             {t("bookings.title")}
-          </h1>
-          <p className="text-on-surface/70">{t("bookings.subtitle")}</p>
+          </h2>
+          <p className="text-on-surface/60 mt-1">{t("bookings.subtitle")}</p>
         </div>
         {bookings.length > 0 && (
           <a
             href={`/api/account/export?type=bookings`}
-            className="text-sm font-semibold text-primary underline underline-offset-2"
+            className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all"
           >
+            <Icon name="download" className="text-[18px]" />
             {t("bookings.exportCsv")}
           </a>
         )}
-      </header>
+      </div>
 
       {bookings.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-on-surface/20 p-10 text-center">
-          <p className="text-on-surface/60 mb-4">{t("bookings.empty")}</p>
+        <div className="rounded-[1.75rem] border border-dashed border-on-surface/20 bg-surface-container-lowest/50 p-12 text-center editorial-shadow">
+          <span className="inline-flex w-16 h-16 rounded-2xl bg-primary-fixed text-primary items-center justify-center mb-5">
+            <Icon name="event" className="text-[28px]" />
+          </span>
+          <h3 className="font-headline font-bold text-xl text-on-surface mb-2">
+            {t("bookings.empty")}
+          </h3>
           <Link
             href="/search"
-            className="inline-flex items-center gap-2 rounded-full bg-primary text-on-primary px-5 py-2.5 text-sm font-bold"
+            className="inline-flex items-center gap-2 mt-3 rounded-full bg-primary text-on-primary px-6 py-3 text-sm font-headline uppercase tracking-widest font-bold hover:bg-tertiary transition-colors"
           >
+            <Icon name="search" className="text-[18px]" />
             {t("bookings.browseCta")}
           </Link>
         </div>
       ) : (
-        <div className="space-y-10">
+        <>
           {upcoming.length > 0 && (
             <section>
-              <h2 className="font-headline text-lg font-semibold mb-3">
-                {t("bookings.upcoming")}
-              </h2>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="inline-block w-2 h-2 rounded-full bg-primary" />
+                <h3 className="font-headline font-bold text-lg text-on-surface">
+                  {t("bookings.upcoming")}
+                </h3>
+                <span className="text-xs font-bold uppercase tracking-widest text-on-surface/40">
+                  {upcoming.length}
+                </span>
+              </div>
               <div className="space-y-3">
                 {upcoming.map((b) => (
                   <BookingRow key={b.id} booking={b} locale={locale} />
@@ -103,18 +116,24 @@ export default async function AccountBookingsPage({
 
           {past.length > 0 && (
             <section>
-              <h2 className="font-headline text-lg font-semibold mb-3">
-                {t("bookings.past")}
-              </h2>
-              <div className="space-y-3 opacity-80">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="inline-block w-2 h-2 rounded-full bg-on-surface/30" />
+                <h3 className="font-headline font-bold text-lg text-on-surface/70">
+                  {t("bookings.past")}
+                </h3>
+                <span className="text-xs font-bold uppercase tracking-widest text-on-surface/40">
+                  {past.length}
+                </span>
+              </div>
+              <div className="space-y-3 opacity-90">
                 {past.map((b) => (
                   <BookingRow key={b.id} booking={b} locale={locale} />
                 ))}
               </div>
             </section>
           )}
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }

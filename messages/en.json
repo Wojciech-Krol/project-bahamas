@@ -1621,11 +1621,28 @@
   "Account": {
     "title": "Your account",
     "subtitle": "Manage your data on Hakuna.",
+    "greetingBadge": "Your space",
+    "greetingNamed": "Hi {name}",
+    "greetingFallback": "Welcome back",
     "nav": {
+      "aria": "Account sections",
       "profile": "Profile",
       "bookings": "Bookings",
       "favorites": "Favorites",
       "calendar": "Calendar"
+    },
+    "summary": {
+      "title": "Your shortcuts",
+      "upcomingBookings": "Upcoming",
+      "upcomingBookingsSub": "Sessions waiting on your calendar.",
+      "savedActivities": "Favorites",
+      "savedActivitiesSub": "Activities saved for later.",
+      "calendar": "Calendar",
+      "calendarSub": "Google Calendar sync status."
+    },
+    "management": {
+      "title": "Account management",
+      "subtitle": "Download your data or request account removal."
     },
     "bookings": {
       "title": "Your bookings",
@@ -1663,6 +1680,19 @@
       "pause": "Pause",
       "resume": "Resume",
       "lastSynced": "Last synced: {when}",
+      "howTitle": "How it works",
+      "perkOne": {
+        "title": "Auto-added events",
+        "body": "Confirmed bookings appear in your calendar within seconds — no manual copy-paste."
+      },
+      "perkTwo": {
+        "title": "Live updates",
+        "body": "Cancelling a booking removes its event too. No clutter in your calendar."
+      },
+      "perkThree": {
+        "title": "Only your bookings",
+        "body": "We never read your calendar. We only add events we created ourselves."
+      },
       "about": "We create an event in your calendar after a booking is confirmed and remove it on cancellation. Only events we created.",
       "confirmDisconnect": "Disconnect calendar? Existing events stay in your Google Calendar.",
       "errors": {

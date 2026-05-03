@@ -27,11 +27,18 @@ export default function AccountSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside>
-      <nav className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible">
+    <aside className="md:sticky md:top-28">
+      <nav
+        className={[
+          // Mobile: horizontal pill rail; Desktop: editorial card column
+          "flex gap-2 overflow-x-auto no-scrollbar pb-1",
+          "md:flex-col md:gap-1 md:overflow-visible md:p-3",
+          "md:bg-surface-container-lowest md:border md:border-on-surface/[0.06]",
+          "md:rounded-[1.5rem] md:editorial-shadow",
+        ].join(" ")}
+        aria-label={t("nav.aria")}
+      >
         {NAV_ITEMS.map((item) => {
-          // `/account` is the profile page → only active for an exact
-          // match. Sub-routes are active for prefix match.
           const active =
             item.href === "/account"
               ? pathname === item.href
@@ -40,14 +47,32 @@ export default function AccountSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors whitespace-nowrap ${
+              aria-current={active ? "page" : undefined}
+              className={[
+                "group flex items-center gap-3 rounded-2xl text-sm font-semibold transition-all whitespace-nowrap shrink-0",
+                "px-4 py-2.5 md:px-3 md:py-3",
                 active
-                  ? "bg-primary text-on-primary"
-                  : "text-on-surface hover:bg-surface-container-low"
-              }`}
+                  ? "bg-primary text-on-primary editorial-shadow md:translate-x-0"
+                  : "bg-surface-container-low text-on-surface hover:bg-primary-fixed hover:text-primary md:bg-transparent md:hover:bg-primary-fixed",
+              ].join(" ")}
             >
-              <Icon name={item.icon} className="text-[18px]" />
-              {t(item.labelKey)}
+              <span
+                className={[
+                  "flex items-center justify-center w-8 h-8 rounded-xl shrink-0 transition-colors",
+                  active
+                    ? "bg-on-primary/15 text-on-primary"
+                    : "bg-primary-fixed text-primary group-hover:bg-primary group-hover:text-on-primary",
+                ].join(" ")}
+              >
+                <Icon
+                  name={item.icon}
+                  filled={active && item.icon === "favorite"}
+                  className="text-[18px]"
+                />
+              </span>
+              <span className="font-headline tracking-tight">
+                {t(item.labelKey)}
+              </span>
             </Link>
           );
         })}

@@ -117,7 +117,7 @@ export default async function LocaleLayout({
         */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_balance,add,add_a_photo,arrow_back,arrow_forward,arrow_forward_ios,arrow_upward,auto_awesome,bolt,calendar_today,card_membership,category,check,check_circle,circle,close,content_copy,edit,event,expand_less,expand_more,favorite,group,image,keyboard_arrow_down,keyboard_arrow_up,language,location_on,logout,map,menu,more_horiz,near_me,open_in_new,payments,person,person_add,photo_library,place,priority_high,refresh,remove,rocket_launch,schedule,schedule_send,search,signal_cellular_alt,star,sync_disabled,timer,tune,unfold_more,upload,upload_file,verified&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_balance,add,add_a_photo,arrow_back,arrow_forward,arrow_forward_ios,arrow_upward,article,auto_awesome,bolt,calendar_month,calendar_today,card_membership,category,check,check_circle,circle,close,content_copy,download,edit,error,event,expand_less,expand_more,favorite,favorite_border,group,image,keyboard_arrow_down,keyboard_arrow_up,language,link,location_on,lock,logout,map,menu,more_horiz,near_me,notifications,open_in_new,pause_circle,payments,person,person_add,photo_library,place,priority_high,refresh,remove,rocket_launch,schedule,schedule_send,search,send,signal_cellular_alt,star,sync,sync_disabled,timer,tune,unfold_more,upload,upload_file,verified,visibility&display=swap"
         />
       </head>
       <body
