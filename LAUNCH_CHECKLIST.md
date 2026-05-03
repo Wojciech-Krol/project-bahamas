@@ -6,7 +6,8 @@ Operator checklist for flipping Hakuna from staging to production. Every item is
 
 ## DNS + email
 
-- [ ] Point apex A / AAAA records (and `www` CNAME) at the Vercel project.
+- [ ] Point `hakuna.pl` apex A / AAAA records (and `www` CNAME) at the Vercel project.
+- [ ] Add `hakuna.club` + `www.hakuna.club` to the Vercel project as additional domains. Code redirects them to `hakuna.pl` (301 permanent) via `next.config.ts` `redirects()`. Set `HAKUNA_DUAL_DOMAIN=1` in env to disable the redirect and serve both in parallel.
 - [ ] Add SPF record to the sending domain: `v=spf1 include:amazonses.com include:_spf.resend.com -all` (exact include depends on the Resend account — copy from the Resend dashboard).
 - [ ] Add DKIM CNAMEs shown in the Resend "Domains" page (3 CNAME records).
 - [ ] Add DMARC record: `_dmarc` TXT `v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@hakuna.pl`.

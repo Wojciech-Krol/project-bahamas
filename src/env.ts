@@ -68,6 +68,14 @@ const serverSchema = clientSchema.extend({
   // dev but should be set in production so hashes are unguessable.
   BETA_SIGNUP_IP_SALT: z.string().min(8).optional(),
 
+  // Legacy domain handling. Default: requests landing on
+  // `hakuna.club` / `www.hakuna.club` / `www.hakuna.pl` are
+  // 301-redirected to `hakuna.pl` (see redirects() in next.config.ts).
+  // Set `HAKUNA_DUAL_DOMAIN=1` to disable the redirect and serve
+  // both domains in parallel (transition periods, A/B comparisons,
+  // dual-canonical verification).
+  HAKUNA_DUAL_DOMAIN: z.enum(["0", "1"]).optional(),
+
   // Phase 3: Stripe. Keys required before a booking can actually charge;
   // optional at build time so pre-launch checks still pass.
   STRIPE_SECRET_KEY: z.string().min(1).optional(),
