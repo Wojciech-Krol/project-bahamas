@@ -1167,6 +1167,13 @@
     "integrations": {
       "title": "Integracje",
       "subtitle": "Połącz swój system rezerwacji, aby grafik automatycznie synchronizował się z Hakuną.",
+      "openImport": "Wgraj CSV",
+      "syncHealth": {
+        "lastSync": "Ostatnia synchronizacja",
+        "lastError": "Ostatni błąd",
+        "errorRate24h": "Błędy / 24h (zdarzeń)",
+        "never": "—"
+      },
       "statusActive": "Połączone",
       "statusNotConnected": "Nie połączono",
       "statusDisabled": "Wyłączone",

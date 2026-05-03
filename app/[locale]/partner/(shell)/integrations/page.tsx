@@ -9,8 +9,68 @@ import {
   type PosProvider,
 } from "@/src/lib/pos/adapter";
 import { isPosCryptoConfigured } from "@/src/lib/pos/crypto";
+import { getPartnerSyncStats } from "@/src/lib/pos/syncLogs";
 
 import CsvIntegrationCard from "./CsvIntegrationCard";
+
+function getPartnerIdFromPhase(phase: Phase): string | null {
+  if (phase.kind !== "ready") return null;
+  return phase.partnerId;
+}
+
+async function SyncHealthWidget({
+  partnerId,
+  locale,
+}: {
+  partnerId: string | null;
+  locale: "pl" | "en";
+}) {
+  if (!partnerId) return null;
+  const t = await getTranslations({
+    locale,
+    namespace: "Partner.integrations.syncHealth",
+  });
+  const stats = await getPartnerSyncStats(partnerId);
+  const fmt = (iso: string | null) =>
+    iso
+      ? new Intl.DateTimeFormat(locale === "pl" ? "pl-PL" : "en-GB", {
+          dateStyle: "short",
+          timeStyle: "short",
+        }).format(new Date(iso))
+      : t("never");
+
+  const errorPct = Math.round(stats.errorRate24h * 100);
+  const tone =
+    errorPct > 5
+      ? "bg-red-50 border-red-200 text-red-900"
+      : errorPct > 0
+        ? "bg-amber-50 border-amber-200 text-amber-900"
+        : "bg-emerald-50 border-emerald-200 text-emerald-900";
+
+  return (
+    <section
+      className={`rounded-[1.5rem] border editorial-shadow p-5 mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4 ${tone}`}
+    >
+      <Stat label={t("lastSync")} value={fmt(stats.lastSuccessAt)} />
+      <Stat label={t("lastError")} value={fmt(stats.lastErrorAt)} />
+      <Stat
+        label={t("errorRate24h")}
+        value={`${errorPct}% (${stats.events24h})`}
+      />
+    </section>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <p className="text-[0.65rem] font-bold uppercase tracking-widest opacity-80">
+        {label}
+      </p>
+      <p className="font-headline font-bold text-base mt-1">{value}</p>
+    </div>
+  );
+}
 
 /**
  * Partner → Integrations page.
@@ -52,6 +112,7 @@ type Phase =
   | {
       kind: "ready";
       locale: "pl" | "en";
+      partnerId: string | null;
       integrations: Record<PosProvider, IntegrationRow | null>;
       activities: PartnerActivity[];
     };
@@ -67,9 +128,13 @@ async function resolvePhase(locale: "pl" | "en"): Promise<Phase> {
 
   const current = await getCurrentUser();
   if (!current) {
-    // Shell layout redirects unauthenticated users already; keep a fallback
-    // so we never crash here.
-    return { kind: "ready", locale, integrations: emptyIntegrationMap(), activities: [] };
+    return {
+      kind: "ready",
+      locale,
+      partnerId: null,
+      integrations: emptyIntegrationMap(),
+      activities: [],
+    };
   }
 
   const supabase = await createClient();
@@ -80,7 +145,13 @@ async function resolvePhase(locale: "pl" | "en"): Promise<Phase> {
     .limit(1);
   const partnerId = memberships?.[0]?.partner_id as string | undefined;
   if (!partnerId) {
-    return { kind: "ready", locale, integrations: emptyIntegrationMap(), activities: [] };
+    return {
+      kind: "ready",
+      locale,
+      partnerId: null,
+      integrations: emptyIntegrationMap(),
+      activities: [],
+    };
   }
 
   const [{ data: rows }, { data: activities }] = await Promise.all([
@@ -103,6 +174,7 @@ async function resolvePhase(locale: "pl" | "en"): Promise<Phase> {
   return {
     kind: "ready",
     locale,
+    partnerId,
     integrations,
     activities: (activities ?? []) as PartnerActivity[],
   };
@@ -256,10 +328,21 @@ export default async function PartnerIntegrationsPage({
 
   return (
     <div className="p-8 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="font-headline font-extrabold text-4xl tracking-tight mb-2">{t("title")}</h1>
-        <p className="text-on-surface/60">{t("subtitle")}</p>
+      <div className="mb-8 flex items-end justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="font-headline font-extrabold text-4xl tracking-tight mb-2">{t("title")}</h1>
+          <p className="text-on-surface/60">{t("subtitle")}</p>
+        </div>
+        <a
+          href={`/${normalisedLocale}/partner/integrations/import`}
+          className="inline-flex items-center gap-2 rounded-full bg-primary text-on-primary px-5 py-2.5 text-sm font-headline uppercase tracking-widest font-bold hover:bg-tertiary transition-colors"
+        >
+          <Icon name="upload_file" className="text-[18px]" />
+          {t("openImport")}
+        </a>
       </div>
+
+      <SyncHealthWidget partnerId={getPartnerIdFromPhase(phase)} locale={normalisedLocale} />
 
       <div className="space-y-4">
         {CONNECTABLE_PROVIDERS.map((provider) => {
