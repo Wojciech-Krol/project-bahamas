@@ -8,6 +8,7 @@ import { Icon } from "@/src/components/Icon";
 import PageSearchBar from "@/src/components/search/PageSearchBar";
 import { MobileSearchOverlay } from "@/src/components/search/MobileSearch";
 import { useSearchState } from "@/src/components/search/useSearchState";
+import FilterDrawer from "@/src/components/search/FilterDrawer";
 import dynamic from "next/dynamic";
 
 // Mapbox GL pulls ~90KB gzipped + 30KB CSS — keep it off the search page's
@@ -94,8 +95,12 @@ const WARSAW_CENTER: [number, number] = [21.0122, 52.2297];
 
 function MobileTopBar({
   onOpenSearch,
+  onOpenFilters,
+  filterCount,
 }: {
   onOpenSearch: () => void;
+  onOpenFilters: () => void;
+  filterCount: number;
 }) {
   const t = useTranslations();
   const router = useRouter();
@@ -121,10 +126,16 @@ function MobileTopBar({
       </button>
       <button
         type="button"
+        onClick={onOpenFilters}
         aria-label={t("Common.filters")}
-        className="w-11 h-11 rounded-full bg-surface-container-lowest border border-on-surface/10 flex items-center justify-center shrink-0 active:scale-95 shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
+        className="relative w-11 h-11 rounded-full bg-surface-container-lowest border border-on-surface/10 flex items-center justify-center shrink-0 active:scale-95 shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
       >
         <Icon name="tune" className="text-[20px]" />
+        {filterCount > 0 && (
+          <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1.5 rounded-full bg-primary text-on-primary text-[0.65rem] font-bold inline-flex items-center justify-center">
+            {filterCount}
+          </span>
+        )}
       </button>
     </div>
   );
@@ -201,6 +212,7 @@ export default function SearchClient({
   const router = useRouter();
   const s = useSearchState(initial);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const submit = useCallback(() => {
@@ -211,22 +223,45 @@ export default function SearchClient({
     });
   }, [s.params, router]);
 
+  const applyStyles = useCallback(
+    (next: string) => {
+      s.setStyles(next);
+      const query = buildSearchQueryRecord({ ...s.params, styles: next });
+      startTransition(() => {
+        router.push({ pathname: "/search", query });
+      });
+    },
+    [router, s],
+  );
+
+  // Real venue coordinates only — activities without `coords` (venue
+  // missing lat/lng) are dropped from the map but stay in the result list.
   const points = useMemo(
     () =>
-      results.map((r, i) => {
-        const angle = (i / Math.max(results.length, 1)) * Math.PI * 2;
-        const radius = 0.045;
-        return {
+      results
+        .filter((r): r is typeof r & { coords: { lat: number; lng: number } } =>
+          !!r.coords,
+        )
+        .map((r) => ({
           id: r.id,
           title: r.title,
           price: r.price.split("/")[0],
-          lng: WARSAW_CENTER[0] + Math.cos(angle) * radius,
-          lat: WARSAW_CENTER[1] + Math.sin(angle) * radius * 0.6,
+          lng: r.coords.lng,
+          lat: r.coords.lat,
           icon: tablerIconForTitle(r.title),
-        };
-      }),
+        })),
     [results]
   );
+
+  // Centre map on the average of returned points so the camera follows
+  // the search rather than always anchoring to Warsaw. Falls back to the
+  // Warsaw default when there are no plottable results.
+  const mapCenter = useMemo<[number, number]>(() => {
+    if (points.length === 0) return WARSAW_CENTER;
+    const lng = points.reduce((s, p) => s + p.lng, 0) / points.length;
+    const lat = points.reduce((s, p) => s + p.lat, 0) / points.length;
+    return [lng, lat];
+  }, [points]);
 
   return (
     <>
@@ -234,7 +269,11 @@ export default function SearchClient({
         <SiteNavbar />
       </div>
 
-      <MobileTopBar onOpenSearch={() => setSearchOpen(true)} />
+      <MobileTopBar
+        onOpenSearch={() => setSearchOpen(true)}
+        onOpenFilters={() => setFilterOpen(true)}
+        filterCount={s.styles.split(",").filter(Boolean).length}
+      />
 
       <MobileSearchOverlay
         isOpen={searchOpen}
@@ -253,7 +292,7 @@ export default function SearchClient({
       />
 
       <div className="md:hidden fixed inset-x-0 bottom-0 top-[76px] z-10">
-        <MapboxMap points={points} center={WARSAW_CENTER} zoom={11.5} />
+        <MapboxMap points={points} center={mapCenter} zoom={11.5} />
       </div>
 
       <MobileBottomSheet
@@ -286,11 +325,21 @@ export default function SearchClient({
                   city: t("Search.defaultCity"),
                 })}
               </h1>
-              <button className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-surface-container-lowest border border-on-surface/[0.06] hover:bg-primary-fixed/40 transition-colors active:scale-95">
+              <button
+                type="button"
+                onClick={() => setFilterOpen(true)}
+                aria-label={t("Common.filters")}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-surface-container-lowest border border-on-surface/[0.06] hover:bg-primary-fixed/40 transition-colors active:scale-95"
+              >
                 <Icon name="tune" className="text-[16px] text-primary" />
                 <span className="font-semibold text-xs">
                   {t("Common.filters")}
                 </span>
+                {s.styles && (
+                  <span className="ml-1 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-primary text-on-primary text-[0.65rem] font-bold">
+                    {s.styles.split(",").filter(Boolean).length}
+                  </span>
+                )}
               </button>
             </div>
 
@@ -304,10 +353,18 @@ export default function SearchClient({
           </section>
 
           <section className="min-h-0 h-full">
-            <MapboxMap points={points} center={WARSAW_CENTER} zoom={11.5} />
+            <MapboxMap points={points} center={mapCenter} zoom={11.5} />
           </section>
         </div>
       </main>
+
+      <FilterDrawer
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        activities={s.activities}
+        styles={s.styles}
+        onApply={applyStyles}
+      />
     </>
   );
 }
