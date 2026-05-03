@@ -1087,6 +1087,83 @@
         "generic": "Could not start checkout. Please try again shortly."
       }
     },
+    "import": {
+      "badge": "CSV import",
+      "title": "Upload partner data",
+      "subtitle": "Four resources, one flow: activities, instructors, sessions, pricing.",
+      "authRequired": "Sign in as a partner to import data.",
+      "noPartner": "No partner is linked to your account.",
+      "downloadTemplate": "Download template",
+      "rowsImported": "rows imported",
+      "errorsCount": "errors",
+      "tabs": {
+        "sessions": "Sessions",
+        "activities": "Activities",
+        "instructors": "Instructors",
+        "pricing": "Pricing"
+      },
+      "panels": {
+        "sessions": {
+          "title": "Sessions",
+          "subtitle": "Specific class instances — startsAt, endsAt, capacity."
+        },
+        "activities": {
+          "title": "Activities",
+          "subtitle": "Class definitions (yoga flow, hip-hop) — categories, duration."
+        },
+        "instructors": {
+          "title": "Instructors",
+          "subtitle": "Instructor profiles — name, bio, photo."
+        },
+        "pricing": {
+          "title": "Pricing",
+          "subtitle": "Passes, single-entries, subscriptions."
+        }
+      },
+      "dropZone": {
+        "title": "Drop a CSV file here or click to choose",
+        "subtitle": "Up to 10 MB. UTF-8 or Windows-1250."
+      },
+      "status": {
+        "processing": "Processing file…",
+        "completed": "Import completed",
+        "failed": "Import failed",
+        "duplicate": "This file was already uploaded"
+      },
+      "errors": {
+        "tooLarge": "File too large (max 10 MB).",
+        "no_file": "Pick a CSV file.",
+        "bad_input": "Invalid input.",
+        "forbidden": "You're not a member of this partner.",
+        "not_signed_in": "Sign in.",
+        "storage_failed": "Could not store the file.",
+        "internal": "Something went wrong. Please retry."
+      },
+      "errorsTable": {
+        "title": "Errors in file",
+        "row": "Row",
+        "field": "Field",
+        "message": "Message",
+        "download": "Download error CSV",
+        "truncated": "Showing {shown} of {total} errors."
+      },
+      "recent": {
+        "title": "Recent imports",
+        "resource": "Resource",
+        "status": "Status",
+        "rows": "Rows",
+        "errors": "Errors",
+        "when": "When",
+        "statusLabel": {
+          "pending": "Pending",
+          "parsing": "Parsing",
+          "validating": "Validating",
+          "importing": "Importing",
+          "completed": "Completed",
+          "failed": "Failed"
+        }
+      }
+    },
     "integrations": {
       "title": "Integrations",
       "subtitle": "Connect your booking system so your schedule syncs into Hakuna automatically.",

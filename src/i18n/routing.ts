@@ -50,6 +50,7 @@ export const routing = defineRouting({
     "/partner/payments": "/partner/payments",
     "/partner/plans": "/partner/plans",
     "/partner/integrations": "/partner/integrations",
+    "/partner/integrations/import": "/partner/integrations/import",
     "/createarticle": "/createarticle",
     "/createarticle/preview": "/createarticle/preview",
   },
