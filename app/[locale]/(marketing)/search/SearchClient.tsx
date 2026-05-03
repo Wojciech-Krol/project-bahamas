@@ -81,7 +81,7 @@ function CompactCard({
             {activity.instructorAvatar && (
               <img
                 src={activity.instructorAvatar}
-                alt=""
+                alt={activity.instructorName ?? ""}
                 className="w-5 h-5 rounded-full object-cover"
               />
             )}

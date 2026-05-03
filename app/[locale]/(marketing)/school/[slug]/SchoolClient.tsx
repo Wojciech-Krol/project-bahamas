@@ -180,7 +180,7 @@ export default function SchoolClient({
                 >
                   <img
                     src={src}
-                    alt=""
+                    alt={`${school.name} — ${t("inTheStudio")} ${i + 1}`}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
                 </div>

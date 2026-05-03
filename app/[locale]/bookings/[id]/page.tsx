@@ -114,7 +114,7 @@ export default async function BookingDetailPage({
           {booking.activity.heroImage && (
             <img
               src={booking.activity.heroImage}
-              alt=""
+              alt={booking.activity.title}
               className="w-full h-48 md:h-64 object-cover"
             />
           )}

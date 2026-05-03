@@ -3,7 +3,11 @@ import { getTranslations } from "next-intl/server";
 import { Icon } from "@/src/components/Icon";
 import { createClient, getCurrentUser } from "@/src/lib/db/server";
 import { env } from "@/src/env";
-import { CONNECTABLE_PROVIDERS, IMPLEMENTED_PROVIDERS, type PosProvider } from "@/src/lib/pos/adapter";
+import {
+  CONNECTABLE_PROVIDERS,
+  getImplementedProviders,
+  type PosProvider,
+} from "@/src/lib/pos/adapter";
 import { isPosCryptoConfigured } from "@/src/lib/pos/crypto";
 
 import CsvIntegrationCard from "./CsvIntegrationCard";
@@ -156,14 +160,18 @@ function ComingSoonCard({
   provider,
   providerLabel,
   comingSoonLabel,
+  requestAccessLabel,
+  requestAccessHref,
 }: {
   provider: PosProvider;
   providerLabel: string;
   comingSoonLabel: string;
+  requestAccessLabel: string;
+  requestAccessHref: string;
 }) {
   return (
     <div
-      className="bg-surface-container-lowest rounded-2xl border border-[#FAEEDA] p-6 opacity-60"
+      className="bg-surface-container-lowest rounded-2xl border border-[#FAEEDA] p-6"
       aria-disabled="true"
     >
       <div className="flex items-center gap-4">
@@ -174,12 +182,13 @@ function ComingSoonCard({
           <div className="font-headline font-bold text-lg">{providerLabel}</div>
           <div className="text-xs text-on-surface/50 mt-1">{comingSoonLabel}</div>
         </div>
-        <span
-          className="text-[0.65rem] font-bold uppercase tracking-widest bg-surface-container-high text-on-surface/40 px-3 py-1 rounded-full"
+        <a
+          href={requestAccessHref}
           data-provider={provider}
+          className="text-[0.65rem] font-bold uppercase tracking-widest bg-primary-fixed text-primary px-3 py-1.5 rounded-full hover:bg-primary hover:text-on-primary transition-colors"
         >
-          {comingSoonLabel}
-        </span>
+          {requestAccessLabel}
+        </a>
       </div>
     </div>
   );
@@ -254,7 +263,7 @@ export default async function PartnerIntegrationsPage({
 
       <div className="space-y-4">
         {CONNECTABLE_PROVIDERS.map((provider) => {
-          const implemented = IMPLEMENTED_PROVIDERS.includes(provider);
+          const implemented = getImplementedProviders().includes(provider);
           const providerLabel = t(`providers.${provider}`);
 
           if (!implemented) {
@@ -264,6 +273,8 @@ export default async function PartnerIntegrationsPage({
                 provider={provider}
                 providerLabel={providerLabel}
                 comingSoonLabel={t("comingSoon")}
+                requestAccessLabel={t("requestAccess")}
+                requestAccessHref={`mailto:${process.env.ADMIN_NOTIFICATION_EMAIL ?? "hello@hakuna.app"}?subject=${encodeURIComponent(`POS: ${providerLabel}`)}`}
               />
             );
           }

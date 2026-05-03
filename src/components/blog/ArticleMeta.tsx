@@ -31,7 +31,7 @@ export default function ArticleMeta({
     <div className={`flex items-center gap-3 ${className}`}>
       <Image
         src={authorAvatar}
-        alt=""
+        alt={authorName}
         width={40}
         height={40}
         className="rounded-full object-cover ring-2 ring-white/40"

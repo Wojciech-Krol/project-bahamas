@@ -1098,6 +1098,7 @@
       "lastSyncedNever": "Never synced",
       "lastError": "Last error: {error}",
       "comingSoon": "Coming soon — waiting on API access",
+      "requestAccess": "Request access",
       "actions": {
         "connect": "Connect",
         "reconfigure": "Reconfigure",

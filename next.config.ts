@@ -90,14 +90,31 @@ const nextConfig: NextConfig = {
 const intlConfig = withNextIntl(nextConfig);
 
 /**
- * Only wrap with Sentry when the auth token is present.
+ * Sentry sourcemap CI guard.
  *
- * `withSentryConfig` performs sourcemap upload + release creation at build
- * time, which requires `SENTRY_AUTH_TOKEN`. If we always wrap, local
- * `next build` errors out on a missing token. The Sentry SDK itself (the
- * runtime init in `sentry.*.config.ts`) is wired through `instrumentation.ts`
- * and works without the wrapper — we just lose sourcemap upload in dev.
+ * Vercel production deploys MUST upload sourcemaps so paged-out
+ * engineers can read stack traces without manual symbolication.
+ * Without `SENTRY_AUTH_TOKEN` the wrapper silently no-ops and we'd
+ * ship unsymbolicated bundles.
+ *
+ * Scope: only the Vercel production environment fires this guard.
+ * `next build` locally (or in a non-Vercel CI) still works without
+ * the token. `HAKUNA_SKIP_SENTRY_GUARD=1` overrides for emergency
+ * hotfixes when Sentry is degraded.
  */
+if (
+  process.env.VERCEL_ENV === "production" &&
+  !process.env.SENTRY_AUTH_TOKEN &&
+  process.env.HAKUNA_SKIP_SENTRY_GUARD !== "1"
+) {
+  throw new Error(
+    "[next.config] SENTRY_AUTH_TOKEN is required for Vercel production " +
+      "deploys (uploads sourcemaps + creates a release). Set it in the " +
+      "Vercel project env, or set HAKUNA_SKIP_SENTRY_GUARD=1 to bypass " +
+      "for an emergency.",
+  );
+}
+
 const finalConfig = process.env.SENTRY_AUTH_TOKEN
   ? withSentryConfig(intlConfig, {
       silent: true,
