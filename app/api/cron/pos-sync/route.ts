@@ -36,6 +36,11 @@ import {
 import { sendEmail } from "@/src/lib/email/resend";
 import { PosSyncFailure } from "@/src/lib/email/templates/PosSyncFailure";
 import { verifyBearer } from "@/src/lib/auth/bearer";
+import {
+  logSyncEvent,
+  newCorrelationId,
+  prunePosSyncLogs,
+} from "@/src/lib/pos/syncLogs";
 
 type ServerEnv = typeof env & {
   CRON_SECRET?: string;
@@ -99,26 +104,54 @@ export async function GET(request: NextRequest) {
   }
 
   const rows = (integrations ?? []) as IntegrationRow[];
+  const correlationId = newCorrelationId();
   const summary = {
     total: rows.length,
     ok: 0,
     failed: 0,
     upserted: 0,
+    correlationId,
   };
 
   for (const row of rows) {
+    const startedAt = Date.now();
     try {
-      const sessions = await syncOne(admin, row);
+      const sessions = await syncOne(admin, row, correlationId);
       summary.ok += 1;
       summary.upserted += sessions;
+      void logSyncEvent({
+        partnerId: row.partner_id,
+        provider: row.provider,
+        syncType: "cron",
+        correlationId,
+        resourceType: "sessions",
+        eventType: sessions > 0 ? "updated" : "noop",
+        payload: { sessionsUpserted: sessions },
+        durationMs: Date.now() - startedAt,
+      });
     } catch (err) {
       summary.failed += 1;
       console.error(
         `[cron:pos-sync] integration ${row.id} (${row.provider}) failed`,
         err,
       );
+      void logSyncEvent({
+        partnerId: row.partner_id,
+        provider: row.provider,
+        syncType: "cron",
+        correlationId,
+        eventType: "error",
+        errorMessage: err instanceof Error ? err.message : String(err),
+        durationMs: Date.now() - startedAt,
+      });
     }
   }
+
+  // Opportunistic prune — runs at most every 30 min, drops rows older
+  // than 90 days. No-op when nothing to delete.
+  void prunePosSyncLogs(90).catch((err) => {
+    console.warn("[cron:pos-sync] prune failed", err);
+  });
 
   return NextResponse.json(summary);
 }
@@ -131,6 +164,9 @@ export async function GET(request: NextRequest) {
 async function syncOne(
   admin: ReturnType<typeof createAdminClient>,
   row: IntegrationRow,
+  // correlationId reserved for future per-row event logging from inside
+  // syncOne; passed in so all events from this run share an id.
+  _correlationId: string,
 ): Promise<number> {
   const adapter = await getAdapter(row.provider);
   if (!adapter) {
