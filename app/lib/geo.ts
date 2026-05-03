@@ -1,4 +1,5 @@
 import type { ActivityKey } from "@/src/components/search/constants";
+import { createAdminClient } from "@/src/lib/db/admin";
 
 export const ACTIVITY_KEYS: ActivityKey[] = [
   "yoga",
@@ -180,13 +181,60 @@ export function getActivityFromPlSlug(slug: string): ActivityKey | null {
   return ACTIVITY_KEY_FROM_PL_SLUG[slug] ?? null;
 }
 
-/** Generates every (activity, city) combo for static rendering + sitemap. */
-export function allCityLandingParams(): { activity: string; city: CityKey }[] {
-  const out: { activity: string; city: CityKey }[] = [];
-  for (const city of CITY_KEYS) {
-    for (const key of ACTIVITY_KEYS) {
-      out.push({ activity: ACTIVITY_SLUGS_PL[key], city });
+// Live markets — cities with published supply. The DB query in
+// `getLiveCityKeys` overrides this list once supply lands; the hardcoded
+// fallback keeps pre-launch (empty/unreachable Supabase) deterministic so
+// `generateStaticParams` and the sitemap stay consistent.
+export const INITIAL_LIVE_CITIES: CityKey[] = ["warszawa", "wroclaw"];
+
+function slugifyCity(value: string | null | undefined): string | null {
+  if (!value) return null;
+  return value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .trim();
+}
+
+/**
+ * Returns the set of city slugs that currently have at least one published
+ * activity in a venue tagged with that city. Falls back to
+ * `INITIAL_LIVE_CITIES` when the DB is empty, unreachable, or returns no
+ * recognizable city. Slug match is diacritic-insensitive (`Wrocław` →
+ * `wroclaw`).
+ */
+export async function getLiveCityKeys(): Promise<CityKey[]> {
+  try {
+    const admin = createAdminClient();
+    const { data, error } = await admin
+      .from("activities")
+      .select("venues!inner(city)")
+      .eq("is_published", true);
+    if (error || !data || data.length === 0) return INITIAL_LIVE_CITIES;
+    const slugs = new Set<CityKey>();
+    for (const row of data as Array<{ venues: { city: string | null } | { city: string | null }[] | null }>) {
+      const v = row.venues;
+      const city = Array.isArray(v) ? v[0]?.city : v?.city;
+      const slug = slugifyCity(city);
+      if (slug && isCityKey(slug)) slugs.add(slug);
     }
+    return slugs.size > 0 ? [...slugs] : INITIAL_LIVE_CITIES;
+  } catch {
+    return INITIAL_LIVE_CITIES;
   }
-  return out;
+}
+
+/**
+ * Generates every (activity, city) combo for cities with live supply.
+ * Used by `generateStaticParams` on `/odkryj/[activity]/[city]` and the
+ * sitemap so we don't index thin-content landings for cities without
+ * partners.
+ */
+export async function liveCityLandingParams(): Promise<
+  { activity: string; city: CityKey }[]
+> {
+  const cities = await getLiveCityKeys();
+  return cities.flatMap((city) =>
+    ACTIVITY_KEYS.map((key) => ({ activity: ACTIVITY_SLUGS_PL[key], city })),
+  );
 }
