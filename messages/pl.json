@@ -1087,6 +1087,83 @@
         "generic": "Nie udało się rozpocząć płatności. Spróbuj ponownie za chwilę."
       }
     },
+    "import": {
+      "badge": "CSV import",
+      "title": "Wgraj dane partnera",
+      "subtitle": "Cztery zasoby, jeden flow: zajęcia, instruktorów, sesje, cennik.",
+      "authRequired": "Zaloguj się jako partner, żeby importować dane.",
+      "noPartner": "Brak partnera przypisanego do Twojego konta.",
+      "downloadTemplate": "Pobierz szablon",
+      "rowsImported": "wierszy zaimportowanych",
+      "errorsCount": "błędów",
+      "tabs": {
+        "sessions": "Sesje",
+        "activities": "Zajęcia",
+        "instructors": "Instruktorzy",
+        "pricing": "Cennik"
+      },
+      "panels": {
+        "sessions": {
+          "title": "Sesje",
+          "subtitle": "Konkretne terminy zajęć — startsAt, endsAt, capacity."
+        },
+        "activities": {
+          "title": "Zajęcia",
+          "subtitle": "Definicje zajęć (yoga flow, hip-hop) — kategorie, czas trwania."
+        },
+        "instructors": {
+          "title": "Instruktorzy",
+          "subtitle": "Profile instruktorów — imię, bio, foto."
+        },
+        "pricing": {
+          "title": "Cennik",
+          "subtitle": "Karnety, jednorazówki, abonamenty."
+        }
+      },
+      "dropZone": {
+        "title": "Upuść plik CSV tutaj lub kliknij, żeby wybrać",
+        "subtitle": "Maksymalnie 10 MB. UTF-8 lub Windows-1250."
+      },
+      "status": {
+        "processing": "Przetwarzanie pliku…",
+        "completed": "Import zakończony",
+        "failed": "Import nieudany",
+        "duplicate": "Ten plik już był wgrany"
+      },
+      "errors": {
+        "tooLarge": "Plik za duży (max 10 MB).",
+        "no_file": "Wybierz plik CSV.",
+        "bad_input": "Nieprawidłowe dane.",
+        "forbidden": "Brak uprawnień do tego partnera.",
+        "not_signed_in": "Zaloguj się.",
+        "storage_failed": "Nie udało się zapisać pliku.",
+        "internal": "Coś poszło nie tak. Spróbuj ponownie."
+      },
+      "errorsTable": {
+        "title": "Błędy w pliku",
+        "row": "Wiersz",
+        "field": "Pole",
+        "message": "Komunikat",
+        "download": "Pobierz CSV z błędami",
+        "truncated": "Pokazane {shown} z {total} błędów."
+      },
+      "recent": {
+        "title": "Ostatnie importy",
+        "resource": "Zasób",
+        "status": "Status",
+        "rows": "Wiersze",
+        "errors": "Błędy",
+        "when": "Kiedy",
+        "statusLabel": {
+          "pending": "Oczekuje",
+          "parsing": "Parsowanie",
+          "validating": "Walidacja",
+          "importing": "Import",
+          "completed": "Gotowe",
+          "failed": "Błąd"
+        }
+      }
+    },
     "integrations": {
       "title": "Integracje",
       "subtitle": "Połącz swój system rezerwacji, aby grafik automatycznie synchronizował się z Hakuną.",
