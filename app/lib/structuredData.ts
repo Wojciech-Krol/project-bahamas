@@ -1,6 +1,6 @@
 import type { Activity, Review, School, SessionSlot } from "@/src/lib/db/types";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.club";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.pl";
 
 type Locale = "pl" | "en";
 

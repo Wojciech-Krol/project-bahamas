@@ -36,7 +36,7 @@ type ServerEnv = typeof env & {
   RESEND_FROM_EMAIL?: string;
 };
 
-const FALLBACK_FROM = "Hakuna <no-reply@hakuna.example>";
+const FALLBACK_FROM = "Hakuna <no-reply@hakuna.pl>";
 
 let cachedClient: Resend | null = null;
 

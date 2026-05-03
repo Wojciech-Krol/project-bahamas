@@ -85,6 +85,46 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  /**
+   * Legacy domain consolidation — `hakuna.club` was the original
+   * hostname; `hakuna.pl` is the canonical going forward. Both
+   * domains stay attached to the Vercel project, but every request
+   * landing on `hakuna.club` is 301-redirected to the same path on
+   * `hakuna.pl` so:
+   *   - SEO juice consolidates onto one canonical
+   *   - bookmarks / inbound links keep working
+   *   - sitemap / hreflang stay single-source
+   *
+   * Set `HAKUNA_DUAL_DOMAIN=1` in env to skip the redirect (useful
+   * during transition, A/B comparisons, or staging dual-canonical
+   * verification). Without that flag the redirect is unconditional.
+   */
+  async redirects() {
+    const dual = process.env.HAKUNA_DUAL_DOMAIN === "1";
+    if (dual) return [];
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "hakuna.club" }],
+        destination: "https://hakuna.pl/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.hakuna.club" }],
+        destination: "https://hakuna.pl/:path*",
+        permanent: true,
+      },
+      // Optional: consolidate www.hakuna.pl onto root domain.
+      // Comment out if SSL cert covers both and you prefer www.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.hakuna.pl" }],
+        destination: "https://hakuna.pl/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const intlConfig = withNextIntl(nextConfig);

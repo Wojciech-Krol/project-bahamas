@@ -237,7 +237,7 @@ export async function applyAsPartner(
   if (adminEmail) {
     const siteOrigin =
       serverEnv.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-      `https://${headerList.get("x-forwarded-host") ?? headerList.get("host") ?? "hakuna.example"}`;
+      `https://${headerList.get("x-forwarded-host") ?? headerList.get("host") ?? "hakuna.pl"}`;
     try {
       await sendEmail({
         to: adminEmail,

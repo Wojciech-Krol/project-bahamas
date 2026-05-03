@@ -328,7 +328,7 @@ export async function createBooking(
     // deploys don't all redirect to production.
     const h = await headers();
     const proto = h.get("x-forwarded-proto") ?? "https";
-    const host = h.get("x-forwarded-host") ?? h.get("host") ?? "hakuna.app";
+    const host = h.get("x-forwarded-host") ?? h.get("host") ?? "hakuna.pl";
     const origin = `${proto}://${host}`;
 
     // Product name — pick a locale-appropriate title from title_i18n.
