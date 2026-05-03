@@ -26,6 +26,8 @@
     "login": "Log in",
     "signup": "Create account",
     "apply": "Apply",
+    "favorite": "Add to favorites",
+    "unfavorite": "Remove from favorites",
     "joinedCount": "{count, plural, one {# person joined} other {# joined}}",
     "spotsLeft": "{count, plural, one {Last spot left!} other {# spots left}}",
     "reviewsCount": "{count, plural, one {# review} other {# reviews}}",
@@ -1619,6 +1621,56 @@
   "Account": {
     "title": "Your account",
     "subtitle": "Manage your data on Hakuna.",
+    "nav": {
+      "profile": "Profile",
+      "bookings": "Bookings",
+      "favorites": "Favorites",
+      "calendar": "Calendar"
+    },
+    "bookings": {
+      "title": "Your bookings",
+      "subtitle": "Upcoming and past sessions in one place.",
+      "upcoming": "Upcoming",
+      "past": "Past",
+      "empty": "No bookings yet.",
+      "browseCta": "Browse activities",
+      "viewDetail": "Details",
+      "exportCsv": "Export (CSV)",
+      "status": {
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "cancelled": "Cancelled",
+        "expired": "Expired"
+      }
+    },
+    "favorites": {
+      "title": "Favorites",
+      "subtitle": "{count, plural, =0 {No saved activities yet} one {# saved activity} other {# saved activities}}",
+      "empty": "Nothing saved yet. Tap the heart on an activity to bring it here.",
+      "browseCta": "Find activities"
+    },
+    "calendar": {
+      "title": "Google Calendar",
+      "subtitle": "Connect Google Calendar — your bookings show up there automatically.",
+      "statusLabel": "Status",
+      "status": {
+        "disconnected": "Not connected",
+        "connected": "Connected — sync active",
+        "paused": "Connected — sync paused"
+      },
+      "connect": "Connect Google",
+      "disconnect": "Disconnect",
+      "pause": "Pause",
+      "resume": "Resume",
+      "lastSynced": "Last synced: {when}",
+      "about": "We create an event in your calendar after a booking is confirmed and remove it on cancellation. Only events we created.",
+      "confirmDisconnect": "Disconnect calendar? Existing events stay in your Google Calendar.",
+      "errors": {
+        "missing_config": "Google integration isn't configured on our side.",
+        "oauth_failed": "Connection failed. Please try again.",
+        "not_signed_in": "Sign in to connect your calendar."
+      }
+    },
     "export": {
       "heading": "Download your data",
       "description": "Generate a JSON file with everything we hold about you — profile, bookings, reviews.",

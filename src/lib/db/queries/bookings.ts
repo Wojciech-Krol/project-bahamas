@@ -252,6 +252,41 @@ export async function getBookingsByPartner(
 }
 
 /**
+ * Bookings for the current signed-in user. RLS scopes the read to
+ * own-row only, so no explicit `eq("user_id", ...)` is required.
+ *
+ * Returns rows ordered by session start descending (upcoming first by
+ * negation: callers split into past/upcoming themselves).
+ */
+export async function getBookingsByCurrentUser(
+  locale: Locale,
+  limit = 100,
+): Promise<BookingDetail[]> {
+  let supabase;
+  try {
+    supabase = await createClient();
+  } catch {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("bookings")
+    .select(BOOKING_DETAIL_SELECT)
+    .order("created_at", { ascending: false })
+    .limit(limit)
+    .returns<BookingDetailRow[]>();
+
+  if (error) {
+    console.error("[db/queries/bookings.getBookingsByCurrentUser]", error);
+    return [];
+  }
+
+  return (data ?? [])
+    .map((row) => compose(row, locale))
+    .filter((b): b is BookingDetail => b !== null);
+}
+
+/**
  * Load a booking by id. Returns `null` when missing or when RLS hides it
  * from the caller.
  */

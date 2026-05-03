@@ -12,6 +12,10 @@
     {
       "path": "/api/cron/process-account-deletions",
       "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/calendar-resync",
+      "schedule": "30 4 * * *"
     }
   ]
 }

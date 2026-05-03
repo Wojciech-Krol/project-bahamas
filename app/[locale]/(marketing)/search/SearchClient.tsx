@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import SiteNavbar from "@/src/components/SiteNavbar";
 import { Icon } from "@/src/components/Icon";
+import HeartButton from "@/src/components/HeartButton";
 import PageSearchBar from "@/src/components/search/PageSearchBar";
 import { MobileSearchOverlay } from "@/src/components/search/MobileSearch";
 import { useSearchState } from "@/src/components/search/useSearchState";
@@ -23,7 +24,13 @@ import { buildSearchQueryRecord, type SearchParams } from "@/src/lib/searchQuery
 import type { Activity } from "@/src/lib/mockData";
 import { tablerIconForTitle } from "@/src/lib/categoryIcons";
 
-function CompactCard({ activity }: { activity: Activity }) {
+function CompactCard({
+  activity,
+  favorited,
+}: {
+  activity: Activity;
+  favorited: boolean;
+}) {
   const t = useTranslations();
   return (
     <Link
@@ -46,14 +53,14 @@ function CompactCard({ activity }: { activity: Activity }) {
             {activity.tag}
           </span>
         )}
-        <button
-          type="button"
-          aria-label={t("Common.book")}
-          onClick={(e) => e.preventDefault()}
-          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/90 flex items-center justify-center hover:bg-primary-fixed transition-colors"
-        >
-          <Icon name="favorite" className="text-[14px] text-primary" />
-        </button>
+        <div className="absolute top-2 right-2">
+          <HeartButton
+            activityId={activity.id}
+            initialFavorited={favorited}
+            variant="card"
+            loginNext={`/activity/${activity.slug ?? activity.id}`}
+          />
+        </div>
       </div>
       <div className="p-3 flex flex-col gap-1.5 flex-1">
         <div className="flex items-start justify-between gap-2">
@@ -193,10 +200,16 @@ function MobileBottomSheet({
 export default function SearchClient({
   initial,
   results,
+  favoritedIds = [],
 }: {
   initial: SearchParams;
   results: Activity[];
+  favoritedIds?: string[];
 }) {
+  const favoritedSet = useMemo(
+    () => new Set(favoritedIds),
+    [favoritedIds],
+  );
   const t = useTranslations();
   const router = useRouter();
   const s = useSearchState(initial);
@@ -297,7 +310,11 @@ export default function SearchClient({
             <div className="flex-1 min-h-0 overflow-y-auto pr-1 no-scrollbar">
               <div className="grid grid-cols-2 gap-4 pb-2">
                 {results.map((r) => (
-                  <CompactCard key={r.id} activity={r} />
+                  <CompactCard
+                    key={r.id}
+                    activity={r}
+                    favorited={favoritedSet.has(r.id)}
+                  />
                 ))}
               </div>
             </div>
