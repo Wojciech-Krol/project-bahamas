@@ -23,6 +23,38 @@
  */
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+
+// tsx doesn't auto-load .env.local. Mirror the minimal reader from
+// seed.ts so this script Just Works for an operator who only has the
+// vars in their dotfile.
+async function preloadDotEnvLocal(): Promise<void> {
+  const path = resolve(process.cwd(), ".env.local");
+  let content: string;
+  try {
+    content = await readFile(path, "utf8");
+  } catch {
+    return;
+  }
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+    const eq = line.indexOf("=");
+    if (eq < 1) continue;
+    const key = line.slice(0, eq).trim();
+    let value = line.slice(eq + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    if (!(key in process.env)) {
+      process.env[key] = value;
+    }
+  }
+}
 
 const DEMO_EMAIL = "demo@hakuna.dev";
 const DEMO_PASSWORD = "HakunaDemo2026!";
@@ -215,6 +247,7 @@ async function seedDemoFavorites(
 }
 
 async function main() {
+  await preloadDotEnvLocal();
   const { url, serviceRoleKey } = loadEnv();
   const sb = createClient(url, serviceRoleKey, {
     auth: { autoRefreshToken: false, persistSession: false },
