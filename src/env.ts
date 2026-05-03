@@ -85,6 +85,13 @@ const serverSchema = clientSchema.extend({
   // the plan. Never commit this value.
   POS_CONFIG_ENCRYPTION_KEY: z.string().min(1).optional(),
 
+  // Comma-separated allow-list of POS providers the operator has gone
+  // live with. Defaults to "csv" — every other provider in
+  // CONNECTABLE_PROVIDERS renders as "Coming soon" with a Request-access
+  // CTA on the partner integrations page. Add a slug here once the
+  // adapter is wired and credentials are provisioned.
+  POS_PROVIDERS_ENABLED: z.string().min(1).optional(),
+
   // Phase 6: Sentry server DSN + release auth token.
   // `SENTRY_DSN` drives server + edge SDK init. `SENTRY_AUTH_TOKEN` is
   // consumed by `withSentryConfig` during `next build` to upload sourcemaps

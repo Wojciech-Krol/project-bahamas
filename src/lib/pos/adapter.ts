@@ -108,48 +108,111 @@ export class POSAdapterError extends Error {
 }
 
 /**
- * Registry. Today only `csv` is wired up. Other providers are TODO phase-5b
- * onwards — those ship one at a time, each in its own PR, after the operator
- * secures API access from the upstream vendor.
+ * Thrown when the integrations cron or a partner action targets a
+ * provider that the operator has not enabled in `POS_PROVIDERS_ENABLED`.
+ * Distinct from POSAdapterError so callers can decide whether to surface
+ * "Coming soon" copy vs treat as a fetch failure to retry.
+ */
+export class PosProviderUnavailableError extends Error {
+  public readonly provider: PosProvider;
+  constructor(provider: PosProvider) {
+    super(
+      `POS provider "${provider}" is not enabled. Add it to ` +
+        `POS_PROVIDERS_ENABLED in the deployment env.`,
+    );
+    this.name = "PosProviderUnavailableError";
+    this.provider = provider;
+  }
+}
+
+const PROVIDER_DEFAULTS: ReadonlyArray<PosProvider> = ["csv"];
+
+/**
+ * Resolve the active allow-list of POS providers from
+ * `POS_PROVIDERS_ENABLED` (csv-of-slugs). Falls back to `["csv"]` —
+ * the only provider with a real adapter today. Reading at call time
+ * (not at import) lets ops flip the flag without redeploy.
+ */
+function getEnabledProviders(): ReadonlyArray<PosProvider> {
+  const raw = process.env.POS_PROVIDERS_ENABLED;
+  if (!raw) return PROVIDER_DEFAULTS;
+  const parsed = raw
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean) as PosProvider[];
+  // Filter to known providers — typo'd entries (e.g. "wodgru") get
+  // dropped so we don't accidentally match a non-existent slug.
+  const known: PosProvider[] = [
+    "csv",
+    "activenow",
+    "wodguru",
+    "efitness",
+    "langlion",
+  ];
+  const filtered = parsed.filter((p): p is PosProvider => known.includes(p));
+  return filtered.length > 0 ? filtered : PROVIDER_DEFAULTS;
+}
+
+export function isProviderEnabled(provider: PosProvider): boolean {
+  return getEnabledProviders().includes(provider);
+}
+
+/**
+ * Registry. CSV is the only adapter implementation that ships today;
+ * the other slugs are scaffolded for phases 5b–5e. Even when an
+ * adapter exists, `getAdapter` enforces the `POS_PROVIDERS_ENABLED`
+ * gate — operators flip a provider live by adding it to the env, not
+ * by code change.
  *
- * Kept lazy (import inside the switch) so phases 5b–5e can add adapters
- * without any of them being dragged into bundles that only need CSV.
+ * Kept lazy (import inside the switch) so future adapters don't get
+ * dragged into bundles that only need CSV.
  */
 export async function getAdapter(
   provider: PosProvider,
 ): Promise<POSAdapter | null> {
+  if (provider === "manual") {
+    // `manual` is not an adapter — it is the default `pos_provider` on
+    // sessions that partners edit by hand via the dashboard. It never
+    // has a `pos_integrations` row.
+    return null;
+  }
+  if (!isProviderEnabled(provider)) {
+    throw new PosProviderUnavailableError(provider);
+  }
   switch (provider) {
     case "csv": {
       const { csvAdapter } = await import("./adapters/csv");
       return csvAdapter;
     }
     case "activenow":
-      // TODO phase-5b: waiting on ActiveNow API credentials from operator.
-      return null;
     case "wodguru":
-      // TODO phase-5c: waiting on WodGuru API credentials from operator.
-      return null;
     case "efitness":
-      // TODO phase-5d: waiting on eFitness API credentials from operator.
-      return null;
     case "langlion":
-      // TODO phase-5e: waiting on LangLion API credentials from operator.
-      return null;
-    case "manual":
+      // The provider was flagged on but no adapter ships yet. Treat as
+      // unavailable so the cron records a clear error instead of
+      // silently no-op'ing.
+      throw new PosProviderUnavailableError(provider);
     default:
-      // `manual` is not an adapter — it is the default `pos_provider` on
-      // sessions that partners edit by hand via the dashboard. It never has
-      // a `pos_integrations` row.
       return null;
   }
 }
 
 /**
- * List of providers the operator can connect today. The integrations page
- * renders every `PosProvider` regardless, showing a disabled "coming soon"
- * card for any provider not in this list.
+ * Set of providers that the operator can connect today, derived from
+ * `POS_PROVIDERS_ENABLED`. The integrations page uses this to decide
+ * which cards render the live UI vs the "Coming soon" stub.
  */
-export const IMPLEMENTED_PROVIDERS: ReadonlyArray<PosProvider> = ["csv"];
+export function getImplementedProviders(): ReadonlyArray<PosProvider> {
+  return getEnabledProviders();
+}
+
+/**
+ * @deprecated since flag-driven gating: prefer `getImplementedProviders()`
+ *             so the value reflects current env at call time. Kept as
+ *             a snapshot for callsites that read it once at module load.
+ */
+export const IMPLEMENTED_PROVIDERS: ReadonlyArray<PosProvider> =
+  getEnabledProviders();
 
 /**
  * The full ordered list rendered on the integrations page. `manual` is

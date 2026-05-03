@@ -189,7 +189,7 @@ export default function ActivityClient({
                       {c.imageUrl && (
                         <img
                           src={c.imageUrl}
-                          alt=""
+                          alt={c.title || activity.title}
                           className="w-full md:w-56 h-40 md:h-auto object-cover rounded-[1rem] shrink-0"
                         />
                       )}
