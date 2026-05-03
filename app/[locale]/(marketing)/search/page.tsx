@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { getFilteredActivities } from "@/src/lib/db/queries/activities";
+import { getFavoriteIds } from "@/src/lib/favorites/actions";
 import { parseSearchQuery } from "@/src/lib/searchQuery";
 import { routing } from "@/src/i18n/routing";
 import type { Locale } from "@/src/lib/db/types";
@@ -62,11 +63,20 @@ export default async function SearchPage({
     .map((s) => s.trim())
     .filter(Boolean);
 
-  const results = await getFilteredActivities(locale, {
-    activities: activityKeys,
-    neighborhood: initial.neighborhood || undefined,
-    styles: styleKeys.length > 0 ? styleKeys : undefined,
-  });
+  const [results, favorites] = await Promise.all([
+    getFilteredActivities(locale, {
+      activities: activityKeys,
+      neighborhood: initial.neighborhood || undefined,
+      styles: styleKeys.length > 0 ? styleKeys : undefined,
+    }),
+    getFavoriteIds(),
+  ]);
 
-  return <SearchClient initial={initial} results={results} />;
+  return (
+    <SearchClient
+      initial={initial}
+      results={results}
+      favoritedIds={Array.from(favorites)}
+    />
+  );
 }

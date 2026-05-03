@@ -27,6 +27,8 @@
     "signup": "Załóż konto",
     "apply": "Wyślij zgłoszenie",
     "applyFilters": "Zastosuj",
+    "favorite": "Dodaj do ulubionych",
+    "unfavorite": "Usuń z ulubionych",
     "joinedCount": "{count, plural, one {# osoba dołączyła} few {# osoby dołączyły} many {# osób dołączyło} other {# osoby dołączyło}}",
     "spotsLeft": "{count, plural, one {Zostało ostatnie miejsce} few {Zostały jeszcze # miejsca} many {Zostało jeszcze # miejsc} other {Zostało jeszcze # miejsca}}",
     "reviewsCount": "{count, plural, one {# opinia} few {# opinie} many {# opinii} other {# opinii}}",
@@ -1693,6 +1695,86 @@
   "Account": {
     "title": "Twoje konto",
     "subtitle": "Zarządzaj swoimi danymi w Hakunie.",
+    "greetingBadge": "Twoja przestrzeń",
+    "greetingNamed": "Cześć {name}",
+    "greetingFallback": "Witaj z powrotem",
+    "nav": {
+      "aria": "Sekcje konta",
+      "profile": "Profil",
+      "bookings": "Rezerwacje",
+      "favorites": "Ulubione",
+      "calendar": "Kalendarz"
+    },
+    "summary": {
+      "title": "Twoje skróty",
+      "upcomingBookings": "Nadchodzące",
+      "upcomingBookingsSub": "Najbliższe rezerwacje czekają na Ciebie.",
+      "savedActivities": "Ulubione",
+      "savedActivitiesSub": "Zajęcia zapisane na później.",
+      "calendar": "Kalendarz",
+      "calendarSub": "Status synchronizacji z Google Calendar."
+    },
+    "management": {
+      "title": "Zarządzanie kontem",
+      "subtitle": "Pobierz dane lub zgłoś usunięcie konta."
+    },
+    "bookings": {
+      "title": "Twoje rezerwacje",
+      "subtitle": "Nadchodzące i zakończone zajęcia w jednym miejscu.",
+      "upcoming": "Nadchodzące",
+      "past": "Zakończone",
+      "empty": "Nie masz jeszcze żadnych rezerwacji.",
+      "browseCta": "Przeglądaj zajęcia",
+      "viewDetail": "Szczegóły",
+      "exportCsv": "Eksportuj (CSV)",
+      "status": {
+        "pending": "Oczekuje",
+        "confirmed": "Potwierdzona",
+        "cancelled": "Anulowana",
+        "expired": "Wygasła"
+      }
+    },
+    "favorites": {
+      "title": "Ulubione",
+      "subtitle": "{count, plural, =0 {Brak zapisanych zajęć} one {# zapisane zajęcia} few {# zapisane zajęcia} many {# zapisanych zajęć} other {# zapisanych zajęć}}",
+      "empty": "Jeszcze niczego nie zapisałeś. Kliknij serduszko przy zajęciach, żeby je tu zobaczyć.",
+      "browseCta": "Znajdź zajęcia"
+    },
+    "calendar": {
+      "title": "Kalendarz Google",
+      "subtitle": "Połącz Google Calendar, a Twoje rezerwacje będą się tam pojawiać automatycznie.",
+      "statusLabel": "Status",
+      "status": {
+        "disconnected": "Nie połączono",
+        "connected": "Połączono — synchronizacja aktywna",
+        "paused": "Połączono — synchronizacja wstrzymana"
+      },
+      "connect": "Połącz z Google",
+      "disconnect": "Rozłącz",
+      "pause": "Wstrzymaj",
+      "resume": "Wznów",
+      "lastSynced": "Ostatnia synchronizacja: {when}",
+      "howTitle": "Jak to działa",
+      "perkOne": {
+        "title": "Automatyczne wydarzenia",
+        "body": "Po potwierdzonej rezerwacji wydarzenie pojawi się w Twoim kalendarzu w kilka sekund."
+      },
+      "perkTwo": {
+        "title": "Aktualizacje na żywo",
+        "body": "Anulowanie rezerwacji usuwa też wydarzenie. Bez bałaganu w kalendarzu."
+      },
+      "perkThree": {
+        "title": "Tylko Twoje rezerwacje",
+        "body": "Nie czytamy Twojego kalendarza. Dodajemy tylko wydarzenia, które utworzyliśmy."
+      },
+      "about": "Tworzymy wydarzenie w Twoim kalendarzu po opłaceniu rezerwacji i usuwamy je przy anulowaniu. Tylko wydarzenia, które dodaliśmy.",
+      "confirmDisconnect": "Rozłączyć kalendarz? Istniejące wydarzenia pozostaną w Twoim Google Calendar.",
+      "errors": {
+        "missing_config": "Integracja z Google nie jest skonfigurowana po naszej stronie.",
+        "oauth_failed": "Połączenie nie powiodło się. Spróbuj ponownie.",
+        "not_signed_in": "Zaloguj się, aby połączyć kalendarz."
+      }
+    },
     "export": {
       "heading": "Pobierz swoje dane",
       "description": "Wygeneruj plik JSON ze wszystkimi danymi, które mamy na Twój temat — profilem, rezerwacjami i opiniami.",

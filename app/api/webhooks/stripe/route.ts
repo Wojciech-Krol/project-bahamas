@@ -34,6 +34,10 @@ import { env } from "@/src/env";
 import { createAdminClient } from "@/src/lib/db/admin";
 import { getStripe } from "@/src/lib/payments/stripe";
 import { sendEmail } from "@/src/lib/email/resend";
+import {
+  syncBookingCancelled,
+  syncBookingConfirmed,
+} from "@/src/lib/calendar/sync";
 import { BookingConfirmation } from "@/src/lib/email/templates/BookingConfirmation";
 import { BookingCancelled } from "@/src/lib/email/templates/BookingCancelled";
 import { BookingOverbooked } from "@/src/lib/email/templates/BookingOverbooked";
@@ -531,6 +535,17 @@ async function handleCheckoutCompleted(
       extra: { bookingId },
     });
   }
+
+  // Calendar sync — best-effort. Errors are captured inside the sync
+  // module + recorded against booking_calendar_events for the daily
+  // reconcile cron, so we never fail the webhook on a calendar hiccup.
+  void syncBookingConfirmed(bookingId).catch((err) => {
+    console.error("[stripe-webhook] calendar sync failed", err);
+    Sentry.captureException(err, {
+      tags: { kind: "calendar_sync_fail", surface: "stripe_webhook" },
+      extra: { bookingId },
+    });
+  });
 
   // Silence unused-import lint for BookingCancelled in this file; it is
   // imported for symmetry with cancel flows if we extend here later.

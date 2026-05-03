@@ -37,6 +37,7 @@ import { computeCommission } from "@/src/lib/payments/commission";
 import { sendEmail } from "@/src/lib/email/resend";
 import { BookingCancelled } from "@/src/lib/email/templates/BookingCancelled";
 import { createBookingRateLimiter } from "@/src/lib/ratelimit";
+import { syncBookingCancelled } from "@/src/lib/calendar/sync";
 
 // ---------- local types (intentionally NOT exported) ----------
 
@@ -602,6 +603,14 @@ export async function cancelBooking(
     });
     return { error: "internal" };
   }
+
+  // Calendar sync — best-effort, isolated. Removes the corresponding
+  // calendar event for users who have Google Calendar connected. Errors
+  // are captured inside the sync layer; we never fail the cancel on
+  // calendar issues.
+  void syncBookingCancelled(bookingId).catch((err) => {
+    console.error("[cancelBooking] calendar sync failed", err);
+  });
 
   // Fire emails. Stubs OK — the Resend client already no-ops without API
   // key configured. Both sides.

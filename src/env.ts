@@ -81,6 +81,17 @@ const serverSchema = clientSchema.extend({
   STRIPE_PRICE_PARTNER_PLUS: z.string().min(1).optional(),
   STRIPE_PRICE_PARTNER_PRO: z.string().min(1).optional(),
 
+  // Google Calendar OAuth — required to surface the "Connect Google" flow
+  // on /account/calendar. All three are server-only; the client never
+  // sees the secret. Optional at build time so the dashboard renders a
+  // "not configured" banner in pre-launch envs.
+  GOOGLE_CALENDAR_CLIENT_ID: z.string().min(1).optional(),
+  GOOGLE_CALENDAR_CLIENT_SECRET: z.string().min(1).optional(),
+  // AES-256-GCM key for at-rest encryption of access/refresh tokens.
+  // Base64-encoded 32 bytes (`openssl rand -base64 32`). Same shape as
+  // POS_CONFIG_ENCRYPTION_KEY; rotation procedure documented alongside.
+  CALENDAR_ENCRYPTION_KEY: z.string().min(1).optional(),
+
   // Phase 5: POS integration config encryption key. Base64-encoded 32 random
   // bytes (aes-256-gcm). Optional at build time — the integrations page shows
   // a placeholder, the cron returns 503, and partners cannot connect any POS

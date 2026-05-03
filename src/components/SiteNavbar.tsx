@@ -1,15 +1,47 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "../../src/i18n/navigation";
 import { Icon } from "./Icon";
 import LanguageSwitcher from "./LanguageSwitcher";
 import BrandLogo from "./BrandLogo";
+import { createClient } from "@/src/lib/db/client";
 
 export default function SiteNavbar({ children }: { children?: ReactNode }) {
   const t = useTranslations();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
+
+  // Lightweight session-aware nav: swap Login/Signup pair for an Account
+  // link when a session cookie is present. `null` = unknown (initial
+  // render) so we don't flicker the wrong CTA on first paint.
+  useEffect(() => {
+    let cancelled = false;
+    let supabase: ReturnType<typeof createClient> | null = null;
+    try {
+      supabase = createClient();
+    } catch {
+      // Supabase env not configured (pre-launch) — leave as signed-out.
+      setSignedIn(false);
+      return;
+    }
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (!cancelled) setSignedIn(!!data.session);
+      })
+      .catch(() => {
+        if (!cancelled) setSignedIn(false);
+      });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      if (!cancelled) setSignedIn(!!session);
+    });
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <nav
@@ -47,18 +79,53 @@ export default function SiteNavbar({ children }: { children?: ReactNode }) {
               <LanguageSwitcher />
             </div>
             <div className="md:hidden h-px bg-on-surface/5 my-2" />
-            <Link
-              href="/login"
-              className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors"
-            >
-              {t("Common.login")}
-            </Link>
-            <Link
-              href="/signup"
-              className="mt-1 inline-block text-center bg-primary text-on-primary px-4 py-3 rounded-xl font-headline uppercase tracking-widest text-[0.8rem] font-bold hover:bg-tertiary transition-colors"
-            >
-              {t("Common.signup")}
-            </Link>
+            {signedIn === true ? (
+              <>
+                <Link
+                  href="/account"
+                  className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors flex items-center gap-2"
+                >
+                  <Icon name="person" className="text-[18px]" />
+                  {t("Account.nav.profile")}
+                </Link>
+                <Link
+                  href="/account/bookings"
+                  className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors flex items-center gap-2"
+                >
+                  <Icon name="event" className="text-[18px]" />
+                  {t("Account.nav.bookings")}
+                </Link>
+                <Link
+                  href="/account/favorites"
+                  className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors flex items-center gap-2"
+                >
+                  <Icon name="favorite" className="text-[18px]" />
+                  {t("Account.nav.favorites")}
+                </Link>
+                <Link
+                  href="/account/calendar"
+                  className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors flex items-center gap-2"
+                >
+                  <Icon name="calendar_month" className="text-[18px]" />
+                  {t("Account.nav.calendar")}
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="px-3 py-3 text-left font-headline uppercase tracking-widest text-[0.8rem] font-semibold text-on-surface hover:text-primary transition-colors"
+                >
+                  {t("Common.login")}
+                </Link>
+                <Link
+                  href="/signup"
+                  className="mt-1 inline-block text-center bg-primary text-on-primary px-4 py-3 rounded-xl font-headline uppercase tracking-widest text-[0.8rem] font-bold hover:bg-tertiary transition-colors"
+                >
+                  {t("Common.signup")}
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

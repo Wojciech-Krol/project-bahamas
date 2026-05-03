@@ -35,10 +35,12 @@ export {
 } from "./activityContent";
 export {
   getBookingById,
+  getBookingsByCurrentUser,
   getBookingsByPartner,
   type BookingDetail,
   type PartnerBookingRow_UI,
 } from "./bookings";
+export { getFavoriteActivities } from "./favorites";
 export {
   getActivitiesByPartner,
   getPartnerActivityById,
