@@ -193,6 +193,7 @@ export default function HomeClient({
       neighborhood,
       when,
       ageCounts,
+      styles: "",
     });
     router.push({ pathname: "/search", query });
     setNavExpandedField(null);

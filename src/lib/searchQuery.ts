@@ -5,6 +5,8 @@ export type SearchParams = {
   neighborhood: string;
   when: string;
   ageCounts: AgeCounts;
+  /** Comma-separated style sub-filter slugs (see `categoryStyles.ts`). */
+  styles: string;
 };
 
 export const DEFAULT_SEARCH_PARAMS: SearchParams = {
@@ -12,6 +14,7 @@ export const DEFAULT_SEARCH_PARAMS: SearchParams = {
   neighborhood: "",
   when: "",
   ageCounts: { kids: 0, teens: 0, adults: 1 },
+  styles: "",
 };
 
 export function buildSearchQuery(p: SearchParams): string {
@@ -19,6 +22,7 @@ export function buildSearchQuery(p: SearchParams): string {
   if (p.activities) sp.set("activities", p.activities);
   if (p.neighborhood) sp.set("neighborhood", p.neighborhood);
   if (p.when) sp.set("when", p.when);
+  if (p.styles) sp.set("styles", p.styles);
   if (p.ageCounts.kids) sp.set("kids", String(p.ageCounts.kids));
   if (p.ageCounts.teens) sp.set("teens", String(p.ageCounts.teens));
   if (p.ageCounts.adults !== 1) sp.set("adults", String(p.ageCounts.adults));
@@ -30,6 +34,7 @@ export function buildSearchQueryRecord(p: SearchParams): Record<string, string> 
   if (p.activities) out.activities = p.activities;
   if (p.neighborhood) out.neighborhood = p.neighborhood;
   if (p.when) out.when = p.when;
+  if (p.styles) out.styles = p.styles;
   if (p.ageCounts.kids) out.kids = String(p.ageCounts.kids);
   if (p.ageCounts.teens) out.teens = String(p.ageCounts.teens);
   if (p.ageCounts.adults !== 1) out.adults = String(p.ageCounts.adults);
@@ -61,6 +66,7 @@ export function parseSearchQuery(src: ParamSource): SearchParams {
     activities: readParam(src, "activities"),
     neighborhood: readParam(src, "neighborhood"),
     when: readParam(src, "when"),
+    styles: readParam(src, "styles"),
     ageCounts: {
       kids: num("kids", 0),
       teens: num("teens", 0),

@@ -14,9 +14,9 @@ import {
   ACTIVITY_SLUGS_PL,
   CITIES,
   CITY_KEYS,
-  allCityLandingParams,
   getActivityFromPlSlug,
   isCityKey,
+  liveCityLandingParams,
   type CityKey,
 } from "@/app/lib/geo";
 import { localizedAlternates } from "@/app/lib/seoMeta";
@@ -36,8 +36,8 @@ import ActivityRowCard from "@/src/components/ActivityRowCard";
 export const revalidate = 3600;
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return allCityLandingParams();
+export async function generateStaticParams() {
+  return liveCityLandingParams();
 }
 
 type RouteParams = { locale: string; activity: string; city: string };

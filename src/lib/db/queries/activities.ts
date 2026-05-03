@@ -14,7 +14,7 @@
 
 import { createClient } from "@/src/lib/db/server";
 import type { Activity, Locale } from "@/src/lib/db/types";
-import { formatDuration, formatPrice, pick } from "./_i18n";
+import { formatDuration, formatNextSessionTime, formatPrice, pick } from "./_i18n";
 
 type I18nBag = Record<string, string | null | undefined> | null;
 
@@ -28,6 +28,7 @@ type ActivityRow = {
   duration_min: number;
   level: string | null;
   category: string | null;
+  style: string[] | null;
   age_group: string | null;
   hero_image: string | null;
   created_at: string;
@@ -38,6 +39,8 @@ type ActivityRow = {
         name: string;
         address: string | null;
         city: string | null;
+        lat: number | null;
+        lng: number | null;
         description_i18n: I18nBag;
         hero_image: string | null;
       }
@@ -61,6 +64,7 @@ const ACTIVITY_SELECT = `
   duration_min,
   level,
   category,
+  style,
   age_group,
   hero_image,
   created_at,
@@ -70,6 +74,8 @@ const ACTIVITY_SELECT = `
     name,
     address,
     city,
+    lat,
+    lng,
     description_i18n,
     hero_image
   )
@@ -95,7 +101,11 @@ export const ACTIVITY_HERO_PLACEHOLDER =
       '<rect width="16" height="10" fill="url(#g)"/></svg>',
   );
 
-function composeActivity(row: ActivityRow, locale: Locale): Activity {
+function composeActivity(
+  row: ActivityRow,
+  locale: Locale,
+  nextSessionByActivityId?: Map<string, string>,
+): Activity {
   const title = pick(row.title_i18n, locale);
   const description = pick(row.description_i18n, locale);
   const venue = row.venue;
@@ -104,12 +114,17 @@ function composeActivity(row: ActivityRow, locale: Locale): Activity {
   // address if present; fall back to city.
   const location = venue?.address ?? venue?.city ?? "";
   const neighborhood = venue?.city ?? "";
+  const nextStartsAt = nextSessionByActivityId?.get(row.id);
+  const coords =
+    venue && typeof venue.lat === "number" && typeof venue.lng === "number"
+      ? { lat: venue.lat, lng: venue.lng }
+      : undefined;
 
   return {
     id: row.id,
     slug: row.slug ?? row.id,
     title: title || row.id,
-    time: "", // TODO Phase 1b+: compute from next `sessions.starts_at`.
+    time: formatNextSessionTime(nextStartsAt, locale),
     location,
     neighborhood,
     price: formatPrice(row.price_cents, row.currency, locale),
@@ -121,10 +136,58 @@ function composeActivity(row: ActivityRow, locale: Locale): Activity {
     schoolId: venue?.id ?? undefined,
     schoolSlug: venue?.slug ?? undefined,
     schoolName: venueName || undefined,
+    category: row.category ?? undefined,
+    styles: row.style ?? undefined,
+    coords,
     // `tag`, `joined`, `rating`, `reviewCount`, `instructorAvatar`,
     // `schoolAvatar` aren't on the current schema — leave undefined for
     // Phase 2 to fill in.
   };
+}
+
+/**
+ * Batch-fetch the next scheduled session start per activity. Returns a
+ * Map keyed by activity_id so the composer can look it up in O(1).
+ *
+ * Implementation: single round-trip pulling all upcoming sessions for the
+ * given activities, ordered by starts_at ASC. We keep only the first hit
+ * per activity. Index `idx_sessions_activity_starts` covers the access
+ * pattern. Activities without an upcoming scheduled session simply won't
+ * appear in the map → composer renders an empty `time` field.
+ */
+async function nextSessionByActivityIds(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  activityIds: string[],
+): Promise<Map<string, string>> {
+  const map = new Map<string, string>();
+  if (activityIds.length === 0) return map;
+
+  const nowIso = new Date().toISOString();
+  const { data, error } = await supabase
+    .from("sessions")
+    .select("activity_id, starts_at")
+    .in("activity_id", activityIds)
+    .eq("status", "scheduled")
+    .gt("starts_at", nowIso)
+    .order("starts_at", { ascending: true });
+
+  if (error) {
+    console.warn(
+      "[db/queries/activities.nextSessionByActivityIds] failed",
+      error,
+    );
+    return map;
+  }
+
+  for (const row of (data ?? []) as Array<{
+    activity_id: string;
+    starts_at: string;
+  }>) {
+    if (!map.has(row.activity_id)) {
+      map.set(row.activity_id, row.starts_at);
+    }
+  }
+  return map;
 }
 
 /**
@@ -242,7 +305,12 @@ export async function getClosestActivities(
   }
 
   const sorted = await sortByVenueRankings(supabase, data ?? []);
-  return sorted.slice(0, limit).map((row) => composeActivity(row, locale));
+  const trimmed = sorted.slice(0, limit);
+  const nextSessions = await nextSessionByActivityIds(
+    supabase,
+    trimmed.map((r) => r.id),
+  );
+  return trimmed.map((row) => composeActivity(row, locale, nextSessions));
 }
 
 /** Loads a single activity by id (returns `null` if not found / unpublished). */
@@ -270,7 +338,8 @@ export async function getActivityById(
   }
 
   if (!data) return null;
-  return composeActivity(data, locale);
+  const nextSessions = await nextSessionByActivityIds(supabase, [data.id]);
+  return composeActivity(data, locale, nextSessions);
 }
 
 /** Loads a single activity by slug (SEO-friendly URL lookup). */
@@ -298,7 +367,8 @@ export async function getActivityBySlug(
   }
 
   if (!data) return null;
-  return composeActivity(data, locale);
+  const nextSessions = await nextSessionByActivityIds(supabase, [data.id]);
+  return composeActivity(data, locale, nextSessions);
 }
 
 export interface ActivityFilters {
@@ -306,6 +376,8 @@ export interface ActivityFilters {
   activities?: string[];
   /** Free-text neighborhood / city match (uses `ilike`). */
   neighborhood?: string;
+  /** Sub-category style tags. Matches when activity.style overlaps any. */
+  styles?: string[];
 }
 
 async function queryWithFilters(
@@ -336,6 +408,13 @@ async function queryWithFilters(
     query = query.in("category", filters.activities);
   }
 
+  if (filters.styles && filters.styles.length > 0) {
+    // `&&` is the array-overlap operator — match when any selected style
+    // is present on the activity. PostgREST exposes it via the `ov`
+    // filter; the `{...}` literal is Postgres array syntax.
+    query = query.overlaps("style", filters.styles);
+  }
+
   if (filters.neighborhood && filters.neighborhood.trim().length > 0) {
     // `.ilike` on a joined-table column needs the `foreignTable` form;
     // PostgREST exposes it via the `venues.city` filter string instead.
@@ -353,7 +432,11 @@ async function queryWithFilters(
   }
 
   const sorted = await sortByVenueRankings(supabase, data ?? []);
-  return sorted.map((row) => composeActivity(row, locale));
+  const nextSessions = await nextSessionByActivityIds(
+    supabase,
+    sorted.map((r) => r.id),
+  );
+  return sorted.map((row) => composeActivity(row, locale, nextSessions));
 }
 
 /**

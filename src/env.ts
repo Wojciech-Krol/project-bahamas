@@ -62,6 +62,12 @@ const serverSchema = clientSchema.extend({
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
   TURNSTILE_SECRET_KEY: z.string().min(1).optional(),
 
+  // Salt used to derive a stable hash from a client IP for the
+  // beta_signups row (data minimisation — we never store the raw IP).
+  // Optional: a fallback constant is used if unset, which is fine in
+  // dev but should be set in production so hashes are unguessable.
+  BETA_SIGNUP_IP_SALT: z.string().min(8).optional(),
+
   // Phase 3: Stripe. Keys required before a booking can actually charge;
   // optional at build time so pre-launch checks still pass.
   STRIPE_SECRET_KEY: z.string().min(1).optional(),

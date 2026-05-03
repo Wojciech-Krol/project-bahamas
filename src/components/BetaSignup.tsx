@@ -1,15 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useState, useTransition } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Icon } from "./Icon";
 import Reveal from "./Reveal";
+import { submitBetaSignup } from "@/src/lib/beta/actions";
 
 type Props = {
   title?: string;
   subtitle?: string;
   ctaLabel?: string;
   variant?: "beta" | "business";
+  /** Origin tag for analytics, e.g. "home-hero" / "blog-footer". */
+  source?: string;
 };
 
 export default function BetaSignup({
@@ -17,16 +20,41 @@ export default function BetaSignup({
   subtitle,
   ctaLabel,
   variant = "beta",
+  source,
 }: Props) {
   const t = useTranslations("Beta");
+  const locale = useLocale();
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorKey, setErrorKey] = useState<
+    "validation" | "rate_limited" | "bot_check" | "server" | null
+  >(null);
+  const [isPending, startTransition] = useTransition();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.includes("@")) return;
-    setStatus("success");
-    setEmail("");
+    if (!email.includes("@")) {
+      setStatus("error");
+      setErrorKey("validation");
+      return;
+    }
+
+    startTransition(async () => {
+      const res = await submitBetaSignup({
+        email,
+        locale: locale === "en" ? "en" : "pl",
+        source,
+        variant,
+      });
+      if (res.ok) {
+        setStatus("success");
+        setErrorKey(null);
+        setEmail("");
+      } else {
+        setStatus("error");
+        setErrorKey(res.error);
+      }
+    });
   };
 
   const resolvedTitle =
@@ -93,9 +121,16 @@ export default function BetaSignup({
                 type="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (status === "error") {
+                    setStatus("idle");
+                    setErrorKey(null);
+                  }
+                }}
+                disabled={isPending}
                 placeholder={t("emailPlaceholder")}
-                className={`flex-1 px-5 py-4 rounded-2xl text-base font-medium focus:outline-none focus:ring-2 ${
+                className={`flex-1 px-5 py-4 rounded-2xl text-base font-medium focus:outline-none focus:ring-2 disabled:opacity-60 ${
                   variant === "business"
                     ? "bg-surface-container-lowest text-on-surface placeholder:text-on-surface/40 focus:ring-primary/30"
                     : "bg-white/95 text-on-surface placeholder:text-on-surface/40 focus:ring-white"
@@ -103,15 +138,28 @@ export default function BetaSignup({
               />
               <button
                 type="submit"
-                className={`px-8 py-4 rounded-2xl font-headline uppercase tracking-widest text-[0.75rem] font-bold transition-all hover:-translate-y-0.5 ${
+                disabled={isPending}
+                className={`px-8 py-4 rounded-2xl font-headline uppercase tracking-widest text-[0.75rem] font-bold transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0 ${
                   variant === "business"
                     ? "bg-primary text-on-primary hover:bg-tertiary"
                     : "bg-white text-primary hover:bg-on-surface hover:text-on-primary"
                 }`}
               >
-                {resolvedCta}
+                {isPending ? t("submitting") : resolvedCta}
               </button>
             </form>
+            {status === "error" && errorKey && (
+              <p
+                role="alert"
+                className={`mt-3 text-sm font-semibold ${
+                  variant === "business"
+                    ? "text-primary"
+                    : "text-on-primary/90"
+                }`}
+              >
+                {t(`errors.${errorKey}`)}
+              </p>
+            )}
           </Reveal.Item>
         )}
       </Reveal>
