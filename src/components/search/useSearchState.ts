@@ -10,6 +10,7 @@ export function useSearchState(initial?: Partial<SearchParams>) {
   const [activities, setActivities] = useState(initial?.activities ?? "");
   const [neighborhood, setNeighborhood] = useState(initial?.neighborhood ?? "");
   const [when, setWhen] = useState(initial?.when ?? "");
+  const [styles, setStyles] = useState(initial?.styles ?? "");
   const [ageCounts, setAgeCounts] = useState<AgeCounts>(
     initial?.ageCounts ?? { kids: 0, teens: 0, adults: 1 }
   );
@@ -28,6 +29,7 @@ export function useSearchState(initial?: Partial<SearchParams>) {
     setActivities("");
     setNeighborhood("");
     setWhen("");
+    setStyles("");
     setAgeCounts({ kids: 0, teens: 0, adults: 1 });
   }, []);
 
@@ -40,18 +42,26 @@ export function useSearchState(initial?: Partial<SearchParams>) {
     return parts.join(", ");
   })();
 
-  const params: SearchParams = { activities, neighborhood, when, ageCounts };
+  const params: SearchParams = {
+    activities,
+    neighborhood,
+    when,
+    styles,
+    ageCounts,
+  };
 
   return {
     activities,
     neighborhood,
     when,
+    styles,
     ageCounts,
     ageLabel,
     params,
     setActivities,
     setNeighborhood,
     setWhen,
+    setStyles,
     setAgeCounts,
     handleAgeUpdate,
     clearAll,

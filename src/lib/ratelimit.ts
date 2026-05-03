@@ -168,6 +168,14 @@ export const accountDeletionRateLimiter = createRateLimiter(
   },
 );
 
+/** Beta signup: 3 per hour per IP. Public form — Turnstile gates bots,
+ *  the rate limit catches scripted scrape-and-replay floods. Generous
+ *  enough that a household behind one NAT can sign multiple people up. */
+export const betaSignupRateLimiter = createRateLimiter("beta-signup", {
+  windowSeconds: 60 * 60,
+  requests: 3,
+});
+
 /**
  * Extract a best-effort client IP. Reads standard proxy headers in the
  * order Vercel / Cloudflare / generic reverse proxies set them. Accepts

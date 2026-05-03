@@ -57,10 +57,15 @@ export default async function SearchPage({
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
+  const styleKeys = initial.styles
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
   const results = await getFilteredActivities(locale, {
     activities: activityKeys,
     neighborhood: initial.neighborhood || undefined,
+    styles: styleKeys.length > 0 ? styleKeys : undefined,
   });
 
   return <SearchClient initial={initial} results={results} />;

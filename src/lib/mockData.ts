@@ -21,6 +21,9 @@ export type Activity = {
   rating?: number;
   reviewCount?: number;
   level?: string;
+  category?: string;
+  styles?: string[];
+  coords?: { lat: number; lng: number };
 };
 
 export type Review = {

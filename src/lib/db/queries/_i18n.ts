@@ -71,3 +71,46 @@ export function formatDuration(
   const hourLabel = locale === "pl" ? "h" : "h";
   return m === 0 ? `${h} ${hourLabel}` : `${h} ${hourLabel} ${m} ${minLabel}`;
 }
+
+/**
+ * ISO timestamp → short weekday + time label for activity rails
+ * (e.g. "Sob 10:00", "Sat 10:00"). Returns "" on null/invalid input.
+ *
+ * Locale picks weekday spelling — Polish uses 3-letter abbreviated forms
+ * via Intl with `weekday: "short"`. Time uses 24h format both locales.
+ *
+ * If the timestamp is today, returns "Dziś 10:00" / "Today 10:00" so
+ * cards feel current.
+ */
+export function formatNextSessionTime(
+  iso: string | null | undefined,
+  locale: Locale,
+): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+
+  const intlLocale = locale === "pl" ? "pl-PL" : "en-GB";
+  const time = new Intl.DateTimeFormat(intlLocale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(d);
+
+  const now = new Date();
+  const sameDay =
+    d.getFullYear() === now.getFullYear() &&
+    d.getMonth() === now.getMonth() &&
+    d.getDate() === now.getDate();
+  if (sameDay) {
+    return `${locale === "pl" ? "Dziś" : "Today"} ${time}`;
+  }
+
+  const weekday = new Intl.DateTimeFormat(intlLocale, {
+    weekday: "short",
+  }).format(d);
+  // Capitalise Polish day abbreviations ("pon" → "Pon") for display parity
+  // with English's already-capitalised "Mon".
+  const wd = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+  return `${wd} ${time}`;
+}
