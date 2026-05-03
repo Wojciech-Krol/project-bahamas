@@ -274,7 +274,7 @@ export default async function PartnerIntegrationsPage({
                 providerLabel={providerLabel}
                 comingSoonLabel={t("comingSoon")}
                 requestAccessLabel={t("requestAccess")}
-                requestAccessHref={`mailto:${process.env.ADMIN_NOTIFICATION_EMAIL ?? "hello@hakuna.app"}?subject=${encodeURIComponent(`POS: ${providerLabel}`)}`}
+                requestAccessHref={`mailto:${process.env.ADMIN_NOTIFICATION_EMAIL ?? "hello@hakuna.pl"}?subject=${encodeURIComponent(`POS: ${providerLabel}`)}`}
               />
             );
           }

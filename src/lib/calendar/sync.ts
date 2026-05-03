@@ -39,7 +39,7 @@ type BookingForSync = {
 };
 
 const SITE_BASE =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://hakuna.pl";
 
 function buildEventInput(b: BookingForSync, locale: string): CalendarEventInput {
   const isPl = locale === "pl";

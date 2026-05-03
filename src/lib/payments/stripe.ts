@@ -70,7 +70,7 @@ export function getStripe(): Stripe {
     typescript: true,
     appInfo: {
       name: "Hakuna",
-      url: "https://hakuna.app",
+      url: "https://hakuna.pl",
     },
   };
 

@@ -190,7 +190,7 @@ function eventBody(input: CalendarEventInput): Record<string, unknown> {
     start: { dateTime: input.startsAt.toISOString() },
     end: { dateTime: input.endsAt.toISOString() },
     reminders: { useDefault: true },
-    source: { title: "Hakuna", url: "https://hakuna.app" },
+    source: { title: "Hakuna", url: "https://hakuna.pl" },
   };
 }
 

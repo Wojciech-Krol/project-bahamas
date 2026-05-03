@@ -110,7 +110,7 @@ export function PartnerApproved({
 
   // Placeholder fallback — callers should pass baseUrl from
   // NEXT_PUBLIC_SITE_URL in production.
-  const dashboardUrl = `${baseUrl ?? "https://hakuna.example"}/partner`;
+  const dashboardUrl = `${baseUrl ?? "https://hakuna.pl"}/partner`;
   const ctaUrl = magicLink ?? dashboardUrl;
 
   const preview = isPl
