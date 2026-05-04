@@ -1,4 +1,12 @@
 {
+  "LandingGate": {
+    "title": "Invite-only preview",
+    "subtitle": "Enter the password to see Hakuna.",
+    "passwordLabel": "Password",
+    "submit": "Enter",
+    "submitting": "Checking…",
+    "error": "Wrong password."
+  },
   "Metadata": {
     "titleDefault": "Find your thing",
     "titleTemplate": "%s · Find your thing",
