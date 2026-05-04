@@ -11,8 +11,10 @@ import {
   websiteSchema,
 } from "@/app/lib/structuredData";
 import { localizedAlternates } from "@/app/lib/seoMeta";
+import { isLandingGateOpen } from "@/app/lib/landingGate";
 
 import HomeClient from "./HomeClient";
+import LandingGateForm from "./_gate/LandingGateForm";
 
 function isLocale(value: string): value is Locale {
   return (routing.locales as readonly string[]).includes(value);
@@ -48,6 +50,10 @@ export default async function HomePage({
   const { locale: raw } = await params;
   setRequestLocale(raw);
   const locale: Locale = isLocale(raw) ? raw : "pl";
+
+  if (!(await isLandingGateOpen())) {
+    return <LandingGateForm locale={locale} />;
+  }
 
   const [closestActivities, reviews] = await Promise.all([
     getClosestActivities(locale),

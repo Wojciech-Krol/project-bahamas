@@ -1,4 +1,12 @@
 {
+  "LandingGate": {
+    "title": "Wejście tylko dla zaproszonych",
+    "subtitle": "Wpisz hasło, żeby zobaczyć Hakunę.",
+    "passwordLabel": "Hasło",
+    "submit": "Wejdź",
+    "submitting": "Sprawdzam…",
+    "error": "Nieprawidłowe hasło."
+  },
   "Metadata": {
     "titleDefault": "Znajdź coś dla siebie",
     "titleTemplate": "%s · Znajdź coś dla siebie",
